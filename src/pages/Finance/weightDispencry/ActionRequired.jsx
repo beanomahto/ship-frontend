@@ -1,0 +1,91 @@
+import React, { useState } from 'react';
+import { Table, Button } from 'antd';
+import UploadDiscrepancyImagesModal from './UploadDiscrepancyImagesModal';
+import { useAuthContext } from '../../../context/AuthContext';
+import moment from 'moment';
+
+const OpenWeightDispensory = ({ dataSource, rowSelection}) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedDiscrepancyId, setSelectedDiscrepancyId] = useState(null);
+  console.log(dataSource);
+  const { authUser } = useAuthContext();
+  const columns = [
+    {
+      title: 'Weight Applied Date',
+      dataIndex: 'weightAppliedDate',
+      render: (text, data) => moment(data?.createdAt).format('DD-MM-YYYY'),
+    },
+    {
+      title: 'Entered Weight',
+      dataIndex: 'enteredWeight',
+    },
+    {
+      title: 'Entered Dimension',
+      dataIndex: 'enteredDimension',
+    },
+    {
+      title: 'Order Id',
+      dataIndex: 'orderId',
+    },
+    {
+      title: 'AWB Number',
+      dataIndex: 'awbNumber',
+    },
+    {
+      title: 'Product Name',
+      dataIndex: 'productName',
+    },
+    {
+      title: 'Applied Weight',
+      dataIndex: 'appliedWeight',
+    },
+    {
+      title: 'Weight Charges',
+      dataIndex: 'weightCharges',
+    },
+    {
+      title: 'Settled Charges',
+      dataIndex: 'settledCharges',
+    },
+    {
+      title: 'Remarks',
+      dataIndex: 'remarks',
+    },
+    ...(authUser?.role === 'company' ? [{
+        title: 'Action', 
+        dataIndex: 'adminData',  
+        render: (_, record) => (
+            <Button
+              type="primary"
+              onClick={() => {
+                setSelectedDiscrepancyId(record?._id); 
+                setModalVisible(true);
+                console.log(record);
+              }}
+            >
+              Take Action
+            </Button>
+          ),
+      }] : []),
+  ];
+const actionRequired = dataSource?.filter(data => data.status === 'action required')
+  return (
+    <>
+      <Table
+        className='table'
+        scroll={{ y: 350 }}
+        dataSource={actionRequired}
+        columns={columns}
+        rowKey="id"
+        rowSelection={rowSelection}
+      />
+      <UploadDiscrepancyImagesModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        discrepancyId={selectedDiscrepancyId}
+      />
+    </>
+  );
+};
+
+export default OpenWeightDispensory;

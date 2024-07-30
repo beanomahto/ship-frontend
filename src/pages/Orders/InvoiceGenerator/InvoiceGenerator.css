@@ -1,0 +1,25 @@
+.invoice-items table {
+    width: 100%;
+    border-collapse: collapse; /* Ensures that borders between cells do not double up */
+  }
+  
+  .invoice-items th,
+  .invoice-items td {
+    border: 1px solid #ddd; /* Light gray border for table cells */
+    padding: 8px; /* Space between text and border */
+    text-align: left; /* Align text to the left */
+  }
+  
+  .invoice-items th {
+    background-color: #f4f4f4; /* Light gray background for header cells */
+    font-weight: bold; /* Make header text bold */
+  }
+  
+  .invoice-items tr:nth-child(even) {
+    background-color: #f9f9f9; /* Alternating row background color */
+  }
+  
+  .invoice-items tr:hover {
+    background-color: #eaeaea; /* Highlight row on hover */
+  }
+  

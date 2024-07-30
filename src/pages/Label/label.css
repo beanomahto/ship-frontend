@@ -1,0 +1,4 @@
+.labelDiv{
+    display: flex;
+    flex-direction: column;
+}

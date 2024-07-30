@@ -1,0 +1,40 @@
+.rbtn{
+    height: 7rem;
+    width: 20rem;
+    display: flex;
+    justify-content: flex-start;
+    /* align-items: center; */
+    flex-direction: column;
+    padding: 1rem;
+}
+.rbtncontainer{
+    display: flex;
+    justify-content: space-evenly   ;
+    align-items: center;
+    background-color: #fff;
+    height: 9rem;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+}
+.rbtn1{
+    background-color: #F0F8FEFF;
+    border: 1px solid #b9e1ff;
+}
+
+.rbtn2{
+    background-color: #fff9ee;
+    border: 1px solid #ffe1aa;
+}
+
+.rbtn3{
+    background-color: #f3fbfa;
+    border: 1px solid #c4fef7;
+}
+.rbtn4{
+    background-color: #fff0f4;
+    border: 1px solid #ffc9d8;
+}
+p{
+    font-size: 0.8rem;
+    font-weight: 300;
+}

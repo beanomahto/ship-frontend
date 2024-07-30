@@ -1,0 +1,29 @@
+{
+    "type": "Topology",
+    "objects": {
+      "india": {
+        "type": "GeometryCollection",
+        "geometries": [
+          {
+            "type": "Polygon",
+            "properties": { "name": "State 1" },
+            "arcs": [[0]]
+          },
+          {
+            "type": "Polygon",
+            "properties": { "name": "State 2" },
+            "arcs": [[1]]
+          }
+        ]
+      }
+    },
+    "arcs": [
+      [[81, 21], [82, 22], [83, 23]],
+      [[85, 25], [86, 26], [87, 27]]
+    ],
+    "transform": {
+      "scale": [0.1, 0.1],
+      "translate": [68, 8]
+    }
+  }
+  

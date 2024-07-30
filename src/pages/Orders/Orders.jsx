@@ -1,0 +1,191 @@
+import React, { useEffect, useState } from 'react';
+import { Button, Tabs, Modal, Popover } from 'antd';
+import { Link } from 'react-router-dom';
+import { useOrderContext } from '../../context/OrderContext';
+import BulkOrderUploadModal from './BulkOrder/BulkOrder';
+import BulkOrderDimension from './BulkOrder/BulkDimension';
+import ShipNowModel from './ShipNow/ShipNowModel';
+import NewOrderComponent from './NewOrderComponent';
+import ShipOrderComponent from './ShipOrderComponent';
+import * as XLSX from 'xlsx';
+
+
+const { TabPane } = Tabs;
+
+const Orders = () => {
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const { orders, setOrders, fetchOrders } = useOrderContext();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisibleBD, setModalVisibleBD] = useState(false);
+  const [modalVisibleShipNow, setModalVisibleShipNow] = useState(false);
+  const [currentTab, setCurrentTab] = useState('tab1'); 
+  console.log(orders);
+
+  const showModal = () => setModalVisible(true);
+  const closeModal = () => setModalVisible(false);
+  const showModalBD = () => setModalVisibleBD(true);
+  const closeModalBD = () => setModalVisibleBD(false);
+  const showModalShipNow = () => setModalVisibleShipNow(true);
+  const closeModalShipNow = () => setModalVisibleShipNow(false);
+
+  const start = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/integration/syncButton');
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Sync successful', result);
+      } else {
+        console.error('Sync failed', response.statusText);
+      }
+    } catch (error) {
+      console.error('Sync error', error);
+    } finally {
+      setSelectedRowKeys([]);
+      setLoading(false);
+    }
+  };
+  
+
+  const onSelectChange = (newSelectedRowKeys) => {
+    console.log(newSelectedRowKeys);
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
+
+  const handleShipNow = async () => {
+    if (selectedRowKeys.length === 0) {
+        return; 
+    }
+console.log(selectedRowKeys);
+    const updatedOrders = await Promise.all(selectedRowKeys?.map(async (orderId) => {
+        const order = orders?.orders[orderId];
+        console.log(order);
+        await fetch(`/api/orders/updateOrderStatus/${orderId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ status: 'Shipped' }),
+        });
+
+        return { ...order, status: 'Shipped' }; 
+    }));
+
+    const newOrdersCopy = orders.orders.filter((_, index) => !selectedRowKeys.includes(index));
+    setOrders({
+        orders: newOrdersCopy.concat(updatedOrders),
+    });
+
+    setSelectedRowKeys([]);
+    closeModalShipNow();
+};
+
+const exportToExcel = () => {
+  const workbook = XLSX.utils.book_new();
+  const worksheet = XLSX.utils.json_to_sheet(orders.orders);
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Orders');
+  XLSX.writeFile(workbook, 'Orders.xlsx');
+};
+
+  const dataSourceWithKeys = orders?.orders?.map((order) => ({
+    ...order,
+    key: order._id,
+    // key: index.toString(),
+  })) || [];
+
+  console.log(orders);
+
+  // const dataSourceShipOrdersWithKeys = orders?.shipOrders?.map((order, index) => ({
+  //   ...order,
+  //   key: order._id,
+  // })) || [];
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+    // onSelect: showModalShipNow,
+  };
+
+  const hasSelected = selectedRowKeys.length > 1;
+console.log(dataSourceWithKeys);
+  const tabsData = [
+    {
+      key: 'tab1',
+      tab: 'New Orders',
+      Component: NewOrderComponent,
+      dataSource: dataSourceWithKeys,
+    },
+    {
+      key: 'tab2',
+      tab: 'Ship Orders',
+      Component: ShipOrderComponent,
+      dataSource: dataSourceWithKeys,
+    },
+    {
+      key: 'tab3',
+      tab: 'In Transit',
+      Component: NewOrderComponent,
+      dataSource: [],
+    },
+    {
+      key: 'tab4',
+      tab: 'All Orders',
+      Component: NewOrderComponent,
+      dataSource: [...dataSourceWithKeys]
+    },
+  ];
+
+console.log(tabsData);
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }} className="addorder">
+        <Button type="primary" style={{ alignSelf: 'flex-start' }} onClick={start} loading={loading}>Sync</Button>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
+        {currentTab === 'tab1' && <Button disabled={!hasSelected} onClick={showModalShipNow}>Ship Now</Button>}
+        
+          {/* <ShipNowModel visible={modalVisibleShipNow} onClose={closeModalShipNow} /> */}
+
+          <Button><Link to='singleorder'>Single Order</Link></Button>
+          <Popover  trigger={'click'} placement="leftTop" title={
+            <div style={{
+              display:'flex',
+              flexDirection:"column",
+              margin:'1rem',
+              gap:'1rem'
+            }}>
+           <Button onClick={showModal}>Bulk Orders</Button>
+           <Button onClick={showModalBD}>Bulk Dimensions</Button>
+            </div>
+          }>
+          <Button>Bulk Actions</Button>
+        </Popover>
+          <Button onClick={exportToExcel}>Download</Button>
+          <BulkOrderUploadModal visible={modalVisible} onClose={closeModal} />
+          <BulkOrderDimension visible={modalVisibleBD} onClose={closeModalBD} />
+          <ShipNowModel hasSelected={hasSelected} selectedRowKeys={selectedRowKeys} visible={modalVisibleShipNow} onClose={closeModalShipNow} onShipNow={handleShipNow} />
+        </div>
+      </div>
+      <Tabs defaultActiveKey='tab1' size='large' className='tabs' onChange={setCurrentTab}>
+        {tabsData.map(tab => (
+          <TabPane key={tab.key} tab={tab.tab}>
+            {tab.Component ? (
+              <tab.Component
+                dataSource={tab.dataSource}
+                // rowSelection={tab.key === 'tab1' ? rowSelection : null}
+                rowSelection={rowSelection}
+                fetchOrders={fetchOrders} 
+                loading={loading}
+              />
+            ) : (
+              <span>No component for this tab</span>
+            )}
+            <span style={{ marginLeft: 8 }}>{hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}</span>
+          </TabPane>
+        ))}
+      </Tabs>
+    </div>
+  );
+};
+
+export default Orders;

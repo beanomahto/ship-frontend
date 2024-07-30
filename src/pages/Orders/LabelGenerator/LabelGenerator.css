@@ -1,0 +1,31 @@
+.label-container {
+  font-family: Arial, sans-serif;
+  padding: 10px;
+  border: 1px solid black;
+  width: 4in; /* 4 inches */
+  height: 6in; /* 6 inches */
+  box-sizing: border-box;
+}
+
+.label-container h1 {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.label-container p {
+  margin: 0;
+  padding: 0;
+}
+
+.section {
+  margin-bottom: 10px;
+  border: 1px solid black;
+  padding: 5px;
+}
+
+.section img {
+  display: block;
+  margin: auto;
+  width: 100px;
+}

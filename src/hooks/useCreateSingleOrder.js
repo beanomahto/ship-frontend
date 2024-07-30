@@ -1,0 +1,97 @@
+
+import { useState } from "react";
+import { useOrderContext } from "../context/OrderContext";
+
+const useCreateSingleOrder = () => {
+	const [loading, setLoading] = useState(false);
+  // useOrderContext()
+
+	const createSingleOrder = async ({customerName,
+        customerEmail,
+        customerPhone,
+        orderId,
+       pincode,
+       city,
+       state,
+       productPrice,
+       productName,
+       address,
+       landMark,
+       quantity,
+       sku,
+       weight,
+       length,
+       breadth,
+       height,
+       paymentMethod}) => {
+		const success = handleInputErrors({customerName,
+        customerEmail,
+        customerPhone,
+        orderId,
+       pincode,
+       city,
+       state,
+       productPrice,
+       productName,
+       address,
+       landMark,
+       quantity,
+       sku,
+       weight,
+       length,
+       breadth,
+       height,
+       paymentMethod});
+		if (!success) return;
+		setLoading(true);
+		try {
+			const res = await fetch("/api/orders/createOrder", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ customerName,
+        customerEmail,
+        customerPhone,
+        orderId,
+       pincode,
+       city,
+       state,
+       productPrice,
+       productName,
+       address,
+       landMark,
+       quantity,
+       sku,
+       weight,
+       length,
+       breadth,
+       height,
+       paymentMethod }),
+			});
+
+			const data = await res.json();
+            console.log(data);
+			if (data.error) {
+				throw new Error(data.error);
+			}
+		} catch (error) {
+			alert(error.message);
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	return { loading, createSingleOrder };
+};
+export default useCreateSingleOrder;
+
+function handleInputErrors( {customerName,  customerEmail, 
+customerPhone,  orderId,  productPrice,  productName,  address,   quantity,  sku,  weight,  length,  breadth,  height,  paymentMethod}){
+
+	if(!customerName || !customerEmail ||
+    !customerPhone || !orderId || !productPrice || !productName || !address || !quantity || !sku || !weight || !length || !breadth || !height || !paymentMethod) {
+		alert("Please fill in all fields");
+		return false;
+	}
+
+	return true;
+}

@@ -1,0 +1,60 @@
+.sidebar{
+    /* background-color: blue */
+    /* padding: 3.2rem 2.4rem; */
+    font-size: 3rem;
+    grid-row: 1 / -1;
+    -moz-box-shadow: 0 0 5px #fff;
+-webkit-box-shadow: 0 0 5px #fff;
+box-shadow: 0px 0px 5px #fff;
+z-index: 999;
+}
+
+.side-items{
+    color: #fff;
+}
+
+.logo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    padding: 10px;
+    border-radius: 50%;
+}
+
+.logo-icon{
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    border-radius: 50%;
+    /* background: rgba(28, 17, 41, 0.88); */
+}
+
+.menu-bar{
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    font-size: 1rem;
+}
+
+.toggle-theme-btn{
+    position: absolute;
+    bottom: 30px;
+    left: 20px;
+    display: flex;
+    font-size: 1rem;
+}
+
+.toggle{
+    margin-left: 15px;
+}
+
+.toggler{
+    background-color: #fff;
+    padding: 0;
+}

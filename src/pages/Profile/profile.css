@@ -1,0 +1,20 @@
+.flex1,.flex2{
+    border: 1px solid rgb(196, 176, 176);
+    border-radius: 5px;
+    padding: 2rem;
+    padding-bottom: 5rem;
+}
+.flex{
+    /* gap: 1rem; */
+    margin-bottom: 2rem;
+}
+.form label .add{
+width: 46rem;
+}
+.form label .img{
+    height: 12rem;
+}
+
+.bn{
+    margin-top: -9rem;
+}
