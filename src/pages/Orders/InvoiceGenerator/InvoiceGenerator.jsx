@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Button, Modal } from 'antd';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import './InvoiceGenerator.css'; // Import your CSS file
+import './InvoiceGenerator.css'; 
 
 const InvoiceGenerator = () => {
   const [invoiceData, setInvoiceData] = useState(null);
@@ -18,11 +18,11 @@ const InvoiceGenerator = () => {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF({
         orientation: 'portrait',
-        unit: 'pt', // Use points for more precise measurements
-        format: [595.28, 841.89], // A4 size in points (210mm x 297mm)
+        unit: 'pt', 
+        format: [595.28, 841.89],
       });
   
-      const imgWidth = 595.28; // A4 width in points
+      const imgWidth = 595.28; 
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
   
       pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
@@ -30,7 +30,6 @@ const InvoiceGenerator = () => {
     });
   };
 
-  // Hardcoded data for testing purposes
   const hardcodedInvoiceData = {
     seller: {
       name: "Neeraj Yadav yoga",
@@ -71,7 +70,7 @@ const InvoiceGenerator = () => {
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleOk}
-        className="custom-modal" // Apply the custom class
+        className="custom-modal" 
         footer={[
           <Button key="download" type="primary" onClick={downloadInvoice}>
             Download Invoice

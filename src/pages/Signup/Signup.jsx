@@ -22,7 +22,8 @@ const Signup = () => {
         navigate('/')
       }
   return (
-   <form onSubmit={handleSubmit}>
+   <div className='mainConti' >
+    <form onSubmit={handleSubmit}>
      <div className='container'>
         <div className='header'>
             <div className='text'>Sign Up</div>
@@ -72,12 +73,13 @@ const Signup = () => {
                 />
             </div>
         </div>
-        <div className='forgot-password'>Already have an account ? <Link to='/signup'><span>Click here!</span></Link></div>
+        <div className='forgot-password'>Already have an account ? <Link to='/login'><span>Click here!</span></Link></div>
         <div className='submit-container'>
             <button className="submit">Signup</button>
         </div>
     </div>
    </form>
+   </div>
   )
 }
 

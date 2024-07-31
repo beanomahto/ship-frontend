@@ -1,0 +1,93 @@
+/* Support.css */
+
+/* Container for the entire form */
+.formConsprt {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form styling */
+.formsprt {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Form title */
+.titlesprt {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+/* Container for grouped form fields */
+.flex2sprt {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* Wrapper for individual form fields */
+.flexsprt {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Label and input spacing */
+.iptsprt {
+    margin-bottom: 10px;
+}
+
+/* Input fields */
+.inputsprt {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* Select styling */
+.ant-select-selector {
+    border-radius: 5px !important;
+}
+
+/* Button styling */
+.submitsprt {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submitsprt:hover {
+    background-color: #45a049;
+}
+
+/* Button for adding AWB input fields */
+.add-awb-button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.add-awb-button:hover {
+    background-color: #0056b3;
+}

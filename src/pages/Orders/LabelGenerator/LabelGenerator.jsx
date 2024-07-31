@@ -24,7 +24,8 @@ const LabelGenerator = () => {
   const [base64Logo, setBase64Logo] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const labelRef = useRef(null);
-
+console.log(labelData);
+console.log(id);
   useEffect(() => {
     const generateLabel = async () => {
       try {
@@ -33,6 +34,7 @@ const LabelGenerator = () => {
         setLabelData(response.data);
         setBase64Logo(logoBase64);
         setIsModalVisible(true);
+        console.log(response);
       } catch (error) {
         console.error('Error generating label:', error);
         alert('Error generating label');

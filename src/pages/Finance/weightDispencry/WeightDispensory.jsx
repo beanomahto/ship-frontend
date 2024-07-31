@@ -1,20 +1,25 @@
-import { Button, Tabs, message } from 'antd';
+import { Button, Tabs } from 'antd';
 import React, { useEffect, useState } from 'react';
 import UploadWeightDespensory from './UploadWeightDespensory';
 import CustomButton from '../../../components/Button/Button';
 import ActionRequired from './ActionRequired';
 import OpenWeightDispensory from './OpenWeightDispensory';
 import SearchSellerModal from './SearchSellerModal';
+import TakeActionModal from './TakeActionModal';
 import ClosedWeightDispensory from './ClosedWeightDispensory';
+import { useAuthContext } from '../../../context/AuthContext';
 
 const { TabPane } = Tabs;
 
 const WeightDispensory = () => {
+  const { authUser } = useAuthContext();
   const [weightDispensory, setWeightDispensory] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [searchModalVisible, setSearchModalVisible] = useState(false);
+  const [takeActionModalVisible, setTakeActionModalVisible] = useState(false);
   const [currentTab, setCurrentTab] = useState('tab1');
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [selectedRowData, setSelectedRowData] = useState({ _id: null, name: '' });
 
   useEffect(() => {
     const fetchWeightDespensory = async () => {
@@ -28,12 +33,17 @@ const WeightDispensory = () => {
     };
     fetchWeightDespensory();
   }, []);
-
+console.log(selectedRowData);
   const rowSelection = {
     selectedRowKeys,
-    onChange: (newSelectedRowKeys) => {
+    onChange: (newSelectedRowKeys, selectedRows) => {
       setSelectedRowKeys(newSelectedRowKeys);
-      // message.info(`${newSelectedRowKeys.length} item(s) selected`);
+      if (selectedRows.length > 0) {
+        const { _id, productName } = selectedRows[0];
+        setSelectedRowData({ _id, productName });
+      } else {
+        setSelectedRowData({ _id: null, productName: '' });
+      }
     },
   };
 
@@ -58,7 +68,7 @@ const WeightDispensory = () => {
     },
     {
       key: 'tab4',
-      tab: 'All Despute', 
+      tab: 'All Dispute', 
       Component: OpenWeightDispensory,
       dataSource: weightDispensory.data,
     },
@@ -68,14 +78,23 @@ const WeightDispensory = () => {
   const closeModal = () => setModalVisible(false);
   const showSearchModal = () => setSearchModalVisible(true);
   const closeSearchModal = () => setSearchModalVisible(false);
+  const showTakeActionModal = () => setTakeActionModalVisible(true);
+  const closeTakeActionModal = () => setTakeActionModalVisible(false);
 
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginBottom: '1rem' }} className="addorder">
+        {authUser.role === 'company' && <Button onClick={showTakeActionModal}>Take Action</Button>}
+        <TakeActionModal 
+          visible={takeActionModalVisible} 
+          onClose={closeTakeActionModal} 
+          discrepancyId={selectedRowData._id} 
+          productName={selectedRowData.productName} 
+        />
         <CustomButton onClick={showModal}>Upload Weight</CustomButton>
         <UploadWeightDespensory visible={modalVisible} onClose={closeModal} />
         <CustomButton onClick={showSearchModal}>Search Seller</CustomButton>
-        <SearchSellerModal visible={searchModalVisible} weightDispensory={weightDispensory} onClose={closeSearchModal} />
+        <SearchSellerModal weightDispensory={weightDispensory} visible={searchModalVisible} onClose={closeSearchModal} />
       </div>
       <Tabs defaultActiveKey='tab1' size='large' onChange={setCurrentTab}>
         {tabsData.map(tab => (

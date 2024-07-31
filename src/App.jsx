@@ -33,6 +33,9 @@ import Shopify from './pages/channelIntegration/shopify/Shopify';
 import { useAuthContext } from './context/AuthContext';
 import Reports from './pages/Reports/Reports';
 import MasterMIS_Report from './pages/Reports/MasterMIS_Report';
+import Support from './pages/Support/Support';
+import Ticket from './pages/Support/Ticket';
+import AdminMIS_Report from './pages/Reports/AdminMIS_Report';
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -58,7 +61,7 @@ const App = () => {
           <Route path="orders/singleorder" element={<ProtectedRoute><SingleOrder /></ProtectedRoute>} />
           <Route path="orders/updateorder/:id/:orderId" element={<ProtectedRoute><UpdatesingleOrder /></ProtectedRoute>} />
           <Route path="shipping/getlabel/:id" element={<ProtectedRoute><LabelGenerator /></ProtectedRoute>} />
-          <Route path="shipping/getInvoice" element={<ProtectedRoute><InvoiceGenerator /></ProtectedRoute>} />
+          <Route path="shipping/getInvoice/:id" element={<ProtectedRoute><InvoiceGenerator /></ProtectedRoute>} />
           <Route path="orders/bulkorder" element={<ProtectedRoute><BulkOrderUpload /></ProtectedRoute>} />
           <Route path="ndr" element={<ProtectedRoute><NDR /></ProtectedRoute>} />
           <Route path="finance" element={<ProtectedRoute><Finance /></ProtectedRoute>}>
@@ -70,11 +73,14 @@ const App = () => {
           </Route>
           <Route path="reports" element={<ProtectedRoute><Reports /></ProtectedRoute>}>
             <Route path="misreport" element={<ProtectedRoute><MasterMIS_Report /></ProtectedRoute>} />
+            <Route path="adminmisreport" element={<ProtectedRoute><AdminMIS_Report /></ProtectedRoute>} />
           </Route>
           <Route path="warehouse" element={<ProtectedRoute><ActiveWarehouses /></ProtectedRoute>} />
           <Route path="warehouse/addwarehouse" element={<ProtectedRoute><AddnewWarehouse /></ProtectedRoute>} />
           <Route path="ratecard" element={<ProtectedRoute><RateCard /></ProtectedRoute>} />
           <Route path="ratecalculator" element={<ProtectedRoute><RateCalculator /></ProtectedRoute>} />
+          <Route path="support" element={<ProtectedRoute><Support /></ProtectedRoute>} />
+          <Route path="ticket" element={<ProtectedRoute><Ticket /></ProtectedRoute>} />
           <Route path="pincodeservice" element={<ProtectedRoute><PinCodeServicecability /></ProtectedRoute>} />
           <Route path="channelintegration" element={<ProtectedRoute><ChannelIntergration /></ProtectedRoute>} />
           <Route path="channelintegration/:slug" element={<ProtectedRoute><Shopify /></ProtectedRoute>} />

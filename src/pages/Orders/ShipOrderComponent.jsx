@@ -162,7 +162,7 @@ const ShipOrderComponent = ({ dataSource, fetchOrders, loading }) => {
         </Button>
         {/* getInvoice */}
         <Button disabled={selectedRowKeys.length !== 1} style={{ borderColor: 'gray' }}>
-          <Link to={`/shipping/getInvoice`}>Invoice</Link>
+          <Link to={`/shipping/getInvoice/${selectedRowKeys[0]}`}>Invoice</Link>
         </Button>
         <Button style={{ borderColor: 'red' }} onClick={cancelShipment}>Cancel Shipment</Button>
       </div>

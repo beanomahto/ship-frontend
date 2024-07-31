@@ -22,7 +22,8 @@ const Login = () => {
 	};
   return (
    <form onSubmit={handleSubmit}>
-     <div className='container'>
+   <div className="mainConti">
+   <div className='container'>
         <div className='header'>
             <div className='text'>Login</div>
             <div className='underline'></div>
@@ -44,10 +45,12 @@ const Login = () => {
             </div>
         </div>
    <div className='forgot-password'>Dont have an account ? <Link to='/signup'><span>Click here!</span></Link></div>
+   <div className='forgot-password'>Forgot Password ? <Link to='/signup'><span>Click here!</span></Link></div>
         <div className='submit-container'>
             <button className="submit">Login</button>
         </div>
     </div>
+   </div>
    </form>
   )
 }

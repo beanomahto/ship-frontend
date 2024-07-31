@@ -9,6 +9,7 @@ import { FaRegAddressCard, FaTools  } from "react-icons/fa";
 import { LiaRupeeSignSolid } from "react-icons/lia";
 import { MdMoney } from "react-icons/md";
 import { TbReportSearch } from "react-icons/tb";
+import { BiSupport } from "react-icons/bi";
 import { Link } from 'react-router-dom'
 
 const MenuList = ({darktheme}) => {
@@ -29,7 +30,7 @@ const MenuList = ({darktheme}) => {
                 <Menu.Item key='cod_remittance'  ><Link to='finance/codremmitance' >COD Remittance</Link></Menu.Item>
                 <Menu.Item key='wallet'  ><Link to='finance/wallet' >Wallet</Link></Menu.Item>
                 {/* <Menu.Item key='walletAdmin'  ><Link to='finance/walletadmin' >Wallet Admin</Link></Menu.Item> */}
-                <Menu.Item key='rateShipping'  >Rate Shipping</Menu.Item>
+                {/* <Menu.Item key='rateShipping'  >Rate Shipping</Menu.Item> */}
                 <Menu.Item key='pricing'  ><Link to='finance/pricing' >Pricing</Link></Menu.Item>
                 <Menu.Item key='weightDiscrepancies'  ><Link to='finance/weight_discrepancies'>Weight Discrepancies</Link></Menu.Item>
                 <Menu.Item key='invoices'  ><Link to='finance/invoices' >Invoices</Link></Menu.Item>
@@ -50,10 +51,18 @@ const MenuList = ({darktheme}) => {
                     <Link to='/channelintegration' >Channel Integration</Link></Menu.Item>
             </Menu.SubMenu>
             <Menu.SubMenu key='reports' title='Reports' icon={<TbReportSearch  />} >
+                <Menu.Item key='adminmisReport' >
+                    <Link to='reports/adminmisreport' >Admin MIS Report</Link></Menu.Item>
                 <Menu.Item key='misReport' >
                     <Link to='reports/misreport' >Master MIS Report</Link></Menu.Item>
                 <Menu.Item key='ndrReport' >
                     <Link  >NDR Report</Link></Menu.Item>
+            </Menu.SubMenu>
+            <Menu.SubMenu key='support' title='Support' icon={<BiSupport  />} >
+                <Menu.Item key='support' >
+                <Link to='support' >Support</Link></Menu.Item>
+                <Menu.Item key='ticket' >
+                    <Link  to='ticket' >Ticket</Link></Menu.Item>
             </Menu.SubMenu>
             <Menu.Item key='setting' icon={<CiSettings size='1.5rem' />} >
                 Setting

@@ -7,6 +7,7 @@ import moment from 'moment';
 const OpenWeightDispensory = ({ dataSource, rowSelection}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDiscrepancyId, setSelectedDiscrepancyId] = useState(null);
+  const [selectedProductName, setSelectedProductName] = useState(null);
   console.log(dataSource);
   const { authUser } = useAuthContext();
   const columns = [
@@ -59,6 +60,7 @@ const OpenWeightDispensory = ({ dataSource, rowSelection}) => {
               type="primary"
               onClick={() => {
                 setSelectedDiscrepancyId(record?._id); 
+                setSelectedProductName(record?.productName)
                 setModalVisible(true);
                 console.log(record);
               }}
@@ -83,6 +85,7 @@ const actionRequired = dataSource?.filter(data => data.status === 'action requir
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         discrepancyId={selectedDiscrepancyId}
+        productName={selectedProductName}
       />
     </>
   );
