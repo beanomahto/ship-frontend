@@ -27,6 +27,7 @@ const useLogin = () => {
 			localStorage.setItem("ship-user", JSON.stringify(data));
 			setAuthUser(data);
 		} catch (error) {
+			console.log(error);
 			alert(error.message);
 		} finally {
 			setLoading(false);
