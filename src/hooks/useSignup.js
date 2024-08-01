@@ -16,6 +16,7 @@ const useSignup = () => {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ firstName, lastName, email, password, companyName, phoneNumber }),
+				credentials: "include",
 			});
 
 			const data = await res.json();
