@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Input, Select, Button, message } from 'antd';
-import './ticket.css'; 
+import { Modal, Input, Select, Button, message, Table } from 'antd';
+import './ticket.css';
 import CustomButton from '../../components/Button/Button';
 
 const { Option } = Select;
@@ -21,8 +21,8 @@ const Ticket = () => {
             console.log(error);
         }
     };
-    useEffect(() => {
 
+    useEffect(() => {
         fetchComplaints();
     }, []);
 
@@ -39,9 +39,6 @@ const Ticket = () => {
         setStatus('');
     };
 
-    console.log(currentComplaint?._id);
-    console.log(remedy);
-    console.log(status);
     const handleOk = async () => {
         if (!remedy || !status) {
             message.error('Please provide remedy and select a status');
@@ -52,6 +49,7 @@ const Ticket = () => {
             message.error('No complaint selected');
             return;
         }
+
         try {
             const response = await fetch(`/api/complaint/remedy/${currentComplaint._id}`, {
                 method: 'PUT',
@@ -60,7 +58,7 @@ const Ticket = () => {
                 },
                 body: JSON.stringify({ remedy, status }),
             });
-console.log(await response.json());
+
             if (response.ok) {
                 message.success('Complaint updated successfully');
                 fetchComplaints();
@@ -75,20 +73,50 @@ console.log(await response.json());
         }
     };
 
+    const columns = [
+        {
+            title: 'Ticket Id',
+            dataIndex: 'ticketId',
+        },
+        {
+            title: 'Seller',
+            dataIndex: ['seller', 'email'],
+            key: 'seller',
+        },
+        {
+            title: 'Subject',
+            dataIndex: 'subject',
+            key: 'subject',
+        },
+        {
+            title: 'Description',
+            dataIndex: 'description',
+            key: 'description',
+        },
+        {
+            title: 'Status',
+            dataIndex: 'status',
+            key: 'status',
+        },
+        {
+            title: 'Remedy',
+            dataIndex: 'remedy',
+            key: 'remedy',
+        },
+        {
+            title: 'Action',
+            key: 'action',
+            render: (text, record) => (
+                <CustomButton onClick={() => showModal(record)} type="primary">
+                    Remedy
+                </CustomButton>
+            ),
+        },
+    ];
+
     return (
         <div className='complaint-list'>
-            {ticket.map((complaint) => (
-                <div key={complaint._id} className="complaint-item">
-                    <p><strong>Seller:</strong> {complaint.seller?.email}</p>
-                    <p><strong>Subject:</strong> {complaint.subject}</p>
-                    <p><strong>Description:</strong> {complaint.description}</p>
-                    <p><strong>Status:</strong> {complaint.status}</p>
-                    <p><strong>Remedy:</strong> {complaint?.remedy}</p>
-                    <CustomButton onClick={() => showModal(complaint)} type="primary">
-                        Remedy
-                    </CustomButton>
-                </div>
-            ))}
+            <Table columns={columns} dataSource={ticket} rowKey="_id" />
 
             {currentComplaint && (
                 <Modal

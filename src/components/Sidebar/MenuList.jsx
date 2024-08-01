@@ -51,8 +51,8 @@ const MenuList = ({darktheme}) => {
                     <Link to='/channelintegration' >Channel Integration</Link></Menu.Item>
             </Menu.SubMenu>
             <Menu.SubMenu key='reports' title='Reports' icon={<TbReportSearch  />} >
-                <Menu.Item key='adminmisReport' >
-                    <Link to='reports/adminmisreport' >Admin MIS Report</Link></Menu.Item>
+                {/* <Menu.Item key='adminmisReport' >
+                    <Link to='reports/adminmisreport' >Admin MIS Report</Link></Menu.Item> */}
                 <Menu.Item key='misReport' >
                     <Link to='reports/misreport' >Master MIS Report</Link></Menu.Item>
                 <Menu.Item key='ndrReport' >

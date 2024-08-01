@@ -4,7 +4,6 @@ import { UploadOutlined } from '@ant-design/icons';
 
 const TakeActionModal = ({ visible, onClose, discrepancyId, productName }) => {
   const [fileList, setFileList] = useState([]);
-
   const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
 console.log(fileList);
   const handleAction = async () => {
@@ -27,7 +26,7 @@ console.log(fileList);
         method: 'POST',
         body: formData,
       });
-
+console.log(response);
       if (!response.ok) {
         throw new Error('Failed to take action');
       }

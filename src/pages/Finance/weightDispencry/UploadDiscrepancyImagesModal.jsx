@@ -26,7 +26,7 @@ const handleUpload = async () => {
       method: 'POST',
       body: formData,
     });
-
+console.log(uploadResponse);
     if (!uploadResponse.ok) {
       throw new Error('Failed to upload images');
     }

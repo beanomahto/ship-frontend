@@ -17,9 +17,11 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
 
         const formData = new FormData();
         formData.append('file', file);
-
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ':', pair[1]);
+          }
         try {
-            const response = await fetch('/api/weightdiscrepancy/uploadweightdiscrepancy', {
+            const response = await fetch('/api/weightdiscrepancy/upload-images', {
                 method: 'POST',
                 body: formData,
             });

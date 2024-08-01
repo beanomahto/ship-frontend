@@ -3,7 +3,11 @@ import { useState } from "react";
 const useKycIntegration = () => {
   const [loading, setLoading] = useState(false);
 
-  const kycIntegration = async ({ companyType,
+  const kycIntegration = async ({ 
+    name,
+        ifscCode,
+        bankName,
+    companyType,
     documentType,
     gstUrl,
     accountNumber,
@@ -13,6 +17,9 @@ const useKycIntegration = () => {
     pancard,
     pancardUrl, }) => {
     const success = handleInputErrors({
+      name,
+        ifscCode,
+        bankName,
       companyType,
       documentType,
       gstUrl,
@@ -31,6 +38,9 @@ const useKycIntegration = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          name,
+        ifscCode,
+        bankName,
           companyType,
           documentType,
           gstUrl,
@@ -59,7 +69,11 @@ const useKycIntegration = () => {
 };
 export default useKycIntegration;
 
-function handleInputErrors({ companyType,
+function handleInputErrors({ 
+  name,
+        ifscCode,
+        bankName,
+  companyType,
   documentType,
   gstUrl,
   accountNumber,
@@ -69,7 +83,9 @@ function handleInputErrors({ companyType,
   pancard,
   pancardUrl, }) {
 
-  if (!companyType || !documentType || !gstUrl || !accountNumber || !passbookNumber || !passbookUrl || !gstin || !pancard || !pancardUrl) {
+  if (!name,
+    !ifscCode,
+    !bankName,!companyType || !documentType || !gstUrl || !accountNumber || !passbookNumber || !passbookUrl || !gstin || !pancard || !pancardUrl) {
     alert("please fill all the inputs")
     return false;
   }

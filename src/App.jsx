@@ -36,6 +36,7 @@ import MasterMIS_Report from './pages/Reports/MasterMIS_Report';
 import Support from './pages/Support/Support';
 import Ticket from './pages/Support/Ticket';
 import AdminMIS_Report from './pages/Reports/AdminMIS_Report';
+import ResetPassword from './pages/Login/ResetPassword';
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -56,7 +57,7 @@ const App = () => {
           <Route path="profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
           <Route path="kyc" element={<ProtectedRoute><KYC /></ProtectedRoute>} />
           <Route path="orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
-          <Route path="label" element={<ProtectedRoute><Label /></ProtectedRoute>} />
+          {/* <Route path="label" element={<ProtectedRoute><Label /></ProtectedRoute>} /> */}
           <Route path="updatelabel" element={<ProtectedRoute><UpdateLebel /></ProtectedRoute>} />
           <Route path="orders/singleorder" element={<ProtectedRoute><SingleOrder /></ProtectedRoute>} />
           <Route path="orders/updateorder/:id/:orderId" element={<ProtectedRoute><UpdatesingleOrder /></ProtectedRoute>} />
@@ -72,8 +73,8 @@ const App = () => {
             <Route path="invoices" element={<ProtectedRoute><Invoices /></ProtectedRoute>} />
           </Route>
           <Route path="reports" element={<ProtectedRoute><Reports /></ProtectedRoute>}>
-            <Route path="misreport" element={<ProtectedRoute><MasterMIS_Report /></ProtectedRoute>} />
-            <Route path="adminmisreport" element={<ProtectedRoute><AdminMIS_Report /></ProtectedRoute>} />
+            <Route path="misreport" element={authUser?.role === 'admin' ? <AdminMIS_Report /> : <MasterMIS_Report />} />
+            {/* <Route path="misreport" element={<ProtectedRoute><AdminMIS_Report /></ProtectedRoute>} /> */}
           </Route>
           <Route path="warehouse" element={<ProtectedRoute><ActiveWarehouses /></ProtectedRoute>} />
           <Route path="warehouse/addwarehouse" element={<ProtectedRoute><AddnewWarehouse /></ProtectedRoute>} />
@@ -87,6 +88,7 @@ const App = () => {
         </Route>
         <Route path="signup" element={<Signup />} />
         <Route path="login" element={<Login />} />
+        <Route path="resetpassword" element={<ResetPassword />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

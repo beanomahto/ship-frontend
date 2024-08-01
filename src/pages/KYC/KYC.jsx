@@ -8,6 +8,9 @@ const KYC = () => {
     const { kycIntegration } = useKyc();
     const [kycData, setKycData] = useState(null);
     const [formData, setFormData] = useState({
+        name:'',
+        ifscCode:'',
+        bankName:'',
         companyType: '',
         documentType: '',
         gstUrl: null,
@@ -28,6 +31,9 @@ const KYC = () => {
                 setFormData({
                     ...formData,
                     companyType: data.companyType || '',
+                    name:data.name || '',
+                    ifscCode:data.ifscCode || '',
+                    bankName:data.bankName || '',
                     documentType: data.documentType || '',
                     gstUrl: data.gstUrl || null,
                     accountNumber: data.accountNumber || '',
@@ -133,7 +139,7 @@ const KYC = () => {
                                 className="input"
                                 type="text"
                                 name="passbookNumber"
-                                value={formData.passbookNumber}
+                                value={formData.name}
                                 onChange={handleChange}
                             />
                         </label>
@@ -182,7 +188,7 @@ const KYC = () => {
                                 className="input"
                                 type="text"
                                 name="passbookNumber"
-                                value={formData.passbookNumber}
+                                value={formData.ifscCode}
                                 onChange={handleChange}
                             />
                         </label>
@@ -192,7 +198,7 @@ const KYC = () => {
                                 className="input"
                                 type="text"
                                 name="passbookNumber"
-                                value={formData.passbookNumber}
+                                value={formData.bankName}
                                 onChange={handleChange}
                             />
                         </label>
