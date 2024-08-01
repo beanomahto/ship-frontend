@@ -11,6 +11,7 @@ export default defineConfig({
         // target: "http://localhost:5000",
         target: "https://backend-9u5u.onrender.com",
         changeOrigin: true,
+        secure: false,
       },
     },
   }
