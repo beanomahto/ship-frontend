@@ -9,7 +9,8 @@ export default defineConfig({
     proxy: {
       "/api": {
         // target: "http://localhost:5000",
-        target: "https://backend-9u5u.onrender.com"
+        target: "https://backend-9u5u.onrender.com",
+        changeOrigin: true,
       },
     },
   }
