@@ -13,7 +13,7 @@ export const OrderContextProvider = ({ children }) => {
     const fetchOrders = async () => {
         try {
             setLoading(true);
-            const response = await fetch('/api/orders/getAllOrders'); 
+            const response = await fetch('https://backend-9u5u.onrender.com/api/orders/getAllOrders'); 
             if (!response.ok) {
                 throw new Error('Failed to fetch orders');
             }
