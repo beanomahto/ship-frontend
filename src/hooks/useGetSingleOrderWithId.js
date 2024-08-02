@@ -9,6 +9,7 @@ const useGetSingleOrderWithId = () => {
     const getSingleOrderWithId = async (orderId) => {
         setLoading(true);
         try {
+            const token = localStorage.getItem('token');
             const response = await axios.get(`https://backend-9u5u.onrender.com/api/orders/${orderId}`);
             setOrder(response.data);
             setLoading(false);

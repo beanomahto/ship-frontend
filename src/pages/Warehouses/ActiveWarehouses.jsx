@@ -77,17 +77,19 @@ const ActiveWarehouses = () => {
     ), },
   ]
   return (
-    <div>
-         <div style={{
-        display: 'flex',
-        justifyContent: 'flex-end',
-        gap:'1rem',
-        marginBottom:'1rem'
-      }} className="addorder" >
-          <Button><Link to='addwarehouse' >Add Warehouse</Link></Button>
-      </div>
-        <Table className='table'  scroll={{ y: 350, }} columns={newOrders} dataSource={dataSourceWithKeys} />
+   <>
+    <div style={{
+      display: 'flex',
+      justifyContent: 'flex-end',
+      gap:'1rem',
+      marginBottom:'1rem'
+    }} className="addorder" >
+        <Button><Link to='addwarehouse' >Add Warehouse</Link></Button>
     </div>
+    <div style={{backgroundColor:'#fff', height:'40rem', borderRadius:'1rem'}}>
+        <Table className='table' pagination={false} columns={newOrders} dataSource={dataSourceWithKeys} />
+    </div>
+   </>
   )
 }
 

@@ -30,8 +30,6 @@ const MasterMIS_Report = () => {
     </div>
     <div className="ndr-container">
       <h1>NDR Reports</h1>
-      
-      {/* Add other content here */}
     </div>
   </div>
   

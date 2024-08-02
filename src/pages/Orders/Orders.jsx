@@ -8,7 +8,7 @@ import ShipNowModel from './ShipNow/ShipNowModel';
 import NewOrderComponent from './NewOrderComponent';
 import ShipOrderComponent from './ShipOrderComponent';
 import * as XLSX from 'xlsx';
-
+import { DownloadOutlined } from '@ant-design/icons';
 
 const { TabPane } = Tabs;
 
@@ -178,7 +178,9 @@ console.log(tabsData);
     </Popover>
   </>
 )}
-          <Button onClick={exportToExcel}>Download</Button>
+  <Button type="primary" shape="round" onClick={exportToExcel} icon={<DownloadOutlined />} size='middle'>
+            Download
+          </Button>
           <BulkOrderUploadModal visible={modalVisible} onClose={closeModal} />
           <BulkOrderDimension visible={modalVisibleBD} onClose={closeModalBD} />
           <ShipNowModel hasSelected={hasSelected} selectedRowKeys={selectedRowKeys} visible={modalVisibleShipNow} onClose={closeModalShipNow} onShipNow={handleShipNow} />
