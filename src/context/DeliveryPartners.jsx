@@ -15,7 +15,12 @@ export const DeliveryPartnerProvider = ({ children }) => {
         const fetchDeliveryPartners = async () => {
             try {
                 setLoading(true);
-                const response = await fetch('/api/shipping/getDeliveryPartners'); 
+                const token = localStorage.getItem('token');
+                const response = await fetch('https://backend-9u5u.onrender.com/api/shipping/getDeliveryPartners', {
+                    headers: {
+                        Authorization: `${token}`,
+                    },
+                });
                 if (!response.ok) {
                     throw new Error('Failed to fetch delivery partners');
                 }

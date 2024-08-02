@@ -19,6 +19,7 @@ const useLogout = () => {
 				throw new Error(data.error);
 			}
 
+			localStorage.removeItem("token");
 			localStorage.removeItem("ship-user");
 			setAuthUser(null);
 		} catch (error) {

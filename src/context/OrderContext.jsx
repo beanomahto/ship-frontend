@@ -13,7 +13,12 @@ export const OrderContextProvider = ({ children }) => {
     const fetchOrders = async () => {
         try {
             setLoading(true);
-            const response = await fetch('https://backend-9u5u.onrender.com/api/orders/getAllOrders'); 
+            const token = localStorage.getItem('token');
+            const response = await fetch('https://backend-9u5u.onrender.com/api/orders/getAllOrders', {
+                headers: {
+                    Authorization: `${token}`,
+                },
+            });
             if (!response.ok) {
                 throw new Error('Failed to fetch orders');
             }
@@ -27,7 +32,7 @@ export const OrderContextProvider = ({ children }) => {
     };
 
     useEffect(() => {
-       
+
         fetchOrders();
     }, []);
 

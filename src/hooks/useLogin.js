@@ -1,6 +1,4 @@
-
 import { useState } from "react";
-// import toast from "react-hot-toast";
 import { useAuthContext } from "../context/AuthContext";
 
 const useLogin = () => {
@@ -20,15 +18,16 @@ const useLogin = () => {
 			});
 
 			const data = await res.json();
-            console.log(data);
+			console.log(data);
 			if (data.error) {
 				throw new Error(data.error);
 			}
-
+			localStorage.setItem("token", data.token);
 			localStorage.setItem("ship-user", JSON.stringify(data));
 			setAuthUser(data);
+
 		} catch (error) {
-			console.log(error);
+			console.error("Login error:", error);
 			alert(error.message);
 		} finally {
 			setLoading(false);
@@ -37,6 +36,7 @@ const useLogin = () => {
 
 	return { loading, login };
 };
+
 export default useLogin;
 
 function handleInputErrors(email, password) {
@@ -44,6 +44,5 @@ function handleInputErrors(email, password) {
 		alert("Please fill in all fields");
 		return false;
 	}
-
 	return true;
 }

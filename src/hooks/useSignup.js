@@ -20,10 +20,11 @@ const useSignup = () => {
 			});
 
 			const data = await res.json();
-            console.log(data);
+			console.log(data);
 			if (data.error) {
 				throw new Error(data.error);
 			}
+			localStorage.setItem("token", data.token);
 			localStorage.setItem("ship-user", JSON.stringify(data));
 			setAuthUser(data);
 		} catch (error) {
@@ -40,7 +41,7 @@ export default useSignup;
 function handleInputErrors({ firstName, lastName, email, password, companyName, phoneNumber }) {
 	if (!firstName || !lastName || !email || !password || !companyName || !phoneNumber) {
 		// toast.error("Please fill in all fields");
-        alert("please fill all the inputs")
+		alert("please fill all the inputs")
 		return false;
 	}
 
