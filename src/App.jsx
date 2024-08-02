@@ -37,6 +37,8 @@ import Support from './pages/Support/Support';
 import Ticket from './pages/Support/Ticket';
 import AdminMIS_Report from './pages/Reports/AdminMIS_Report';
 import ResetPassword from './pages/Login/ResetPassword';
+import Tracking from './pages/Orders/Tracking/Tracking';
+import Seller from './pages/Seller/Seller';
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -57,12 +59,14 @@ const App = () => {
           <Route path="profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
           <Route path="kyc" element={<ProtectedRoute><KYC /></ProtectedRoute>} />
           <Route path="orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+          <Route path="seller" element={<ProtectedRoute><Seller /></ProtectedRoute>} />
           {/* <Route path="label" element={<ProtectedRoute><Label /></ProtectedRoute>} /> */}
           <Route path="updatelabel" element={<ProtectedRoute><UpdateLebel /></ProtectedRoute>} />
           <Route path="orders/singleorder" element={<ProtectedRoute><SingleOrder /></ProtectedRoute>} />
           <Route path="orders/updateorder/:id/:orderId" element={<ProtectedRoute><UpdatesingleOrder /></ProtectedRoute>} />
           <Route path="shipping/getlabel/:id" element={<ProtectedRoute><LabelGenerator /></ProtectedRoute>} />
           <Route path="shipping/getInvoice/:id" element={<ProtectedRoute><InvoiceGenerator /></ProtectedRoute>} />
+          <Route path="shipping/tracking/66a62c22d9403a646c1013e2" element={<ProtectedRoute><Tracking /></ProtectedRoute>} />
           <Route path="orders/bulkorder" element={<ProtectedRoute><BulkOrderUpload /></ProtectedRoute>} />
           <Route path="ndr" element={<ProtectedRoute><NDR /></ProtectedRoute>} />
           <Route path="finance" element={<ProtectedRoute><Finance /></ProtectedRoute>}>

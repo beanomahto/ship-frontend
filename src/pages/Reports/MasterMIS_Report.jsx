@@ -23,9 +23,18 @@ const MasterMIS_Report = () => {
   };
 
   return (
-    <div>
+    <div className="reportmaincontainer">
+    <div className="reports-container">
+      <h1>Reports</h1>
       <Button type='primary' onClick={handleDownload}>Download MIS Report</Button>
     </div>
+    <div className="ndr-container">
+      <h1>NDR Reports</h1>
+      
+      {/* Add other content here */}
+    </div>
+  </div>
+  
   );
 };
 

@@ -9,10 +9,14 @@ const useShipNowCost = () => {
 
     setLoading(true);
     try {
-      const res = await fetch("/api/shipping/getSingleDeliveryCost", {
+      const token = localStorage.getItem('token');
+      const res = await fetch("https://backend-9u5u.onrender.com/api/shipping/getSingleDeliveryCost", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({  orderId, wareHouseId }),
+        headers: {
+          Authorization: `${token}`,
+      },
       });
 
       console.log(res);

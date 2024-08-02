@@ -145,21 +145,39 @@ console.log(tabsData);
         {currentTab === 'tab1' && <Button disabled={!hasSelected} onClick={showModalShipNow}>Ship Now</Button>}
         
           {/* <ShipNowModel visible={modalVisibleShipNow} onClose={closeModalShipNow} /> */}
-
-          <Button><Link to='singleorder'>Single Order</Link></Button>
-          <Popover  trigger={'click'} placement="leftTop" title={
-            <div style={{
-              display:'flex',
-              flexDirection:"column",
-              margin:'1rem',
-              gap:'1rem'
-            }}>
-           <Button onClick={showModal}>Bulk Orders</Button>
-           <Button onClick={showModalBD}>Bulk Dimensions</Button>
-            </div>
-          }>
-          <Button>Bulk Actions</Button>
-        </Popover>
+          {(currentTab === 'tab1' || currentTab === 'tab2' || currentTab === 'tab3') && (
+  <>
+    <Button   style={{
+    backgroundColor: '#668fa0', 
+    color: 'white', 
+    border: '2px solid #a5ffe7', 
+    boxShadow:'inherit',
+    borderRadius: '8px', 
+    padding: '10px 20px', 
+    fontSize: '16px', 
+    transition: 'background-color 0.3s'
+  }} >
+      <Link  to='singleorder'>Single Order</Link>
+    </Button>
+    <Popover
+      trigger={'click'}
+      placement="leftTop"
+      title={
+        <div style={{
+          display: 'flex',
+          flexDirection: "column",
+          margin: '1rem',
+          gap: '1rem'
+        }}>
+          <Button onClick={showModal}>Bulk Orders</Button>
+          <Button onClick={showModalBD}>Bulk Dimensions</Button>
+        </div>
+      }
+    >
+      <Button>Bulk Actions</Button>
+    </Popover>
+  </>
+)}
           <Button onClick={exportToExcel}>Download</Button>
           <BulkOrderUploadModal visible={modalVisible} onClose={closeModal} />
           <BulkOrderDimension visible={modalVisibleBD} onClose={closeModalBD} />

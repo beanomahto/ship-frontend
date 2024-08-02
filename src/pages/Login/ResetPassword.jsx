@@ -12,10 +12,10 @@ const ResetPassword = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
     console.log("clicked");
-        if (newPassword !== confirmPassword) {
-            alert("Passwords do not match");
-            return;
-        }
+        // if (newPassword !== confirmPassword) {
+        //     alert("Passwords do not match");
+        //     return;
+        // }
     
         try {
             const response = await fetch('/api/auth/reset-password', {
@@ -29,12 +29,15 @@ const ResetPassword = () => {
                     confirmPassword
                 }),
             });
-    
+            console.log(email);
+            console.log(newPassword);
+            console.log(confirmPassword);
+    console.log(response);
             const data = await response.json();
     console.log(data);
             if (response.ok) {
                 alert("Password reset successfully");
-                navigate('/');
+                navigate('/login');
             } else {
                 alert(data.error || "Something went wrong");
             }

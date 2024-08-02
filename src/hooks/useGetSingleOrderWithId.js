@@ -9,7 +9,7 @@ const useGetSingleOrderWithId = () => {
     const getSingleOrderWithId = async (orderId) => {
         setLoading(true);
         try {
-            const response = await axios.get(`/api/orders/${orderId}`);
+            const response = await axios.get(`https://backend-9u5u.onrender.com/api/orders/${orderId}`);
             setOrder(response.data);
             setLoading(false);
             console.log(response.data);

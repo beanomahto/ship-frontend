@@ -15,7 +15,12 @@ export const PaymentUserContextProvider = ({ children }) => {
         const fetchWarehouse = async () => {
             try {
                 setLoading(true);
-                const response = await fetch('/api/transactions/getAllTransactions'); 
+                const token = localStorage.getItem('token');
+                const response = await fetch('https://backend-9u5u.onrender.com/api/transactions/getAllTransactions', {
+                    headers: {
+                        Authorization: `${token}`,
+                    },
+                }); 
                 if (!response.ok) {
                     throw new Error('Failed to fetch Payment Users');
                 }

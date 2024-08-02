@@ -42,7 +42,8 @@ const useCreateLebel = () => {
 		if (!success) return;
 		setLoading(true);
 		try {
-			const res = await fetch("/api/shipping/createlabelinfo", {
+            const token = localStorage.getItem('token');
+			const res = await fetch("https://backend-9u5u.onrender.com/api/shipping/createlabelinfo", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
@@ -62,6 +63,9 @@ const useCreateLebel = () => {
                     hideReturnWarehouse,
                     hideWeight,
                     hideDimension }),
+                headers: {
+                        Authorization: `${token}`,
+                    },
 			});
 
 			const data = await res.json();

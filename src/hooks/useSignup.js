@@ -12,10 +12,14 @@ const useSignup = () => {
 
 		setLoading(true);
 		try {
-			const res = await fetch("/api/auth/signup", {
+			const token = localStorage.getItem('token');
+			const res = await fetch("https://backend-9u5u.onrender.com/api/auth/signup", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ firstName, lastName, email, password, companyName, phoneNumber }),
+				headers: {
+					Authorization: `${token}`,
+				},
 			});
 
 			const data = await res.json();

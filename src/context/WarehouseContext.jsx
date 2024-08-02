@@ -15,7 +15,12 @@ export const WarehouseContextProvider = ({ children }) => {
         const fetchWarehouse = async () => {
             try {
                 setLoading(true);
-                const response = await fetch('/api/warehouses/getAllWarehouse'); 
+                const token = localStorage.getItem('token');
+                const response = await fetch('https://backend-9u5u.onrender.com/api/warehouses/getAllWarehouse', {
+                    headers: {
+                        Authorization: `${token}`,
+                    },
+                }); 
                 if (!response.ok) {
                     throw new Error('Failed to fetch Warehouse');
                 }

@@ -45,7 +45,8 @@ const useCreateSingleOrder = () => {
 		if (!success) return;
 		setLoading(true);
 		try {
-			const res = await fetch("/api/orders/createOrder", {
+      const token = localStorage.getItem('token');
+			const res = await fetch("https://backend-9u5u.onrender.com/api/orders/createOrder", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ customerName,
@@ -66,6 +67,9 @@ const useCreateSingleOrder = () => {
        breadth,
        height,
        paymentMethod }),
+       headers: {
+        Authorization: `${token}`,
+    },
 			});
 
 			const data = await res.json();

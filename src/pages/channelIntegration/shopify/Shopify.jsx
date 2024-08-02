@@ -19,7 +19,7 @@ const Shopify = () => {
     useEffect(() => {
         const getChannelInfo = async () => {
             try {
-                const res = await fetch(`/api/integration/getApi/${slug}`);
+                const res = await fetch(`https://backend-9u5u.onrender.com/api/integration/getApi/${slug}`);
                 const result = await res.json();
                 setData(result);
                 setStoreInputs({
@@ -48,10 +48,13 @@ const Shopify = () => {
 
     const updateChannelInfo = async () => {
         try {
-            const res = await fetch(`/api/integration/updateApi/${slug}`, {
+            const token = localStorage.getItem('token');
+            const res = await fetch(`https://backend-9u5u.onrender.com/api/integration/updateApi/${slug}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `${token}`,
+                    
                 },
                 body: JSON.stringify(storeInputs),
             });
@@ -72,8 +75,8 @@ const Shopify = () => {
     return (
         <div style={{ marginTop: '-2.5rem' }}>
             <div className="image-container">
-                <img src={shopifyInt} alt="Shopify Integration" className="background-image" />
-                <div className='inte' style={{ zIndex: '9' }}>
+                <img src={shopifyInt} alt="Shopify Integration" style={{}} className="background-image" />
+                <div className='inte' style={{ zIndex: '9', marginTop:'-7rem' }}>
                     <form className="form" onSubmit={handleSubmit}>
                         <p className="title">Integrate Shopify</p>
                         <div className="flex">
@@ -94,7 +97,7 @@ const Shopify = () => {
                                     type="text"
                                     placeholder=""
                                     required
-                                    value={storeInputs.salesChannel}
+                                    value={slug}
                                     onChange={(e) => setStoreInputs({ ...storeInputs, salesChannel: e.target.value })}
                                 />
                                 <span>Sales Channel</span>

@@ -9,7 +9,12 @@ const useUpdateOrder = () => {
         console.log("lolo"+updatedOrderData?._id);
         setLoading(true);
         try {
-            const response = await axios.put(`/api/orders/updateOrder/${updatedOrderData._id}`, updatedOrderData);
+            const token = localStorage.getItem('token');
+            const response = await axios.put(`https://backend-9u5u.onrender.com/api/orders/updateOrder/${updatedOrderData._id}`, updatedOrderData,  {
+                headers: {
+                    Authorization: `${token}`, 
+                },
+            });
             setLoading(false);
             console.log('Updated order:', response.data); 
         } catch (error) {

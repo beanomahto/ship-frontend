@@ -227,7 +227,8 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
             rowSelection={rowSelection}
             columns={columns}
             dataSource={newOrders}
-            scroll={{ y: 350 }}
+            scroll={{ y: 450 }}
+            style={{ width: '100%', height: '545px' }}
             rowClassName={(record) => (record._id === selectedOrderId ? 'selected-row' : '')}
           />
           <Modal
@@ -242,7 +243,8 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
               rowKey="id"
               pagination={{ pageSize: 10 }}
               // style={{fontSize:'4rem'}}
-              className="delivery-cost-table"
+              // className="delivery-cost-table"
+     
             >
               <Column
                 title="Partner"

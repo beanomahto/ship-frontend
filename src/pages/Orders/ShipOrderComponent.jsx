@@ -158,6 +158,9 @@ const ShipOrderComponent = ({ dataSource, fetchOrders, loading }) => {
     <>
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
       <Button disabled={selectedRowKeys.length !== 1} style={{ borderColor: 'black' }}>
+          <Link to={`/shipping/tracking/${selectedRowKeys[0]}`}>Track Order</Link>
+        </Button>
+      <Button disabled={selectedRowKeys.length !== 1} style={{ borderColor: 'black' }}>
           <Link to={`/shipping/getlabel/${selectedRowKeys[0]}`}>Shipping Label</Link>
         </Button>
         {/* getInvoice */}
@@ -175,8 +178,10 @@ const ShipOrderComponent = ({ dataSource, fetchOrders, loading }) => {
       rowSelection={rowSelection}
       columns={columns}
       dataSource={shippedOrders}
-      scroll={{ y: 350 }}
-      rowKey="_id" 
+      rowKey="_id"  
+       scroll={{ y: 450 }}
+       pagination={false}
+      style={{ width: '100%', height: '505px' }}
     />
      }
     </>
