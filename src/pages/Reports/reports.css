@@ -1,0 +1,29 @@
+.reportmaincontainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1rem;
+  }
+  
+  .reports-container, .ndr-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    border-radius: 8px;
+    width: 45%;
+  }
+  
+  .reports-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4rem;
+    background-color: #ffffff;
+    height: 23rem;
+  }
+  
+  .ndr-container {
+  }
+  

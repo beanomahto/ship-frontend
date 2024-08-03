@@ -13,10 +13,14 @@ const useChannelIntegration = () => {
 
 		setLoading(true);
 		try {
-			const res = await fetch("/api/integration/createApi", {
+			const token = localStorage.getItem('token');
+			const res = await fetch("https://backend-9u5u.onrender.com/api/integration/createApi", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({storeName,salesChannel,apiKey,apiSecret,token}),
+				headers: {
+                    Authorization: `${token}`,
+                },
 			});
 
 			const data = await res.json();

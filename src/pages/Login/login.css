@@ -156,7 +156,7 @@
         width: 95%;
         margin-top: 1rem;
         right: 0;
-        background: white;
+        /* background: white; */
         /* box-shadow: none;  */
         backdrop-filter: none; 
         -webkit-backdrop-filter: none;

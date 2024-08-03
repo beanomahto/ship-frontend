@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Input, Select, Button, message, Table } from 'antd';
-import './ticket.css';
+import { Link } from 'react-router-dom';
+// import './ticket.css';
 import CustomButton from '../../components/Button/Button';
 
 const { Option } = Select;
 
 const Ticket = () => {
     const [ticket, setTicket] = useState([]);
-    const [visible, setVisible] = useState(false);
+    const [visible, setVisible] = useState(false);  // For the "Provide Remedy" modal
+    const [newModalVisible, setNewModalVisible] = useState(false);  // For the "Complaint Details" modal
     const [currentComplaint, setCurrentComplaint] = useState(null);
     const [remedy, setRemedy] = useState('');
     const [status, setStatus] = useState('');
@@ -28,9 +30,9 @@ const Ticket = () => {
 
     const showModal = (complaint) => {
         setCurrentComplaint(complaint);
-        setRemedy('');
-        setStatus('');
-        setVisible(true);
+        setRemedy(complaint.remedy || '');
+        setStatus(complaint.status || '');
+        setVisible(true);  // Show "Provide Remedy" modal
     };
 
     const handleCancel = () => {
@@ -75,8 +77,8 @@ const Ticket = () => {
 
     const columns = [
         {
-            title: 'Ticket Id',
-            dataIndex: 'ticketId',
+            title: 'Ticket Number',
+            dataIndex: 'ticketNumber',
         },
         {
             title: 'Seller',
@@ -89,19 +91,9 @@ const Ticket = () => {
             key: 'subject',
         },
         {
-            title: 'Description',
-            dataIndex: 'description',
-            key: 'description',
-        },
-        {
             title: 'Status',
             dataIndex: 'status',
             key: 'status',
-        },
-        {
-            title: 'Remedy',
-            dataIndex: 'remedy',
-            key: 'remedy',
         },
         {
             title: 'Action',
@@ -114,40 +106,103 @@ const Ticket = () => {
         },
     ];
 
+    const handleRowClick = (record) => {
+        setCurrentComplaint(record);
+        setNewModalVisible(true);  
+    };
+
+    const handleNewModalCancel = () => {
+        setNewModalVisible(false);
+    };
+
     return (
         <div className='complaint-list'>
-            <Table columns={columns} dataSource={ticket} rowKey="_id" />
+            <div style={{
+                display: 'flex',
+                justifyContent: 'flex-end',
+                gap: '1rem',
+                marginBottom: '1rem'
+            }} className="addorder">
+                <Button>
+                    <Link to='/support'>Raise Ticket</Link>
+                </Button>
+            </div>
+            <Table
+                columns={columns}
+                dataSource={ticket}
+                rowKey="_id"
+                size="middle"
+                onRow={(record) => {
+                    return {
+                        onClick: () => {
+                            handleRowClick(record);
+                        },
+                    };
+                }}
+            />
 
-            {currentComplaint && (
-                <Modal
-                    title="Provide Remedy"
-                    visible={visible}
-                    onOk={handleOk}
-                    onCancel={handleCancel}
-                >
-                    <div>
-                        <label>
-                            <span>Remedy</span>
-                            <Input
-                                value={remedy}
-                                onChange={(e) => setRemedy(e.target.value)}
-                            />
-                        </label>
-                        <label style={{ marginTop: '10px' }}>
-                            <span>Status</span>
-                            <Select
-                                value={status}
-                                onChange={(value) => setStatus(value)}
-                                style={{ width: '100%' }}
-                            >
-                                <Option value="Pending">Pending</Option>
-                                <Option value="Resolved">Resolved</Option>
-                                <Option value="In Progress">In Progress</Option>
-                            </Select>
-                        </label>
-                    </div>
-                </Modal>
-            )}
+            <Modal
+                title="Provide Remedy"
+                visible={visible}
+                onOk={handleOk}
+                onCancel={handleCancel}
+            >
+                <div>
+                    {/* <label>
+                        <span>Description</span>
+                        <Input.TextArea
+                            value={currentComplaint?.description}
+                            readOnly
+                        />
+                    </label> */}
+                    <label style={{ marginTop: '10px' }}>
+                        <span>Remedy</span>
+                        <Input
+                            value={remedy}
+                            onChange={(e) => setRemedy(e.target.value)}
+                        />
+                    </label>
+                    <label style={{ marginTop: '10px' }}>
+                        <span>Status</span>
+                        <Select
+                            value={status}
+                            onChange={(value) => setStatus(value)}
+                            style={{ width: '100%' }}
+                        >
+                            <Option value="Pending">Pending</Option>
+                            <Option value="Resolved">Resolved</Option>
+                            <Option value="In Progress">In Progress</Option>
+                        </Select>
+                    </label>
+                </div>
+            </Modal>
+
+            <Modal
+                title="Complaint Details"
+                visible={newModalVisible}
+                onCancel={handleNewModalCancel}
+                footer={null}
+            >
+                {currentComplaint && (
+                    <Table
+                        columns={[
+                            { title: 'Field', dataIndex: 'field' },
+                            { title: 'Value', dataIndex: 'value' },
+                        ]}
+                        dataSource={[
+                            { field: 'Ticket Number', value: currentComplaint.ticketNumber },
+                            { field: 'AWB', value: currentComplaint.awb },
+                            { field: 'Seller', value: currentComplaint.seller.email },
+                            { field: 'Subject', value: currentComplaint.subject },
+                            { field: 'Description', value: currentComplaint.description },
+                            { field: 'Status', value: currentComplaint.status },
+                            { field: 'Remedy', value: currentComplaint.remedy },
+                        ]}
+                        pagination={false}
+                        rowKey="field"
+                    />
+                )}
+            </Modal>
         </div>
     );
 };

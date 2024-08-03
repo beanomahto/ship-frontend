@@ -9,7 +9,12 @@ const useUpdateLabel = () => {
         console.log("lolo"+updateLebel);
         setLoading(true);
         try {
-            const response = await axios.post(`/api/shipping/updateLabelinfo`, updateLebel);
+            const token = localStorage.getItem('token');
+            const response = await axios.post(`https://backend-9u5u.onrender.com/api/shipping/updateLabelinfo`, updateLebel,  {
+                headers: {
+                    Authorization: `${token}`, 
+                },
+            });
             setLoading(false);
             console.log('Updated order:', response.data); 
         } catch (error) {

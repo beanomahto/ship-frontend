@@ -18,7 +18,7 @@ const Sidebar = ({darktheme, toggleTheme}) => {
       onMouseLeave={() => setCollapsed(true)} collapsible trigger={null} theme={darktheme ? 'dark' : 'light'} className='side-items'>
             <Logo />
             <MenuList darktheme={darktheme} />
-            <ToggleButton darktheme={darktheme} toggleTheme={toggleTheme} />
+            {/* <ToggleButton darktheme={darktheme} toggleTheme={toggleTheme} /> */}
         </Sider>
     </Layout>
   )

@@ -17,7 +17,7 @@ const CodRemmitance = () => {
   useEffect(() => {
     const fetchRemittance = async () => {
       try {
-        const res = await fetch('/api/remittance/getremittance');
+        const res = await fetch('https://backend-9u5u.onrender.com/api/remittance/getremittance');
         const data = await res.json();
         setRemittanceData(data);
       } catch (error) {

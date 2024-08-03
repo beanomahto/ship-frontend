@@ -12,11 +12,21 @@ const useSignup = () => {
 
 		setLoading(true);
 		try {
+<<<<<<< HEAD
+=======
+			const token = localStorage.getItem('token');
+>>>>>>> 6088daedbc833746c006e82af5607921301e284d
 			const res = await fetch("https://backend-9u5u.onrender.com/api/auth/signup", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ firstName, lastName, email, password, companyName, phoneNumber }),
+<<<<<<< HEAD
 				credentials: "include",
+=======
+				headers: {
+					Authorization: `${token}`,
+				},
+>>>>>>> 6088daedbc833746c006e82af5607921301e284d
 			});
 
 			const data = await res.json();

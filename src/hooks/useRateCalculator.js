@@ -9,10 +9,14 @@ const useRateCalculator = () => {
 
     setLoading(true);
     try {
-      const res = await fetch("/api/orders/rateCalculator", {
+      const token = localStorage.getItem('token');
+      const res = await fetch("https://backend-9u5u.onrender.com/api/orders/rateCalculator", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ deliveryPartner, pickupPincode, deliveryPincode, weight, length, breadth, height, paymentMethod }),
+        headers: {
+          Authorization: `${token}`,
+      },
       });
 
       if (!res.ok) {
