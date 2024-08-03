@@ -6,30 +6,16 @@ const Seller = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-<<<<<<< Updated upstream
-    fetch('https://backend-9u5u.onrender.com/api/users'
-      , {
-        headers: {
-          Authorization: localStorage.getItem('token')
-        }
-      })
-      .then(response => response.json())
-      .then(data => {
-        const companyUsers = data.filter(user => user.role === 'company');
-=======
     const fetchUsers = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const response = await fetch('/api/users', {
+        const response = await fetch('https://backend-9u5u.onrender.com/api/users', {
           headers: {
-            Authorization: `${token}`,
+            Authorization: localStorage.getItem('token'),
           },
         });
-        const data = await response.json();
-        console.log(data);
 
-        const companyUsers = data?.filter(user => user.role === 'company');
->>>>>>> Stashed changes
+        const data = await response.json();
+        const companyUsers = data.filter((user) => user.role === 'company');
         setUsers(companyUsers);
       } catch (error) {
         console.error('Error fetching users:', error);
@@ -38,7 +24,6 @@ const Seller = () => {
 
     fetchUsers();
   }, []);
-  console.log(users);
 
   const columns = [
     {
@@ -82,22 +67,18 @@ const Seller = () => {
       dataIndex: 'isVerified',
       key: 'verify',
       render: (text) => (
-        <div>
-          {text === false ? (
-            <Tag color={text !== false ? 'green' : 'geekblue'}>
-              Not verified
-            </Tag>
-          ) : (
-            <h1>OK</h1>
-          )}
-        </div>
+        <Tag color={text ? 'green' : 'geekblue'}>
+          {text ? 'Verified' : 'Not verified'}
+        </Tag>
       ),
     },
     {
       title: 'Action',
       key: 'action',
       render: (_, record) => (
-        <Button onClick={() => handleGetKYC(record._id)}><Link to={`/seller/getkyc/${record._id}`} >Get KYC</Link></Button>
+        <Button onClick={() => handleGetKYC(record._id)}>
+          <Link to={`/seller/getkyc/${record._id}`}>Get KYC</Link>
+        </Button>
       ),
     },
   ];
@@ -107,7 +88,7 @@ const Seller = () => {
   };
 
   return (
-    <div style={{ backgroundColor: "#fff", height: "40rem", borderRadius: '1rem' }}>
+    <div style={{ backgroundColor: '#fff', height: '40rem', borderRadius: '1rem' }}>
       <Table dataSource={users} columns={columns} rowKey="_id" pagination={false} />
     </div>
   );

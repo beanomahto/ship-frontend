@@ -16,11 +16,7 @@ const Ticket = () => {
 
     const fetchComplaints = async () => {
         try {
-<<<<<<< Updated upstream
             const res = await fetch('https://backend-9u5u.onrender.com/api/complaint/complaints'
-=======
-            const res = await fetch('/api/complaint/complaints'
->>>>>>> Stashed changes
                 , {
                     headers: {
                         Authorization: localStorage.getItem('token'),
