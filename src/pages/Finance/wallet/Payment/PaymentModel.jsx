@@ -44,11 +44,20 @@ const PaymentModel = ({ visible, onClose }) => {
     }
 
     try {
-      const response = await axios.post(`https://backend-9u5u.onrender.com/api/transactions/increaseAmount`, {
-        userId: hoveredUser._id,
-        credit: parseFloat(paymentAmount),
-        remark: paymentRemark.trim()
-      });
+      const response = await axios.post(
+        'https://backend-9u5u.onrender.com/api/transactions/increaseAmount',
+        {
+          userId: hoveredUser._id,
+          credit: parseFloat(paymentAmount),
+          remark: paymentRemark.trim()
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem('token')
+          }
+        }
+      );
+
       message.success("Payment Successful")
       console.log("Payment successful:", response.data);
     } catch (error) {
