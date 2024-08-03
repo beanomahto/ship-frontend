@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button, Upload, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
+import DownloadLink from 'react-download-link' 
 
 const UploadWeightDespensory = ({ visible, onClose }) => {
     const [file, setFile] = useState(null);
@@ -37,12 +38,23 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
             message.error(`Error: ${error.message}`);
         }
     };
+    const downloadFile = () => {
+        return "sellerEmail,discrepancyDetails,productDetails,appliedWeight,courierWeight,chargedWeight,excessWeightCharge,status,action"
+    }
     return (
         <Modal
             title="Upload"
             visible={visible}
             onCancel={onClose}
             footer={[
+                <Button key="download" >
+                <DownloadLink 
+                label='Download Weight Dispensory CSV'
+                filename='sample.csv'
+                exportFile={downloadFile}
+                style={{textDecoration:'none'}}
+                 />
+            </Button>,
                 <Button key="submit" type="primary" onClick={handleUpload}>
                     Upload
                 </Button>,

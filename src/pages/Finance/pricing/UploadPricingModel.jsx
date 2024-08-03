@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button, Upload, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
+import DownloadLink from 'react-download-link' 
 
 const UploadPricingModel = ({ visible, onClose }) => {
     const [file, setFile] = useState(null);
@@ -38,12 +39,23 @@ const UploadPricingModel = ({ visible, onClose }) => {
             message.error(`Error: ${error.message}`);
         }
     };
+    const downloadFile = () => {
+        return "sellerEmail,deliveryPartner,weightCategory,zoneA,zoneB,zoneC,zoneD,zoneE,codFixed,codPercentage"
+    }
     return (
         <Modal
             title="Upload Pricing"
             visible={visible}
             onCancel={onClose}
             footer={[
+                <Button key="download" >
+                <DownloadLink 
+                label='Download Pricing CSV'
+                filename='sample.csv'
+                exportFile={downloadFile}
+                style={{textDecoration:'none'}}
+                 />
+            </Button>,
                 <Button key="submit" type="primary" onClick={handleUpload}>
                     Upload
                 </Button>,

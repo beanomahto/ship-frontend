@@ -39,6 +39,7 @@ import AdminMIS_Report from './pages/Reports/AdminMIS_Report';
 import ResetPassword from './pages/Login/ResetPassword';
 import Tracking from './pages/Orders/Tracking/Tracking';
 import Seller from './pages/Seller/Seller';
+import VerifyKyc from './pages/Seller/VerifyKyc/VerifyKyc';
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -60,6 +61,7 @@ const App = () => {
           <Route path="kyc" element={<ProtectedRoute><KYC /></ProtectedRoute>} />
           <Route path="orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
           <Route path="seller" element={<ProtectedRoute><Seller /></ProtectedRoute>} />
+          <Route path="seller/getkyc/:id" element={<ProtectedRoute><VerifyKyc /></ProtectedRoute>} />
           {/* <Route path="label" element={<ProtectedRoute><Label /></ProtectedRoute>} /> */}
           <Route path="updatelabel" element={<ProtectedRoute><UpdateLebel /></ProtectedRoute>} />
           <Route path="orders/singleorder" element={<ProtectedRoute><SingleOrder /></ProtectedRoute>} />
