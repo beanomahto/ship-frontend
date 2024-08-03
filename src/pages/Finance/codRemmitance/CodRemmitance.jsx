@@ -17,7 +17,12 @@ const CodRemmitance = () => {
   useEffect(() => {
     const fetchRemittance = async () => {
       try {
-        const res = await fetch('https://backend-9u5u.onrender.com/api/remittance/getremittance');
+        const token = localStorage.getItem('token');
+        const res = await fetch('https://backend-9u5u.onrender.com/api/remittance/getremittance', {
+          headers: {
+            Authorization: `${token}`,
+          },
+        });
         const data = await res.json();
         setRemittanceData(data);
       } catch (error) {
@@ -31,13 +36,13 @@ const CodRemmitance = () => {
   const closeModal = () => setModalVisible(false);
   const showSearchModal = () => setSearchModalVisible(true);
   const closeSearchModal = () => setSearchModalVisible(false);
-console.log(remittanceData.remittances
-);
+  console.log(remittanceData.remittances
+  );
   const newOrders = [
     ...(authUser?.role === 'admin' ? [{
-      title: 'Seller', 
-      dataIndex: 'adminData',  
-      render: (text, remittance) => <span>{remittance.seller.email}</span>, 
+      title: 'Seller',
+      dataIndex: 'adminData',
+      render: (text, remittance) => <span>{remittance.seller.email}</span>,
     }] : []),
     {
       title: 'Generated Date',
@@ -73,7 +78,7 @@ console.log(remittanceData.remittances
       dataIndex: 'count',
       render: (text, data) => (
         <>
-          <div style={{display:'flex', justifyContent:'center', fontFamily:'sans-serif', fontSize:'1rem', marginRight:'3rem'}}>{data.count}</div>
+          <div style={{ display: 'flex', justifyContent: 'center', fontFamily: 'sans-serif', fontSize: '1rem', marginRight: '3rem' }}>{data.count}</div>
         </>
       ),
     },
@@ -82,7 +87,7 @@ console.log(remittanceData.remittances
       dataIndex: 'status',
     },
   ];
-console.log(remittanceData);
+  console.log(remittanceData);
   return (
     <div>
       <div style={{
@@ -93,8 +98,8 @@ console.log(remittanceData);
       }} className="addorder">
         <CustomButton onClick={showModal}>Upload Remittance</CustomButton>
         <UploadCodRemittance visible={modalVisible} onClose={closeModal} />
-       <CustomButton onClick={showSearchModal}>Search Seller</CustomButton>
-         <SearchSellerModal visible={searchModalVisible} remittanceData={remittanceData} onClose={closeSearchModal} />
+        <CustomButton onClick={showSearchModal}>Search Seller</CustomButton>
+        <SearchSellerModal visible={searchModalVisible} remittanceData={remittanceData} onClose={closeSearchModal} />
       </div>
       <RemmitanceData />
       <Table
@@ -102,7 +107,7 @@ console.log(remittanceData);
         scroll={{ y: 350 }}
         columns={newOrders}
         dataSource={remittanceData.remittances}
-        rowKey="id" 
+        rowKey="id"
         pagination={false}
       />
     </div>

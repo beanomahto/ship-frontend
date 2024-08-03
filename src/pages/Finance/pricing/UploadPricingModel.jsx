@@ -22,11 +22,14 @@ const UploadPricingModel = ({ visible, onClose }) => {
             const response = await fetch('/api/shipping/upload-custom-pricing', {
                 method: 'POST',
                 body: formData,
+                headers: {
+                    Authorization: localStorage.getItem('token'),
+                },
             });
             console.log(response)
             if (response.ok) {
                 message.success('File uploaded successfully!');
-                onClose(); 
+                onClose();
             } else {
                 const errorData = await response.json();
                 message.error(`Failed to upload file: ${errorData.error}`);

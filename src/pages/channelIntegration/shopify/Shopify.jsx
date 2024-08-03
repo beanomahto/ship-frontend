@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useChannelIntegration from '../../../hooks/useChannelIntegration';
 import { message } from 'antd';
-import shopifyInt from '../../../utils/shopifyInt.png.jpg'; 
+import shopifyInt from '../../../utils/shopifyInt.png.jpg';
 
 const Shopify = () => {
     const { slug } = useParams();
@@ -19,7 +19,12 @@ const Shopify = () => {
     useEffect(() => {
         const getChannelInfo = async () => {
             try {
-                const res = await fetch(`https://backend-9u5u.onrender.com/api/integration/getApi/${slug}`);
+                const token = localStorage.getItem('token');
+                const res = await fetch(`https://backend-9u5u.onrender.com/api/integration/getApi/${slug}`, {
+                    headers: {
+                        Authorization: `${token}`,
+                    },
+                });
                 const result = await res.json();
                 setData(result);
                 setStoreInputs({
@@ -54,7 +59,6 @@ const Shopify = () => {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `${token}`,
-                    
                 },
                 body: JSON.stringify(storeInputs),
             });
@@ -76,7 +80,7 @@ const Shopify = () => {
         <div style={{ marginTop: '-2.5rem' }}>
             <div className="image-container">
                 <img src={shopifyInt} alt="Shopify Integration" style={{}} className="background-image" />
-                <div className='inte' style={{ zIndex: '9', marginTop:'-7rem' }}>
+                <div className='inte' style={{ zIndex: '9', marginTop: '-7rem' }}>
                     <form className="form" onSubmit={handleSubmit}>
                         <p className="title">Integrate Shopify</p>
                         <div className="flex">

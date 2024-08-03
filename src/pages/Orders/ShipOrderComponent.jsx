@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Input, Button, Space, message, Tag, Skeleton } from 'antd'; 
+import { Table, Input, Button, Space, message, Tag, Skeleton } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import axios from 'axios';
@@ -23,15 +23,20 @@ const ShipOrderComponent = ({ dataSource, fetchOrders, loading }) => {
 
   const cancelShipment = async () => {
     try {
+      const token = localStorage.getItem('token');
       const response = await axios.put(`/api/orders/updateOrderStatus/${selectedRowKeys}`, {
-        status: 'Cancelled',
+        status: 'Cancelled'
+      }, {
+        headers: {
+          Authorization: `${token}`
+        }
       });
       if (response.status === 201) {
         message.success('Order canceled successfully');
-       fetchOrders();
+        fetchOrders();
         setSelectedRowKeys([]);
       }
-       
+
     } catch (error) {
       message.error('Failed to cancel order');
     }
@@ -145,7 +150,7 @@ const ShipOrderComponent = ({ dataSource, fetchOrders, loading }) => {
     },
   ];
 
-  
+
   const rowSelection = {
     selectedRowKeys,
     onChange: (selectedKeys) => {
@@ -157,10 +162,10 @@ const ShipOrderComponent = ({ dataSource, fetchOrders, loading }) => {
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
-      <Button disabled={selectedRowKeys.length !== 1} style={{ borderColor: 'black' }}>
+        <Button disabled={selectedRowKeys.length !== 1} style={{ borderColor: 'black' }}>
           <Link to={`/shipping/tracking/${selectedRowKeys[0]}`}>Track Order</Link>
         </Button>
-      <Button disabled={selectedRowKeys.length !== 1} style={{ borderColor: 'black' }}>
+        <Button disabled={selectedRowKeys.length !== 1} style={{ borderColor: 'black' }}>
           <Link to={`/shipping/getlabel/${selectedRowKeys[0]}`}>Shipping Label</Link>
         </Button>
         {/* getInvoice */}
@@ -169,21 +174,21 @@ const ShipOrderComponent = ({ dataSource, fetchOrders, loading }) => {
         </Button>
         <Button style={{ borderColor: 'red' }} onClick={cancelShipment}>Cancel Shipment</Button>
       </div>
-     {
-      loading ? (
-        <Skeleton active title={false}
-        paragraph={{ rows: 10 }} style={{ height: '100%', width: '100%' }}
+      {
+        loading ? (
+          <Skeleton active title={false}
+            paragraph={{ rows: 10 }} style={{ height: '100%', width: '100%' }}
+          />
+        ) : <Table
+          rowSelection={rowSelection}
+          columns={columns}
+          dataSource={shippedOrders}
+          rowKey="_id"
+          scroll={{ y: 450 }}
+          pagination={false}
+          style={{ width: '100%', height: '505px' }}
         />
-      ) :  <Table
-      rowSelection={rowSelection}
-      columns={columns}
-      dataSource={shippedOrders}
-      rowKey="_id"  
-       scroll={{ y: 450 }}
-       pagination={false}
-      style={{ width: '100%', height: '505px' }}
-    />
-     }
+      }
     </>
   );
 };

@@ -7,14 +7,20 @@ const { Search } = Input;
 const PaymentModel = ({ visible, onClose }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [hoveredUser, setHoveredUser] = useState(null); 
+  const [hoveredUser, setHoveredUser] = useState(null);
   const [paymentAmount, setPaymentAmount] = useState('');
   const [paymentRemark, setPaymentRemark] = useState('');
 
   const handleSearch = async (value) => {
     setLoading(true);
     try {
-      const response = await axios.get(`/api/users/search`, { params: { query: value } });
+      const token = localStorage.getItem('token');
+      const response = await axios.get('/api/users/search', {
+        params: { query: value },
+        headers: {
+          Authorization: `${token}`
+        }
+      });
       setSearchResults(response.data);
     } catch (error) {
       console.error("Error fetching search results:", error);
@@ -70,13 +76,13 @@ const PaymentModel = ({ visible, onClose }) => {
         style={{ width: '25rem', marginBottom: '1rem' }}
       />
       <List
-      // style={{display:'flex', flexDirection:'column', }}
+        // style={{display:'flex', flexDirection:'column', }}
         loading={loading}
         itemLayout="horizontal"
         dataSource={searchResults}
         renderItem={user => (
           <List.Item
-          style={{display:'flex', flexDirection:'row', }}
+            style={{ display: 'flex', flexDirection: 'row', }}
             key={user._id}
             onMouseEnter={() => handleMouseEnter(user)}
             onMouseLeave={handleMouseLeave}
@@ -87,7 +93,7 @@ const PaymentModel = ({ visible, onClose }) => {
                 description={user.email}
               />
             </Tooltip>
-            <div style={{ marginTop: '1rem', width:'12rem' }}>
+            <div style={{ marginTop: '1rem', width: '12rem' }}>
               <Input
                 type="number"
                 placeholder="Enter amount"

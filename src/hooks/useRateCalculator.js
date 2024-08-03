@@ -3,20 +3,20 @@ import { useState } from "react";
 const useRateCalculator = () => {
   const [loading, setLoading] = useState(false);
 
-  const rateCalculator = async ({deliveryPartner, pickupPincode, deliveryPincode, weight, length, breadth, height, paymentMethod}) => {
-    const success = handleInputErrors({deliveryPartner, pickupPincode, deliveryPincode, weight, length, breadth, height, paymentMethod});
-    if (!success) return { success: false }; 
+  const rateCalculator = async ({ deliveryPartner, pickupPincode, deliveryPincode, weight, length, breadth, height, paymentMethod }) => {
+    const success = handleInputErrors({ deliveryPartner, pickupPincode, deliveryPincode, weight, length, breadth, height, paymentMethod });
+    if (!success) return { success: false };
 
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
       const res = await fetch("https://backend-9u5u.onrender.com/api/orders/rateCalculator", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ deliveryPartner, pickupPincode, deliveryPincode, weight, length, breadth, height, paymentMethod }),
         headers: {
-          Authorization: `${token}`,
-      },
+          "Content-Type": "application/json",
+          Authorization: `${token}`
+        },
       });
 
       if (!res.ok) {
@@ -26,21 +26,21 @@ const useRateCalculator = () => {
       const data = await res.json();
       console.log(data);
       setLoading(false);
-      return { success: true, cost: data.cost }; 
+      return { success: true, cost: data.cost };
     } catch (error) {
       console.error("Error fetching delivery cost:", error);
       setLoading(false);
-      return { success: false, error: error.message }; 
+      return { success: false, error: error.message };
     }
   };
-//   515741
+  //   515741
 
   return { loading, rateCalculator };
 };
 
 export default useRateCalculator;
 
-function handleInputErrors({deliveryPartner, pickupPincode, deliveryPincode, weight, length, breadth, height, paymentMethod}) {
+function handleInputErrors({ deliveryPartner, pickupPincode, deliveryPincode, weight, length, breadth, height, paymentMethod }) {
   if (!deliveryPartner || !pickupPincode || !deliveryPincode || !weight || !length || !breadth || !height || !paymentMethod) {
     alert("Please fill in all fields");
     return false;

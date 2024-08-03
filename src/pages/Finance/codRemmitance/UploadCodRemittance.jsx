@@ -19,14 +19,18 @@ const UploadCodRemittance = ({ visible, onClose }) => {
         formData.append('file', file);
 
         try {
+            const token = localStorage.getItem('token');
             const response = await fetch('/api/remittance/uploadremittance', {
                 method: 'POST',
                 body: formData,
+                headers: {
+                    Authorization: `${token}`,
+                },
             });
             console.log(response)
             if (response.ok) {
                 message.success('File uploaded successfully!');
-                onClose(); 
+                onClose();
             } else {
                 const errorData = await response.json();
                 message.error(`Failed to upload file: ${errorData.error}`);

@@ -3,10 +3,10 @@ import { useState } from "react";
 const useKycIntegration = () => {
   const [loading, setLoading] = useState(false);
 
-  const kycIntegration = async ({ 
+  const kycIntegration = async ({
     name,
-        ifscCode,
-        bankName,
+    ifscCode,
+    bankName,
     companyType,
     documentType,
     gstUrl,
@@ -18,8 +18,8 @@ const useKycIntegration = () => {
     pancardUrl, }) => {
     const success = handleInputErrors({
       name,
-        ifscCode,
-        bankName,
+      ifscCode,
+      bankName,
       companyType,
       documentType,
       gstUrl,
@@ -34,13 +34,18 @@ const useKycIntegration = () => {
 
     setLoading(true);
     try {
+      const token = localStorage.getItem('token');
+
       const res = await fetch("/api/kyc/create", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`
+        },
         body: JSON.stringify({
           name,
-        ifscCode,
-        bankName,
+          ifscCode,
+          bankName,
           companyType,
           documentType,
           gstUrl,
@@ -49,8 +54,8 @@ const useKycIntegration = () => {
           passbookUrl,
           gstin,
           pancard,
-          pancardUrl,
-        }),
+          pancardUrl
+        })
       });
 
       const data = await res.json();
@@ -69,10 +74,10 @@ const useKycIntegration = () => {
 };
 export default useKycIntegration;
 
-function handleInputErrors({ 
+function handleInputErrors({
   name,
-        ifscCode,
-        bankName,
+  ifscCode,
+  bankName,
   companyType,
   documentType,
   gstUrl,
@@ -85,7 +90,7 @@ function handleInputErrors({
 
   if (!name,
     !ifscCode,
-    !bankName,!companyType || !documentType || !gstUrl || !accountNumber || !passbookNumber || !passbookUrl || !gstin || !pancard || !pancardUrl) {
+    !bankName, !companyType || !documentType || !gstUrl || !accountNumber || !passbookNumber || !passbookUrl || !gstin || !pancard || !pancardUrl) {
     alert("please fill all the inputs")
     return false;
   }

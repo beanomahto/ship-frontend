@@ -16,7 +16,12 @@ const Ticket = () => {
 
     const fetchComplaints = async () => {
         try {
-            const res = await fetch('/api/complaint/complaints');
+            const res = await fetch('/api/complaint/complaints'
+                , {
+                    headers: {
+                        Authorization: localStorage.getItem('token'),
+                    },
+                });
             const data = await res.json();
             setTicket(data.complaints || []);
         } catch (error) {
@@ -57,6 +62,7 @@ const Ticket = () => {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: localStorage.getItem('token'),
                 },
                 body: JSON.stringify({ remedy, status }),
             });
@@ -108,7 +114,7 @@ const Ticket = () => {
 
     const handleRowClick = (record) => {
         setCurrentComplaint(record);
-        setNewModalVisible(true);  
+        setNewModalVisible(true);
     };
 
     const handleNewModalCancel = () => {

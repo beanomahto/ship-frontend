@@ -4,7 +4,7 @@ const useShipNowCost = () => {
   const [loading, setLoading] = useState(false);
 
   const shipNowCost = async (orderId, wareHouseId) => {
-    const success = handleInputErrors( orderId, wareHouseId);
+    const success = handleInputErrors(orderId, wareHouseId);
     if (!success) return { success: false };
 
     setLoading(true);
@@ -12,11 +12,11 @@ const useShipNowCost = () => {
       const token = localStorage.getItem('token');
       const res = await fetch("https://backend-9u5u.onrender.com/api/shipping/getSingleDeliveryCost", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({  orderId, wareHouseId }),
+        body: JSON.stringify({ orderId, wareHouseId }),
         headers: {
-          Authorization: `${token}`,
-      },
+          "Content-Type": "application/json",
+          Authorization: `${token}`
+        },
       });
 
       console.log(res);
@@ -39,8 +39,8 @@ const useShipNowCost = () => {
   return { loading, shipNowCost };
 };
 
-function handleInputErrors( orderId, wareHouseId) {
-  if ( !orderId || !wareHouseId) {
+function handleInputErrors(orderId, wareHouseId) {
+  if (!orderId || !wareHouseId) {
     alert("Please fill in all fields in useShipNow");
     return false;
   }

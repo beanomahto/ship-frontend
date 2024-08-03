@@ -9,7 +9,12 @@ const useShippingRateCard = () => {
     useEffect(() => {
         const fetchRateCard = async () => {
             try {
-                const response = await axios.get('https://backend-9u5u.onrender.com/api/shipping/rateCard');
+                const token = localStorage.getItem('token');
+                const response = await axios.get('https://backend-9u5u.onrender.com/api/shipping/rateCard', {
+                    headers: {
+                        Authorization: `${token}`
+                    }
+                });
                 setData(response.data);
                 console.log(response);
             } catch (err) {

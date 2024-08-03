@@ -24,12 +24,17 @@ const LabelGenerator = () => {
   const [base64Logo, setBase64Logo] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const labelRef = useRef(null);
-console.log(labelData);
-console.log(id);
+  console.log(labelData);
+  console.log(id);
   useEffect(() => {
     const generateLabel = async () => {
       try {
-        const response = await axios.get(`/api/shipping/getlabel/${id}`);
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`/api/shipping/getlabel/${id}`, {
+          headers: {
+            Authorization: localStorage.getItem('token'),
+          }
+        });
         const logoBase64 = await getBase64ImageFromUrl(response.data.logoUrl);
         setLabelData(response.data);
         setBase64Logo(logoBase64);
@@ -53,7 +58,7 @@ console.log(id);
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'in',
-        format: [4, 6], 
+        format: [4, 6],
       });
       pdf.addImage(imgData, 'PNG', 0, 0, 4, 6);
       pdf.save('shipping_label.pdf');
@@ -83,17 +88,17 @@ console.log(id);
           <div ref={labelRef} className="label-container">
             <h1 style={{ textAlign: 'center' }}>Shipping Label</h1>
             <p><strong>Order Id</strong> 123231</p>
-         <div style={labelData.logoUrl ? { display: 'flex' } : {}}>
-         <div className="section">
-              <img style={{ width: '15rem' }} src={`data:image/png;base64,${labelData.barcode}`} alt="Barcode" />
-              {/* <img style={{ width: '10rem' }} src={base64Logo} alt="" /> */}
+            <div style={labelData.logoUrl ? { display: 'flex' } : {}}>
+              <div className="section">
+                <img style={{ width: '15rem' }} src={`data:image/png;base64,${labelData.barcode}`} alt="Barcode" />
+                {/* <img style={{ width: '10rem' }} src={base64Logo} alt="" /> */}
+              </div>
+              {labelData.logoUrl &&
+                <div className="section" style={{ Width: '12rem' }} >
+                  <img style={{ width: '9rem' }} src={base64Logo} alt="" />
+                </div>
+              }
             </div>
-         {labelData.logoUrl &&
-          <div className="section" style={{Width:'12rem'}} >
-          <img style={{ width: '9rem' }} src={base64Logo} alt="" />
-        </div>
-         }
-         </div>
             <div className="section">
               <p><strong>Ship To:</strong><p><strong>Dheeraj Kumar</strong></p> FLAT NO-B16-403, SUPERTECH ECO VILLAGE-2, GH-1 SECTOR-16B, GREATER NOIDA, NOIDA, Gautam Buddha Nagar, Noida, Uttar Pradesh, India, 201301</p>
               <p>{labelData.customerName}</p>
@@ -102,7 +107,7 @@ console.log(id);
               <p><strong>PIN:</strong> 201007 {labelData.customerPin}</p>
             </div>
             <div style={{ display: 'flex' }}>
-            <div className="section" style={{ width: '16rem' }}>
+              <div className="section" style={{ width: '16rem' }}>
                 <p><strong>{labelData.paymentType}</strong></p>
                 <p><strong>Product name</strong></p>
                 <p>{labelData.productName}</p>

@@ -125,8 +125,8 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
       ...getColumnSearchProps('customerName'),
       render: (text, order) => (
         <>
-          <di style={{ fontFamily:'sans-serif', fontSize:'.9rem'}}>{order.customerName}</di>
-          <di style={{ fontFamily:'sans-serif', fontSize:'.9rem'}}>{order.customerEmail}</di>
+          <di style={{ fontFamily: 'sans-serif', fontSize: '.9rem' }}>{order.customerName}</di>
+          <di style={{ fontFamily: 'sans-serif', fontSize: '.9rem' }}>{order.customerEmail}</di>
         </>
       ),
     },
@@ -199,8 +199,13 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
 
   const handleAssign = async (partner) => {
     try {
+      const token = localStorage.getItem('token');
       const response = await axios.put(`/api/orders/updateOrderStatus/${selectedOrderId}`, {
         status: 'Shipped',
+      }, {
+        headers: {
+          Authorization: `${token}`
+        }
       });
       if (response.status === 201) {
         message.success("Shipped successfully");
@@ -242,9 +247,9 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
               dataSource={deliveryCosts}
               rowKey="id"
               pagination={{ pageSize: 10 }}
-              // style={{fontSize:'4rem'}}
-              // className="delivery-cost-table"
-     
+            // style={{fontSize:'4rem'}}
+            // className="delivery-cost-table"
+
             >
               <Column
                 title="Partner"
@@ -255,9 +260,9 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
                     <img
                       src={partnerImages[record.deliveryPartner]}
                       alt={record.deliveryPartner}
-                      style={{ width: '40px', height: '40px', borderRadius: '50%', marginRight: '8px', border:'2px solid #ddd' }}
+                      style={{ width: '40px', height: '40px', borderRadius: '50%', marginRight: '8px', border: '2px solid #ddd' }}
                     />
-                   <p style={{fontWeight:'500', fontSize:'1rem'}}> {record.deliveryPartner}</p>
+                    <p style={{ fontWeight: '500', fontSize: '1rem' }}> {record.deliveryPartner}</p>
                   </div>
                 )}
               />

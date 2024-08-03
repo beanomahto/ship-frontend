@@ -6,17 +6,17 @@ const useUpdateLabel = () => {
     const [error, setError] = useState(null);
 
     const updateLebel = async (updateLebel) => {
-        console.log("lolo"+updateLebel);
+        console.log("lolo" + updateLebel);
         setLoading(true);
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post(`https://backend-9u5u.onrender.com/api/shipping/updateLabelinfo`, updateLebel,  {
+            const response = await axios.post(`https://backend-9u5u.onrender.com/api/shipping/updateLabelinfo`, updateLebel, {
                 headers: {
-                    Authorization: `${token}`, 
+                    Authorization: `${token}`,
                 },
             });
             setLoading(false);
-            console.log('Updated order:', response.data); 
+            console.log('Updated order:', response.data);
         } catch (error) {
             setError(error);
             console.log(error);

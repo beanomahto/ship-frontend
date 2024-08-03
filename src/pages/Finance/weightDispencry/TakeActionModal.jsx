@@ -5,7 +5,7 @@ import { UploadOutlined } from '@ant-design/icons';
 const TakeActionModal = ({ visible, onClose, discrepancyId, productName }) => {
   const [fileList, setFileList] = useState([]);
   const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
-console.log(fileList);
+  console.log(fileList);
   const handleAction = async () => {
     if (!productName) {
       message.error('Missing discrepancy ID or product name');
@@ -25,8 +25,11 @@ console.log(fileList);
       const response = await fetch('/api/weightdiscrepancy/upload-images', {
         method: 'POST',
         body: formData,
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
       });
-console.log(response);
+      console.log(response);
       if (!response.ok) {
         throw new Error('Failed to take action');
       }
@@ -37,17 +40,18 @@ console.log(response);
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: localStorage.getItem('token'),
         },
         body: JSON.stringify({ status: 'Open' }),
       });
-  
+
       if (!updateResponse.ok) {
         throw new Error('Failed to update status');
       }
-  
+
       const updateResult = await updateResponse.json();
       message.success('Status updated to Open');
-  
+
       onClose();
     } catch (error) {
       console.error('Error:', error);
@@ -71,7 +75,7 @@ console.log(response);
         fileList={fileList}
         onChange={handleChange}
         multiple
-        beforeUpload={() => false} 
+        beforeUpload={() => false}
       >
         <Button icon={<UploadOutlined />}>Select Files</Button>
       </Upload>

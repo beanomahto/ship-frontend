@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { message, Select, Upload } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import axios from 'axios'; 
+import axios from 'axios';
 import './label.css';
 import useUpdateLabel from '../../hooks/useUpdateLabel';
 
 const UpdateLabel = () => {
-    const {updateLebel} = useUpdateLabel()
+    const { updateLebel } = useUpdateLabel()
     const [inputs, setInputs] = useState({
         logoUrl: '',
         theme: '',
@@ -28,7 +28,11 @@ const UpdateLabel = () => {
     useEffect(() => {
         const fetchLabelInfo = async () => {
             try {
-                const response = await axios.get('/api/shipping/getLabelInfo');
+                const response = await axios.get('/api/shipping/getLabelInfo', {
+                    headers: {
+                        Authorization: `${token}`
+                    }
+                });
                 const fetchedData = response.data;
                 setInputs({
                     logoUrl: fetchedData.logoUrl || '',

@@ -2,62 +2,67 @@ import React, { useState } from 'react';
 import { Modal, Upload, Button, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
-const UploadDiscrepancyImagesModal = ({ visible, onClose, discrepancyId,productName }) => {
+const UploadDiscrepancyImagesModal = ({ visible, onClose, discrepancyId, productName }) => {
   const [fileList, setFileList] = useState([]);
+  const token = localStorage.getItem('token');
 
   const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
-console.log(fileList);
-const handleUpload = async () => {
-  if (!productName) {
-    message.error('No product name provided');
-    return;
-  }
-
-  const formData = new FormData();
-  fileList.forEach(file => {
-    formData.append('files', file.originFileObj);
-  });
-  formData.append('productName', productName);
-  for (let pair of formData.entries()) {
-    console.log(pair[0] + ':', pair[1]);
-  }
-  try {
-    const uploadResponse = await fetch(`/api/weightdiscrepancy/upload-images`, {
-      method: 'POST',
-      body: formData,
-    });
-console.log(uploadResponse);
-    if (!uploadResponse.ok) {
-      throw new Error('Failed to upload images');
+  console.log(fileList);
+  const handleUpload = async () => {
+    if (!productName) {
+      message.error('No product name provided');
+      return;
     }
 
-    const uploadResult = await uploadResponse.json();
-    message.success(uploadResult.message);
-
-    const updateResponse = await fetch(`/api/weightdiscrepancy/updateStatus/${discrepancyId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ status: 'Open' }),
+    const formData = new FormData();
+    fileList.forEach(file => {
+      formData.append('files', file.originFileObj);
     });
-
-    if (!updateResponse.ok) {
-      throw new Error('Failed to update status');
+    formData.append('productName', productName);
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ':', pair[1]);
     }
+    try {
+      const uploadResponse = await fetch(`/api/weightdiscrepancy/upload-images`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+      console.log(uploadResponse);
+      if (!uploadResponse.ok) {
+        throw new Error('Failed to upload images');
+      }
 
-    const updateResult = await updateResponse.json();
-    message.success('Status updated to Open');
+      const uploadResult = await uploadResponse.json();
+      message.success(uploadResult.message);
 
-    onClose(); 
-  } catch (error) {
-    console.error('Error:', error);
-    message.error('Operation failed');
-  }
-};
+      const updateResponse = await fetch(`/api/weightdiscrepancy/updateStatus/${discrepancyId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${token}`,
+        },
+        body: JSON.stringify({ status: 'Open' }),
+      });
 
-  
-  
+      if (!updateResponse.ok) {
+        throw new Error('Failed to update status');
+      }
+
+      const updateResult = await updateResponse.json();
+      message.success('Status updated to Open');
+
+      onClose();
+    } catch (error) {
+      console.error('Error:', error);
+      message.error('Operation failed');
+    }
+  };
+
+
+
 
   return (
     <Modal
@@ -75,7 +80,7 @@ console.log(uploadResponse);
         fileList={fileList}
         onChange={handleChange}
         multiple
-        beforeUpload={() => false} 
+        beforeUpload={() => false}
       >
         <Button icon={<UploadOutlined />}>Select Files</Button>
       </Upload>

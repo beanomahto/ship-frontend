@@ -5,7 +5,12 @@ const Seller = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    fetch('/api/users')
+    fetch('/api/users'
+      , {
+        headers: {
+          Authorization: localStorage.getItem('token')
+        }
+      })
       .then(response => response.json())
       .then(data => {
         const companyUsers = data.filter(user => user.role === 'company');
@@ -56,7 +61,7 @@ const Seller = () => {
   ];
 
   return (
-    <div  style={{backgroundColor:"#fff", height:"40rem", borderRadius:'1rem'}}>
+    <div style={{ backgroundColor: "#fff", height: "40rem", borderRadius: '1rem' }}>
       <Table dataSource={users} columns={columns} rowKey="_id" pagination={false} />
     </div>
   );

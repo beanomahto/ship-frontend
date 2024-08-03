@@ -2,10 +2,10 @@
 import { useState } from "react";
 
 const useCreateLebel = () => {
-	const [loading, setLoading] = useState(false);
-	const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [data, setData] = useState(null);
 
-	const createLebel = async ({
+    const createLebel = async ({
         // labelType,
         logoUrl,
         theme,
@@ -21,8 +21,8 @@ const useCreateLebel = () => {
         hideProductName,
         hideReturnWarehouse,
         hideWeight,
-        hideDimension}) => {
-		const success = handleInputErrors({     
+        hideDimension }) => {
+        const success = handleInputErrors({
             // labelType,
             logoUrl,
             theme,
@@ -38,15 +38,16 @@ const useCreateLebel = () => {
             hideProductName,
             hideReturnWarehouse,
             hideWeight,
-            hideDimension});
-		if (!success) return;
-		setLoading(true);
-		try {
+            hideDimension
+        });
+        if (!success) return;
+        setLoading(true);
+        try {
             const token = localStorage.getItem('token');
-			const res = await fetch("https://backend-9u5u.onrender.com/api/shipping/createlabelinfo", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({
+            const res = await fetch("https://backend-9u5u.onrender.com/api/shipping/createlabelinfo", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
                     // labelType,
                     logoUrl,
                     theme,
@@ -62,23 +63,24 @@ const useCreateLebel = () => {
                     hideProductName,
                     hideReturnWarehouse,
                     hideWeight,
-                    hideDimension }),
+                    hideDimension
+                }),
                 headers: {
-                        Authorization: `${token}`,
-                    },
-			});
+                    Authorization: `${token}`,
+                },
+            });
 
-			const data = await res.json();
+            const data = await res.json();
             console.log(data);
-			if (data.error) {
-				throw new Error(data.error);
-			}
-		} catch (error) {
-			alert(error.message);
-		} finally {
-			setLoading(false);
-		}
-	};
+            if (data.error) {
+                throw new Error(data.error);
+            }
+        } catch (error) {
+            alert(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     // const getLebel = async () => {
     //     try {
@@ -94,11 +96,11 @@ const useCreateLebel = () => {
     //     }
     // }
 
-	return { loading, createLebel };
+    return { loading, createLebel };
 };
 export default useCreateLebel;
 
-function handleInputErrors( {
+function handleInputErrors({
     // labelType,
     logoUrl,
     theme,
@@ -114,9 +116,9 @@ function handleInputErrors( {
     hideProductName,
     hideReturnWarehouse,
     hideWeight,
-    hideDimension}){
+    hideDimension }) {
 
-	if(
+    if (
         !logoUrl ||
         !theme ||
         !hideLogo ||
@@ -132,9 +134,9 @@ function handleInputErrors( {
         !hideReturnWarehouse ||
         !hideWeight ||
         !hideDimension) {
-		alert("Please fill in all fields");
-		return false;
-	}
+        alert("Please fill in all fields");
+        return false;
+    }
 
-	return true;
+    return true;
 }

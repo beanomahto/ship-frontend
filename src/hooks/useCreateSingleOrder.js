@@ -3,99 +3,103 @@ import { useState } from "react";
 import { useOrderContext } from "../context/OrderContext";
 
 const useCreateSingleOrder = () => {
-	const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   // useOrderContext()
 
-	const createSingleOrder = async ({customerName,
-        customerEmail,
-        customerPhone,
-        orderId,
-       pincode,
-       city,
-       state,
-       productPrice,
-       productName,
-       address,
-       landMark,
-       quantity,
-       sku,
-       weight,
-       length,
-       breadth,
-       height,
-       paymentMethod}) => {
-		const success = handleInputErrors({customerName,
-        customerEmail,
-        customerPhone,
-        orderId,
-       pincode,
-       city,
-       state,
-       productPrice,
-       productName,
-       address,
-       landMark,
-       quantity,
-       sku,
-       weight,
-       length,
-       breadth,
-       height,
-       paymentMethod});
-		if (!success) return;
-		setLoading(true);
-		try {
+  const createSingleOrder = async ({ customerName,
+    customerEmail,
+    customerPhone,
+    orderId,
+    pincode,
+    city,
+    state,
+    productPrice,
+    productName,
+    address,
+    landMark,
+    quantity,
+    sku,
+    weight,
+    length,
+    breadth,
+    height,
+    paymentMethod }) => {
+    const success = handleInputErrors({
+      customerName,
+      customerEmail,
+      customerPhone,
+      orderId,
+      pincode,
+      city,
+      state,
+      productPrice,
+      productName,
+      address,
+      landMark,
+      quantity,
+      sku,
+      weight,
+      length,
+      breadth,
+      height,
+      paymentMethod
+    });
+    if (!success) return;
+    setLoading(true);
+    try {
       const token = localStorage.getItem('token');
-			const res = await fetch("https://backend-9u5u.onrender.com/api/orders/createOrder", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ customerName,
-        customerEmail,
-        customerPhone,
-        orderId,
-       pincode,
-       city,
-       state,
-       productPrice,
-       productName,
-       address,
-       landMark,
-       quantity,
-       sku,
-       weight,
-       length,
-       breadth,
-       height,
-       paymentMethod }),
-       headers: {
-        Authorization: `${token}`,
-    },
-			});
+      const res = await fetch("https://backend-9u5u.onrender.com/api/orders/createOrder", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customerName,
+          customerEmail,
+          customerPhone,
+          orderId,
+          pincode,
+          city,
+          state,
+          productPrice,
+          productName,
+          address,
+          landMark,
+          quantity,
+          sku,
+          weight,
+          length,
+          breadth,
+          height,
+          paymentMethod
+        }),
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
 
-			const data = await res.json();
-            console.log(data);
-			if (data.error) {
-				throw new Error(data.error);
-			}
-		} catch (error) {
-			alert(error.message);
-		} finally {
-			setLoading(false);
-		}
-	};
+      const data = await res.json();
+      console.log(data);
+      if (data.error) {
+        throw new Error(data.error);
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-	return { loading, createSingleOrder };
+  return { loading, createSingleOrder };
 };
 export default useCreateSingleOrder;
 
-function handleInputErrors( {customerName,  customerEmail, 
-customerPhone,  orderId,  productPrice,  productName,  address,   quantity,  sku,  weight,  length,  breadth,  height,  paymentMethod}){
+function handleInputErrors({ customerName, customerEmail,
+  customerPhone, orderId, productPrice, productName, address, quantity, sku, weight, length, breadth, height, paymentMethod }) {
 
-	if(!customerName || !customerEmail ||
+  if (!customerName || !customerEmail ||
     !customerPhone || !orderId || !productPrice || !productName || !address || !quantity || !sku || !weight || !length || !breadth || !height || !paymentMethod) {
-		alert("Please fill in all fields");
-		return false;
-	}
+    alert("Please fill in all fields");
+    return false;
+  }
 
-	return true;
+  return true;
 }
