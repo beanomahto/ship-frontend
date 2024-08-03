@@ -30,7 +30,7 @@ const UpdateLabel = () => {
             try {
                 const response = await axios.get('/api/shipping/getLabelInfo', {
                     headers: {
-                        Authorization: `${token}`
+                        Authorization: localStorage.getItem('token'),
                     }
                 });
                 const fetchedData = response.data;
