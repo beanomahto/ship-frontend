@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 
 const VerifyKyc = () => {
     const { id } = useParams();
-    
+
     const [kycData, setKycData] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
@@ -26,9 +26,9 @@ const VerifyKyc = () => {
         const fetchKycData = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch(`/api/kyc/${id}`,{
+                const response = await fetch(`https://backend-9u5u.onrender.com/api/kyc/${id}`, {
                     headers: {
-                        Authorization: `${token}`, 
+                        Authorization: `${token}`,
                     },
                 });
                 const data = await response.json();
@@ -55,7 +55,7 @@ const VerifyKyc = () => {
 
         fetchKycData();
     }, [id]);
-console.log(kycData);
+    console.log(kycData);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
