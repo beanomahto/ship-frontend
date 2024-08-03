@@ -20,7 +20,7 @@ const UploadCodRemittance = ({ visible, onClose }) => {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('/api/remittance/uploadremittance', {
+            const response = await fetch('https://backend-9u5u.onrender.com/api/remittance/uploadremittance', {
                 method: 'POST',
                 body: formData,
                 headers: {

@@ -8,9 +8,9 @@ const KYC = () => {
     const { kycIntegration } = useKyc();
     const [kycData, setKycData] = useState(null);
     const [formData, setFormData] = useState({
-        name:'',
-        ifscCode:'',
-        bankName:'',
+        name: '',
+        ifscCode: '',
+        bankName: '',
         companyType: '',
         documentType: '',
         gstUrl: null,
@@ -24,16 +24,16 @@ const KYC = () => {
     useEffect(() => {
         const fetchKycData = async () => {
             try {
-                const response = await fetch('/api/kyc'); 
+                const response = await fetch('https://backend-9u5u.onrender.com/api/kyc');
                 const data = await response.json();
                 setKycData(data);
                 console.log(data);
                 setFormData({
                     ...formData,
                     companyType: data.companyType || '',
-                    name:data.name || '',
-                    ifscCode:data.ifscCode || '',
-                    bankName:data.bankName || '',
+                    name: data.name || '',
+                    ifscCode: data.ifscCode || '',
+                    bankName: data.bankName || '',
                     documentType: data.documentType || '',
                     gstUrl: data.gstUrl || null,
                     accountNumber: data.accountNumber || '',
@@ -47,11 +47,11 @@ const KYC = () => {
                 message.error('Failed to fetch KYC data');
             }
         };
-    
+
         fetchKycData();
     }, []);
     console.log(kycData);
-    
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -64,12 +64,12 @@ const KYC = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-       try {
-        await kycIntegration(formData);
-        message.success('KYC information saved successfully');
-    } catch (error) {
-        message.error('Failed to save KYC information');
-    }
+        try {
+            await kycIntegration(formData);
+            message.success('KYC information saved successfully');
+        } catch (error) {
+            message.error('Failed to save KYC information');
+        }
     };
 
     return (
@@ -133,7 +133,7 @@ const KYC = () => {
                 </div>
                 <div className='flex1'>
                     <div className="flex">
-                    <label>
+                        <label>
                             <span>Name of seller</span>
                             <input
                                 className="input"
@@ -182,7 +182,7 @@ const KYC = () => {
                         </div>
                     </div>
                     <div className="flex">
-                    <label>
+                        <label>
                             <span>IFC Code</span>
                             <input
                                 className="input"
@@ -261,7 +261,7 @@ const KYC = () => {
             </form>
         </div>
     );
-    
+
 };
 
 export default KYC;

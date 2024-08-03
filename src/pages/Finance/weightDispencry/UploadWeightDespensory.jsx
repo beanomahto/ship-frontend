@@ -19,16 +19,16 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
         formData.append('file', file);
         for (let pair of formData.entries()) {
             console.log(pair[0] + ':', pair[1]);
-          }
+        }
         try {
-            const response = await fetch('/api/weightdiscrepancy/upload-images', {
+            const response = await fetch('https://backend-9u5u.onrender.com/api/weightdiscrepancy/upload-images', {
                 method: 'POST',
                 body: formData,
             });
             console.log(response)
             if (response.ok) {
                 message.success('File uploaded successfully!');
-                onClose(); 
+                onClose();
             } else {
                 const errorData = await response.json();
                 message.error(`Failed to upload file: ${errorData.error}`);

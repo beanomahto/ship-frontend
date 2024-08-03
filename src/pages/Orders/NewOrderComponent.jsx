@@ -200,7 +200,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
   const handleAssign = async (partner) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.put(`/api/orders/updateOrderStatus/${selectedOrderId}`, {
+      const response = await axios.put(`https://backend-9u5u.onrender.com/api/orders/updateOrderStatus/${selectedOrderId}`, {
         status: 'Shipped',
       }, {
         headers: {

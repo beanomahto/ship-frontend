@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal, Button, Upload, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 // import Sv from './orders.csv'
-import DownloadLink from 'react-download-link' 
+import DownloadLink from 'react-download-link'
 
 const BulkDimensionUploadModal = ({ visible, onClose }) => {
     const [file, setFile] = useState(null);
@@ -21,14 +21,14 @@ const BulkDimensionUploadModal = ({ visible, onClose }) => {
         formData.append('file', file);
 
         try {
-            const response = await fetch('/api/orders/updateBulkOrderDimensions', {
+            const response = await fetch('https://backend-9u5u.onrender.com/api/orders/updateBulkOrderDimensions', {
                 method: 'POST',
                 body: formData,
             });
 
             if (response.ok) {
                 message.success('File uploaded successfully!');
-                onClose(); 
+                onClose();
             } else {
                 const errorData = await response.json();
                 message.error(`Failed to upload file: ${errorData.error}`);
@@ -37,9 +37,9 @@ const BulkDimensionUploadModal = ({ visible, onClose }) => {
             message.error(`Error: ${error.message}`);
         }
     };
-const downloadFile = () => {
-    return "customerName,customerEmail,orderId,customerPhone,productName,productPrice,address,landMark,pin,city,state,quantity,sku,weight,length,breadth,height,paymentMethod"
-}
+    const downloadFile = () => {
+        return "customerName,customerEmail,orderId,customerPhone,productName,productPrice,address,landMark,pin,city,state,quantity,sku,weight,length,breadth,height,paymentMethod"
+    }
     return (
         <Modal
             title="Upload Bulk Dimension"
@@ -47,12 +47,12 @@ const downloadFile = () => {
             onCancel={onClose}
             footer={[
                 <Button key="download" >
-                    <DownloadLink 
-                    label='Download Sample CSV'
-                    filename='sample.csv'
-                    exportFile={downloadFile}
-                    style={{textDecoration:'none'}}
-                     />
+                    <DownloadLink
+                        label='Download Sample CSV'
+                        filename='sample.csv'
+                        exportFile={downloadFile}
+                        style={{ textDecoration: 'none' }}
+                    />
                 </Button>,
                 <Button key="submit" type="primary" onClick={handleUpload}>
                     Upload

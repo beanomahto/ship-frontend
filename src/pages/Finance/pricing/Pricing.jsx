@@ -12,7 +12,7 @@ const Pricing = () => {
     const fetchPricing = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch('/api/shipping/rateCard', {
+        const res = await fetch('https://backend-9u5u.onrender.com/api/shipping/rateCard', {
           headers: {
             Authorization: `${token}`,
           },

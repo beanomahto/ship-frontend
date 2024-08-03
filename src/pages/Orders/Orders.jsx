@@ -19,7 +19,7 @@ const Orders = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleBD, setModalVisibleBD] = useState(false);
   const [modalVisibleShipNow, setModalVisibleShipNow] = useState(false);
-  const [currentTab, setCurrentTab] = useState('tab1'); 
+  const [currentTab, setCurrentTab] = useState('tab1');
   console.log(orders);
 
   const showModal = () => setModalVisible(true);
@@ -32,7 +32,7 @@ const Orders = () => {
   const start = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/integration/syncButton');
+      const response = await fetch('https://backend-9u5u.onrender.com/api/integration/syncButton');
       if (response.ok) {
         const result = await response.json();
         console.log('Sync successful', result);
@@ -46,7 +46,7 @@ const Orders = () => {
       setLoading(false);
     }
   };
-  
+
 
   const onSelectChange = (newSelectedRowKeys) => {
     console.log(newSelectedRowKeys);
@@ -55,38 +55,38 @@ const Orders = () => {
 
   const handleShipNow = async () => {
     if (selectedRowKeys.length === 0) {
-        return; 
+      return;
     }
-console.log(selectedRowKeys);
+    console.log(selectedRowKeys);
     const updatedOrders = await Promise.all(selectedRowKeys?.map(async (orderId) => {
-        const order = orders?.orders[orderId];
-        console.log(order);
-        await fetch(`/api/orders/updateOrderStatus/${orderId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ status: 'Shipped' }),
-        });
+      const order = orders?.orders[orderId];
+      console.log(order);
+      await fetch(`https://backend-9u5u.onrender.com/api/orders/updateOrderStatus/${orderId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: 'Shipped' }),
+      });
 
-        return { ...order, status: 'Shipped' }; 
+      return { ...order, status: 'Shipped' };
     }));
 
     const newOrdersCopy = orders.orders.filter((_, index) => !selectedRowKeys.includes(index));
     setOrders({
-        orders: newOrdersCopy.concat(updatedOrders),
+      orders: newOrdersCopy.concat(updatedOrders),
     });
 
     setSelectedRowKeys([]);
     closeModalShipNow();
-};
+  };
 
-const exportToExcel = () => {
-  const workbook = XLSX.utils.book_new();
-  const worksheet = XLSX.utils.json_to_sheet(orders.orders);
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Orders');
-  XLSX.writeFile(workbook, 'Orders.xlsx');
-};
+  const exportToExcel = () => {
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.json_to_sheet(orders.orders);
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Orders');
+    XLSX.writeFile(workbook, 'Orders.xlsx');
+  };
 
   const dataSourceWithKeys = orders?.orders?.map((order) => ({
     ...order,
@@ -108,7 +108,7 @@ const exportToExcel = () => {
   };
 
   const hasSelected = selectedRowKeys.length > 1;
-console.log(dataSourceWithKeys);
+  console.log(dataSourceWithKeys);
   const tabsData = [
     {
       key: 'tab1',
@@ -136,49 +136,49 @@ console.log(dataSourceWithKeys);
     },
   ];
 
-console.log(tabsData);
+  console.log(tabsData);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }} className="addorder">
         <Button type="primary" style={{ alignSelf: 'flex-start' }} onClick={start} loading={loading}>Sync</Button>
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
-        {currentTab === 'tab1' && <Button disabled={!hasSelected} onClick={showModalShipNow}>Ship Now</Button>}
-        
+          {currentTab === 'tab1' && <Button disabled={!hasSelected} onClick={showModalShipNow}>Ship Now</Button>}
+
           {/* <ShipNowModel visible={modalVisibleShipNow} onClose={closeModalShipNow} /> */}
           {(currentTab === 'tab1' || currentTab === 'tab2' || currentTab === 'tab3') && (
-  <>
-    <Button   style={{
-    backgroundColor: '#668fa0', 
-    color: 'white', 
-    border: '2px solid #a5ffe7', 
-    boxShadow:'inherit',
-    borderRadius: '8px', 
-    padding: '10px 20px', 
-    fontSize: '16px', 
-    transition: 'background-color 0.3s'
-  }} >
-      <Link  to='singleorder'>Single Order</Link>
-    </Button>
-    <Popover
-      trigger={'click'}
-      placement="leftTop"
-      title={
-        <div style={{
-          display: 'flex',
-          flexDirection: "column",
-          margin: '1rem',
-          gap: '1rem'
-        }}>
-          <Button onClick={showModal}>Bulk Orders</Button>
-          <Button onClick={showModalBD}>Bulk Dimensions</Button>
-        </div>
-      }
-    >
-      <Button>Bulk Actions</Button>
-    </Popover>
-  </>
-)}
-  <Button type="primary" shape="round" onClick={exportToExcel} icon={<DownloadOutlined />} size='middle'>
+            <>
+              <Button style={{
+                backgroundColor: '#668fa0',
+                color: 'white',
+                border: '2px solid #a5ffe7',
+                boxShadow: 'inherit',
+                borderRadius: '8px',
+                padding: '10px 20px',
+                fontSize: '16px',
+                transition: 'background-color 0.3s'
+              }} >
+                <Link to='singleorder'>Single Order</Link>
+              </Button>
+              <Popover
+                trigger={'click'}
+                placement="leftTop"
+                title={
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: "column",
+                    margin: '1rem',
+                    gap: '1rem'
+                  }}>
+                    <Button onClick={showModal}>Bulk Orders</Button>
+                    <Button onClick={showModalBD}>Bulk Dimensions</Button>
+                  </div>
+                }
+              >
+                <Button>Bulk Actions</Button>
+              </Popover>
+            </>
+          )}
+          <Button type="primary" shape="round" onClick={exportToExcel} icon={<DownloadOutlined />} size='middle'>
             Download
           </Button>
           <BulkOrderUploadModal visible={modalVisible} onClose={closeModal} />
@@ -194,7 +194,7 @@ console.log(tabsData);
                 dataSource={tab.dataSource}
                 // rowSelection={tab.key === 'tab1' ? rowSelection : null}
                 rowSelection={rowSelection}
-                fetchOrders={fetchOrders} 
+                fetchOrders={fetchOrders}
                 loading={loading}
               />
             ) : (

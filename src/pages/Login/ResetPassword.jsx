@@ -11,14 +11,14 @@ const ResetPassword = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    console.log("clicked");
+        console.log("clicked");
         // if (newPassword !== confirmPassword) {
         //     alert("Passwords do not match");
         //     return;
         // }
-    
+
         try {
-            const response = await fetch('/api/auth/reset-password', {
+            const response = await fetch('https://backend-9u5u.onrender.com/api/auth/reset-password', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -32,9 +32,9 @@ const ResetPassword = () => {
             console.log(email);
             console.log(newPassword);
             console.log(confirmPassword);
-    console.log(response);
+            console.log(response);
             const data = await response.json();
-    console.log(data);
+            console.log(data);
             if (response.ok) {
                 alert("Password reset successfully");
                 navigate('/login');
@@ -58,7 +58,7 @@ const ResetPassword = () => {
                         </div>
                         <div className='inputs'>
                             <div className='input'>
-                                <input type="email" placeholder='email' 
+                                <input type="email" placeholder='email'
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                 />

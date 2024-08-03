@@ -89,7 +89,7 @@ const Support = () => {
         console.log(data);
 
         try {
-            const response = await fetch('/api/complaint/registercomplaint', {
+            const response = await fetch('https://backend-9u5u.onrender.com/api/complaint/registercomplaint', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

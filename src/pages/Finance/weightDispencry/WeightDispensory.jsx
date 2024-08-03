@@ -24,7 +24,7 @@ const WeightDispensory = () => {
   useEffect(() => {
     const fetchWeightDespensory = async () => {
       try {
-        const res = await fetch('/api/weightdiscrepancy/getweightdiscrepancy');
+        const res = await fetch('https://backend-9u5u.onrender.com/api/weightdiscrepancy/getweightdiscrepancy');
         const data = await res.json();
         setWeightDispensory(data);
       } catch (error) {
@@ -33,7 +33,7 @@ const WeightDispensory = () => {
     };
     fetchWeightDespensory();
   }, []);
-console.log(selectedRowData);
+  console.log(selectedRowData);
   const rowSelection = {
     selectedRowKeys,
     onChange: (newSelectedRowKeys, selectedRows) => {
@@ -56,19 +56,19 @@ console.log(selectedRowData);
     },
     {
       key: 'tab2',
-      tab: 'Open', 
+      tab: 'Open',
       Component: OpenWeightDispensory,
       dataSource: weightDispensory.data,
     },
     {
       key: 'tab3',
-      tab: 'Closed', 
+      tab: 'Closed',
       Component: ClosedWeightDispensory,
       dataSource: weightDispensory.data,
     },
     {
       key: 'tab4',
-      tab: 'All Dispute', 
+      tab: 'All Dispute',
       Component: OpenWeightDispensory,
       dataSource: weightDispensory.data,
     },
@@ -85,11 +85,11 @@ console.log(selectedRowData);
     <div>
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginBottom: '1rem' }} className="addorder">
         {authUser.role === 'company' && <Button onClick={showTakeActionModal}>Take Action</Button>}
-        <TakeActionModal 
-          visible={takeActionModalVisible} 
-          onClose={closeTakeActionModal} 
-          discrepancyId={selectedRowData._id} 
-          productName={selectedRowData.productName} 
+        <TakeActionModal
+          visible={takeActionModalVisible}
+          onClose={closeTakeActionModal}
+          discrepancyId={selectedRowData._id}
+          productName={selectedRowData.productName}
         />
         <CustomButton onClick={showModal}>Upload Weight</CustomButton>
         <UploadWeightDespensory visible={modalVisible} onClose={closeModal} />
@@ -102,7 +102,7 @@ console.log(selectedRowData);
             {tab.Component ? (
               <tab.Component
                 dataSource={tab.dataSource}
-                rowSelection={rowSelection} 
+                rowSelection={rowSelection}
               />
             ) : (
               <span>No component for this tab</span>

@@ -36,7 +36,7 @@ const useKycIntegration = () => {
     try {
       const token = localStorage.getItem('token');
 
-      const res = await fetch("/api/kyc/create", {
+      const res = await fetch("https://backend-9u5u.onrender.com/api/kyc/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

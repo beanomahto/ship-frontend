@@ -84,7 +84,7 @@ const useCreateLebel = () => {
 
     // const getLebel = async () => {
     //     try {
-    //         const response = await fetch('/api/shipping/getLabelinfo');
+    //         const response = await fetch('https://backend-9u5u.onrender.com/api/shipping/getLabelinfo');
     //         const data = await response.json()
     //         setData(data);
     //         console.log(data);

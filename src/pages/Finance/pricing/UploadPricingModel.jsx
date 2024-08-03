@@ -19,7 +19,7 @@ const UploadPricingModel = ({ visible, onClose }) => {
         formData.append('pricingFile', file);
 
         try {
-            const response = await fetch('/api/shipping/upload-custom-pricing', {
+            const response = await fetch('https://backend-9u5u.onrender.com/api/shipping/upload-custom-pricing', {
                 method: 'POST',
                 body: formData,
                 headers: {

@@ -16,7 +16,7 @@ const AdminMIS_Report = () => {
         };
 
         try {
-            const response = await fetch('/api/report/misreport', {
+            const response = await fetch('https://backend-9u5u.onrender.com/api/report/misreport', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

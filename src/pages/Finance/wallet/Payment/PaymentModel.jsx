@@ -15,7 +15,7 @@ const PaymentModel = ({ visible, onClose }) => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('/api/users/search', {
+      const response = await axios.get('https://backend-9u5u.onrender.com/api/users/search', {
         params: { query: value },
         headers: {
           Authorization: `${token}`
@@ -44,7 +44,7 @@ const PaymentModel = ({ visible, onClose }) => {
     }
 
     try {
-      const response = await axios.post(`/api/transactions/increaseAmount`, {
+      const response = await axios.post(`https://backend-9u5u.onrender.com/api/transactions/increaseAmount`, {
         userId: hoveredUser._id,
         credit: parseFloat(paymentAmount),
         remark: paymentRemark.trim()

@@ -28,7 +28,7 @@ const UpdateLabel = () => {
     useEffect(() => {
         const fetchLabelInfo = async () => {
             try {
-                const response = await axios.get('/api/shipping/getLabelInfo', {
+                const response = await axios.get('https://backend-9u5u.onrender.com/api/shipping/getLabelInfo', {
                     headers: {
                         Authorization: localStorage.getItem('token'),
                     }

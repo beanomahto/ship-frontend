@@ -23,7 +23,7 @@ const UploadDiscrepancyImagesModal = ({ visible, onClose, discrepancyId, product
       console.log(pair[0] + ':', pair[1]);
     }
     try {
-      const uploadResponse = await fetch(`/api/weightdiscrepancy/upload-images`, {
+      const uploadResponse = await fetch(`https://backend-9u5u.onrender.com/api/weightdiscrepancy/upload-images`, {
         method: 'POST',
         body: formData,
         headers: {
@@ -38,7 +38,7 @@ const UploadDiscrepancyImagesModal = ({ visible, onClose, discrepancyId, product
       const uploadResult = await uploadResponse.json();
       message.success(uploadResult.message);
 
-      const updateResponse = await fetch(`/api/weightdiscrepancy/updateStatus/${discrepancyId}`, {
+      const updateResponse = await fetch(`https://backend-9u5u.onrender.com/api/weightdiscrepancy/updateStatus/${discrepancyId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

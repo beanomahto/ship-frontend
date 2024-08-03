@@ -5,7 +5,7 @@ const Seller = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    fetch('/api/users'
+    fetch('https://backend-9u5u.onrender.com/api/users'
       , {
         headers: {
           Authorization: localStorage.getItem('token')
