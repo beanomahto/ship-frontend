@@ -16,20 +16,12 @@ const Ticket = () => {
 
     const fetchComplaints = async () => {
         try {
-<<<<<<< Updated upstream
             const res = await fetch('https://backend-9u5u.onrender.com/api/complaint/complaints'
                 , {
                     headers: {
                         Authorization: localStorage.getItem('token'),
                     },
                 });
-=======
-            const res = await fetch('/api/complaint/complaints', {
-                headers: {
-                    Authorization: localStorage.getItem('token'),
-                },
-            });
->>>>>>> Stashed changes
             const data = await res.json();
             setTicket(data.complaints || []);
         } catch (error) {
