@@ -8,7 +8,7 @@ const Logo = () => {
       <div className="logo-icon">
         {/* < ChromeFilled  /> */}
       {/* <Ship/> */}
-      <img src={Ship} alt="" width={50} height={50} />
+      <img src={Ship} alt="" width={50} height={50} style={{border:'2px solid #ddd', borderRadius:'50%'}} />
       </div>
     </div>
   )

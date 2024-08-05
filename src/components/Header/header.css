@@ -2,7 +2,9 @@
 
 .main-header{
     padding: 1rem;
-    background-color: white;
+    background-color: rgba(255, 249, 249, 0.971);
+    /* position: fixed; */
+    /* width: 98vw; */
 }
 .darkHeader{
     padding: 1rem;

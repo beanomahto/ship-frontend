@@ -14,8 +14,12 @@ const Seller = () => {
           },
         });
 
+<<<<<<< Updated upstream
         const data = await response.json();
         const companyUsers = data.filter((user) => user.role === 'company');
+=======
+        const companyUsers = data?.filter(user => user.role === 'company');
+>>>>>>> Stashed changes
         setUsers(companyUsers);
       } catch (error) {
         console.error('Error fetching users:', error);

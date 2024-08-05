@@ -6,7 +6,7 @@
     background-color: #fff;
     border: 1px solid #ddd;
     padding-left: 1rem;
-    /* box-shadow: 2px 2px 2px 2px; */
+    box-shadow: 1px 1px 1px 1px;
     border-radius: 15px;
 }
 
@@ -39,6 +39,7 @@
   .title {
     font-size: 1rem;
     color: royalblue;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight: 600;
     /* letter-spacing: -1px; */
     position: relative;
@@ -54,13 +55,13 @@
     width: 16px;
     border-radius: 50%;
     left: 0px;
-    background-color: royalblue;
+    background-color: rgb(65, 209, 225);
   }
   
   .title::before {
     width: 18px;
     height: 18px;
-    background-color: royalblue;
+    background-color: rgb(115, 148, 248);
   }
   
   .title::after {
@@ -93,6 +94,7 @@
   }
   
   .form label {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     position: relative;
   }
   
@@ -100,6 +102,7 @@
     width: 20rem;
     padding: 10px 10px 20px 10px;
     outline: 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     border: 1px solid rgba(105, 105, 105, 0.397);
     border-radius: 10px;
   }
@@ -110,22 +113,26 @@
     top: 15px;
     color: grey;
     font-size: 0.9em;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     cursor: text;
     transition: 0.3s ease;
   }
   
   .form label .input:placeholder-shown + span {
     top: 15px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 0.9em;
   }
   
   .form label .input:focus + span,.form label .input:valid + span {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     top: 0px;
     font-size: 0.7em;
     font-weight: 600;
   }
   
   .form label .input:valid + span {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     color: royalblue;
   }
   

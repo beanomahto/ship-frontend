@@ -39,8 +39,10 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
         }
     };
     const downloadFile = () => {
-        return "sellerEmail,discrepancyDetails,productDetails,appliedWeight,courierWeight,chargedWeight,excessWeightCharge,status,action"
-    }
+        const header = `"sellerEmail","weightAppliedDate","enteredWeight","enteredDimension","orderId","awbNumber","productName","appliedWeight","weightCharges","settledCharges","remarks"`;
+        const row1 = `"seller@email.com","2023_01_01","10.5","10x10x10","ORD123","AWB123","Product1","10","100","95","None"`;
+        return `${header}\n${row1}`;
+    };
     return (
         <Modal
             title="Upload"

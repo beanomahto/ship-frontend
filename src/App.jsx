@@ -40,6 +40,7 @@ import ResetPassword from './pages/Login/ResetPassword';
 import Tracking from './pages/Orders/Tracking/Tracking';
 import Seller from './pages/Seller/Seller';
 import VerifyKyc from './pages/Seller/VerifyKyc/VerifyKyc';
+import WooCommerce from './pages/channelIntegration/woocommerce/WooCommerce';
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -91,6 +92,7 @@ const App = () => {
           <Route path="pincodeservice" element={<ProtectedRoute><PinCodeServicecability /></ProtectedRoute>} />
           <Route path="channelintegration" element={<ProtectedRoute><ChannelIntergration /></ProtectedRoute>} />
           <Route path="channelintegration/:slug" element={<ProtectedRoute><Shopify /></ProtectedRoute>} />
+          <Route path="channelintegration/:slug" element={<ProtectedRoute><WooCommerce /></ProtectedRoute>} />
         </Route>
         <Route path="signup" element={<Signup />} />
         <Route path="login" element={<Login />} />

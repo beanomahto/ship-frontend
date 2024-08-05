@@ -8,20 +8,28 @@ const { Option } = Select;
 
 const Ticket = () => {
     const [ticket, setTicket] = useState([]);
-    const [visible, setVisible] = useState(false);  // For the "Provide Remedy" modal
-    const [newModalVisible, setNewModalVisible] = useState(false);  // For the "Complaint Details" modal
+    const [visible, setVisible] = useState(false);  
+    const [newModalVisible, setNewModalVisible] = useState(false);
     const [currentComplaint, setCurrentComplaint] = useState(null);
     const [remedy, setRemedy] = useState('');
     const [status, setStatus] = useState('');
 
     const fetchComplaints = async () => {
         try {
+<<<<<<< Updated upstream
             const res = await fetch('https://backend-9u5u.onrender.com/api/complaint/complaints'
                 , {
                     headers: {
                         Authorization: localStorage.getItem('token'),
                     },
                 });
+=======
+            const res = await fetch('/api/complaint/complaints', {
+                headers: {
+                    Authorization: localStorage.getItem('token'),
+                },
+            });
+>>>>>>> Stashed changes
             const data = await res.json();
             setTicket(data.complaints || []);
         } catch (error) {
@@ -37,7 +45,7 @@ const Ticket = () => {
         setCurrentComplaint(complaint);
         setRemedy(complaint.remedy || '');
         setStatus(complaint.status || '');
-        setVisible(true);  // Show "Provide Remedy" modal
+        setVisible(true);  
     };
 
     const handleCancel = () => {
@@ -141,7 +149,9 @@ const Ticket = () => {
                 onRow={(record) => {
                     return {
                         onClick: () => {
-                            handleRowClick(record);
+                            if (!visible) {
+                                handleRowClick(record);
+                            }
                         },
                     };
                 }}
@@ -154,13 +164,6 @@ const Ticket = () => {
                 onCancel={handleCancel}
             >
                 <div>
-                    {/* <label>
-                        <span>Description</span>
-                        <Input.TextArea
-                            value={currentComplaint?.description}
-                            readOnly
-                        />
-                    </label> */}
                     <label style={{ marginTop: '10px' }}>
                         <span>Remedy</span>
                         <Input

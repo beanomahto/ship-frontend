@@ -5,10 +5,12 @@
   padding: 0;
 }
 body {
-  height: 90%;
-  width: 90%;
- background: rgb(206,234,254);
-background: radial-gradient(circle, rgba(206,234,254,1) 0%, rgba(255,164,253,1) 100%);
+  height: 100%;
+  width: 100%;
+ /* background: rgb(206,234,254);
+background: radial-gradient(circle, rgba(206,234,254,1) 0%, rgba(255,164,253,1) 100%); */
+background-color:  #c7c4c494;;
+/* #f1f1f17d; */
 }
 
 /* body {

@@ -3,7 +3,7 @@ import { useState } from "react";
 const useChannelIntegration = () => {
 	const [loading, setLoading] = useState(false);
 
-	const shopifyIntegration = async ({ storeName, salesChannel, apiKey, apiSecret, token, }) => {
+	const channelIntegration = async ({ storeName, salesChannel, apiKey, apiSecret, token, }) => {
 		const success = handleInputErrors({ storeName, salesChannel, apiKey, apiSecret, token });
 		if (!success) return;
 
@@ -31,7 +31,7 @@ const useChannelIntegration = () => {
 		}
 	};
 
-	return { loading, shopifyIntegration };
+	return { loading, channelIntegration };
 };
 export default useChannelIntegration;
 
