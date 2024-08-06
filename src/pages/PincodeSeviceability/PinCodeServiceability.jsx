@@ -1,31 +1,17 @@
-import React from 'react'
-import { Button, Table } from 'antd';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import UploadPincodes from "./uploadPincodes";
+import CheckPincode from "./checkPincodes";
 
-const PinCodeServicecability = () => {
-    const newOrders = [
-        {
-          title: 'Courier Name',
-          dataIndex: 'c_name',
-        },
-        {
-          title: 'Serviceability',
-          dataIndex: 'serviceability',
-        },
-        {
-          title: 'Serviceable Pincode',
-          dataIndex: 's_pinCode',
-        },
-        {
-          title: 'STATUS',
-          dataIndex: 'stats',
-        }
-    ];
+const PincodeChecker = () => {
   return (
-    <div>
-        <Table className='table'  scroll={{ y: 350, }} columns={newOrders} />
-    </div>
-  )
-}
+    <>
+      <div>
+        <h1>Pincode Serviceability System</h1>
+        <UploadPincodes />
+        <CheckPincode />
+      </div>
+    </>
+  );
+};
 
-export default PinCodeServicecability
+export default PincodeChecker;
