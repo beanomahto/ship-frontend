@@ -27,25 +27,27 @@
 .form {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    /* gap: 1rem; */
     /* max-width: 350px; */
     background-color: #fff;
     /* background-color: #bce7b6; */
     padding: 2rem;
     border-radius: 20px;
     position: relative;
+    margin-top: 2rem;
   }
   
   .title {
-    font-size: 1rem;
-    color: royalblue;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-weight: 600;
+    font-size: 1.3rem;
+    color: #60a5db;
+    /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
+    font-weight: bold;
     /* letter-spacing: -1px; */
     position: relative;
     display: flex;
     align-items: center;
     padding-left: 30px;
+    padding-bottom: 1.5rem;
   }
   
   .title::before,.title::after {
@@ -90,7 +92,8 @@
   .flex {
     display: flex;
     width: 100%;
-    gap: 6rem;
+    gap: 4rem;
+
   }
   
   .form label {
@@ -100,14 +103,15 @@
   
   .form label .input {
     width: 20rem;
-    padding: 10px 10px 20px 10px;
-    font-weight:500;
-    font-size: 1rem;
+    padding: 12px 10px 5px 10px;
     outline: 0;
     /* font-family: Verdana, Geneva, Tahoma, sans-serif; */
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family: "Poppins", sans-serif;
+    font-size: 1rem;
     border: 1px solid rgba(105, 105, 105, 0.397);
     border-radius: 10px;
+    height: 40px;
+    background: #F5F7F8;
   }
   
   .form label .input + span {
@@ -132,21 +136,33 @@
     top: 0px;
     font-size: 0.7em;
     font-weight: 600;
+    padding: 4px 0 2px 0;
+    /* color: #6EACDA; */
+    color: rgb(182, 182, 182);
+    
   }
   
   .form label .input:valid + span {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    color: royalblue;
+    /* color: #6EACDA; */
+    
+    color: rgb(151, 150, 150);
+    padding: 4px 0 2px 0;
+    opacity: 10px;
   }
   
+  .paymentSelect Select{
+    width: 20rem;
+    height:40px;
+  }
   .submit {
     border: none;
     outline: none;
     background-color: royalblue;
-    padding: 10px;
+    padding: 0px;
     border-radius: 10px;
     color: #fff;
-    font-size: 16px;
+    font-size: 1rem;
     transform: .3s ease;
   }
   
