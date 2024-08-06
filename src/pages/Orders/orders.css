@@ -101,8 +101,11 @@
   .form label .input {
     width: 20rem;
     padding: 10px 10px 20px 10px;
+    font-weight:500;
+    font-size: 1rem;
     outline: 0;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    /* font-family: Verdana, Geneva, Tahoma, sans-serif; */
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     border: 1px solid rgba(105, 105, 105, 0.397);
     border-radius: 10px;
   }
@@ -112,7 +115,7 @@
     left: 10px;
     top: 15px;
     color: grey;
-    font-size: 0.9em;
+    font-size: 0.9rem;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     cursor: text;
     transition: 0.3s ease;

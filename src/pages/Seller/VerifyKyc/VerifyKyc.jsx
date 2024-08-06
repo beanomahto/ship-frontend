@@ -55,7 +55,6 @@ const VerifyKyc = () => {
 
         fetchKycData();
     }, [id]);
-    console.log(kycData);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -65,9 +64,31 @@ const VerifyKyc = () => {
         });
     };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`https://backend-9u5u.onrender.com/api/users/updateVerify/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `${token}`,
+                },
+                body: JSON.stringify(formData),
+            });
+            if (response.ok) {
+                message.success('KYC verified successfully');
+            } else {
+                message.error('Failed to verify KYC');
+            }
+        } catch (error) {
+            message.error('An error occurred while verifying KYC');
+        }
+    };
+
     return (
         <div className='formCon'>
-            <form className="form">
+            <form className="form" onSubmit={handleSubmit}>
                 <p className="title">KYC</p>
                 <div className='flex1'>
                     <div className="flex">

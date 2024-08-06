@@ -88,7 +88,7 @@ const Seller = () => {
   };
 
   return (
-    <div style={{ backgroundColor: '#fff', height: '40rem', borderRadius: '1rem' }}>
+    <div style={{ backgroundColor: '#fff', height: '45rem', borderRadius: '1rem' }}>
       <Table dataSource={users} columns={columns} rowKey="_id" pagination={false} />
     </div>
   );

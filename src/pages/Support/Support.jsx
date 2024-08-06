@@ -182,13 +182,13 @@ const Support = () => {
                                     onChange={(e) => handleAwbChange(index, e.target.value)}
                                 />
                             ))}
-                            <button type="button" onClick={addAwbField}>Add AWB</button>
+                            <button className='awbBtn' type="button" onClick={addAwbField}>Add AWB</button>
                         </label>
                     </div>
                 </div>
                 <div className='flex2sprt'>
                     <div className="flexsprt">
-                        <label>
+                        <label  className='iptsprt'>
                             <span>Description</span>
                             <input
                                 className="inputsprt"

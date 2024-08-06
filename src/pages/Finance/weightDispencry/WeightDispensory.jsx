@@ -24,7 +24,11 @@ const WeightDispensory = () => {
   useEffect(() => {
     const fetchWeightDespensory = async () => {
       try {
-        const res = await fetch('https://backend-9u5u.onrender.com/api/weightdiscrepancy/getweightdiscrepancy');
+        const res = await fetch('https://backend-9u5u.onrender.com/api/weightdiscrepancy/getweightdiscrepancy', {
+          headers: {
+              Authorization: localStorage.getItem('token'),
+          },
+      });
         const data = await res.json();
         setWeightDispensory(data);
       } catch (error) {

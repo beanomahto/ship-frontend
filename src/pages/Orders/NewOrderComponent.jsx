@@ -107,14 +107,14 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
       dataIndex: 'orderId',
       ...getColumnSearchProps('orderId'),
       render: (text, order) => (
-        <Link to={`/orders/updateorder/${order?._id}/${order?.orderId}`}>{order.orderId}</Link>
+        <Link style={{color:'black', fontWeight:'400', fontFamily:'Poppins'}} to={`/orders/updateorder/${order?._id}/${order?.orderId}`}>{order.orderId}</Link>
       ),
     },
     {
       title: 'Order Status',
       dataIndex: 'o_status',
       render: (text, order) => (
-        <Tag color={order.status === 'New' ? 'green' : 'volcano'} >
+        <Tag style={{display:'flex', maxWidth:'3rem', marginLeft:'3rem'}} color={order.status === 'New' ? 'green' : 'volcano'} >
           {order.status}
         </Tag>
       ),
@@ -125,8 +125,8 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
       ...getColumnSearchProps('customerName'),
       render: (text, order) => (
         <>
-          <di style={{ fontFamily: 'sans-serif', fontSize: '.9rem' }}>{order.customerName}</di>
-          <di style={{ fontFamily: 'sans-serif', fontSize: '.9rem' }}>{order.customerEmail}</di>
+          <div style={{ fontFamily: 'Poppins', fontSize: '.9rem', fontWeight: '500' }}>{order.customerName}</div>
+          <div style={{ fontFamily: 'Poppins', fontSize: '.9rem', fontWeight: '500' }}>{order.customerEmail}</div>
         </>
       ),
     },
@@ -139,23 +139,23 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
       ],
       onFilter: (value, record) => record.paymentMethod === value,
       render: (text, order) => (
-        <>
+        <div style={{display:'flex', flexDirection:'column', maxWidth:'4.5rem',  marginLeft:'1rem',fontFamily: 'Poppins', fontSize: '.9rem', fontWeight: '500'}}>
           <div>&#8377; {order.productPrice}</div>
           <Tag color={order.paymentMethod === 'COD' ? 'green-inverse' : 'geekblue-inverse'} >
             {order.paymentMethod}
           </Tag>
-        </>
+        </div>
       ),
     },
     {
       title: 'Package Details',
       render: (text, order) => (
-        <>
+        <div style={{fontFamily: 'Poppins', fontSize: '.9rem', fontWeight: '500'}}>
           <div>pkg Wt. {order.weight}gm</div>
           <div>
             ({order.length}x{order.breadth}x{order.height}cm)
           </div>
-        </>
+        </div>
       ),
     },
     {

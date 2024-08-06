@@ -74,7 +74,7 @@ const RateCard = () => {
           dataIndex: 'weightCategory',
           render: (weightCategory) => (
             <>
-              <div style={{fontFamily:'sans-serif', fontSize:'1rem',position:'absolute', left:'4rem'}} >{weightCategory}</div>
+              <div style={{fontFamily:'sans-serif', fontSize:'1rem',position:'absolute', left:'3rem'}} >{weightCategory}</div>
             </>
           ),
         },

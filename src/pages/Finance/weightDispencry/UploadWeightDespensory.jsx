@@ -25,6 +25,9 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
             const response = await fetch('https://backend-9u5u.onrender.com/api/weightdiscrepancy/upload-images', {
                 method: 'POST',
                 body: formData,
+                    headers: {
+                        Authorization: localStorage.getItem('token'),
+                    },
             });
             console.log(response)
             if (response.ok) {

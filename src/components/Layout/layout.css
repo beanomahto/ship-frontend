@@ -3,10 +3,13 @@
     grid-template-columns: 1rem 1fr;
     grid-template-rows: auto 1fr;
     height: 100vh;
+    /* position: sticky; */
+    overflow: hidden;
     /* background: linear-gradient(25deg, rgba(206,234,254,1) 0%, rgba(255,164,253,1) 100%); */
 }
 .main{
     width: 99rem;
+    overflow: auto;
     margin-left: 5rem;
     margin-top: 3rem;
 }

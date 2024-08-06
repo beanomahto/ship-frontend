@@ -32,7 +32,11 @@ const Orders = () => {
   const start = async () => {
     setLoading(true);
     try {
-      const response = await fetch('https://backend-9u5u.onrender.com/api/integration/syncButton');
+      const response = await fetch('https://backend-9u5u.onrender.com/api/integration/syncButton', {
+        headers: {
+            Authorization: localStorage.getItem('token'),
+        },
+    });
       if (response.ok) {
         const result = await response.json();
         console.log('Sync successful', result);
@@ -141,7 +145,7 @@ const Orders = () => {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }} className="addorder">
         <Button type="primary" style={{ alignSelf: 'flex-start' }} onClick={start} loading={loading}>Sync</Button>
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '2rem', fontSize:'2rem' }}>
           {currentTab === 'tab1' && <Button disabled={!hasSelected} onClick={showModalShipNow}>Ship Now</Button>}
 
           {/* <ShipNowModel visible={modalVisibleShipNow} onClose={closeModalShipNow} /> */}

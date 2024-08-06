@@ -16,7 +16,7 @@ import { useAuthContext } from '../../context/AuthContext';
 const MenuList = ({darktheme}) => {
     const {authUser} = useAuthContext()
     return (
-       <div style={{marginTop:'-1.7rem'}}>
+       <div style={{overflowY: 'auto', height: 'calc(100% - 80px)'}}>
          <Menu theme={darktheme ? 'dark' : 'light' } mode='inline' className='menu-bar' style={{display:'flex', flexDirection:'column', gap:'1.3rem'}} >
             <Menu.Item key='home' icon={<LuLayoutDashboard size='1.4rem' />} >
                 <Link to='/dashboard'><span style={{fontWeight:500}} >Dashboard</span></Link>

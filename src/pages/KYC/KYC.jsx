@@ -24,7 +24,11 @@ const KYC = () => {
     useEffect(() => {
         const fetchKycData = async () => {
             try {
-                const response = await fetch('https://backend-9u5u.onrender.com/api/kyc');
+                const response = await fetch('https://backend-9u5u.onrender.com/api/kyc', {
+                    headers: {
+                        Authorization: localStorage.getItem('token'),
+                    },
+                });
                 const data = await response.json();
                 setKycData(data);
                 console.log(data);

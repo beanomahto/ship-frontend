@@ -162,9 +162,9 @@ const ShipOrderComponent = ({ dataSource, fetchOrders, loading }) => {
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
-        <Button disabled={selectedRowKeys.length !== 1} style={{ borderColor: 'black' }}>
+        {/* <Button disabled={selectedRowKeys.length !== 1} style={{ borderColor: 'black' }}>
           <Link to={`/shipping/tracking/${selectedRowKeys[0]}`}>Track Order</Link>
-        </Button>
+        </Button> */}
         <Button disabled={selectedRowKeys.length !== 1} style={{ borderColor: 'black' }}>
           <Link to={`/shipping/getlabel/${selectedRowKeys[0]}`}>Shipping Label</Link>
         </Button>

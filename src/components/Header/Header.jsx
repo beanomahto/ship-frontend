@@ -11,7 +11,7 @@ const Header = ({darktheme}) => {
   const {loading, logout} = useLogout();
   return (
     <Flex className={darktheme ? 'darkHeader' : 'main-header'} vertical>
-    <Flex gap='1.5rem' justify='end'  >
+    <Flex gap='1.5rem' justify='end' align='center' >
       <Button className='btn' type='default' >Track Order</Button>
       <span className='span'></span>
       <Button className='money' type="default">	&#8377; {authUser?.amount}</Button>
@@ -19,7 +19,7 @@ const Header = ({darktheme}) => {
      {
       authUser ? <>
 
-<Popover placement="bottomLeft" trigger={'click'} title={
+<Popover className='profile' placement="bottomLeft" trigger={'click'} title={
             <div style={{
               display:'flex',
               flexDirection:"column",

@@ -23,7 +23,10 @@ const BulkDimensionUploadModal = ({ visible, onClose }) => {
         try {
             const response = await fetch('https://backend-9u5u.onrender.com/api/orders/updateBulkOrderDimensions', {
                 method: 'POST',
-                body: formData,
+                body: formData, 
+                    headers: {
+                        Authorization: localStorage.getItem('token'),
+                    },
             });
 
             if (response.ok) {
