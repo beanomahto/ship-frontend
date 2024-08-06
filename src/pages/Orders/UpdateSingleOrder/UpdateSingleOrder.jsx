@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Select } from "antd";
+import { Radio } from "antd";
 import "../orders.css";
 import useCreateSingleOrder from "../../../hooks/useCreateSingleOrder";
 import useGetSingleOrderWithId from "../../../hooks/useGetSingleOrderWithId";
@@ -329,8 +329,7 @@ const UpdateSingleOrder = () => {
           </label>
 
           <div className="paymentSelect" style={{}}>
-            <Select
-              // className="paymentSelect"
+            {/* <Select
               style={{ width: "18rem", height: "50px" }}
               placeholder="Select Payment Method"
               value={inputs.paymentMethod}
@@ -340,8 +339,17 @@ const UpdateSingleOrder = () => {
                 { value: "prepaid", label: "Prepaid" },
               ]}
             >
-              {/* <Option /> */}
-            </Select>
+            </Select> */}
+            <Radio.Group
+              style={{ marginTop: "20px" }}
+              value={inputs.paymentMethod}
+              onChange={(e) =>
+                setInputs({ ...inputs, paymentMethod: e.target.value })
+              }
+            >
+              <Radio value="prepaid">Prepaid</Radio>
+              <Radio value="COD">Cash on delivery</Radio>
+            </Radio.Group>
           </div>
         </div>
         <button className="submit">Submit</button>

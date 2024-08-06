@@ -39,7 +39,7 @@
   
   .title {
     font-size: 1.3rem;
-    color: #6EACDA;
+    color: #60a5db;
     /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
     font-weight: bold;
     /* letter-spacing: -1px; */
@@ -92,7 +92,8 @@
   .flex {
     display: flex;
     width: 100%;
-    gap: 6rem;
+    gap: 4rem;
+
   }
   
   .form label {
@@ -106,7 +107,7 @@
     outline: 0;
     /* font-family: Verdana, Geneva, Tahoma, sans-serif; */
     font-family: "Poppins", sans-serif;
-    font-size: 0.9rem;
+    font-size: 1rem;
     border: 1px solid rgba(105, 105, 105, 0.397);
     border-radius: 10px;
     height: 40px;
@@ -136,12 +137,16 @@
     font-size: 0.7em;
     font-weight: 600;
     padding: 4px 0 2px 0;
-    color: #6EACDA;
+    /* color: #6EACDA; */
+    color: rgb(182, 182, 182);
+    
   }
   
   .form label .input:valid + span {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    color: #6EACDA;
+    /* color: #6EACDA; */
+    
+    color: rgb(151, 150, 150);
     padding: 4px 0 2px 0;
     opacity: 10px;
   }
