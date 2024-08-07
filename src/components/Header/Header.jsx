@@ -48,7 +48,7 @@ const Header = ({darktheme}) => {
           }>
               <div className="Auth_Navbar">
       <div className="Symbol_logo_App">
-        <p className="fstChar_logo_App">{authUser?.firstName?.charAt(0) + " "+authUser?.lastName?.charAt(0).toUpperCase() }</p>
+        <p className="fstChar_logo_App">{authUser?.firstName?.charAt(0).toUpperCase() + " "+authUser?.lastName?.charAt(0).toUpperCase() }</p>
       </div>
 <Button type='text' className='name' >{authUser?.firstName +" "+ authUser?.lastName}</Button>
   </div>
