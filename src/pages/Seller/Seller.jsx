@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Tag, Button } from 'antd';
+import { Table, Tag, Button, Input, Space } from 'antd';
 import { Link } from 'react-router-dom';
+import { SearchOutlined} from '@ant-design/icons';
 
 const Seller = () => {
   const [users, setUsers] = useState([]);
+  const [searchText, setSearchText] = useState('');
+  const [searchedColumn, setSearchedColumn] = useState('');
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -24,36 +27,89 @@ const Seller = () => {
 
     fetchUsers();
   }, []);
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
 
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText('');
+  };
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{ marginBottom: 8, display: 'block' }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+            Reset
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => <SearchOutlined style={{ color: filtered ? '#1890ff' : 'black' }} />,
+    onFilter: (value, record) =>
+      record[dataIndex]
+        ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
+        : '',
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <span style={{ backgroundColor: '#ffc069', padding: 0 }}>{text}</span>
+      ) : (
+        text
+      ),
+  });
   const columns = [
     {
       title: 'Company Name',
       dataIndex: 'companyName',
+      ...getColumnSearchProps('companyName'),
       key: 'companyName',
     },
     {
       title: 'Email',
       dataIndex: 'email',
+      ...getColumnSearchProps('email'),
       key: 'email',
     },
     {
       title: 'First Name',
       dataIndex: 'firstName',
+      ...getColumnSearchProps('firstName'),
       key: 'firstName',
     },
     {
       title: 'Last Name',
       dataIndex: 'lastName',
+      ...getColumnSearchProps('lastName'),
       key: 'lastName',
     },
     {
       title: 'Phone Number',
       dataIndex: 'phoneNumber',
+      ...getColumnSearchProps('phoneNumber'),
       key: 'phoneNumber',
     },
     {
       title: 'Amount',
       dataIndex: 'amount',
+      ...getColumnSearchProps('amount'),
       key: 'amount',
     },
     {

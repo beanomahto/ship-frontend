@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Input, Button, Table, message } from "antd";
 import axios from "axios";
 
 const CheckPincode = () => {
@@ -19,15 +20,13 @@ const CheckPincode = () => {
 
     try {
       setError("");
-      // Send pincode as query parameter
-      //   console.log(pincode);
       const response = await axios.get(
         `https://backend-9u5u.onrender.com/api/pincode/checkService`,
         {
           params: { pincode },
         }
       );
-      console.log("Response Data:", response.data); // Debugging line
+      console.log("Response Data:", response.data);
 
       const { service, pincodeData } = response.data;
 
@@ -36,24 +35,58 @@ const CheckPincode = () => {
     } catch (err) {
       console.error("Error checking pincode:", err);
       setError("Error checking pincode.");
+      message.error("Error checking pincode.");
     }
   };
 
+  const columns = [
+    {
+      title: "Pincode",
+      dataIndex: "pincode",
+      key: "pincode",
+    },
+    {
+      title: "Serviceable",
+      dataIndex: "serviceable",
+      key: "serviceable",
+      render: (text) => (text ? "Yes" : "No"),
+    },
+    {
+      title: "City",
+      dataIndex: "city",
+      key: "city",
+    },
+  ];
+
+  const data = [
+    {
+      key: 1,
+      pincode,
+      serviceable,
+      city,
+    },
+  ];
+
   return (
     <div>
-      <h2>Check Pincode Serviceability</h2>
-      <input
+      <h2 className="pincode-title">Check Pincode Serviceability</h2>
+      <Input
         type="text"
         value={pincode}
         onChange={handlePincodeChange}
         placeholder="Enter pincode"
+        style={{ width: 200, marginRight: 10 }}
       />
-      <button onClick={checkPincode}>Check</button>
+      <Button type="primary" onClick={checkPincode}>
+        Check
+      </Button>
       {serviceable !== null && (
-        <p>
-          Pincode is {serviceable ? "serviceable" : "not serviceable"}.
-          {serviceable && city && ` City: ${city}`}
-        </p>
+        <Table
+          columns={columns}
+          dataSource={data}
+          pagination={false}
+          style={{ marginTop: 20 }}
+        />
       )}
       {error && <p style={{ color: "red" }}>{error}</p>}
     </div>

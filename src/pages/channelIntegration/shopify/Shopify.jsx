@@ -14,7 +14,7 @@ const Shopify = () => {
         apiSecret: '',
         token: ''
     });
-    const { shopifyIntegration } = useChannelIntegration();
+    const { channelIntegration } = useChannelIntegration();
 
     useEffect(() => {
         const getChannelInfo = async () => {
@@ -46,7 +46,7 @@ const Shopify = () => {
         if (data) {
             await updateChannelInfo();
         } else {
-            await shopifyIntegration(storeInputs);
+            await channelIntegration(storeInputs);
             message.success("Integrated Successfully");
         }
     };

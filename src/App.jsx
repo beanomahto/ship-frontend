@@ -91,8 +91,8 @@ const App = () => {
           <Route path="ticket" element={<ProtectedRoute><Ticket /></ProtectedRoute>} />
           <Route path="pincodeservice" element={<ProtectedRoute><PinCodeServicecability /></ProtectedRoute>} />
           <Route path="channelintegration" element={<ProtectedRoute><ChannelIntergration /></ProtectedRoute>} />
-          <Route path="channelintegration/:slug" element={<ProtectedRoute><Shopify /></ProtectedRoute>} />
-          <Route path="channelintegration/:slug" element={<ProtectedRoute><WooCommerce /></ProtectedRoute>} />
+          <Route path="channelintegration/shopify" element={<ProtectedRoute><Shopify /></ProtectedRoute>} />
+          <Route path="channelintegration/wooCommerce" element={<ProtectedRoute><WooCommerce /></ProtectedRoute>} />
         </Route>
         <Route path="signup" element={<Signup />} />
         <Route path="login" element={<Login />} />

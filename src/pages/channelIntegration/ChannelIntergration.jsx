@@ -34,7 +34,7 @@ const ChannelIntegration = () => {
         >
           <img className='logo' src={shopify} alt="Shopify Logo" />
           <Button type="primary">
-            <Link to={'/channelintegration/Shopify'} >Integrate</Link>
+            <Link to={'/channelintegration/shopify'} >Integrate</Link>
           </Button>
         </Card>
         <Card
@@ -44,7 +44,7 @@ const ChannelIntegration = () => {
         >
           <img className='logo' src={woo} alt="WooCommerce Logo" />
           <Button type="primary">
-          <Link to={'/channelintegration/WooCommerce'} >Integrate</Link>
+          <Link to={'/channelintegration/wooCommerce'} >Integrate</Link>
           </Button>
         </Card>
       </div>

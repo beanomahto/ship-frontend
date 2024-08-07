@@ -13,7 +13,7 @@
     position: absolute;
     right: 7rem;
     width: 600px;
-    margin-top: 5rem;
+    margin-top: 3rem;
     /* background: rgba(255, 255, 255, 0);
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     backdrop-filter: blur(5px);
@@ -38,7 +38,7 @@
 
 .text {
     color: #3c009d;
-    font-size: 48px;
+    font-size: 44px;
     font-weight: 700;
 }
 

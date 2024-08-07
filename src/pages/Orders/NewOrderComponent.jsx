@@ -12,7 +12,8 @@ import AS from '../../utils/amazon-shipping.png';
 import EE from '../../utils/ecom-express.png';
 import XPB from '../../utils/xpressbees.png';
 import Column from 'antd/es/table/Column';
-import Shopify from '../../utils/shopify.png'
+import Shopify from '../../utils/shopify.png';
+import Woo from '../../utils/woocomerce.png'
 
 const partnerImages = {
   'Blue Dart': BD,
@@ -88,7 +89,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
         </Space>
       </div>
     ),
-    filterIcon: (filtered) => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+    filterIcon: (filtered) => <SearchOutlined style={{ color: filtered ? '#1890ff' : 'black' }} />,
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
@@ -114,7 +115,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
       title: 'Order Status',
       dataIndex: 'o_status',
       render: (text, order) => (
-        <Tag style={{display:'flex', maxWidth:'3rem', marginLeft:'3rem'}} color={order.status === 'New' ? 'green' : 'volcano'} >
+        <Tag style={{display:'flex', maxWidth:'max-content', marginLeft:'3rem'}} color={order.status === 'New' ? 'green' : 'volcano'} >
           {order.status}
         </Tag>
       ),
@@ -162,11 +163,11 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
       title: 'Channel',
       dataIndex: 'channel',
       render: (text) => (
-        <div>
+        <div style={{display:'flex', justifyContent:'center'}}>
           <img
-            src={text === 'shopify' ? Shopify : ''}
+            src={text === 'shopify' ? Shopify : Woo}
             alt={text}
-            style={{ width: '75px', height: '40px', borderRadius: '50%' }}
+            style={{ width: 'max-content', height: '40px', borderRadius: '50%' }}
           />
         </div>
       ),

@@ -144,9 +144,9 @@ const Orders = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }} className="addorder">
-        <Button type="primary" style={{ alignSelf: 'flex-start' }} onClick={start} loading={loading}>Sync</Button>
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '2rem', fontSize:'2rem' }}>
-          {currentTab === 'tab1' && <Button disabled={!hasSelected} onClick={showModalShipNow}>Ship Now</Button>}
+        <Button type="primary" style={{ alignSelf: 'flex-start', borderRadius:'34px',fontFamily:'Poppins', fontSize:'1rem', fontWeight:'500' }} onClick={start} loading={loading}>Sync</Button>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '2rem', fontSize:'2rem',fontFamily:'Poppins' }}>
+          {currentTab === 'tab1' && <Button style={{borderRadius:'34px'}} disabled={!hasSelected} onClick={showModalShipNow}>Ship Now</Button>}
 
           {/* <ShipNowModel visible={modalVisibleShipNow} onClose={closeModalShipNow} /> */}
           {(currentTab === 'tab1' || currentTab === 'tab2' || currentTab === 'tab3') && (
@@ -156,10 +156,11 @@ const Orders = () => {
                 color: 'white',
                 border: '2px solid #a5ffe7',
                 boxShadow: 'inherit',
-                borderRadius: '8px',
+                borderRadius: '35px',
                 padding: '10px 20px',
-                fontSize: '16px',
-                transition: 'background-color 0.3s'
+                // fontSize: '16px',
+                transition: 'background-color 0.3s',
+                fontSize:'1rem', fontWeight:'500'
               }} >
                 <Link to='singleorder'>Single Order</Link>
               </Button>
@@ -173,8 +174,8 @@ const Orders = () => {
                     margin: '1rem',
                     gap: '1rem'
                   }}>
-                    <Button onClick={showModal}>Bulk Orders</Button>
-                    <Button onClick={showModalBD}>Bulk Dimensions</Button>
+                    <Button style={{borderRadius:'35px', fontFamily:'Poppins'}} onClick={showModal}>Bulk Orders</Button>
+                    <Button style={{borderRadius:'35px', fontFamily:'Poppins'}} onClick={showModalBD}>Bulk Dimensions</Button>
                   </div>
                 }
               >

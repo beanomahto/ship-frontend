@@ -1,4 +1,8 @@
-.makecenter{
-    display: flex;
-    justify-content: center;
-}
+.pincode-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #1890ff;
+    margin-bottom: 20px;
+    /* text-align: center; */
+    font-family: 'Arial', sans-serif;
+  }
