@@ -51,8 +51,23 @@
   }
    */
    .inte{
-    position: absolute;
-    top: 14rem;
-    width: 60rem;
-    left: 43rem;
+    /* position: absolute; */
+    /* top: 14rem; */
+    /* width: 60rem; */
+    /* left: 43rem; */
    }
+   .steps {
+    margin: 4rem;
+    width: 30rem;
+   }
+   .steps h1{
+    color:   #60a5db;
+   }
+   .steps ol{
+    padding: 1rem;
+    line-height: 1.7rem;
+   }
+   .steps ol ul{
+    padding-left: 3rem;
+   }
+   
