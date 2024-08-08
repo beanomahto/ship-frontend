@@ -10,6 +10,7 @@ import DLVRY from '../../utils/delhivery.png';
 import AS from '../../utils/amazon-shipping.png';
 import EE from '../../utils/ecom-express.png';
 import XPB from '../../utils/xpressbees.png';
+import { Helmet } from 'react-helmet';
 
 const partnerImages = {
   'Blue Dart': BD,
@@ -136,6 +137,11 @@ const RateCard = () => {
     ];
   return (
     <div>
+        <Helmet>
+                <meta charSet='utf-8' />
+                <meta name='keyword' content={""} />
+                <title>Rate Card</title>
+            </Helmet>
         <Table pagination={false} scroll={{ y: 350 }} className='table' dataSource={pricing} columns={newOrders} />
         <Divider />
         <div style={{backgroundColor:'white', padding:'2rem', borderRadius:'1rem'}} >

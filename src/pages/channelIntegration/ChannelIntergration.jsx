@@ -5,6 +5,7 @@ import './channelIntegration.css';
 import shopify from '../../utils/shopify.png';
 import woo from '../../utils/woocomerce.png';
 import ChannelIntegrationModel from './channelIntegrationMoodel/ChannelIntegrationModel';
+import { Helmet } from 'react-helmet';
 
 const ChannelIntegration = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -25,6 +26,11 @@ const ChannelIntegration = () => {
 
   return (
     <div className='channelINMain'>
+        <Helmet>
+                <meta charSet='utf-8' />
+                <meta name='keyword' content={""} />
+                <title>Channel Integration</title>
+            </Helmet>
         <h2 >Channel Integration</h2>
       <div className='channelsToIn'>
         <Card

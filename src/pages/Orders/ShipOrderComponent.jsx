@@ -4,6 +4,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 const ShipOrderComponent = ({ dataSource, fetchOrders, loading }) => {
   const [searchText, setSearchText] = useState('');
@@ -161,6 +162,11 @@ const ShipOrderComponent = ({ dataSource, fetchOrders, loading }) => {
   // console.log(rowSelection);
   return (
     <>
+      <Helmet>
+                <meta charSet='utf-8' />
+                <meta name='keyword' content={""} />
+                <title>Orders </title>
+            </Helmet>
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
         {/* <Button disabled={selectedRowKeys.length !== 1} style={{ borderColor: 'black' }}>
           <Link to={`/shipping/tracking/${selectedRowKeys[0]}`}>Track Order</Link>

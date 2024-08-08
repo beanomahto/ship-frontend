@@ -8,6 +8,7 @@ import SearchSellerModal from './SearchSellerModal';
 import TakeActionModal from './TakeActionModal';
 import ClosedWeightDispensory from './ClosedWeightDispensory';
 import { useAuthContext } from '../../../context/AuthContext';
+import { Helmet } from 'react-helmet';
 
 const { TabPane } = Tabs;
 
@@ -87,6 +88,11 @@ const WeightDispensory = () => {
 
   return (
     <div>
+         <Helmet>
+                <meta charSet='utf-8' />
+                <meta name='keyword' content={""} />
+                <title>Weight Despensory</title>
+            </Helmet>
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginBottom: '1rem' }} className="addorder">
         {authUser.role === 'company' && <Button onClick={showTakeActionModal}>Take Action</Button>}
         <TakeActionModal

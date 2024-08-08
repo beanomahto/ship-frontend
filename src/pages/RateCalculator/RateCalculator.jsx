@@ -4,6 +4,7 @@ import "./ratecalculatorr.css";
 import { Select } from "antd";
 import useRateCalculator from "../../hooks/useRateCalculator";
 import Img from "../../utils/rateCal1.jpg";
+import { Helmet } from "react-helmet";
 
 const RateCalculator = () => {
   const { loading, rateCalculator } = useRateCalculator();
@@ -29,6 +30,11 @@ const RateCalculator = () => {
 
   return (
     <div style={{ display: "flex" }}>
+        <Helmet>
+                <meta charSet='utf-8' />
+                <meta name='keyword' content={""} />
+                <title>Rate Calculator</title>
+            </Helmet>
       <div className="containerRC">
         <h1 className="form-title">Rate Calculator</h1>
         <form onSubmit={handleSubmit}>

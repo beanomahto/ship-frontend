@@ -4,6 +4,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import './label.css';
 import useUpdateLabel from '../../hooks/useUpdateLabel';
+import { Helmet } from 'react-helmet';
 
 const UpdateLabel = () => {
     const { updateLebel } = useUpdateLabel()
@@ -69,6 +70,11 @@ const UpdateLabel = () => {
 
     return (
         <div className='ok'>
+               <Helmet>
+                <meta charSet='utf-8' />
+                <meta name='keyword' content={""} />
+                <title>Manage Lebel</title>
+            </Helmet>
             <div className='formCon'>
                 <form className="form" onSubmit={handleSubmit} >
                     <p className="title">Update Label</p>

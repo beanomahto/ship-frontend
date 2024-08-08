@@ -3,6 +3,7 @@ import { Modal, Input, Select, Button, message, Table } from 'antd';
 import { Link } from 'react-router-dom';
 // import './ticket.css';
 import CustomButton from '../../components/Button/Button';
+import { Helmet } from 'react-helmet';
 
 const { Option } = Select;
 
@@ -123,6 +124,11 @@ const Ticket = () => {
 
     return (
         <div className='complaint-list'>
+              <Helmet>
+                <meta charSet='utf-8' />
+                <meta name='keyword' content={""} />
+                <title>Ticket</title>
+            </Helmet>
             <div style={{
                 display: 'flex',
                 justifyContent: 'flex-end',

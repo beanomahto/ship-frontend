@@ -3,6 +3,7 @@ import { Button, Table } from 'antd';
 import PaymentModel from './Payment/PaymentModel';
 import { usePaymentUserContext } from '../../../context/PaymentUserContext';
 import moment from 'moment';
+import { Helmet } from 'react-helmet';
 
 const AdminWallet = () => {
 
@@ -49,6 +50,11 @@ const AdminWallet = () => {
       const closeModal = () => setModalVisible(false);
   return (
     <div>
+         <Helmet>
+                <meta charSet='utf-8' />
+                <meta name='keyword' content={""} />
+                <title>Admin Wallet</title>
+            </Helmet>
           <div style={{
             display: 'flex',
             justifyContent: 'flex-end',

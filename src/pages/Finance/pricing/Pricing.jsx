@@ -3,6 +3,7 @@ import { Button, Table } from 'antd';
 import { Link } from 'react-router-dom';
 import UploadPricingModel from './UploadPricingModel';
 import CustomButton from '../../../components/Button/Button';
+import { Helmet } from 'react-helmet';
 // import './ratecard.css'
 
 const Pricing = () => {
@@ -134,6 +135,11 @@ const Pricing = () => {
   ];
   return (
     <div>
+         <Helmet>
+                <meta charSet='utf-8' />
+                <meta name='keyword' content={""} />
+                <title>Pricing</title>
+            </Helmet>
       <div style={{
         display: 'flex',
         justifyContent: 'flex-end',

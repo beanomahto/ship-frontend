@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Support.css';
 import { Select, message } from 'antd';
+import { Helmet } from 'react-helmet';
 
 const subjects = {
     'Pickup & Delivery': [
@@ -115,6 +116,11 @@ const Support = () => {
 
     return (
         <div className='formConsprt'>
+              <Helmet>
+                <meta charSet='utf-8' />
+                <meta name='keyword' content={""} />
+                <title>Support</title>
+            </Helmet>
             <form className="formsprt" onSubmit={handleSubmit}>
                 <p className="titlesprt">Support</p>
                 <div className='flex2sprt'>

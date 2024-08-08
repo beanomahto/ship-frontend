@@ -7,6 +7,7 @@ import SearchSellerModal from './SearchSellerModal';
 import moment from 'moment';
 import CustomButton from '../../../components/Button/Button';
 import { useAuthContext } from '../../../context/AuthContext';
+import { Helmet } from 'react-helmet';
 
 const CodRemmitance = () => {
   const { authUser } = useAuthContext();
@@ -90,6 +91,11 @@ const CodRemmitance = () => {
   console.log(remittanceData);
   return (
     <div>
+         <Helmet>
+                <meta charSet='utf-8' />
+                <meta name='keyword' content={""} />
+                <title>COD Remmitance</title>
+            </Helmet>
       <div style={{
         display: 'flex',
         justifyContent: 'flex-end',

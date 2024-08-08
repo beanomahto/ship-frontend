@@ -1,5 +1,6 @@
 import React from 'react'
 import { Table } from 'antd';
+import { Helmet } from 'react-helmet';
 const Wallet = () => {
 
     const newOrders = [
@@ -34,6 +35,11 @@ const Wallet = () => {
       ];
   return (
     <div>
+         <Helmet>
+                <meta charSet='utf-8' />
+                <meta name='keyword' content={""} />
+                <title>Wallet</title>
+            </Helmet>
         <Table className='table'  scroll={{ y: 350, }} columns={newOrders} />
     </div>
   )

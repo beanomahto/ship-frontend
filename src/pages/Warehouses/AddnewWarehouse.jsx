@@ -3,6 +3,7 @@ import pincodeData from '../../utils/zones.json'
 import { Button } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import useAddWarehouse from '../../hooks/useAddWarehouse';
+import { Helmet } from 'react-helmet';
 
 const AddnewWarehouse = () => {
     const navigate = useNavigate()
@@ -52,6 +53,11 @@ const AddnewWarehouse = () => {
         }
   return (
    <>
+     <Helmet>
+                <meta charSet='utf-8' />
+                <meta name='keyword' content={""} />
+                <title>Add Warehouse</title>
+            </Helmet>
    {
     loading ? <Spinner path='' /> :  <div >
     <div className='formCon'>

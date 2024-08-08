@@ -1,12 +1,20 @@
 import React from 'react'
 import './profile.css'
 import { useAuthContext } from '../../context/AuthContext';
+import { Helmet } from 'react-helmet';
 
 const Profile = () => {
     const {authUser} = useAuthContext();
     console.log(authUser);
+    const title = 'User Profile';
+    // const description = 'Manage your company and personal details in your profile.';
   return (
     <div className='formCon'>
+          <Helmet>
+                <meta charSet='utf-8' />
+                <meta name='description' content='' />
+                <title>{title}</title>
+            </Helmet>
     <form class="form">
         <p class="title">Profile </p>
 <div className='flex1' >

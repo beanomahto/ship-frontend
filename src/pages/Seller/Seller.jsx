@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Table, Tag, Button, Input, Space } from 'antd';
 import { Link } from 'react-router-dom';
 import { SearchOutlined} from '@ant-design/icons';
+import { Helmet } from 'react-helmet';
 
 const Seller = () => {
   const [users, setUsers] = useState([]);
@@ -145,6 +146,11 @@ const Seller = () => {
 
   return (
     <div style={{ backgroundColor: '#fff', height: '45rem', borderRadius: '1rem' }}>
+        <Helmet>
+                <meta charSet='utf-8' />
+                <meta name='keyword' content={""} />
+                <title>Sellers</title>
+            </Helmet>
       <Table dataSource={users} columns={columns} rowKey="_id" pagination={false} />
     </div>
   );

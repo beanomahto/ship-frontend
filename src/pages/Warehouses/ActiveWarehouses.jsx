@@ -2,6 +2,7 @@ import React from 'react'
 import { Button, Table, Tabs } from 'antd';
 import { Link } from 'react-router-dom';
 import { useWarehouseContext } from '../../context/WarehouseContext';
+import { Helmet } from 'react-helmet';
 
 const ActiveWarehouses = () => {
   const {warehouse} = useWarehouseContext();
@@ -78,6 +79,11 @@ const ActiveWarehouses = () => {
   ]
   return (
    <>
+     <Helmet>
+                <meta charSet='utf-8' />
+                <meta name='keyword' content={""} />
+                <title>Warehouses</title>
+            </Helmet>
     <div style={{
       display: 'flex',
       justifyContent: 'flex-end',

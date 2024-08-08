@@ -12,6 +12,12 @@ const CheckPincode = () => {
     setPincode(e.target.value);
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      checkPincode();
+    }
+  };
+
   const checkPincode = async () => {
     if (pincode.length !== 6) {
       setError("Please enter a valid 6-digit pincode.");
@@ -74,6 +80,7 @@ const CheckPincode = () => {
         type="text"
         value={pincode}
         onChange={handlePincodeChange}
+        onKeyPress={handleKeyPress}
         placeholder="Enter pincode"
         style={{ width: 200, marginRight: 10 }}
       />

@@ -3,6 +3,7 @@ import './kyc.css';
 import { Checkbox, Select, Upload, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import useKyc from '../../hooks/useKyc';
+import { Helmet } from 'react-helmet';
 
 const KYC = () => {
     const { kycIntegration } = useKyc();
@@ -78,6 +79,10 @@ const KYC = () => {
 
     return (
         <div className='formCon'>
+               <Helmet>
+                <meta charSet='utf-8' />
+                <title>Your KYC</title>
+            </Helmet>
             <form className="form" onSubmit={handleSubmit}>
                 <p className="title">KYC</p>
                 <div className='flex1'>

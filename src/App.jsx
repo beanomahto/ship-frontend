@@ -37,7 +37,8 @@ import Support from "./pages/Support/Support";
 import Ticket from "./pages/Support/Ticket";
 import AdminMIS_Report from "./pages/Reports/AdminMIS_Report";
 import ResetPassword from "./pages/Login/ResetPassword";
-import Tracking from "./pages/Orders/Tracking/Tracking";
+// import Tracking from "./pages/Orders/Tracking/Tracking";
+import Tracking from './components/Tracking/Tracking'
 import Seller from "./pages/Seller/Seller";
 import VerifyKyc from "./pages/Seller/VerifyKyc/VerifyKyc";
 import WooCommerce from "./pages/channelIntegration/woocommerce/WooCommerce";
@@ -114,9 +115,7 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="orders/singleorder"
-            element={
+          <Route path="orders/singleorder"element={
               <ProtectedRoute>
                 <SingleOrder />
               </ProtectedRoute>
@@ -147,7 +146,7 @@ const App = () => {
             }
           />
           <Route
-            path="shipping/tracking/66a62c22d9403a646c1013e2"
+            path="tracking/:selectedOption/:value"
             element={
               <ProtectedRoute>
                 <Tracking />

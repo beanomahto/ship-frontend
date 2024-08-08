@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
 import axios from 'axios';
+import { Helmet } from 'react-helmet';
 
 const MasterMIS_Report = () => {
   const handleDownload = async () => {
@@ -28,6 +29,11 @@ const MasterMIS_Report = () => {
 
   return (
     <div className="reportmaincontainer">
+        <Helmet>
+                <meta charSet='utf-8' />
+                <meta name='keyword' content={""} />
+                <title>MIS Report</title>
+            </Helmet>
       <div className="reports-container">
         <h1>Reports</h1>
         <Button type='primary' onClick={handleDownload}>Download MIS Report</Button>

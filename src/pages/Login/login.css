@@ -1,5 +1,6 @@
 .mainConti {
-    background-image: url('../../utils/loginTheme.png');
+    /* background-image: url('../../utils/loginTheme.png'); */
+    background-image: url('../../utils/white-truck.png');
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -21,7 +22,8 @@
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.18); */
     background: rgba(255, 255, 255, 0.25);
-    box-shadow: 0px 0px 8px 1px rgb(188 188 188 / 37%);
+    /* background: rgba(233, 250, 215, 0.25); */
+    box-shadow: 0px 0px 8px 1px rgb(188 188 188 / 100%);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
     border-radius: 10px;

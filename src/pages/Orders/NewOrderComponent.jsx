@@ -14,6 +14,7 @@ import XPB from '../../utils/xpressbees.png';
 import Column from 'antd/es/table/Column';
 import Shopify from '../../utils/shopify.png';
 import Woo from '../../utils/woocomerce.png'
+import { Helmet } from 'react-helmet';
 
 const partnerImages = {
   'Blue Dart': BD,
@@ -225,6 +226,11 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
 
   return (
     <>
+       <Helmet>
+                <meta charSet='utf-8' />
+                <meta name='keyword' content={""} />
+                <title>Orders </title>
+            </Helmet>
       {loading ? (
         <Skeleton active title={false} paragraph={{ rows: 10 }} style={{ height: '100%', width: '100%' }} />
       ) : (

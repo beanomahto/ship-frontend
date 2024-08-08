@@ -5,6 +5,7 @@ import useCreateSingleOrder from '../../../hooks/useCreateSingleOrder'
 import pincodeData from '../../../utils/zones.json'
 import { useOrderContext } from '../../../context/OrderContext'
 import { useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
 
 const SingleOrder = () => {
     const navigate = useNavigate()
@@ -66,6 +67,11 @@ console.log(inputs)
     return (
         <>
             <div className='formCon'>
+            <Helmet>
+                <meta charSet='utf-8' />
+                <meta name='keyword' content={""} />
+                <title>Create Order</title>
+            </Helmet>
                 <form class="form" onSubmit={handleOrderSubmit}>
                     <p class="title">Create Single Product </p>
 

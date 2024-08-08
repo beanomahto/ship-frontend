@@ -5,6 +5,7 @@ import password_icon from './password.png';
 import { Link, useNavigate } from 'react-router-dom';
 import useLogin from '../../hooks/useLogin';
 import ForgotPasswordModal from './ForgotPasswordModal';
+import { Helmet } from 'react-helmet';
 
 const Login = () => {
     const navigate = useNavigate();
