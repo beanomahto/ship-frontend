@@ -179,7 +179,7 @@ const Orders = () => {
                   </div>
                 }
               >
-                <Button>Bulk Actions</Button>
+                <Button style={{borderRadius:'35px', fontFamily:'Poppins'}}>Bulk Actions</Button>
               </Popover>
             </>
           )}

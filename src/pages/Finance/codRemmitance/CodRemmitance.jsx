@@ -107,7 +107,7 @@ const CodRemmitance = () => {
         <CustomButton onClick={showSearchModal}>Search Seller</CustomButton>
         <SearchSellerModal visible={searchModalVisible} remittanceData={remittanceData} onClose={closeSearchModal} />
       </div>
-      <RemmitanceData />
+      <RemmitanceData remittanceData={remittanceData.remittances} />
       <Table
         className='table'
         scroll={{ y: 350 }}
