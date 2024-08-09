@@ -76,7 +76,7 @@ const CheckPincode = () => {
   ];
 
   return (
-    <div>
+    <div style={{marginLeft:'4rem'}} >
       <h2 className="pincode-title">Check Pincode Serviceability</h2>
       <Input
         type="text"
@@ -93,7 +93,7 @@ const CheckPincode = () => {
         columns={columns}
         dataSource={data} 
         pagination={false}
-        style={{ marginTop: 20 }}
+        style={{ marginTop: '4rem', marginLeft:'-2rem' }}
       />
       {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
