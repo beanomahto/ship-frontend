@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Table, Tabs } from 'antd';
+import { Button, Table, Tabs, Tag } from 'antd';
 import { Link } from 'react-router-dom';
 import { useWarehouseContext } from '../../context/WarehouseContext';
 import { Helmet } from 'react-helmet';
@@ -29,6 +29,11 @@ const ActiveWarehouses = () => {
         {
           title: 'STATUS',
           dataIndex: 'stats',
+          render: (warehouse) => (
+            <>
+              <Tag color='green' >Active</Tag>
+            </>
+          ),
         },
         {
           title: 'Action',
@@ -40,43 +45,6 @@ const ActiveWarehouses = () => {
     ...warehouse,
     key: index.toString(),
   }));
-  const columns= [
-    { title: 'Order Id', dataIndex: 'orderId' },
-    { title: 'Order Status', dataIndex: 'o_status' },
-    {
-      title: 'Customer Info',
-      dataIndex: 'customerName',
-    },
-    {
-      title: 'Payment Details',
-      dataIndex: 'paymentMethod',
-      render: (text, order) => (
-        <>
-          <div>&#8377; {order.productPrice}</div>
-          <div style={{ color: '#fff', width: '4rem', fontWeight: '600', borderRadius: '5px', paddingLeft: '5px', backgroundColor: `${order.paymentMethod === 'COD' ? '#bce7b6' : 'rgb(194, 205, 245)'}` }}>{order.paymentMethod}</div>
-        </>
-      ),
-    },
-    {
-      title: 'Package Details',
-      render: (text, order) => (
-        <>
-          <div>pkg Wt. {order.weight}gm</div>
-          <div>({order.length}x{order.breadth}x{order.height}cm)</div>
-        </>
-      ),
-    },
-    { title: 'Channel', dataIndex: 'productName' },
-    { title: 'Order Date', dataIndex: 'createdAt',
-      render: (text, order) => (
-        moment(order?.createdAt).format('DD-MM-YYYY') 
-      ),
-
-     },
-    { title: 'Quick Assign', dataIndex: 'q_assign',  render: (text, order) => (
-      <div>{<ThunderboltOutlined style={{ cursor:'pointer', fontSize: '1.5rem', color: '#08c' }}/>}</div>
-    ), },
-  ]
   return (
    <>
      <Helmet>
