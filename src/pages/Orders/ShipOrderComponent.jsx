@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import Shopify from '../../utils/shopify.png';
 import Woo from '../../utils/woocomerce.png'
+import logo from '../../utils/logo1.jpg' 
 
 const ShipOrderComponent = ({ dataSource, fetchOrders, loading }) => {
   const [searchText, setSearchText] = useState('');
@@ -146,7 +147,7 @@ const ShipOrderComponent = ({ dataSource, fetchOrders, loading }) => {
       render: (text) => (
         <div style={{display:'flex', justifyContent:'center'}}>
           <img
-            src={text === 'shopify' ? Shopify : Woo}
+           src={text === 'shopify' ? Shopify : (text === 'Mannual' ? logo : Woo)}
             alt={text}
             style={{ width: 'max-content', height: '40px', borderRadius: '50%' }}
           />
