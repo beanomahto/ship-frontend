@@ -9,6 +9,7 @@ import NewOrderComponent from './NewOrderComponent';
 import ShipOrderComponent from './ShipOrderComponent';
 import * as XLSX from 'xlsx';
 import { DownloadOutlined } from '@ant-design/icons';
+import AllOrderComponent from './AllOrderComponent';
 
 const { TabPane } = Tabs;
 
@@ -135,8 +136,8 @@ const Orders = () => {
     {
       key: 'tab4',
       tab: 'All Orders',
-      Component: NewOrderComponent,
-      dataSource: [...dataSourceWithKeys]
+      Component: AllOrderComponent,
+      dataSource: dataSourceWithKeys
     },
   ];
 
