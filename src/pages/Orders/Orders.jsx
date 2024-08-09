@@ -149,7 +149,8 @@ const Orders = () => {
           {currentTab === 'tab1' && <Button style={{borderRadius:'34px'}} disabled={!hasSelected} onClick={showModalShipNow}>Ship Now</Button>}
 
           {/* <ShipNowModel visible={modalVisibleShipNow} onClose={closeModalShipNow} /> */}
-          {(currentTab === 'tab1' || currentTab === 'tab2' || currentTab === 'tab3') && (
+          {/* {(currentTab === 'tab1' || currentTab === 'tab2' || currentTab === 'tab3') && ( */}
+          {(currentTab === 'tab1') && (
             <>
               <Button style={{
                 backgroundColor: '#668fa0',

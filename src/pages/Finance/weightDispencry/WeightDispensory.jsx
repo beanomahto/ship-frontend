@@ -120,6 +120,10 @@ const WeightDispensory = () => {
           </TabPane>
         ))}
       </Tabs>
+      <div style={{backgroundColor:'#fff', borderRadius:'34px', marginTop:'2rem', fontFamily:'Poppins', padding:'2rem', fontWeight:'500'}} >
+      Disputes can be raised within 7 days of uploading the discrepancy. After that, it will be auto-accepted
+
+      </div>
     </div>
   );
 };

@@ -15,14 +15,21 @@ body{
 } */
 
 .containerRC {
-    width: 100%;
+    /* width: 100%; */
+    /* margin-top: 1rem; */
     width: 60rem;
     background: white;
     padding: 28px;
     margin: 0 10px;
+    font-family: 'Poppins';
+    background: rgba(255, 255, 255, 0.25);
+    /* background: rgba(233, 250, 215, 0.25); */
+    box-shadow: 0px 0px 8px 1px rgb(188 188 188 / 100%);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     border-radius: 10px;
-    box-shadow: inset -2px 2px 2px white;
-    /* background-color: #fff; */
+    border: 2px solid rgba(255, 255, 255, 0.18);
+    border-radius: 10px;
 }
 
 .form-title {
@@ -102,7 +109,15 @@ body{
 .selector {
     height: 38px;
 }
-
+.imgDiv{
+    background: rgba(255, 255, 255, 0.25);
+    /* background: rgba(233, 250, 215, 0.25); */
+    box-shadow: 0px 0px 8px 1px rgb(188 188 188 / 100%);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
 .form-submit-btn input {
     display: block;
     width: 100%;

@@ -7,6 +7,7 @@ const CheckPincode = () => {
   const [serviceable, setServiceable] = useState(null);
   const [city, setCity] = useState("");
   const [error, setError] = useState("");
+  const [data, setData] = useState([]); // Initialize the data as an empty array
 
   const handlePincodeChange = (e) => {
     setPincode(e.target.value);
@@ -38,6 +39,16 @@ const CheckPincode = () => {
 
       setServiceable(service);
       setCity(pincodeData ? pincodeData.city : "Unknown");
+
+      // Update the data state with the new data
+      setData([
+        {
+          key: 1,
+          pincode,
+          serviceable: service,
+          city: pincodeData ? pincodeData.city : "Unknown",
+        },
+      ]);
     } catch (err) {
       console.error("Error checking pincode:", err);
       setError("Error checking pincode.");
@@ -64,15 +75,6 @@ const CheckPincode = () => {
     },
   ];
 
-  const data = [
-    {
-      key: 1,
-      pincode,
-      serviceable,
-      city,
-    },
-  ];
-
   return (
     <div>
       <h2 className="pincode-title">Check Pincode Serviceability</h2>
@@ -87,14 +89,12 @@ const CheckPincode = () => {
       <Button type="primary" onClick={checkPincode}>
         Check
       </Button>
-      {serviceable !== null && (
-        <Table
-          columns={columns}
-          dataSource={data}
-          pagination={false}
-          style={{ marginTop: 20 }}
-        />
-      )}
+      <Table
+        columns={columns}
+        dataSource={data} 
+        pagination={false}
+        style={{ marginTop: 20 }}
+      />
       {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );

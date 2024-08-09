@@ -30,7 +30,7 @@ const UploadPincodes = () => {
         },
       });
       message.success(response.data.message);
-      setVisible(false); // Close the modal after a successful upload
+      setVisible(false);
     } catch (err) {
       console.error("Error uploading file:", err);
       setError("Error uploading file.");
@@ -48,7 +48,7 @@ const UploadPincodes = () => {
   return (
     <div>
       <CustomButton type="primary" onClick={showModal}>
-        <h1 style={{fontSize:'1rem'}} >Upload Pincode</h1>
+        <h1 style={{fontSize:'0.9rem', color:'#3d3d3d'}} >Upload Pincode</h1>
       </CustomButton>
       <Modal
         title="Upload Pincodes"

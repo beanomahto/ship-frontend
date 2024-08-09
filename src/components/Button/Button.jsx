@@ -9,7 +9,7 @@ const CustomButton = ({ children, ...props }) => {
     if (authUser?.role !== 'admin') return null;
 
     return (
-        <Button {...props}>
+        <Button style={{borderRadius:'50px', padding:'1rem', backgroundColor:'#ffffff94'}} {...props}>
             {children}
         </Button>
     );
