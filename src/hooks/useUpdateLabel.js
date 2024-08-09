@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios'; // You might need to install axios if not already installed
+import axios from 'axios';
 
 const useUpdateLabel = () => {
     const [loading, setLoading] = useState(false);

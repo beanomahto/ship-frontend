@@ -90,7 +90,7 @@ const LabelGenerator = () => {
             <p><strong>Order Id</strong> 123231</p>
             <div style={labelData.logoUrl ? { display: 'flex' } : {}}>
               <div className="section">
-                <img style={{ width: '15rem' }} src={`data:image/png;base64,${labelData.barcode}`} alt="Barcode" />
+                <img style={{ width: '11rem' }} src={`data:image/png;base64,${labelData.barcode}`} alt="Barcode" />
                 {/* <img style={{ width: '10rem' }} src={base64Logo} alt="" /> */}
               </div>
               {labelData.logoUrl &&
