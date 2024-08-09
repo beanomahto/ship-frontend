@@ -15,11 +15,14 @@ const Signup = () => {
   });
   const [agree, setAgree] = useState(false);
   const { loading, signup } = useSignup();
+  const { fetchOrders } = useOrderContext();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(inputs);
     await signup(inputs);
+    fetchOrders();
     navigate('/');
   };
 

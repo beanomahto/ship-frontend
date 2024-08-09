@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import useLogin from '../../hooks/useLogin';
 import ForgotPasswordModal from './ForgotPasswordModal';
 import { Helmet } from 'react-helmet';
+import { useOrderContext } from '../../context/OrderContext';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -14,10 +15,12 @@ const Login = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     const { loading, login } = useLogin();
+    const { fetchOrders } = useOrderContext();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         await login(email, password);
+        fetchOrders();
         navigate('/');
     };
 

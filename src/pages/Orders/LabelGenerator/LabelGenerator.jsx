@@ -32,7 +32,7 @@ const LabelGenerator = () => {
         const token = localStorage.getItem('token');
         const response = await axios.get(`https://backend-9u5u.onrender.com/api/shipping/getlabel/${id}`, {
           headers: {
-            Authorization: localStorage.getItem('token'),
+            Authorization:`${token}`,
           }
         });
         const logoBase64 = await getBase64ImageFromUrl(response.data.logoUrl);
