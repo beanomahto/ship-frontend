@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Select } from 'antd'
+import { Radio } from "antd";
 import '../orders.css'
 import useCreateSingleOrder from '../../../hooks/useCreateSingleOrder'
 import pincodeData from '../../../utils/zones.json'
@@ -54,12 +55,13 @@ const SingleOrder = () => {
         };
 console.log(inputs)
     const { loading, createSingleOrder } = useCreateSingleOrder();
-    const { orders } = useOrderContext();
+    const { orders, fetchOrders } = useOrderContext();
     console.log(orders);
 
     const handleOrderSubmit = async(e) => {	
         e.preventDefault();
 		await createSingleOrder(inputs);
+        fetchOrders();
         // setInputs('')
         navigate('/orders')
     }
@@ -214,7 +216,7 @@ console.log(inputs)
                         </label>
                         <div className="paymentSelect" style={{
                         }}  >
-                            <Select placeholder='Select Payment Method' 
+                            {/* <Select placeholder='Select Payment Method' 
                             value={inputs.paymentMethod} 
                             onChange={(e) => setInputs({ ...inputs, paymentMethod: e })}
                             options={[
@@ -223,7 +225,17 @@ console.log(inputs)
                             ]}
                             >
 
-                            </Select>
+                            </Select> */}
+                             <Radio.Group
+              style={{ marginTop: "20px" }}
+              value={inputs.paymentMethod}
+              onChange={(e) =>
+                setInputs({ ...inputs, paymentMethod: e.target.value })
+              }
+            >
+              <Radio value="prepaid">Prepaid</Radio>
+              <Radio value="COD">Cash on delivery</Radio>
+            </Radio.Group>
                         </div>
                     </div>
                     <button class="submit">Submit</button>

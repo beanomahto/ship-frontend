@@ -5,6 +5,8 @@ import moment from 'moment';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import Shopify from '../../utils/shopify.png';
+import Woo from '../../utils/woocomerce.png'
 
 const ShipOrderComponent = ({ dataSource, fetchOrders, loading }) => {
   const [searchText, setSearchText] = useState('');
@@ -140,8 +142,16 @@ const ShipOrderComponent = ({ dataSource, fetchOrders, loading }) => {
     },
     {
       title: 'Channel',
-      dataIndex: 'productName',
-      ...getColumnSearchProps('productName'),
+      dataIndex: 'channel',
+      render: (text) => (
+        <div style={{display:'flex', justifyContent:'center'}}>
+          <img
+            src={text === 'shopify' ? Shopify : Woo}
+            alt={text}
+            style={{ width: 'max-content', height: '40px', borderRadius: '50%' }}
+          />
+        </div>
+      ),
     },
     {
       title: 'Order Date',
@@ -160,6 +170,8 @@ const ShipOrderComponent = ({ dataSource, fetchOrders, loading }) => {
   };
   const shippedOrders = dataSource?.filter(order => order?.status === 'Shipped');
   // console.log(rowSelection);
+  console.log(shippedOrders);
+  
   return (
     <>
       <Helmet>

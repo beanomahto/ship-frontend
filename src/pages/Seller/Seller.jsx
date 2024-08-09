@@ -8,6 +8,7 @@ const Seller = () => {
   const [users, setUsers] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
+console.log(users);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -77,6 +78,11 @@ const Seller = () => {
       ),
   });
   const columns = [
+    {
+      title: 'Company Id',
+      dataIndex: 'companyId',
+      ...getColumnSearchProps('companyId'),
+    },
     {
       title: 'Company Name',
       dataIndex: 'companyName',

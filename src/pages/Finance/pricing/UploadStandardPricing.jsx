@@ -3,7 +3,7 @@ import { Modal, Button, Upload, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import DownloadLink from 'react-download-link' 
 
-const UploadPricingModel = ({ visible, onClose }) => {
+const UploadStandardPricingModel = ({ visible, onClose }) => {
     const [file, setFile] = useState(null);
 
     const handleFileChange = ({ file }) => {
@@ -17,10 +17,10 @@ const UploadPricingModel = ({ visible, onClose }) => {
         }
 
         const formData = new FormData();
-        formData.append('pricingFile', file);
+        formData.append('file', file);
 
         try {
-            const response = await fetch('https://backend-9u5u.onrender.com/api/shipping/upload-custom-pricing', {
+            const response = await fetch('https://backend-9u5u.onrender.com/api/shipping/upload-standard-pricing', {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -40,7 +40,7 @@ const UploadPricingModel = ({ visible, onClose }) => {
         }
     };
     const downloadFile = () => {
-        return "deliveryPartner,weightCategory,zoneA,zoneB,zoneC,zoneD,zoneE,codFixed,codPercentage"
+        return "sellerEmail,deliveryPartner,weightCategory,zoneA,zoneB,zoneC,zoneD,zoneE,codFixed,codPercentage"
     }
     return (
         <Modal
@@ -68,4 +68,4 @@ const UploadPricingModel = ({ visible, onClose }) => {
     );
 };
 
-export default UploadPricingModel;
+export default UploadStandardPricingModel;

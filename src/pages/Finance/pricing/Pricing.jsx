@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import UploadPricingModel from './UploadPricingModel';
 import CustomButton from '../../../components/Button/Button';
 import { Helmet } from 'react-helmet';
+import UploadStandardPricingModel from './UploadStandardPricing';
 // import './ratecard.css'
 
 const Pricing = () => {
@@ -28,8 +29,11 @@ const Pricing = () => {
   }, []);
   console.log(pricing);
   const [modalVisible, setModalVisible] = useState(false);
+  const [standardModalVisible, setStandardModalVisible] = useState(false);
   const showModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
+  const showSModal = () => setStandardModalVisible(true);
+  const closeSModal = () => setStandardModalVisible(false);
   const zoneA = <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }} >
     <h4>Zone A</h4>
     <p>within city</p>
@@ -146,8 +150,10 @@ const Pricing = () => {
         gap: '1rem',
         marginBottom: '1rem'
       }} className="addorder" >
-        <CustomButton onClick={showModal} >Upload Pricing</CustomButton>
+        <CustomButton onClick={showModal} >Upload Custom Pricing</CustomButton>
         <UploadPricingModel visible={modalVisible} onClose={closeModal} />
+        <CustomButton onClick={showSModal} >Upload Standard Pricing</CustomButton>
+        <UploadStandardPricingModel visible={standardModalVisible} onClose={closeSModal} />
       </div>
       <Table className='table' scroll={{ y: 350, }} dataSource={pricing} columns={newOrders} />
     </div>

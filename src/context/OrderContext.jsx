@@ -35,12 +35,6 @@ export const OrderContextProvider = ({ children }) => {
 
         fetchOrders();
     }, []);
-
-    useEffect(() => {
-
-        fetchOrders();
-    }, []);
-
     return (
         <OrderContext.Provider value={{ orders, setOrders, loading, error, fetchOrders }}>
             {children}
