@@ -42,6 +42,7 @@ import Tracking from './components/Tracking/Tracking'
 import Seller from "./pages/Seller/Seller";
 import VerifyKyc from "./pages/Seller/VerifyKyc/VerifyKyc";
 import WooCommerce from "./pages/channelIntegration/woocommerce/WooCommerce";
+import WalletHistory from "./pages/Finance/wallet/WalletHistory";
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -169,14 +170,7 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="finance"
-            element={
-              <ProtectedRoute>
-                <Finance />
-              </ProtectedRoute>
-            }
-          >
+          <Route path="finance" element={<ProtectedRoute><Finance /></ProtectedRoute>}>
             <Route
               path="codremmitance"
               element={
@@ -189,6 +183,14 @@ const App = () => {
               path="wallet"
               element={
                 authUser?.role === "admin" ? <AdminWallet /> : <Wallet />
+              }
+            />
+            <Route
+              path="history"
+              element={
+                <ProtectedRoute>
+                <WalletHistory />
+              </ProtectedRoute>
               }
             />
             <Route

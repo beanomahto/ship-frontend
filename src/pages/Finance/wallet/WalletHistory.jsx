@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Button, Table } from 'antd';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
-import { usePaymentUserContext } from '../../../context/PaymentUserContext';
+// import { usePaymentUserContext } from '../../../context/PaymentUserContext';
 import moment from 'moment';
 import {Link} from 'react-router-dom'
 
-const Wallet = () => {
+const WalletHistory = () => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   
@@ -68,16 +68,8 @@ console.log(transactions);
       <Helmet>
         <meta charSet='utf-8' />
         <meta name='keyword' content={''} />
-        <title>Wallet</title>
+        <title>Wallet History</title>
       </Helmet>
-      <div style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            gap:'1rem',
-            marginBottom:'1rem'
-          }} className="addorder" >
-           <Button><Link to='/finance/history'>Wallet History</Link></Button>
-           </div>
       <Table
         className='table'
         scroll={{ y: 350 }}
@@ -90,4 +82,4 @@ console.log(transactions);
   );
 };
 
-export default Wallet;
+export default WalletHistory;
