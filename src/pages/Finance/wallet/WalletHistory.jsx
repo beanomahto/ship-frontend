@@ -36,6 +36,10 @@ const WalletHistory = () => {
       dataIndex: 'd&t',
       render: (text, transaction) => moment(transaction?.updatedAt).format('DD-MM-YYYY'),
     },
+    {
+      title: 'Remark',
+      dataIndex: 'remark',
+    }
   ];
 
   useEffect(() => {
