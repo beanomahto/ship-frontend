@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Tabs, Modal, Popover } from 'antd';
+import { Button, Tabs, Modal, Popover, message } from 'antd';
 import { Link } from 'react-router-dom';
 import { useOrderContext } from '../../context/OrderContext';
 import BulkOrderUploadModal from './BulkOrder/BulkOrder';
@@ -10,6 +10,7 @@ import ShipOrderComponent from './ShipOrderComponent';
 import * as XLSX from 'xlsx';
 import { DownloadOutlined } from '@ant-design/icons';
 import AllOrderComponent from './AllOrderComponent';
+import axios from 'axios';
 
 const { TabPane } = Tabs;
 
@@ -142,15 +143,57 @@ const Orders = () => {
   ];
 
   console.log(tabsData);
+  console.log(selectedRowKeys);
+  
+  const cancelShipment = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.put(`https://backend-9u5u.onrender.com/api/orders/updateOrderStatus/${selectedRowKeys}`, {
+        status: 'Cancelled'
+      }, {
+        headers: {
+          Authorization: `${token}`
+        }
+      });
+      if (response.status === 201) {
+        message.success('Order canceled successfully');
+        fetchOrders();
+        setSelectedRowKeys([]);
+      }
+
+    } catch (error) {
+      console.log(error);
+      
+      message.error('Failed to cancel order');
+    }
+  };
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }} className="addorder">
-        <Button type="primary" style={{ alignSelf: 'flex-start', borderRadius:'34px',fontFamily:'Poppins', fontSize:'1rem', fontWeight:'500' }} onClick={start} loading={loading}>Sync</Button>
+       {currentTab === 'tab1' &&  <Button type="primary" style={{ alignSelf: 'flex-start', borderRadius:'34px',fontFamily:'Poppins', fontSize:'1rem', fontWeight:'500' }} onClick={start} loading={loading}>Sync</Button>}
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '2rem', fontSize:'2rem',fontFamily:'Poppins' }}>
           {currentTab === 'tab1' && <Button style={{borderRadius:'34px'}} disabled={!hasSelected} onClick={showModalShipNow}>Ship Now</Button>}
 
-          {/* <ShipNowModel visible={modalVisibleShipNow} onClose={closeModalShipNow} /> */}
-          {/* {(currentTab === 'tab1' || currentTab === 'tab2' || currentTab === 'tab3') && ( */}
+{
+  <div>
+  <div style={{ display: 'flex', justifyContent: 'space-between',flexDirection:'row', gap: '65rem' }}>
+  <Button type="primary" shape="round" onClick={exportToExcel} icon={<DownloadOutlined />} size='middle'>
+            Download
+          </Button>
+  {
+      currentTab === 'tab2' &&   <div style={{display:'flex',justifyContent:'space-evenly', gap:'2rem'}} >
+        <Button disabled={selectedRowKeys.length !== 1} style={{ borderColor: 'black', borderRadius:'50px' }}>
+              <Link to={`/shipping/getlabel/${selectedRowKeys[0]}`}>Shipping Label</Link>
+            </Button>
+            <Button disabled={selectedRowKeys.length !== 1} style={{ borderColor: 'gray', borderRadius:'50px' }}>
+              <Link to={`/shipping/getInvoice/${selectedRowKeys[0]}`}>Invoice</Link>
+            </Button>
+            <Button disabled={selectedRowKeys.length !== 1} style={{ borderColor: 'red', borderRadius:'50px' }} onClick={cancelShipment} >Cancel Shipment</Button>
+        </div>
+  }
+        </div>
+  </div>
+}
           {(currentTab === 'tab1') && (
             <>
               <Button style={{
@@ -185,9 +228,7 @@ const Orders = () => {
               </Popover>
             </>
           )}
-          <Button type="primary" shape="round" onClick={exportToExcel} icon={<DownloadOutlined />} size='middle'>
-            Download
-          </Button>
+       
           <BulkOrderUploadModal visible={modalVisible} onClose={closeModal} />
           <BulkOrderDimension visible={modalVisibleBD} onClose={closeModalBD} />
           <ShipNowModel hasSelected={hasSelected} selectedRowKeys={selectedRowKeys} visible={modalVisibleShipNow} onClose={closeModalShipNow} onShipNow={handleShipNow} />

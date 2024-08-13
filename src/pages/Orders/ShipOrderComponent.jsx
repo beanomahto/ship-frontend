@@ -9,7 +9,7 @@ import Shopify from '../../utils/shopify.png';
 import Woo from '../../utils/woocomerce.png'
 import logo from '../../utils/logo1.jpg' 
 
-const ShipOrderComponent = ({ dataSource, fetchOrders, loading }) => {
+const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -25,26 +25,6 @@ const ShipOrderComponent = ({ dataSource, fetchOrders, loading }) => {
     setSearchText('');
   };
 
-  const cancelShipment = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await axios.put(`https://backend-9u5u.onrender.com/api/orders/updateOrderStatus/${selectedRowKeys}`, {
-        status: 'Cancelled'
-      }, {
-        headers: {
-          Authorization: `${token}`
-        }
-      });
-      if (response.status === 201) {
-        message.success('Order canceled successfully');
-        fetchOrders();
-        setSelectedRowKeys([]);
-      }
-
-    } catch (error) {
-      message.error('Failed to cancel order');
-    }
-  };
 
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -163,12 +143,12 @@ const ShipOrderComponent = ({ dataSource, fetchOrders, loading }) => {
   ];
 
 
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: (selectedKeys) => {
-      setSelectedRowKeys(selectedKeys);
-    },
-  };
+  // const rowSelection = {
+  //   selectedRowKeys,
+  //   onChange: (selectedKeys) => {
+  //     setSelectedRowKeys(selectedKeys);
+  //   },
+  // };
   const shippedOrders = dataSource?.filter(order => order?.status === 'Shipped');
   // console.log(rowSelection);
   console.log(shippedOrders);
@@ -180,19 +160,6 @@ const ShipOrderComponent = ({ dataSource, fetchOrders, loading }) => {
                 <meta name='keyword' content={""} />
                 <title>Orders </title>
             </Helmet>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
-        {/* <Button disabled={selectedRowKeys.length !== 1} style={{ borderColor: 'black' }}>
-          <Link to={`/shipping/tracking/${selectedRowKeys[0]}`}>Track Order</Link>
-        </Button> */}
-        <Button disabled={selectedRowKeys.length !== 1} style={{ borderColor: 'black', borderRadius:'50px' }}>
-          <Link to={`/shipping/getlabel/${selectedRowKeys[0]}`}>Shipping Label</Link>
-        </Button>
-        {/* getInvoice */}
-        <Button disabled={selectedRowKeys.length !== 1} style={{ borderColor: 'gray', borderRadius:'50px' }}>
-          <Link to={`/shipping/getInvoice/${selectedRowKeys[0]}`}>Invoice</Link>
-        </Button>
-        <Button disabled={selectedRowKeys.length !== 1} style={{ borderColor: 'red', borderRadius:'50px' }} onClick={cancelShipment}>Cancel Shipment</Button>
-      </div>
       {
         loading ? (
           <Skeleton active title={false}

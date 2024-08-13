@@ -74,9 +74,9 @@ console.log(transactions);
             display: 'flex',
             justifyContent: 'flex-end',
             gap:'1rem',
-            marginBottom:'1rem'
+            marginBottom:'1rem',
           }} className="addorder" >
-           <Button><Link to='/finance/history'>Wallet History</Link></Button>
+           <Button style={{borderRadius:'14px', fontSize:'1rem'}} ><Link to='/finance/history'>Wallet History</Link></Button>
            </div>
       <Table
         className='table'

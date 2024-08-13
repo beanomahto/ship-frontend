@@ -91,6 +91,7 @@ const KYC = () => {
                             <span>Company Type</span>
                             <Select
                                 className='input ipt'
+                                style={{padding:'0'}}
                                 value={formData.companyType}
                                 onChange={(value) => setFormData({ ...formData, companyType: value })}
                             >
@@ -103,6 +104,7 @@ const KYC = () => {
                             <span>Document Type</span>
                             <Select
                                 className='input ipt'
+                                style={{padding:'0'}}
                                 value={formData.documentType}
                                 onChange={(value) => setFormData({ ...formData, documentType: value })}
                             >
@@ -146,6 +148,7 @@ const KYC = () => {
                             <span>Name of seller</span>
                             <input
                                 className="input"
+                                style={{padding:'0'}}
                                 type="text"
                                 name="passbookNumber"
                                 value={formData.name}
@@ -156,6 +159,7 @@ const KYC = () => {
                             <span>Account No.</span>
                             <input
                                 className="input"
+                                style={{padding:'0'}}
                                 type="text"
                                 name="accountNumber"
                                 value={formData.accountNumber}
@@ -195,6 +199,7 @@ const KYC = () => {
                             <span>IFC Code</span>
                             <input
                                 className="input"
+                                style={{padding:'0'}}
                                 type="text"
                                 name="passbookNumber"
                                 value={formData.ifscCode}
@@ -205,6 +210,7 @@ const KYC = () => {
                             <span>Bank </span>
                             <input
                                 className="input"
+                                style={{padding:'0'}}
                                 type="text"
                                 name="passbookNumber"
                                 value={formData.bankName}
@@ -219,6 +225,7 @@ const KYC = () => {
                             <span>GSTIN</span>
                             <input
                                 className="input"
+                                style={{padding:'0'}}
                                 type="text"
                                 name="gstin"
                                 value={formData.gstin}
@@ -229,6 +236,7 @@ const KYC = () => {
                             <span>PAN Card Number</span>
                             <input
                                 className="input"
+                                style={{padding:'0'}}
                                 type="text"
                                 name="pancard"
                                 value={formData.pancard}

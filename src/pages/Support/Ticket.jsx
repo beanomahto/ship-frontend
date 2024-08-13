@@ -106,7 +106,7 @@ const Ticket = () => {
             title: 'Action',
             key: 'action',
             render: (text, record) => (
-                <CustomButton onClick={() => showModal(record)} type="primary">
+                <CustomButton onClick={() => showModal(record)} style={{color:'white'}} type="primary">
                     Remedy
                 </CustomButton>
             ),
@@ -135,7 +135,7 @@ const Ticket = () => {
                 gap: '1rem',
                 marginBottom: '1rem'
             }} className="addorder">
-                <Button>
+                <Button style={{borderRadius:'34px', backgroundColor:'#dfdfdf',color:'#494949',fontSize:'1rem',fontWeight:'600',border:'2px solid #494949'}} >
                     <Link to='/support'>Raise Ticket</Link>
                 </Button>
             </div>

@@ -115,7 +115,8 @@ const Support = () => {
     };
 
     return (
-        <div className='formConsprt'>
+       <div >
+         <div className='formConsprt'>
               <Helmet>
                 <meta charSet='utf-8' />
                 <meta name='keyword' content={""} />
@@ -208,6 +209,7 @@ const Support = () => {
                 <button className="submitsprt" type="submit">Submit</button>
             </form>
         </div>
+       </div>
     );
 };
 

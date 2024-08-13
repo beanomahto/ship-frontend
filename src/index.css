@@ -60,9 +60,9 @@ tr{
   font-size: 1rem;
 }
 
-.ant-table-cell:nth-child(even) {
+/* .ant-table-cell:nth-child(even) {
   background-color: #e7e7e73f;
-}
+} */
 
 div{
   display:'flex';
