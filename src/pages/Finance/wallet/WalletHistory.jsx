@@ -4,41 +4,37 @@ import { Helmet } from 'react-helmet';
 import axios from 'axios';
 // import { usePaymentUserContext } from '../../../context/PaymentUserContext';
 import moment from 'moment';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const WalletHistory = () => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   const newOrders = [
     {
-      title: 'Date & Time',
-      dataIndex: 'd&t',
-      render: (text, transaction) => moment(transaction?.updatedAt).format('DD-MM-YYYY'),
-    },
-    {
-      title: 'Transaction ID',
-      dataIndex: 'trns_id',
-    },
-    {
-      title: 'Order Id',
-      dataIndex: 'ordr_id',
-    },
-    {
-      title: 'Tracking Id',
-      dataIndex: 'trcking_id',
-    },
-    {
-      title: 'Debit',
-      dataIndex: 'debit',
+      title: 'Payment ID',
+      dataIndex: '_id',
     },
     {
       title: 'Credit',
       dataIndex: 'credit',
     },
     {
-      title: 'Remarks',
-      dataIndex: 'remark',
+      title: 'Balance',
+      dataIndex: 'balance',
+    },
+    {
+      title: 'Transaction Detail',
+      dataIndex: 'transaction_id',
+    },
+    {
+      title: 'Transaction Status',
+      dataIndex: 'status',
+    },
+    {
+      title: 'Date & Time',
+      dataIndex: 'd&t',
+      render: (text, transaction) => moment(transaction?.updatedAt).format('DD-MM-YYYY'),
     },
   ];
 
@@ -61,7 +57,7 @@ const WalletHistory = () => {
 
     fetchTransactions();
   }, []);
-console.log(transactions);
+  console.log(transactions);
 
   return (
     <div>
@@ -76,7 +72,7 @@ console.log(transactions);
         columns={newOrders}
         dataSource={transactions}
         loading={loading}
-        rowKey={(record) => record.trns_id} 
+        rowKey={(record) => record.trns_id}
       />
     </div>
   );
