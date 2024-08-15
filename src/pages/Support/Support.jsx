@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Support.css';
 import { Select, message } from 'antd';
 import { Helmet } from 'react-helmet';
+import sprt from '../../utils/support.jpg'
 
 const subjects = {
     'Pickup & Delivery': [
@@ -115,101 +116,106 @@ const Support = () => {
     };
 
     return (
-       <div >
-         <div className='formConsprt'>
-              <Helmet>
+        <div className='support-container'>
+            <Helmet>
                 <meta charSet='utf-8' />
                 <meta name='keyword' content={""} />
                 <title>Support</title>
             </Helmet>
-            <form className="formsprt" onSubmit={handleSubmit}>
-                <p className="titlesprt">Support</p>
-                <div className='flex2sprt'>
-                    <div className="flexsprt">
-                        <label className='iptsprt'>
-                            <span>Subject</span>
-                            <Select
-                                className='inputsprt iptsprt'
-                                value={subject}
-                                onChange={handleSubjectChange}
-                            >
-                                {Object.keys(subjects).map(subject => (
-                                    <Select.Option key={subject} value={subject}>
-                                        {subject}
-                                    </Select.Option>
-                                ))}
-                                <Select.Option value="other">Other</Select.Option>
-                            </Select>
-                        </label>
-                    </div>
-                    {subject === 'other' && (
-                        <div className="flexsprt">
-                            <label className='iptsprt'>
-                                <span>Specify Support</span>
-                                <input
-                                    className="inputsprt"
-                                    type="text"
-                                    value={customSupport}
-                                    onChange={handleCustomSupportChange}
-                                />
-                            </label>
+            <div className='support-content'>
+                <div className='form-container'>
+                    <form className="formsprt" onSubmit={handleSubmit}>
+                        <p className="titlesprt">Support</p>
+                        <div className='flex2sprt'>
+                            <div className="flexsprt">
+                                <label className='iptsprt'>
+                                    <span>Subject</span>
+                                    <Select
+                                        className='inputsprt iptsprt'
+                                        value={subject}
+                                        onChange={handleSubjectChange}
+                                    >
+                                        {Object.keys(subjects).map(subject => (
+                                            <Select.Option key={subject} value={subject}>
+                                                {subject}
+                                            </Select.Option>
+                                        ))}
+                                        <Select.Option value="other">Other</Select.Option>
+                                    </Select>
+                                </label>
+                            </div>
+                            {subject === 'other' && (
+                                <div className="flexsprt">
+                                    <label className='iptsprt'>
+                                        <span>Specify Support</span>
+                                        <input
+                                            className="inputsprt"
+                                            type="text"
+                                            value={customSupport}
+                                            onChange={handleCustomSupportChange}
+                                        />
+                                    </label>
+                                </div>
+                            )}
                         </div>
-                    )}
-                </div>
-                {subject !== 'other' && relatedQuestions.length > 0 && (
-                    <div className='flex2sprt'>
-                        <div className="flexsprt">
-                            <label className='iptsprt'>
-                                <span>Question</span>
-                                <Select
-                                    className='inputsprt iptsprt'
-                                    value={selectedQuestion}
-                                    onChange={handleQuestionChange}
-                                >
-                                    {relatedQuestions.map(question => (
-                                        <Select.Option key={question} value={question}>
-                                            {question}
-                                        </Select.Option>
+                        {subject !== 'other' && relatedQuestions.length > 0 && (
+                            <div className='flex2sprt'>
+                                <div className="flexsprt">
+                                    <label className='iptsprt'>
+                                        <span>Question</span>
+                                        <Select
+                                            className='inputsprt iptsprt'
+                                            value={selectedQuestion}
+                                            onChange={handleQuestionChange}
+                                        >
+                                            {relatedQuestions.map(question => (
+                                                <Select.Option key={question} value={question}>
+                                                    {question}
+                                                </Select.Option>
+                                            ))}
+                                        </Select>
+                                    </label>
+                                </div>
+                            </div>
+                        )}
+                        <div className='flex2sprt'>
+                            <div className="flexsprt">
+                                <label className='iptsprt'>
+                                    <span>AWB</span>
+                                    {awbNumbers.map((awb, index) => (
+                                        <input
+                                            key={index}
+                                            className="inputsprt"
+                                            type="text"
+                                            value={awb}
+                                            onChange={(e) => handleAwbChange(index, e.target.value)}
+                                        />
                                     ))}
-                                </Select>
-                            </label>
+                                    <button className='awbBtn' type="button" onClick={addAwbField}>Add AWB</button>
+                                </label>
+                            </div>
                         </div>
-                    </div>
-                )}
-                <div className='flex2sprt'>
-                    <div className="flexsprt">
-                        <label className='iptsprt'>
-                            <span>AWB</span>
-                            {awbNumbers.map((awb, index) => (
-                                <input
-                                    key={index}
-                                    className="inputsprt"
-                                    type="text"
-                                    value={awb}
-                                    onChange={(e) => handleAwbChange(index, e.target.value)}
-                                />
-                            ))}
-                            <button className='awbBtn' type="button" onClick={addAwbField}>Add AWB</button>
-                        </label>
-                    </div>
+                        <div className='flex2sprt'>
+                            <div className="flexsprt">
+                                <label className='iptsprt'>
+                                    <span>Description</span>
+                                    <input
+                                        className="inputsprt"
+                                        type="text"
+                                        value={description}
+                                        onChange={handleDescriptionChange}
+                                    />
+                                </label>
+                            </div>
+                        </div>
+                        <button className="submitsprt" type="submit">Submit</button>
+                    </form>
                 </div>
-                <div className='flex2sprt'>
-                    <div className="flexsprt">
-                        <label  className='iptsprt'>
-                            <span>Description</span>
-                            <input
-                                className="inputsprt"
-                                type="text"
-                                value={description}
-                                onChange={handleDescriptionChange}
-                            />
-                        </label>
-                    </div>
+                <div className='image-container'>
+                    <img src={sprt} alt="Support" className='support-image' />
                 </div>
-                <button className="submitsprt" type="submit">Submit</button>
-            </form>
+            </div>
         </div>
-       </div>
     );
 };
 
