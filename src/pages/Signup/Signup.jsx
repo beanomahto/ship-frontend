@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Checkbox } from 'antd';
 import useSignup from '../../hooks/useSignup';
+import { useOrderContext } from '../../context/OrderContext';
 
 const Signup = () => {
   const navigate = useNavigate();

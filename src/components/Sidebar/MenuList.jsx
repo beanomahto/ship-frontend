@@ -79,7 +79,7 @@ const MenuList = ({darktheme}) => {
                <Link to='/ticket' ><span style={{fontWeight:500}} >Support</span></Link>
             </Menu.Item>
             <Menu.Item key='setting' icon={<CiSettings size='1.6rem' />} >
-                <span>Setting </span>
+            <Link to='/settings' ><span style={{fontWeight:500}} >Setting</span></Link>
             </Menu.Item>
         </Menu>
        </div>

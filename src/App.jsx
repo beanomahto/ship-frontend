@@ -43,6 +43,7 @@ import Seller from "./pages/Seller/Seller";
 import VerifyKyc from "./pages/Seller/VerifyKyc/VerifyKyc";
 import WooCommerce from "./pages/channelIntegration/woocommerce/WooCommerce";
 import WalletHistory from "./pages/Finance/wallet/WalletHistory";
+import Settings from "./pages/Settings/Settings";
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -59,265 +60,108 @@ const App = () => {
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Navigate replace to="dashboard" />} />
-          <Route
-            path="dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="profile"
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="kyc"
-            element={
-              <ProtectedRoute>
-                <KYC />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="orders"
-            element={
-              <ProtectedRoute>
-                <Orders />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="seller"
-            element={
-              <ProtectedRoute>
-                <Seller />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="seller/getkyc/:id"
-            element={
-              <ProtectedRoute>
-                <VerifyKyc />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="dashboard" element={
+              <ProtectedRoute><Dashboard /></ProtectedRoute>
+            }/>
+          <Route path="profile" element={
+              <ProtectedRoute><Profile /></ProtectedRoute>
+            }/>
+          <Route path="kyc" element={
+              <ProtectedRoute><KYC /></ProtectedRoute>
+            }/>
+          <Route path="orders" element={
+              <ProtectedRoute><Orders /></ProtectedRoute>
+            }/>
+          <Route path="seller" element={
+              <ProtectedRoute><Seller /></ProtectedRoute>
+            }/>
+          <Route path="seller/getkyc/:id" element={
+              <ProtectedRoute><VerifyKyc /></ProtectedRoute>
+            }/>
           {/* <Route path="label" element={<ProtectedRoute><Label /></ProtectedRoute>} /> */}
-          <Route
-            path="updatelabel"
-            element={
-              <ProtectedRoute>
-                <UpdateLebel />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="updatelabel"element={
+              <ProtectedRoute><UpdateLebel /></ProtectedRoute>
+            }/>
           <Route path="orders/singleorder"element={
-              <ProtectedRoute>
-                <SingleOrder />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="orders/updateorder/:id/:orderId"
-            element={
-              <ProtectedRoute>
-                <UpdatesingleOrder />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="shipping/getlabel/:id"
-            element={
-              <ProtectedRoute>
-                <LabelGenerator />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="shipping/getInvoice/:id"
-            element={
-              <ProtectedRoute>
-                <InvoiceGenerator />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="tracking/:selectedOption/:value"
-            element={
-              <ProtectedRoute>
-                <Tracking />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="orders/bulkorder"
-            element={
-              <ProtectedRoute>
-                <BulkOrderUpload />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="ndr"
-            element={
-              <ProtectedRoute>
-                <NDR />
-              </ProtectedRoute>
-            }
-          />
+              <ProtectedRoute><SingleOrder /> </ProtectedRoute>
+            }/>
+          <Route path="orders/updateorder/:id/:orderId" element={
+              <ProtectedRoute><UpdatesingleOrder /></ProtectedRoute>
+            }/>
+          <Route path="shipping/getlabel/:id" element={
+              <ProtectedRoute><LabelGenerator /></ProtectedRoute>
+            }/>
+          <Route path="shipping/getInvoice/:id" element={
+              <ProtectedRoute><InvoiceGenerator /></ProtectedRoute>
+            }/>
+          <Route path="tracking/:selectedOption/:value" element={
+              <ProtectedRoute><Tracking /></ProtectedRoute>
+            }/>
+          <Route path="orders/bulkorder" element={
+              <ProtectedRoute><BulkOrderUpload /></ProtectedRoute>
+            }/>
+          <Route path="ndr" element={
+              <ProtectedRoute> <NDR /></ProtectedRoute>
+            }/>
           <Route path="finance" element={<ProtectedRoute><Finance /></ProtectedRoute>}>
-            <Route
-              path="codremmitance"
-              element={
-                <ProtectedRoute>
-                  <CodRemmitance />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="wallet"
-              element={
+            <Route path="codremmitance" element={
+                <ProtectedRoute><CodRemmitance /></ProtectedRoute>
+              }/>
+            <Route path="wallet" element={
                 authUser?.role === "admin" ? <AdminWallet /> : <Wallet />
-              }
-            />
-            <Route
-              path="history"
-              element={
-                <ProtectedRoute>
-                <WalletHistory />
-              </ProtectedRoute>
-              }
-            />
-            <Route
-              path="pricing"
-              element={
-                <ProtectedRoute>
-                  <Pricing />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="weight_discrepancies"
-              element={
-                <ProtectedRoute>
-                  <WeightDispensory />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="invoices"
-              element={
-                <ProtectedRoute>
-                  <Invoices />
-                </ProtectedRoute>
-              }
-            />
+              }/>
+            <Route path="history" element={<ProtectedRoute><WalletHistory /></ProtectedRoute>} />
+            <Route path="pricing" element={
+                <ProtectedRoute><Pricing /></ProtectedRoute>
+              }/>
+            <Route path="weight_discrepancies" element={
+                <ProtectedRoute><WeightDispensory /></ProtectedRoute>
+              }/>
+            <Route path="invoices" element={
+                <ProtectedRoute><Invoices /></ProtectedRoute>
+              }/>
           </Route>
-          <Route
-            path="reports"
-            element={
-              <ProtectedRoute>
-                <Reports />
-              </ProtectedRoute>
-            }
-          >
-            <Route
-              path="misreport"
-              element={
-                authUser?.role === "admin" ? (
-                  <AdminMIS_Report />
-                ) : (
-                  <MasterMIS_Report />
-                )
-              }
-            />
+          <Route path="reports" element={
+              <ProtectedRoute><Reports /></ProtectedRoute>
+            }>
+            <Route path="misreport" element={
+                authUser?.role === "admin" ? (<AdminMIS_Report />) : (<MasterMIS_Report />)
+              }/>
             {/* <Route path="misreport" element={<ProtectedRoute><AdminMIS_Report /></ProtectedRoute>} /> */}
           </Route>
-          <Route
-            path="warehouse"
-            element={
-              <ProtectedRoute>
-                <ActiveWarehouses />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="warehouse/addwarehouse"
-            element={
-              <ProtectedRoute>
-                <AddnewWarehouse />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="ratecard"
-            element={
-              <ProtectedRoute>
-                <RateCard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="ratecalculator"
-            element={
-              <ProtectedRoute>
-                <RateCalculator />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="support"
-            element={
-              <ProtectedRoute>
-                <Support />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="ticket"
-            element={
-              <ProtectedRoute>
-                <Ticket />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="pincodeservice"
-            element={
-              <ProtectedRoute>
-                <PinCodeServicecability />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="channelintegration"
-            element={
-              <ProtectedRoute>
-                <ChannelIntergration />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="channelintegration/Shopify"
-            element={
-              <ProtectedRoute>
-                <Shopify />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="channelintegration/WooCommerce"
-            element={
-              <ProtectedRoute>
-                <WooCommerce />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="warehouse" element={
+              <ProtectedRoute><ActiveWarehouses /></ProtectedRoute>
+            }/>
+          <Route path="warehouse/addwarehouse" element={
+              <ProtectedRoute><AddnewWarehouse /></ProtectedRoute>
+            }/>
+          <Route path="ratecard" element={
+              <ProtectedRoute><RateCard /></ProtectedRoute>
+            }/>
+          <Route path="settings" element={
+              <ProtectedRoute><Settings /></ProtectedRoute>
+            }/>
+          <Route path="ratecalculator" element={
+              <ProtectedRoute><RateCalculator /></ProtectedRoute>
+            }/>
+          <Route path="support" element={
+              <ProtectedRoute><Support /></ProtectedRoute>
+            }/>
+          <Route path="ticket" element={
+              <ProtectedRoute><Ticket /></ProtectedRoute>
+            }/>
+          <Route path="pincodeservice" element={
+              <ProtectedRoute><PinCodeServicecability /></ProtectedRoute>
+            }/>
+          <Route path="channelintegration" element={
+              <ProtectedRoute><ChannelIntergration /></ProtectedRoute>
+            }/>
+          <Route path="channelintegration/Shopify" element={
+              <ProtectedRoute><Shopify /></ProtectedRoute>
+            }/>
+          <Route path="channelintegration/WooCommerce" element={
+              <ProtectedRoute><WooCommerce /></ProtectedRoute>
+            }/>
         </Route>
         <Route path="signup" element={<Signup />} />
         <Route path="login" element={<Login />} />
