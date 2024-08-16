@@ -1,130 +1,46 @@
 import React from "react";
-import { Chart as ChartJS, defaults } from "chart.js/auto";
-import { Bar, Doughnut, PolarArea, Pie } from "react-chartjs-2"; // Import Pie
-// import IndiaMapChart from "./IndiaMapChart"; // Import the new component
+import { Bar, Doughnut } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  ArcElement, 
+  Title,
+  Tooltip,
+  Legend
+} from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
 import "./dashboard.css";
 
 import revenueData from '../../components/Chart/RevenueData.json';
 import sourceData from '../../components/Chart/SourceData.json';
+import TopDestinationsGraph from './TopDestinationsGraph'; 
+import ShipmentStatusGraph from "./ShipmentStatusGraph";
 
-defaults.maintainAspectRatio = false;
-defaults.responsive = true;
-
-defaults.plugins.title.display = true;
-defaults.plugins.title.align = "start";
-defaults.plugins.title.font.size = 20;
-defaults.plugins.title.color = "black";
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  ArcElement, 
+  Title,
+  Tooltip,
+  Legend,
+  ChartDataLabels
+);
 
 const Dashboard = () => {
-  const polarData = {
-    labels: ['Red', 'Green', 'Yellow', 'Grey', 'Blue'],
-    datasets: [{
-      data: [11, 16, 7, 3, 14],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.6)',
-        'rgba(75, 192, 192, 0.6)',
-        'rgba(255, 205, 86, 0.6)',
-        'rgba(201, 203, 207, 0.6)',
-        'rgba(54, 162, 235, 0.6)',
-      ],
-      borderWidth: 1,
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(255, 205, 86, 1)',
-        'rgba(201, 203, 207, 1)',
-        'rgba(54, 162, 235, 1)',
-      ],
-    }]
-  };
-
-  const polarOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      title: {
-        display: true,
-        text: 'Sample Polar Area Chart',
-        font: {
-          size: 20
-        }
-      },
-      legend: {
-        display: true,
-        position: 'top'
-      },
-      tooltip: {
-        enabled: true
-      }
-    },
-    scales: {
-      r: {
-        ticks: {
-          beginAtZero: true
-        }
-      }
-    }
-  };
-
-  const pieData = {
-    labels: ['January', 'February', 'March', 'April', 'May'],
-    datasets: [{
-      data: [10, 20, 30, 40, 50],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.6)',
-        'rgba(54, 162, 235, 0.6)',
-        'rgba(255, 206, 86, 0.6)',
-        'rgba(75, 192, 192, 0.6)',
-        'rgba(153, 102, 255, 0.6)',
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-      ],
-      borderWidth: 1
-    }]
-  };
-
-  const pieOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      title: {
-        display: true,
-        text: 'Sample Pie Chart',
-        font: {
-          size: 20
-        }
-      },
-      legend: {
-        display: true,
-        position: 'top'
-      },
-      tooltip: {
-        enabled: true
-      }
-    }
-  };
-
   return (
     <div className="mainCharts">
-            <div className="dataCard polarCard">
-        <PolarArea
-          data={polarData}
-          options={polarOptions}
-        />
+      <div className="dataCard topDestinationsCard">
+        <TopDestinationsGraph /> 
       </div>
 
-      <div className="dataCard pieCard">
-        <Pie
-          data={pieData}
-          options={pieOptions}
-        />
+      <div className="dataCard topDestinationsCard">
+        <ShipmentStatusGraph />
       </div>
+
       <div className="dataCard customerCard">
         <Bar
           data={{
@@ -143,9 +59,20 @@ const Dashboard = () => {
             ],
           }}
           options={{
+            responsive: true,
+            maintainAspectRatio: false,
             plugins: {
               title: {
+                display: true,
                 text: "Revenue Source",
+                font: {
+                  size: 20
+                }
+              },
+            },
+            scales: {
+              x: {
+                beginAtZero: true,
               },
             },
           }}
@@ -174,9 +101,15 @@ const Dashboard = () => {
             ],
           }}
           options={{
+            responsive: true,
+            maintainAspectRatio: false,
             plugins: {
               title: {
+                display: true,
                 text: "Business Overview",
+                font: {
+                  size: 20
+                }
               },
             },
           }}
@@ -205,20 +138,25 @@ const Dashboard = () => {
             ],
           }}
           options={{
+            responsive: true,
+            maintainAspectRatio: false,
             plugins: {
               title: {
+                display: true,
                 text: "Courier Partner Overview",
+                font: {
+                  size: 20
+                }
+              },
+            },
+            scales: {
+              x: {
+                beginAtZero: true,
               },
             },
           }}
         />
       </div>
-
-
-
-      {/* <div className="dataCard indiaMapCard">
-        <IndiaMapChart />
-      </div> */}
     </div>
   );
 };
