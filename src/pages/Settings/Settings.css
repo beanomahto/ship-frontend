@@ -1,66 +1,73 @@
+/* Import a font if needed (Example: Google Fonts) */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
 .grid-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 4rem;
-    padding: 16px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4rem;
+  padding: 16px;
+}
+
+.grid-item {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  padding: 16px;
+  border-radius: 4px;
+  font-family: 'Roboto', sans-serif; /* Font styling */
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.icon-container {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heading {
+  font-size: 1.2rem;
+  text-align: center;
+  font-weight: 700; /* Bold font weight */
+  color: #333; /* Dark color for headings */
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.link {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 1rem; /* Font size for links */
+  font-weight: 400; /* Regular font weight */
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr);
   }
-  
-  .grid-item {
-    background-color: #f0f0f0;
-    border: 1px solid #ddd;
-    padding: 16px;
-    border-radius: 4px;
+}
+
+@media (max-width: 480px) {
+  .grid-container {
+    grid-template-columns: 1fr;
   }
-  
-  .header {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    gap: 12px;
-    margin-bottom: 12px;
-  }
-  
-  .icon-container {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #e0e0e0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .heading {
-    font-size: 1.2rem;
-    text-align: center;
-  }
-  
-  .links {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    text-align: center;
-  }
-  
-  .link {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  .link:hover {
-    text-decoration: underline;
-  }
-  
-  @media (max-width: 768px) {
-    .grid-container {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .grid-container {
-      grid-template-columns: 1fr;
-    }
-  }
-  
+}

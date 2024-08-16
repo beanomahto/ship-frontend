@@ -44,6 +44,8 @@ import VerifyKyc from "./pages/Seller/VerifyKyc/VerifyKyc";
 import WooCommerce from "./pages/channelIntegration/woocommerce/WooCommerce";
 import WalletHistory from "./pages/Finance/wallet/WalletHistory";
 import Settings from "./pages/Settings/Settings";
+import Login1 from "./pages/Login/Login1";
+import Signup1 from "./pages/Signup/Signup1";
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -163,8 +165,8 @@ const App = () => {
               <ProtectedRoute><WooCommerce /></ProtectedRoute>
             }/>
         </Route>
-        <Route path="signup" element={<Signup />} />
-        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<Signup1 />} />
+        <Route path="login" element={<Login1 />} />
         <Route path="resetpassword" element={<ResetPassword />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
