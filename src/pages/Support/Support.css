@@ -134,13 +134,13 @@
 .image-container {
     flex: 1;
     background-color: white;
-    margin-top: 23px;
-    padding: 12px
+    /* margin-top: 23px;
+    padding: 12px */
 }
 
 .support-image {
     width: 100%;
-    height: auto;
+    height: 77vh;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

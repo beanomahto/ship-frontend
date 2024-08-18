@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import './Support.css';
 import { Select, message } from 'antd';
 import { Helmet } from 'react-helmet';
-import sprt from '../../utils/support.jpg'
+// import sprt from '../../utils/support.jpg'
+import sprt from '../../utils/sprtvid.mp4'
+import anim from '../../utils/animm.gif'
 
 const subjects = {
     'Pickup & Delivery': [
@@ -212,8 +214,9 @@ const Support = () => {
                     </form>
                 </div>
                 <div className='image-container'>
-                    <img src={sprt} alt="Support" className='support-image' />
-                </div>
+                    {/* <img src={anim} alt="Support" className='support-image' /> */}
+                    <video src={sprt} autoPlay  loop className='support-image'/>
+                    </div>
             </div>
         </div>
     );

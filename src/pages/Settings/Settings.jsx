@@ -4,14 +4,14 @@ import { Link } from 'react-router-dom';
 import './Settings.css'; 
 
 const data = [
-  { heading: 'Account', icon: FaUser, links: [{ label: 'Profile', url: '/profile' }, { label: 'KYC', url: '/kyc' }, { label: 'POC Details', url: '/poc-details' }] },
-  { heading: 'Integrations', icon: FaPlug, links: [{ label: 'Integration', url: '/integration' }, { label: '3rd Party Integration', url: '/3rd-party-integration' }] },
+  { heading: 'Account', icon: FaUser, links: [{ label: 'Profile', url: '/profile' }, { label: 'KYC', url: '/kyc' }] },
+  { heading: 'Integrations', icon: FaPlug, links: [{ label: 'Integration', url: '/channelintegration' }] },
   { heading: 'Carrier', icon: FaTruck, links: [{ label: 'Manage Couriers', url: '/manage-couriers' }, { label: 'Manage Serviceable Pincodes', url: '/serviceable-pincodes' }, { label: 'Upload Tracking Number', url: '/upload-tracking-number' }] },
-  { heading: 'Manage Warehouse', icon: FaWarehouse, links: [{ label: 'Manage Warehouse', url: '/manage-warehouse' }] },
+  { heading: 'Manage Warehouse', icon: FaWarehouse, links: [{ label: 'Manage Warehouse', url: '/warehouse' }] },
   { heading: 'Order Lookup', icon: FaSearch, links: [{ label: 'Customize Track Order', url: '/customize-track-order' }] },
-  { heading: 'Invoice', icon: FaFileInvoice, links: [{ label: 'Store Details', url: '/store-details' }, { label: 'General', url: '/invoice-general' }, { label: 'Advance', url: '/invoice-advance' }] },
-  { heading: 'Label', icon: FaTag, links: [{ label: 'Manage Labels', url: '/manage-labels' }] },
-  { heading: 'General', icon: FaCogs, links: [{ label: 'Add Package Box', url: '/add-package-box' }, { label: 'Pick List', url: '/pick-list' }] },
+  // { heading: 'Invoice', icon: FaFileInvoice, links: [{ label: 'Store Details', url: '/store-details' }, { label: 'General', url: '/invoice-general' }, { label: 'Advance', url: '/invoice-advance' }] },
+  { heading: 'Label', icon: FaTag, links: [{ label: 'Manage Labels', url: '/updatelabel' }] },
+  { heading: 'General', icon: FaCogs, links: [{ label: 'Add Package Box', url: '/add-package-box' }] },
 ];
 
 const Settings = () => {

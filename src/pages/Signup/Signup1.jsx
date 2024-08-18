@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import './login1.css'; // Reusing the CSS file from Login1 for consistent styling
+// import './login1.css'; 
 import { Link, useNavigate } from 'react-router-dom';
 import { Checkbox } from 'antd';
 import useSignup from '../../hooks/useSignup';
 import { useOrderContext } from '../../context/OrderContext';
-import imgg from '../../utils/rmdb.png';
+import imgg from '../../utils/onemore.png';
+import gyb from '../../utils/gyb.mp4'
+import vid1 from '../../utils/res.mp4'
 const Signup1 = () => {
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
@@ -34,6 +36,9 @@ const Signup1 = () => {
     <div className='section'>
       <div className='imgBx'>
         <img src={imgg} alt='Background' />
+        {/* <video style={{height:'100%', width:'100%'}} autoPlay loop src={vid1}>
+          <source src={vid1} type="video/mp4" />
+        </video> */}
       </div>
       <div className='contentBx'>
         <div className="formBx">

@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import './login1.css';
 import imgg from '../../utils/rmdb.png';
 import { Link, useNavigate } from 'react-router-dom';
-import useLogin from '../../hooks/useLogin'; // Assuming useLogin is in this path
+import useLogin from '../../hooks/useLogin'; 
 import { useOrderContext } from '../../context/OrderContext';
-import ForgotPasswordModal from './ForgotPasswordModal'; // Importing the ForgotPasswordModal component
-
+import ForgotPasswordModal from './ForgotPasswordModal';
+import gyb from '../../utils/gyb.mp4'
+import vid1 from '../../utils/res.mp4'
 const Login1 = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');  // Email state
+  const [email, setEmail] = useState(''); 
   const [password, setPassword] = useState('');
-  const [isModalVisible, setIsModalVisible] = useState(false); // State for modal visibility
+  const [isModalVisible, setIsModalVisible] = useState(false); 
 
   const { loading, login } = useLogin();
   const { fetchOrders } = useOrderContext();
@@ -18,7 +19,7 @@ const Login1 = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login(email, password); // Perform login
+      await login(email, password);
       fetchOrders();
       navigate('/');
     } catch (error) {
@@ -30,7 +31,9 @@ const Login1 = () => {
     <>
       <div className='section'>
         <div className='imgBx'>
-          <img src={imgg} alt='Background' />
+        <video style={{height:'100%', width:'100%'}} autoPlay loop src={vid1}>
+          <source src={vid1} type="video/mp4" />
+        </video>
         </div>
         <div className='contentBx'>
           <div className="formBx">
@@ -76,7 +79,6 @@ const Login1 = () => {
         </div>
       </div>
 
-      {/* Forgot Password Modal */}
       <ForgotPasswordModal
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}

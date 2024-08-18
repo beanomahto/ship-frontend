@@ -1,4 +1,4 @@
-/* Import a font if needed (Example: Google Fonts) */
+
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 .grid-container {
@@ -6,6 +6,7 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 4rem;
   padding: 16px;
+  height: 40rem;
 }
 
 .grid-item {
@@ -13,7 +14,7 @@
   border: 1px solid #ddd;
   padding: 16px;
   border-radius: 4px;
-  font-family: 'Roboto', sans-serif; /* Font styling */
+  font-family: 'Roboto', sans-serif; 
 }
 
 .header {
@@ -37,8 +38,8 @@
 .heading {
   font-size: 1.2rem;
   text-align: center;
-  font-weight: 700; /* Bold font weight */
-  color: #333; /* Dark color for headings */
+  font-weight: 700;
+  color: #333; 
 }
 
 .links {
@@ -52,8 +53,8 @@
 .link {
   color: #007bff;
   text-decoration: none;
-  font-size: 1rem; /* Font size for links */
-  font-weight: 400; /* Regular font weight */
+  font-size: 1rem; 
+  font-weight: 400; 
 }
 
 .link:hover {
