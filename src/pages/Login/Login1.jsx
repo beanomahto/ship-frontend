@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import './login1.css';
-import imgg from '../../utils/rmdb.png';
+// import imgg from '../../utils/rmdb.png';
 import { Link, useNavigate } from 'react-router-dom';
 import useLogin from '../../hooks/useLogin'; 
 import { useOrderContext } from '../../context/OrderContext';
 import ForgotPasswordModal from './ForgotPasswordModal';
 import gyb from '../../utils/gyb.mp4'
 import vid1 from '../../utils/res.mp4'
+import imgg from '../../utils/new.png'
 const Login1 = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState(''); 
@@ -31,9 +32,10 @@ const Login1 = () => {
     <>
       <div className='section'>
         <div className='imgBx'>
-        <video style={{height:'100%', width:'100%'}} autoPlay loop src={vid1}>
+        <img src={imgg} alt='Background' />
+        {/* <video style={{height:'100%', width:'100%'}} autoPlay loop src={vid1}>
           <source src={vid1} type="video/mp4" />
-        </video>
+        </video> */}
         </div>
         <div className='contentBx'>
           <div className="formBx">

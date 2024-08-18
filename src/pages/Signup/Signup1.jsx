@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Checkbox } from 'antd';
 import useSignup from '../../hooks/useSignup';
 import { useOrderContext } from '../../context/OrderContext';
-import imgg from '../../utils/onemore.png';
+import imgg from '../../utils/new.png';
 import gyb from '../../utils/gyb.mp4'
 import vid1 from '../../utils/res.mp4'
 const Signup1 = () => {
