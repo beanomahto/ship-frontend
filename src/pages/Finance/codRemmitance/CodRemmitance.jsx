@@ -8,13 +8,14 @@ import moment from 'moment';
 import CustomButton from '../../../components/Button/Button';
 import { useAuthContext } from '../../../context/AuthContext';
 import { Helmet } from 'react-helmet';
+import EarlyCodPopup from './EarlyCodPopup';
 
 const CodRemmitance = () => {
   const { authUser } = useAuthContext();
   const [remittanceData, setRemittanceData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [searchModalVisible, setSearchModalVisible] = useState(false);
-
+  const [earlyCodVisible, setEarlyCodVisible] = useState(false); 
   useEffect(() => {
     const fetchRemittance = async () => {
       try {
@@ -37,6 +38,8 @@ const CodRemmitance = () => {
   const closeModal = () => setModalVisible(false);
   const showSearchModal = () => setSearchModalVisible(true);
   const closeSearchModal = () => setSearchModalVisible(false);
+  const showEarlyCodModal = () => setEarlyCodVisible(true); // Show Early COD popup
+  const closeEarlyCodModal = () => setEarlyCodVisible(false); 
   console.log(remittanceData.remittances
   );
   const newOrders = [
@@ -106,6 +109,7 @@ const CodRemmitance = () => {
         <UploadCodRemittance visible={modalVisible} onClose={closeModal} />
         <CustomButton onClick={showSearchModal}>Search Seller</CustomButton>
         <SearchSellerModal visible={searchModalVisible} remittanceData={remittanceData} onClose={closeSearchModal} />
+        <Button onClick={showEarlyCodModal}>Early COD</Button>
       </div>
       <RemmitanceData remittanceData={remittanceData.remittances} />
       <Table
@@ -116,6 +120,7 @@ const CodRemmitance = () => {
         rowKey="id"
         pagination={false}
       />
+       <EarlyCodPopup visible={earlyCodVisible} onClose={closeEarlyCodModal} /> {/* Early COD popup */}
     </div>
   );
 };

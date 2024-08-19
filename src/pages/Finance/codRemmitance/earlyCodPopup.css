@@ -1,0 +1,130 @@
+.early-cod-popup {
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    z-index: 1000;
+  }
+  
+  .early-cod-popup h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .early-cod-popup p {
+    font-size: 16px;
+    color: #666666;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .early-cod-popup .cod-options {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 20px;
+  }
+  
+  .early-cod-popup .cod-card {
+    border: 1px solid #d9d9d9;
+    border-radius: 8px;
+    padding: 1.5rem;
+    flex: 1;
+    text-align: center;
+    min-width: 250px;
+    cursor: pointer;
+    background-color: white;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .early-cod-popup .cod-card:hover {
+    transform: translateY(-5px);
+    border-color: #40a9ff;
+  }
+  
+  .early-cod-popup .cod-card.selected {
+    border: 2px solid #40a9ff;
+  }
+  
+  .early-cod-popup .cod-card .header {
+    background-color: #40a9ff;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 8px 8px 0 0;
+    margin-bottom: 1rem;
+    font-weight: bold;
+  }
+  
+  .early-cod-popup .cod-card h3 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 10px;
+  }
+  
+  .early-cod-popup .cod-card p {
+    font-size: 18px;
+    color: #666666;
+    margin-bottom: 20px;
+  }
+  
+  .early-cod-popup .cod-card ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+  }
+  
+  .early-cod-popup .cod-card ul li {
+    font-size: 14px;
+    color: #444444;
+    margin-bottom: 5px;
+  }
+  
+  .early-cod-popup .cod-card .ant-btn {
+    background-color: #40a9ff;
+    border: none;
+    color: white;
+    font-weight: bold;
+    width: 100%;
+  }
+  
+  .early-cod-popup .cod-card .ant-btn:disabled {
+    background-color: #d9d9d9;
+    cursor: not-allowed;
+  }
+  
+  .early-cod-popup .ant-checkbox-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .early-cod-popup .ant-checkbox-wrapper a {
+    color: #40a9ff;
+    text-decoration: underline;
+  }
+  
+  .early-cod-popup .ant-checkbox-wrapper a:hover {
+    color: #096dd9;
+  }
+  
+  .ant-modal {
+    top: 20px;
+  }
+  
+  .ant-modal-content {
+    border-radius: 10px;
+  }
+  
+  .ant-modal-close {
+    top: 20px;
+    right: 20px;
+  }
+  
+  .ant-modal-footer {
+    display: none;
+  }
+  

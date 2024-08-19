@@ -200,32 +200,59 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
     setSelectedOrderId(key);
     setIsModalVisible(true);
   };
-
   const handleAssign = async (partner) => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.put(`https://backend-9u5u.onrender.com/api/orders/updateOrderStatus/${selectedOrderId}`, {
-        status: 'Shipped',
-      }, {
+      const selectedOrder = dataSource.find(order => order._id === selectedOrderId);
+      const orderPrice = selectedOrder.productPrice;
+      const partnerCost = partner.cost;
+      const totalDebit = orderPrice + partnerCost;
+  
+      const walletRequestBody = {
+        debit: totalDebit,
+        userId: selectedOrder.seller._id, 
+        remark: `Shipping charge for order ${selectedOrder.orderId}`,
+        orderId: selectedOrder._id,
+      };
+  console.log(walletRequestBody);
+  
+      const walletResponse = await axios.post('https://backend-9u5u.onrender.com/api/transactions/decreaseAmount', walletRequestBody, {
         headers: {
-          Authorization: `${token}`
-        }
+          Authorization:  localStorage.getItem('token'),
+        },
       });
-      if (response.status === 201) {
-        message.success("Shipped successfully");
-        fetchOrders();
-        setIsModalVisible(false);
-        setSelectedOrderId(null);
-        setSelectedPartner(null);
+  
+      if (walletResponse.status === 200) {
+        const orderResponse = await axios.put(
+          `https://backend-9u5u.onrender.com/api/orders/updateOrderStatus/${selectedOrderId}`,
+          { status: 'Shipped' },
+          {
+            headers: {
+              Authorization: `${localStorage.getItem('token')}`,
+            },
+          }
+        );
+  
+        if (orderResponse.status === 201) {
+          message.success("Shipped successfully");
+          fetchOrders();
+          setIsModalVisible(false);
+          setSelectedOrderId(null);
+          setSelectedPartner(null);
+        }
+      } else {
+        message.error("Failed to debit wallet");
       }
     } catch (error) {
       message.error("Issue in shipping");
       console.error('Failed to update order status', error);
     }
   };
+  
+  
 
   const newOrders = dataSource?.filter(order => order.status === 'New' || order.status === 'Cancelled');
 
+  
   return (
     <>
        <Helmet>

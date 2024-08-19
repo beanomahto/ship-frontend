@@ -42,6 +42,9 @@ const PaymentModel = ({ visible, onClose }) => {
       console.error("User, payment amount, or remark not selected");
       return;
     }
+console.log(hoveredUser._id);
+console.log(parseFloat(paymentAmount));
+console.log(paymentRemark.trim());
 
     try {
       const response = await axios.post(
@@ -51,13 +54,14 @@ const PaymentModel = ({ visible, onClose }) => {
           credit: parseFloat(paymentAmount),
           remark: paymentRemark.trim()
         },
+
         {
           headers: {
             Authorization: localStorage.getItem('token')
           }
         }
       );
-
+      
       message.success("Payment Successful")
       console.log("Payment successful:", response.data);
     } catch (error) {
