@@ -27,12 +27,10 @@ const EarlyCodPopup = ({ visible, onClose }) => {
 
       <div className="cod-options">
         <div 
-          className={`cod-card ${selectedCard === 'D + 2 Days' ? 'selected' : ''}`} 
+          className={`cod-card ${selectedCard === 'D + 2 Days' ? 'selected most-popular' : 'most-popular'}`} 
           onClick={() => handleCardClick('D + 2 Days')}
         >
-          <div className="header">
-            <span>Most Popular</span>
-          </div>
+          <div className="most-popular-tag">Most Popular</div>
           <h3>D + 2 Days</h3>
           <p>1% of COD Amount</p>
           <ul>
