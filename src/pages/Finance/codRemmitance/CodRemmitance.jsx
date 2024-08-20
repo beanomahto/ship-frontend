@@ -109,7 +109,7 @@ const CodRemmitance = () => {
         <UploadCodRemittance visible={modalVisible} onClose={closeModal} />
         <CustomButton onClick={showSearchModal}>Search Seller</CustomButton>
         <SearchSellerModal visible={searchModalVisible} remittanceData={remittanceData} onClose={closeSearchModal} />
-        <Button onClick={showEarlyCodModal}>Early COD</Button>
+        <Button style={{borderRadius:'34px'}} onClick={showEarlyCodModal}>Early COD</Button>
       </div>
       <RemmitanceData remittanceData={remittanceData.remittances} />
       <Table
@@ -120,7 +120,7 @@ const CodRemmitance = () => {
         rowKey="id"
         pagination={false}
       />
-       <EarlyCodPopup visible={earlyCodVisible} onClose={closeEarlyCodModal} /> {/* Early COD popup */}
+       <EarlyCodPopup visible={earlyCodVisible} onClose={closeEarlyCodModal} /> 
     </div>
   );
 };

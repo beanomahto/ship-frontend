@@ -42,9 +42,6 @@ const PaymentModel = ({ visible, onClose }) => {
       console.error("User, payment amount, or remark not selected");
       return;
     }
-console.log(hoveredUser._id);
-console.log(parseFloat(paymentAmount));
-console.log(paymentRemark.trim());
 
     try {
       const response = await axios.post(

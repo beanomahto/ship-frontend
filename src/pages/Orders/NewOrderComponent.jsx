@@ -39,16 +39,19 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { shipNowCost } = useShipNowCost();
   const { warehouse } = useWarehouseContext();
+  const [modalLoading, setModalLoading] = useState(false);
 
   useEffect(() => {
     const fetchDeliveryCost = async () => {
       if (selectedOrderId) {
+        setModalLoading(true); // Set modal loading to true when fetching delivery costs
         const costResponse = await shipNowCost(selectedOrderId, warehouse?.warehouses?.[0]?._id);
         if (costResponse.success) {
           setDeliveryCosts(costResponse.cost || []);
         } else {
           alert(costResponse.error || 'Failed to fetch delivery cost');
         }
+        setModalLoading(false); // Set modal loading to false after fetching delivery costs
       }
     };
     fetchDeliveryCost();
@@ -200,27 +203,27 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
     setSelectedOrderId(key);
     setIsModalVisible(true);
   };
-  const handleAssign = async (partner) => {
+const handleAssign = async (partner) => {
     try {
+      setModalLoading(true); // Start loading when assigning
       const selectedOrder = dataSource.find(order => order._id === selectedOrderId);
       const orderPrice = selectedOrder.productPrice;
       const partnerCost = partner.cost;
       const totalDebit = orderPrice + partnerCost;
-  
+
       const walletRequestBody = {
         debit: totalDebit,
         userId: selectedOrder.seller._id, 
         remark: `Shipping charge for order ${selectedOrder.orderId}`,
         orderId: selectedOrder._id,
       };
-  console.log(walletRequestBody);
-  
+
       const walletResponse = await axios.post('https://backend-9u5u.onrender.com/api/transactions/decreaseAmount', walletRequestBody, {
         headers: {
           Authorization:  localStorage.getItem('token'),
         },
       });
-  
+
       if (walletResponse.status === 200) {
         const orderResponse = await axios.put(
           `https://backend-9u5u.onrender.com/api/orders/updateOrderStatus/${selectedOrderId}`,
@@ -231,7 +234,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
             },
           }
         );
-  
+
         if (orderResponse.status === 201) {
           message.success("Shipped successfully");
           fetchOrders();
@@ -245,8 +248,11 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
     } catch (error) {
       message.error("Issue in shipping");
       console.error('Failed to update order status', error);
+    } finally {
+      setModalLoading(false); // Stop loading after the operation is complete
     }
   };
+
   
   
 
@@ -271,6 +277,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
             scroll={{ y: 450 }}
             style={{ width: '100%', height: '545px' }}
             rowClassName={(record) => (record._id === selectedOrderId ? 'selected-row' : '')}
+            loading={loading} 
           />
           <Modal
             title="Assign Delivery Partner"
@@ -278,11 +285,13 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
             onCancel={() => setIsModalVisible(false)}
             footer={null}
             width={1000}
+            confirmLoading={modalLoading} 
           >
             <Table
               dataSource={deliveryCosts}
               rowKey="id"
               pagination={{ pageSize: 10 }}
+              loading={modalLoading} 
             // style={{fontSize:'4rem'}}
             // className="delivery-cost-table"
 
