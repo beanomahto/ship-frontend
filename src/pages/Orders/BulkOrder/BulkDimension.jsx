@@ -21,7 +21,7 @@ const BulkDimensionUploadModal = ({ visible, onClose }) => {
         formData.append('file', file);
 
         try {
-            const response = await fetch('https://backend-9u5u.onrender.com/api/orders/updateBulkOrderDimensions', {
+            const response = await fetch('https://backend.shiphere.in/api/orders/updateBulkOrderDimensions', {
                 method: 'POST',
                 body: formData, 
                     headers: {

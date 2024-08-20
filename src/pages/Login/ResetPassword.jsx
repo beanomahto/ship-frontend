@@ -18,7 +18,7 @@ const ResetPassword = () => {
         // }
 
         try {
-            const response = await fetch('https://backend-9u5u.onrender.com/api/auth/reset-password', {
+            const response = await fetch('https://backend.shiphere.in/api/auth/reset-password', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -28,7 +28,7 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading }) => {
   const cancelShipment = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.put(`https://backend-9u5u.onrender.com/api/orders/updateOrderStatus/${selectedRowKeys}`, {
+      const response = await axios.put(`https://backend.shiphere.in/api/orders/updateOrderStatus/${selectedRowKeys}`, {
         status: 'Cancelled'
       }, {
         headers: {

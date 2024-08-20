@@ -34,7 +34,7 @@ const Orders = () => {
   const start = async () => {
     setLoading(true);
     try {
-      const response = await fetch('https://backend-9u5u.onrender.com/api/integration/syncButton', {
+      const response = await fetch('https://backend.shiphere.in/api/integration/syncButton', {
         headers: {
             Authorization: localStorage.getItem('token'),
         },
@@ -67,7 +67,7 @@ const Orders = () => {
     const updatedOrders = await Promise.all(selectedRowKeys?.map(async (orderId) => {
       const order = orders?.orders[orderId];
       console.log(order);
-      await fetch(`https://backend-9u5u.onrender.com/api/orders/updateOrderStatus/${orderId}`, {
+      await fetch(`https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -148,7 +148,7 @@ const Orders = () => {
   const cancelShipment = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.put(`https://backend-9u5u.onrender.com/api/orders/updateOrderStatus/${selectedRowKeys}`, {
+      const response = await axios.put(`https://backend.shiphere.in/api/orders/updateOrderStatus/${selectedRowKeys}`, {
         status: 'Cancelled'
       }, {
         headers: {

@@ -10,7 +10,7 @@ const useShippingRateCard = () => {
         const fetchRateCard = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('https://backend-9u5u.onrender.com/api/shipping/rateCard', {
+                const response = await axios.get('https://backend.shiphere.in/api/shipping/rateCard', {
                     headers: {
                         Authorization: `${token}`
                     }

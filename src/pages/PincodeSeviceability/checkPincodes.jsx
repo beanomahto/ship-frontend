@@ -28,7 +28,7 @@ const CheckPincode = () => {
     try {
       setError("");
       const response = await axios.get(
-        `https://backend-9u5u.onrender.com/api/pincode/checkService`,
+        `https://backend.shiphere.in/api/pincode/checkService`,
         {
           params: { pincode },
         }

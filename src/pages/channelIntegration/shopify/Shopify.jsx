@@ -21,7 +21,7 @@ const Shopify = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          `https://backend-9u5u.onrender.com/api/integration/getApi/${slug}`,
+          `https://backend.shiphere.in/api/integration/getApi/${slug}`,
           {
             headers: {
               Authorization: `${token}`,
@@ -58,7 +58,7 @@ const Shopify = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        `https://backend-9u5u.onrender.com/api/integration/updateApi/${slug}`,
+        `https://backend.shiphere.in/api/integration/updateApi/${slug}`,
         {
           method: "PUT",
           headers: {

@@ -13,7 +13,7 @@ console.log(users);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('https://backend-9u5u.onrender.com/api/users', {
+        const response = await fetch('https://backend.shiphere.in/api/users', {
           headers: {
             Authorization: localStorage.getItem('token'),
           },

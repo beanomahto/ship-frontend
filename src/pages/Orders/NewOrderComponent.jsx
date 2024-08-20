@@ -218,7 +218,7 @@ const handleAssign = async (partner) => {
         orderId: selectedOrder._id,
       };
 
-      const walletResponse = await axios.post('https://backend-9u5u.onrender.com/api/transactions/decreaseAmount', walletRequestBody, {
+      const walletResponse = await axios.post('https://backend.shiphere.in/api/transactions/decreaseAmount', walletRequestBody, {
         headers: {
           Authorization:  localStorage.getItem('token'),
         },
@@ -226,7 +226,7 @@ const handleAssign = async (partner) => {
 
       if (walletResponse.status === 200) {
         const orderResponse = await axios.put(
-          `https://backend-9u5u.onrender.com/api/orders/updateOrderStatus/${selectedOrderId}`,
+          `https://backend.shiphere.in/api/orders/updateOrderStatus/${selectedOrderId}`,
           { status: 'Shipped' },
           {
             headers: {

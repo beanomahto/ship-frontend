@@ -16,7 +16,7 @@ export const DeliveryPartnerProvider = ({ children }) => {
             try {
                 setLoading(true);
                 const token = localStorage.getItem('token');
-                const response = await fetch('https://backend-9u5u.onrender.com/api/shipping/getDeliveryPartners', {
+                const response = await fetch('https://backend.shiphere.in/api/shipping/getDeliveryPartners', {
                     headers: {
                         Authorization: `${token}`,
                     },

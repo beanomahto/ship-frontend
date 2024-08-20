@@ -9,7 +9,7 @@ const ForgotPasswordModal = ({ visible, onClose }) => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      await fetch('https://backend-9u5u.onrender.com/api/auth/forget-password', {
+      await fetch('https://backend.shiphere.in/api/auth/forget-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })

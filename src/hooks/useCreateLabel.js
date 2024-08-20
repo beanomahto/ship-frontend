@@ -44,7 +44,7 @@ const useCreateLebel = () => {
         setLoading(true);
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch("https://backend-9u5u.onrender.com/api/shipping/createlabelinfo", {
+            const res = await fetch("https://backend.shiphere.in/api/shipping/createlabelinfo", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -84,7 +84,7 @@ const useCreateLebel = () => {
 
     // const getLebel = async () => {
     //     try {
-    //         const response = await fetch('https://backend-9u5u.onrender.com/api/shipping/getLabelinfo');
+    //         const response = await fetch('https://backend.shiphere.in/api/shipping/getLabelinfo');
     //         const data = await response.json()
     //         setData(data);
     //         console.log(data);

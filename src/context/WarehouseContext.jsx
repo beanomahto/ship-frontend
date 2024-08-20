@@ -16,7 +16,7 @@ export const WarehouseContextProvider = ({ children }) => {
             try {
                 setLoading(true);
                 const token = localStorage.getItem('token');
-                const response = await fetch('https://backend-9u5u.onrender.com/api/warehouses/getAllWarehouse', {
+                const response = await fetch('https://backend.shiphere.in/api/warehouses/getAllWarehouse', {
                     headers: {
                         Authorization: `${token}`,
                     },

@@ -30,7 +30,7 @@ const LabelGenerator = () => {
     const generateLabel = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`https://backend-9u5u.onrender.com/api/shipping/getlabel/${id}`, {
+        const response = await axios.get(`https://backend.shiphere.in/api/shipping/getlabel/${id}`, {
           headers: {
             Authorization:`${token}`,
           }

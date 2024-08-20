@@ -17,7 +17,7 @@ const Ticket = () => {
 
     const fetchComplaints = async () => {
         try {
-            const res = await fetch('https://backend-9u5u.onrender.com/api/complaint/complaints'
+            const res = await fetch('https://backend.shiphere.in/api/complaint/complaints'
                 , {
                     headers: {
                         Authorization: localStorage.getItem('token'),
@@ -59,7 +59,7 @@ const Ticket = () => {
         }
 
         try {
-            const response = await fetch(`https://backend-9u5u.onrender.com/api/complaint/remedy/${currentComplaint._id}`, {
+            const response = await fetch(`https://backend.shiphere.in/api/complaint/remedy/${currentComplaint._id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

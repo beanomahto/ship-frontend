@@ -16,7 +16,7 @@ export const PaymentUserContextProvider = ({ children }) => {
             try {
                 setLoading(true);
                 const token = localStorage.getItem('token');
-                const response = await fetch('https://backend-9u5u.onrender.com/api/transactions/getAllTransactions', {
+                const response = await fetch('https://backend.shiphere.in/api/transactions/getAllTransactions', {
                     headers: {
                         Authorization: `${token}`,
                     },

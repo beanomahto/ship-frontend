@@ -22,7 +22,7 @@ const TakeActionModal = ({ visible, onClose, discrepancyId, productName }) => {
       console.log(pair[0] + ':', pair[1]);
     }
     try {
-      const response = await fetch('https://backend-9u5u.onrender.com/api/weightdiscrepancy/upload-images', {
+      const response = await fetch('https://backend.shiphere.in/api/weightdiscrepancy/upload-images', {
         method: 'POST',
         body: formData,
         headers: {
@@ -36,7 +36,7 @@ const TakeActionModal = ({ visible, onClose, discrepancyId, productName }) => {
 
       const result = await response.json();
       message.success(result.message);
-      const updateResponse = await fetch(`https://backend-9u5u.onrender.com/api/weightdiscrepancy/updateStatus/${discrepancyId}`, {
+      const updateResponse = await fetch(`https://backend.shiphere.in/api/weightdiscrepancy/updateStatus/${discrepancyId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
