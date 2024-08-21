@@ -28,7 +28,7 @@ const useKYC = () => {
                 formDataToSubmit.append('image', formData.pancardUrl, 'pancard.jpg');
             }
 
-            const response = await fetch('https://backend.shiphere.in/api/kyc', {
+            const response = await fetch('https://backend.shiphere.in/api/kyc/create', {
                 method: 'POST',
                 headers: {
                     Authorization: localStorage.getItem('token'),
