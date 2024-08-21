@@ -29,7 +29,7 @@ const MasterMIS_Report = () => {
 
   return (
     <div className="reportmaincontainer">
-        <Helmet>
+            <Helmet>
                 <meta charSet='utf-8' />
                 <meta name='keyword' content={""} />
                 <title>MIS Report</title>
@@ -40,6 +40,7 @@ const MasterMIS_Report = () => {
       </div>
       <div className="ndr-container">
         <h1>NDR Reports</h1>
+        <span style={{fontStyle:'italic'}} >currently unavailable </span>
       </div>
     </div>
 

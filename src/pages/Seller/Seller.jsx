@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Tag, Button, Input, Space } from 'antd';
 import { Link } from 'react-router-dom';
-import { SearchOutlined} from '@ant-design/icons';
+import { SearchOutlined } from '@ant-design/icons';
 import { Helmet } from 'react-helmet';
 
 const Seller = () => {
   const [users, setUsers] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
-console.log(users);
+  console.log(users);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -29,6 +29,7 @@ console.log(users);
 
     fetchUsers();
   }, []);
+
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -39,6 +40,7 @@ console.log(users);
     clearFilters();
     setSearchText('');
   };
+
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div style={{ padding: 8 }}>
@@ -77,7 +79,17 @@ console.log(users);
         text
       ),
   });
+console.log(users);
+
   const columns = [
+    {
+      title: 'Full Name',
+      // key: 'fullName',
+      ...getColumnSearchProps('fullName'),
+      render: (record) => <div>
+        {`${record.firstName} ${record.lastName}`}
+     </div>,
+    },
     {
       title: 'Company Id',
       dataIndex: 'companyId',
@@ -87,48 +99,30 @@ console.log(users);
       title: 'Company Name',
       dataIndex: 'companyName',
       ...getColumnSearchProps('companyName'),
-      key: 'companyName',
     },
     {
       title: 'Email',
       dataIndex: 'email',
       ...getColumnSearchProps('email'),
-      key: 'email',
-    },
-    {
-      title: 'First Name',
-      dataIndex: 'firstName',
-      ...getColumnSearchProps('firstName'),
-      key: 'firstName',
-    },
-    {
-      title: 'Last Name',
-      dataIndex: 'lastName',
-      ...getColumnSearchProps('lastName'),
-      key: 'lastName',
     },
     {
       title: 'Phone Number',
       dataIndex: 'phoneNumber',
       ...getColumnSearchProps('phoneNumber'),
-      key: 'phoneNumber',
     },
     {
       title: 'Amount',
       dataIndex: 'amount',
       ...getColumnSearchProps('amount'),
-      key: 'amount',
     },
     {
       title: 'Created At',
       dataIndex: 'createdAt',
-      key: 'createdAt',
       render: (text) => new Date(text).toLocaleString(),
     },
     {
       title: 'Verified',
       dataIndex: 'isVerified',
-      key: 'verify',
       render: (text) => (
         <Tag color={text ? 'green' : 'geekblue'}>
           {text ? 'Verified' : 'Not verified'}
@@ -144,6 +138,10 @@ console.log(users);
         </Button>
       ),
     },
+    {
+      title: 'Early COD',
+      key: 'earlycod',
+    },
   ];
 
   const handleGetKYC = (id) => {
@@ -152,11 +150,11 @@ console.log(users);
 
   return (
     <div style={{ backgroundColor: '#fff', height: '45rem', borderRadius: '1rem' }}>
-        <Helmet>
-                <meta charSet='utf-8' />
-                <meta name='keyword' content={""} />
-                <title>Sellers</title>
-            </Helmet>
+      <Helmet>
+        <meta charSet='utf-8' />
+        <meta name='keyword' content={""} />
+        <title>Sellers</title>
+      </Helmet>
       <Table dataSource={users} columns={columns} rowKey="_id" pagination={false} />
     </div>
   );

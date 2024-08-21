@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Checkbox, Select, Upload, message } from 'antd';
+import { Button, Select, Upload, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
 
@@ -19,7 +19,8 @@ const VerifyKyc = () => {
         passbookUrl: null,
         gstin: '',
         pancard: '',
-        pancardUrl: null
+        pancardUrl: null,
+        aadharNumber: ''
     });
 
     useEffect(() => {
@@ -32,6 +33,8 @@ const VerifyKyc = () => {
                     },
                 });
                 const data = await response.json();
+                console.log(data);
+                
                 setKycData(data);
                 setFormData({
                     ...formData,
@@ -46,7 +49,8 @@ const VerifyKyc = () => {
                     passbookUrl: data.passbookUrl || null,
                     gstin: data.gstin || '',
                     pancard: data.pancard || '',
-                    pancardUrl: data.pancardUrl || null
+                    pancardUrl: data.pancardUrl || null,
+                    aadharNumber: data.aadharNumber || ''
                 });
             } catch (error) {
                 message.error('Failed to fetch KYC data');
@@ -92,7 +96,7 @@ const VerifyKyc = () => {
                 <p className="title">KYC</p>
                 <div className='flex1'>
                     <div className="flex">
-                        <label className='ipt'>
+                        <label className='ipt' style={{ padding: '0px' }}>
                             <span>Company Type</span>
                             <Select
                                 className='input ipt'
@@ -100,8 +104,9 @@ const VerifyKyc = () => {
                                 onChange={(value) => setFormData({ ...formData, companyType: value })}
                             >
                                 <Select.Option value="individual">Individual</Select.Option>
-                                <Select.Option value="msme">MSME</Select.Option>
-                                <Select.Option value="adharcard">Aadhar Card</Select.Option>
+                                <Select.Option value="propertysip">Property Ship</Select.Option>
+                                <Select.Option value="pvt_lmt">PVT LMT</Select.Option>
+                                <Select.Option value="llp">LLP</Select.Option>
                             </Select>
                         </label>
                         <label>
@@ -111,36 +116,39 @@ const VerifyKyc = () => {
                                 value={formData.documentType}
                                 onChange={(value) => setFormData({ ...formData, documentType: value })}
                             >
+                                <Select.Option value="msme">MSME</Select.Option>
+                                <Select.Option value="adharcard">Aadhar Card</Select.Option>
                                 <Select.Option value="gst_certificate">GST Certificate</Select.Option>
-                                <Select.Option value="propertysip">Property Ship</Select.Option>
-                                <Select.Option value="pvt_lmt">PVT LMT</Select.Option>
-                                <Select.Option value="llp">LLP</Select.Option>
                             </Select>
                         </label>
                         <div className='picc'>
                             <label>
-                                <span>Upload GST</span>
-                                <Upload
-                                    customRequest={({ file, onSuccess, onError }) => {
-                                        setTimeout(() => {
-                                            try {
-                                                setFormData({ ...formData, gstUrl: URL.createObjectURL(file) });
-                                                onSuccess(null, file);
-                                            } catch (error) {
-                                                onError(error);
-                                            }
-                                        }, 0);
-                                    }}
-                                    listType="picture-card"
-                                >
-                                    <button
-                                        style={{ border: 0, background: 'none' }}
-                                        type="button"
+                                <span>GST Document</span>
+                                {formData.gstUrl ? (
+                                    <img src={formData.gstUrl} alt="GST Document" style={{ width: '100%', height: 'auto' }} />
+                                ) : (
+                                    <Upload
+                                        customRequest={({ file, onSuccess, onError }) => {
+                                            setTimeout(() => {
+                                                try {
+                                                    setFormData({ ...formData, gstUrl: URL.createObjectURL(file) });
+                                                    onSuccess(null, file);
+                                                } catch (error) {
+                                                    onError(error);
+                                                }
+                                            }, 0);
+                                        }}
+                                        listType="picture-card"
                                     >
-                                        <PlusOutlined />
-                                        <div style={{ marginTop: 8 }}>Upload</div>
-                                    </button>
-                                </Upload>
+                                        <button
+                                            style={{ border: 0, background: 'none' }}
+                                            type="button"
+                                        >
+                                            <PlusOutlined />
+                                            <div style={{ marginTop: 8 }}>Upload</div>
+                                        </button>
+                                    </Upload>
+                                )}
                             </label>
                         </div>
                     </div>
@@ -170,27 +178,31 @@ const VerifyKyc = () => {
                         <div className='picc'>
                             <label>
                                 <span>Passbook</span>
-                                <Upload
-                                    customRequest={({ file, onSuccess, onError }) => {
-                                        setTimeout(() => {
-                                            try {
-                                                setFormData({ ...formData, passbookUrl: URL.createObjectURL(file) });
-                                                onSuccess(null, file);
-                                            } catch (error) {
-                                                onError(error);
-                                            }
-                                        }, 0);
-                                    }}
-                                    listType="picture-card"
-                                >
-                                    <button
-                                        style={{ border: 0, background: 'none' }}
-                                        type="button"
+                                {formData.passbookUrl ? (
+                                    <img src={formData.passbookUrl} alt="Passbook" style={{ width: '100%', height: 'auto' }} />
+                                ) : (
+                                    <Upload
+                                        customRequest={({ file, onSuccess, onError }) => {
+                                            setTimeout(() => {
+                                                try {
+                                                    setFormData({ ...formData, passbookUrl: URL.createObjectURL(file) });
+                                                    onSuccess(null, file);
+                                                } catch (error) {
+                                                    onError(error);
+                                                }
+                                            }, 0);
+                                        }}
+                                        listType="picture-card"
                                     >
-                                        <PlusOutlined />
-                                        <div style={{ marginTop: 8 }}>Upload</div>
-                                    </button>
-                                </Upload>
+                                        <button
+                                            style={{ border: 0, background: 'none' }}
+                                            type="button"
+                                        >
+                                            <PlusOutlined />
+                                            <div style={{ marginTop: 8 }}>Upload</div>
+                                        </button>
+                                    </Upload>
+                                )}
                             </label>
                         </div>
                     </div>
@@ -241,33 +253,56 @@ const VerifyKyc = () => {
                         </label>
                         <div className='picc'>
                             <label>
-                                <span>Upload PAN Card</span>
-                                <Upload
-                                    customRequest={({ file, onSuccess, onError }) => {
-                                        setTimeout(() => {
-                                            try {
-                                                setFormData({ ...formData, pancardUrl: URL.createObjectURL(file) });
-                                                onSuccess(null, file);
-                                            } catch (error) {
-                                                onError(error);
-                                            }
-                                        }, 0);
-                                    }}
-                                    listType="picture-card"
-                                >
-                                    <button
-                                        style={{ border: 0, background: 'none' }}
-                                        type="button"
+                                <span>PAN Card</span>
+                                {formData.pancardUrl ? (
+                                    <img src={formData.pancardUrl} alt="PAN Card" style={{ width: '100%', height: 'auto' }} />
+                                ) : (
+                                    <Upload
+                                        customRequest={({ file, onSuccess, onError }) => {
+                                            setTimeout(() => {
+                                                try {
+                                                    setFormData({ ...formData, pancardUrl: URL.createObjectURL(file) });
+                                                    onSuccess(null, file);
+                                                } catch (error) {
+                                                    onError(error);
+                                                }
+                                            }, 0);
+                                        }}
+                                        listType="picture-card"
                                     >
-                                        <PlusOutlined />
-                                        <div style={{ marginTop: 8 }}>Upload</div>
-                                    </button>
-                                </Upload>
+                                        <button
+                                            style={{ border: 0, background: 'none' }}
+                                            type="button"
+                                        >
+                                            <PlusOutlined />
+                                            <div style={{ marginTop: 8 }}>Upload</div>
+                                        </button>
+                                    </Upload>
+                                )}
                             </label>
                         </div>
                     </div>
+                    <div className="flex">
+                        <label>
+                            <span>Aadhar Number</span>
+                            <input
+                                className="input"
+                                type="text"
+                                name="aadharNumber"
+                                value={formData.aadharNumber}
+                                onChange={handleChange}
+                            />
+                        </label>
+                    </div>
                 </div>
-                <button className="submit" type="submit">Verify</button>
+                <Button
+                    className="input-submit"
+                    type="primary"
+                    htmlType="submit"
+                    onClick={handleSubmit}
+                >
+                    Submit
+                </Button>
             </form>
         </div>
     );

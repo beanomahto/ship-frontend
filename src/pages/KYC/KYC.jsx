@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './kyc.css';
-import { Checkbox, Select, Upload, message } from 'antd';
+import { Checkbox, Select, Upload, Button, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import useKyc from '../../hooks/useKyc';
 import { Helmet } from 'react-helmet';
+import useKYC from './useKYC';
+import { useAuthContext } from '../../context/AuthContext';
 
 const KYC = () => {
-    const { kycIntegration } = useKyc();
+    const { authUser } = useAuthContext();
     const [kycData, setKycData] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
@@ -16,12 +17,15 @@ const KYC = () => {
         documentType: '',
         gstUrl: null,
         accountNumber: '',
-        passbookNumber: '',
         passbookUrl: null,
         gstin: '',
         pancard: '',
-        pancardUrl: null
+        pancardUrl: null,
+        aadharNumber: ''
     });
+    const { submitKYCForm, loading } = useKYC();
+    const [showAadharInput, setShowAadharInput] = useState(false);  
+
     useEffect(() => {
         const fetchKycData = async () => {
             try {
@@ -32,7 +36,6 @@ const KYC = () => {
                 });
                 const data = await response.json();
                 setKycData(data);
-                console.log(data);
                 setFormData({
                     ...formData,
                     companyType: data.companyType || '',
@@ -42,11 +45,11 @@ const KYC = () => {
                     documentType: data.documentType || '',
                     gstUrl: data.gstUrl || null,
                     accountNumber: data.accountNumber || '',
-                    passbookNumber: data.passbookNumber || '',
                     passbookUrl: data.passbookUrl || null,
                     gstin: data.gstin || '',
                     pancard: data.pancard || '',
-                    pancardUrl: data.pancardUrl || null
+                    pancardUrl: data.pancardUrl || null,
+                    aadharNumber: data.aadharNumber || '' 
                 });
             } catch (error) {
                 message.error('Failed to fetch KYC data');
@@ -55,7 +58,6 @@ const KYC = () => {
 
         fetchKycData();
     }, []);
-    console.log(kycData);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -65,21 +67,43 @@ const KYC = () => {
         });
     };
 
-    console.log(formData);
+    const handleDocumentTypeChange = (value) => {
+        setFormData({ ...formData, documentType: value });
+
+        if (value === 'adharcard') {
+            setShowAadharInput(true);
+        } else {
+            setShowAadharInput(false);
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await kycIntegration(formData);
-            message.success('KYC information saved successfully');
+            const data = await submitKYCForm(formData);
+            setKycData(data);
+            setFormData({
+                name: '',
+                ifscCode: '',
+                bankName: '',
+                companyType: '',
+                documentType: '',
+                gstUrl: null,
+                accountNumber: '',
+                passbookUrl: null,
+                gstin: '',
+                pancard: '',
+                pancardUrl: null,
+                aadharNumber: ''
+            });
         } catch (error) {
-            message.error('Failed to save KYC information');
+            message.error("Failed to save KYC information")
         }
     };
 
     return (
         <div className='formCon'>
-               <Helmet>
+            <Helmet>
                 <meta charSet='utf-8' />
                 <title>Your KYC</title>
             </Helmet>
@@ -96,8 +120,9 @@ const KYC = () => {
                                 onChange={(value) => setFormData({ ...formData, companyType: value })}
                             >
                                 <Select.Option value="individual">Individual</Select.Option>
-                                <Select.Option value="msme">MSME</Select.Option>
-                                <Select.Option value="adharcard">Aadhar Card</Select.Option>
+                                <Select.Option value="propertysip">Property Ship</Select.Option>
+                                <Select.Option value="pvt_lmt">PVT LMT</Select.Option>
+                                <Select.Option value="llp">LLP</Select.Option>
                             </Select>
                         </label>
                         <label>
@@ -106,22 +131,21 @@ const KYC = () => {
                                 className='input ipt'
                                 style={{padding:'0'}}
                                 value={formData.documentType}
-                                onChange={(value) => setFormData({ ...formData, documentType: value })}
+                                onChange={handleDocumentTypeChange} 
                             >
+                                <Select.Option value="adharcard">Aadhar Card</Select.Option>
                                 <Select.Option value="gst_certificate">GST Certificate</Select.Option>
-                                <Select.Option value="propertysip">Property Ship</Select.Option>
-                                <Select.Option value="pvt_lmt">PVT LMT</Select.Option>
-                                <Select.Option value="llp">LLP</Select.Option>
+                                <Select.Option value="msme">MSME</Select.Option>
                             </Select>
                         </label>
                         <div className='picc'>
                             <label>
-                                <span>Upload GST</span>
+                                <span>Upload</span>
                                 <Upload
                                     customRequest={({ file, onSuccess, onError }) => {
                                         setTimeout(() => {
                                             try {
-                                                setFormData({ ...formData, gstUrl: URL.createObjectURL(file) });
+                                                setFormData({ ...formData, gstUrl: file });
                                                 onSuccess(null, file);
                                             } catch (error) {
                                                 onError(error);
@@ -140,6 +164,22 @@ const KYC = () => {
                                 </Upload>
                             </label>
                         </div>
+                      
+                    </div>
+                    <div className="flex">
+                    {showAadharInput && (  
+                            <label>
+                                <span>Aadhar Number</span>
+                                <input
+                                    className="input"
+                                    style={{padding:'0'}}
+                                    type="text"
+                                    name="aadharNumber"
+                                    value={formData.aadharNumber}
+                                    onChange={handleChange}
+                                />
+                            </label>
+                        )}
                     </div>
                 </div>
                 <div className='flex1'>
@@ -150,7 +190,7 @@ const KYC = () => {
                                 className="input"
                                 style={{padding:'0'}}
                                 type="text"
-                                name="passbookNumber"
+                                name="name"
                                 value={formData.name}
                                 onChange={handleChange}
                             />
@@ -174,7 +214,7 @@ const KYC = () => {
                                     customRequest={({ file, onSuccess, onError }) => {
                                         setTimeout(() => {
                                             try {
-                                                setFormData({ ...formData, passbookUrl: URL.createObjectURL(file) });
+                                                setFormData({ ...formData, passbookUrl: file });
                                                 onSuccess(null, file);
                                             } catch (error) {
                                                 onError(error);
@@ -196,23 +236,23 @@ const KYC = () => {
                     </div>
                     <div className="flex">
                         <label>
-                            <span>IFC Code</span>
+                            <span>IFSC Code</span>
                             <input
                                 className="input"
                                 style={{padding:'0'}}
                                 type="text"
-                                name="passbookNumber"
+                                name="ifscCode"
                                 value={formData.ifscCode}
                                 onChange={handleChange}
                             />
                         </label>
                         <label>
-                            <span>Bank </span>
+                            <span>Bank Name</span>
                             <input
                                 className="input"
                                 style={{padding:'0'}}
                                 type="text"
-                                name="passbookNumber"
+                                name="bankName"
                                 value={formData.bankName}
                                 onChange={handleChange}
                             />
@@ -221,6 +261,17 @@ const KYC = () => {
                 </div>
                 <div className='flex1'>
                     <div className="flex">
+                        <label>
+                            <span>PanCard</span>
+                            <input
+                                className="input"
+                                style={{padding:'0'}}
+                                type="text"
+                                name="pancard"
+                                value={formData.pancard}
+                                onChange={handleChange}
+                            />
+                        </label>
                         <label>
                             <span>GSTIN</span>
                             <input
@@ -232,25 +283,14 @@ const KYC = () => {
                                 onChange={handleChange}
                             />
                         </label>
-                        <label>
-                            <span>PAN Card Number</span>
-                            <input
-                                className="input"
-                                style={{padding:'0'}}
-                                type="text"
-                                name="pancard"
-                                value={formData.pancard}
-                                onChange={handleChange}
-                            />
-                        </label>
                         <div className='picc'>
                             <label>
-                                <span>Upload PAN Card</span>
+                                <span>PanCard Image</span>
                                 <Upload
                                     customRequest={({ file, onSuccess, onError }) => {
                                         setTimeout(() => {
                                             try {
-                                                setFormData({ ...formData, pancardUrl: URL.createObjectURL(file) });
+                                                setFormData({ ...formData, pancardUrl: file });
                                                 onSuccess(null, file);
                                             } catch (error) {
                                                 onError(error);
@@ -271,14 +311,19 @@ const KYC = () => {
                         </div>
                     </div>
                 </div>
+                <div className="flex" style={{paddingTop:'10px'}} >
                 <Checkbox>
                     I have read the <a href="">Terms and Condition</a> agreement
                 </Checkbox>
-                <button className="submit" type="submit">Submit</button>
+                </div>
+                <div className='btncont'>
+               {
+                authUser?.isVerified === 'true' ?      <Button htmlType="submit" className="btn" >Verified</Button> :      <Button htmlType="submit" className="btn" loading={loading}>Save</Button>
+               }
+                </div>
             </form>
         </div>
     );
-
 };
 
 export default KYC;

@@ -32,7 +32,6 @@ export const OrderContextProvider = ({ children }) => {
     };
 
     useEffect(() => {
-
         fetchOrders();
     }, []);
     return (
