@@ -10,7 +10,7 @@ const useChannelIntegration = () => {
 		setLoading(true);
 		try {
 			const token = localStorage.getItem('token');
-			const res = await fetch("https://backend-9u5u.onrender.com/api/integration/createApi", {
+			const res = await fetch("https://backend.shiphere.in/api/integration/createApi", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ storeName, salesChannel, apiKey, apiSecret, token }),

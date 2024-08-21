@@ -7,7 +7,7 @@ const MasterMIS_Report = () => {
   const handleDownload = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('https://backend-9u5u.onrender.com/api/report/getmisreport', {
+      const response = await axios.get('https://backend.shiphere.in/api/report/getmisreport', {
         responseType: 'blob',
         headers: {
           Authorization: `${token}`

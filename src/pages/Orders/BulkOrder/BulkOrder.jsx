@@ -21,7 +21,7 @@ const BulkOrderUploadModal = ({ visible, onClose }) => {
         formData.append('file', file);
 
         try {
-            const response = await fetch('https://backend-9u5u.onrender.com/api/orders/createBulkOrder', {
+            const response = await fetch('https://backend.shiphere.in/api/orders/createBulkOrder', {
                 method: 'POST',
                 body: formData,
             });

@@ -27,7 +27,7 @@ const VerifyKyc = () => {
         const fetchKycData = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch(`https://backend-9u5u.onrender.com/api/kyc/${id}`, {
+                const response = await fetch(`https://backend.shiphere.in/api/kyc/${id}`, {
                     headers: {
                         Authorization: `${token}`,
                     },
@@ -72,7 +72,7 @@ const VerifyKyc = () => {
         e.preventDefault();
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`https://backend-9u5u.onrender.com/api/users/updateVerify/${id}`, {
+            const response = await fetch(`https://backend.shiphere.in/api/users/updateVerify/${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -27,7 +27,7 @@ const useAddWarehouse = () => {
 		setLoading(true);
 		try {
             const token = localStorage.getItem('token');
-			const res = await fetch("https://backend-9u5u.onrender.com/api/warehouses/createWarehouse", {
+			const res = await fetch("https://backend.shiphere.in/api/warehouses/createWarehouse", {
 				method: "POST",
 				headers: { "Content-Type": "application/json",  Authorization: `${token}`, },
 				body: JSON.stringify({   contactPerson,contactEmail,contactNumber,pincode,city,state,address,landmark,country }),

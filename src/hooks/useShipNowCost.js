@@ -10,7 +10,7 @@ const useShipNowCost = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch("https://backend-9u5u.onrender.com/api/shipping/getSingleDeliveryCost", {
+      const res = await fetch("https://backend.shiphere.in/api/shipping/getSingleDeliveryCost", {
         method: "POST",
         body: JSON.stringify({ orderId, wareHouseId }),
         headers: {
