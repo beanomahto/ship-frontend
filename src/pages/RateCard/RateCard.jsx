@@ -156,7 +156,7 @@ const RateCard = () => {
           <li>Shipway will not assist or be held responsible for shipping goods categorized as prohibited, dangerous, or restricted.</li>
           <li>The sender is liable for any costs, charges, and fees incurred in returning, storing, or disposing of an undelivered shipment.</li>
           <li>If a shipment cannot be delivered, cleared through customs, or returned, it may be transferred.</li>
-          <li>For any queries, a ticket should be raised via support@shipshed.com.</li>
+          <li>For any queries, a ticket should be raised via support@shipshed.in.</li>
           <li>Refer to the detailed terms and conditions for further information.</li>
         </ul>
       </Paragraph>
