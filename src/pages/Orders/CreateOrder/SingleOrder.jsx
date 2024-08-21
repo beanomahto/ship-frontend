@@ -176,7 +176,7 @@ console.log(inputs)
                     </div>
                     <div class="flex">
                         <label>
-                            <input class="input" type="number" placeholder="" required 
+                            <input class="input" type="text" placeholder="" required 
                             value={inputs.orderId}
                             onChange={(e) => setInputs({ ...inputs, orderId: e.target.value })}
                             />

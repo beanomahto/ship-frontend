@@ -226,7 +226,7 @@ const Profile = () => {
                         </label>
                     </div>
                 </div>
-                <button className="submit" type="submit">Save</button>
+                <button className="submit" type="submit" style={{paddingTop:'16px'}} >Save</button>
             </form>
         </div>
     );
