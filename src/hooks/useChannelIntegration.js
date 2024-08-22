@@ -2,6 +2,7 @@ import { useState } from "react";
 
 const useChannelIntegration = () => {
 	const [loading, setLoading] = useState(false);
+	const [data1, setData] = useState(null);
 
 	const channelIntegration = async ({ storeName, salesChannel, apiKey, apiSecret, token, }) => {
 		const success = handleInputErrors({ storeName, salesChannel, apiKey, apiSecret, token });
@@ -20,6 +21,7 @@ const useChannelIntegration = () => {
 			});
 
 			const data = await res.json();
+			setData(data);
 			console.log(data);
 			if (data.error) {
 				throw new Error(data.error);
@@ -31,7 +33,7 @@ const useChannelIntegration = () => {
 		}
 	};
 
-	return { loading, channelIntegration };
+	return { loading, channelIntegration, data1 };
 };
 export default useChannelIntegration;
 

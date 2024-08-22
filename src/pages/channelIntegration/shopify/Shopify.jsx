@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import useChannelIntegration from "../../../hooks/useChannelIntegration";
 import { message } from "antd";
 import shopifyInt from "../../../utils/shopifyInt.png.jpg";
 
 const Shopify = () => {
-  const { slug } = useParams();
+  const params = useParams();
+  const slug = "shopify";
+
   const [data, setData] = useState(null);
   const [storeInputs, setStoreInputs] = useState({
     storeName: "",
-    salesChannel: "",
+    salesChannel: slug,
     apiKey: "",
     apiSecret: "",
     token: "",
   });
-  const { shopifyIntegration } = useChannelIntegration();
 
   useEffect(() => {
     const getChannelInfo = async () => {
@@ -29,28 +29,66 @@ const Shopify = () => {
           }
         );
         const result = await res.json();
-        setData(result);
-        setStoreInputs({
-          storeName: result.storeName || "",
-          salesChannel: result.salesChannel || "",
-          apiKey: result.apiKey || "",
-          apiSecret: result.apiSecret || "",
-          token: result.token || "",
-        });
+  
+        if (res.ok && result.storeName) {
+          setData(result);
+          setStoreInputs({
+            storeName: result.storeName || "",
+            salesChannel: result.salesChannel || "",
+            apiKey: result.apiKey || "",
+            apiSecret: result.apiSecret || "",
+            token: result.token || "",
+          });
+        } else {
+          console.error("Invalid response or API key not found");
+        }
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching channel info:", error);
       }
     };
+  
     getChannelInfo();
   }, [slug]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (data) {
-      await updateChannelInfo();
-    } else {
-      await shopifyIntegration(storeInputs);
-      message.success("Integrated Successfully");
+  
+    try {
+      if (data === null) {
+        await integrateShopifyChannel();
+        message.success("Channel created successfully");
+        await updateChannelInfo();
+      } else {
+        await updateChannelInfo();
+      }
+    } catch (error) {
+      message.error("An error occurred while integrating the channel");
+    }
+  };
+  console.log(storeInputs);
+  
+  const integrateShopifyChannel = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(
+        `https://backend.shiphere.in/api/integration/createApi`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+          },
+          body: JSON.stringify(storeInputs),
+        }
+      );
+  console.log(storeInputs);
+  
+      if (!res.ok) {
+        throw new Error("Failed to create the channel");
+      }
+    } catch (error) {
+      console.error("Error integrating Shopify channel:", error);
+      throw error;
     }
   };
 
@@ -70,18 +108,17 @@ const Shopify = () => {
       );
 
       if (res.ok) {
-        message.success("Updated Successfully");
+        message.success("Channel updated successfully");
       } else {
         const errorData = await res.json();
-        const errorMessage = errorData?.message || "Failed to Update";
+        const errorMessage = errorData?.message || "Failed to update channel";
         message.error(errorMessage);
       }
     } catch (error) {
       console.error("Error updating channel info:", error);
-      message.error("An error occurred");
+      message.error("An error occurred while updating the channel");
     }
   };
-
   return (
     <div
       style={{
@@ -115,7 +152,7 @@ const Shopify = () => {
           <li>
             Click <span style={{ fontWeight: "600" }}>Install app</span>
           </li>
-          <li>Save Your changes to get Ceredential</li>
+          <li>Save Your changes to get Credentials</li>
           <ul>
             <li>API Key, API Secret, Token</li>
             <li>

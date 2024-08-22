@@ -280,7 +280,7 @@ const UpdateSingleOrder = () => {
           <label>
             <input
               className="input"
-              type="number"
+              type="text"
               placeholder=""
               required
               value={inputs.length}
