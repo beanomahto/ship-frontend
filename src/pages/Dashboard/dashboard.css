@@ -55,3 +55,38 @@
   width: 40%;
   height: 20rem;
 }
+
+.orderSummaryContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  grid-template-rows: repeat(2, auto); 
+  gap: 78px; /* */
+  /* margin-bottom: 20px; */
+}
+
+.orderSummaryCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 36px;
+  border-radius: 10px;
+  background-color: #fbfcf8;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.orderSummary h3 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.orderSummary p {
+  margin: 0;
+  font-size: 14px;
+  color: #777;
+}
+
+.orderIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

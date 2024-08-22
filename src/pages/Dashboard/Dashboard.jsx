@@ -1,16 +1,8 @@
 import React from "react";
 import { Bar, Doughnut } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  ArcElement, 
-  Title,
-  Tooltip,
-  Legend
-} from "chart.js";
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import { FaShoppingCart, FaHourglassHalf, FaTimesCircle, FaCheckCircle } from 'react-icons/fa';  // Import icons
 
 import "./dashboard.css";
 
@@ -41,42 +33,46 @@ const Dashboard = () => {
         <ShipmentStatusGraph />
       </div>
 
-      <div className="dataCard customerCard">
-        <Bar
-          data={{
-            labels: sourceData.map((data) => data.label),
-            datasets: [
-              {
-                label: "Count",
-                data: sourceData.map((data) => data.value),
-                backgroundColor: [
-                  "#dcfce7",
-                  "rgba(250, 192, 19, 0.8)",
-                  "rgba(253, 135, 135, 0.8)",
-                ],
-                borderRadius: 5,
-              },
-            ],
-          }}
-          options={{
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              title: {
-                display: true,
-                text: "Revenue Source",
-                font: {
-                  size: 20
-                }
-              },
-            },
-            scales: {
-              x: {
-                beginAtZero: true,
-              },
-            },
-          }}
-        />
+      <div className="orderSummaryContainer">
+        <div className="orderSummaryCard">
+          <div className="orderSummary">
+            <h3>548</h3>
+            <p>Total Orders</p>
+          </div>
+          <div className="orderIcon">
+            <FaShoppingCart size={40} color="#2B3FE5" />
+          </div>
+        </div>
+
+        <div className="orderSummaryCard">
+          <div className="orderSummary">
+            <h3>304</h3>
+            <p>Pending Orders</p>
+          </div>
+          <div className="orderIcon">
+            <FaHourglassHalf size={40} color="#FAC013" />
+          </div>
+        </div>
+
+        <div className="orderSummaryCard">
+          <div className="orderSummary">
+            <h3>68</h3>
+            <p>Cancelled Orders</p>
+          </div>
+          <div className="orderIcon">
+            <FaTimesCircle size={40} color="#FD8787" />
+          </div>
+        </div>
+
+        <div className="orderSummaryCard">
+          <div className="orderSummary">
+            <h3>176</h3>
+            <p>Completed Orders</p>
+          </div>
+          <div className="orderIcon">
+            <FaCheckCircle size={40} color="#34A853" />
+          </div>
+        </div>
       </div>
 
       <div className="dataCard categoryCard">

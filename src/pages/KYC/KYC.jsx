@@ -58,6 +58,8 @@ const KYC = () => {
 
         fetchKycData();
     }, []);
+console.log(kycData);
+console.log(authUser);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -317,9 +319,25 @@ const KYC = () => {
                 </Checkbox>
                 </div>
                 <div className='btncont'>
-               {
-                authUser?.isVerified === 'true' ?      <Button htmlType="submit" className="btn" >Verified</Button> :      <Button htmlType="submit" className="btn" loading={loading}>Save</Button>
-               }
+                    
+                {
+  !kycData?.error ? (
+    authUser?.isVerified ? (
+      <Button htmlType="submit" className="btn" style={{ backgroundColor: 'green', color: 'white' }}>
+        Verified
+      </Button>
+    ) : (
+      <Button htmlType="submit" className="btn" disabled>
+        Pending
+      </Button>
+    )
+  ) : (
+    <Button htmlType="submit" className="btn" loading={loading}>
+      Save
+    </Button>
+  )
+}
+
                 </div>
             </form>
         </div>

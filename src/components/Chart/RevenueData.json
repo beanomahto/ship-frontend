@@ -1,10 +1,5 @@
 [
     {
-      "label": "Dtdc",
-      "revenue": 64854,
-      "cost": 32652
-    },
-    {
       "label": "ExpressBees",
       "revenue": 54628,
       "cost": 42393
@@ -15,24 +10,9 @@
       "cost": 50262
     },
     {
-      "label": "Smartr",
-      "revenue": 82830,
-      "cost": 64731
-    },
-    {
       "label": "Ecom",
       "revenue": 91208,
       "cost": 41893
-    },
-    {
-      "label": "Ekart",
-      "revenue": 103609,
-      "cost": 83809
-    },
-    {
-      "label": "Shadowfax",
-      "revenue": 90974,
-      "cost": 44772
     },
     {
       "label": "Amazon ATS",

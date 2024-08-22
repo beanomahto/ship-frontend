@@ -300,7 +300,7 @@ const VerifyKyc = () => {
                     type="primary"
                     htmlType="submit"
                     onClick={handleSubmit}
-                    style={{paddingTop:'10px'}}
+                    style={{marginTop:'30px'}}
                 >
                     Submit
                 </Button>
