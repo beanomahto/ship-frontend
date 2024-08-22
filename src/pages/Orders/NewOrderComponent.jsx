@@ -16,6 +16,7 @@ import Shopify from '../../utils/shopify.png';
 import Woo from '../../utils/woocomerce.png'
 import logo from '../../utils/logo1.jpg' 
 import { Helmet } from 'react-helmet';
+import { useAuthContext } from '../../context/AuthContext';
 
 const partnerImages = {
   'Blue Dart': BD,
@@ -40,7 +41,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
   const { shipNowCost } = useShipNowCost();
   const { warehouse } = useWarehouseContext();
   const [modalLoading, setModalLoading] = useState(false);
-
+  const { authUser } = useAuthContext();
   useEffect(() => {
     const fetchDeliveryCost = async () => {
       if (selectedOrderId) {
@@ -197,6 +198,23 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
         </div>
       ),
     },
+    ...(authUser?.role === 'admin' ? [{
+      title: 'Seller Email', 
+      dataIndex: 'seller',  
+      // render: (_, record) => (
+      //     <Button
+      //       type="primary"
+      //       onClick={() => {
+      //         setSelectedDiscrepancyId(record?._id); 
+      //         setSelectedProductName(record?.productName)
+      //         setModalVisible(true);
+      //         console.log(record);
+      //       }}
+      //     >
+      //       Take Action
+      //     </Button>
+      //   ),
+    }] : []),
   ];
 
   const handleExpandRow = (key) => {
@@ -209,7 +227,7 @@ const handleAssign = async (partner) => {
       const selectedOrder = dataSource.find(order => order._id === selectedOrderId);
       const orderPrice = selectedOrder.productPrice;
       const partnerCost = partner.cost;
-      const totalDebit = orderPrice + partnerCost;
+      const totalDebit = partnerCost;
 
       const walletRequestBody = {
         debit: totalDebit,

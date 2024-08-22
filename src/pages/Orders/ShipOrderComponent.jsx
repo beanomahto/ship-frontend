@@ -8,12 +8,13 @@ import { Helmet } from 'react-helmet';
 import Shopify from '../../utils/shopify.png';
 import Woo from '../../utils/woocomerce.png'
 import logo from '../../utils/logo1.jpg' 
+import { useAuthContext } from '../../context/AuthContext';
 
 const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-
+  const { authUser } = useAuthContext();
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -140,6 +141,23 @@ const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) =
       sorter: (a, b) => moment(a.createdAt).unix() - moment(b.createdAt).unix(),
       render: (text, order) => moment(order?.createdAt).format('DD-MM-YYYY'),
     },
+    ...(authUser?.role === 'admin' ? [{
+      title: 'Seller Email', 
+      dataIndex: 'seller',  
+      // render: (_, record) => (
+      //     <Button
+      //       type="primary"
+      //       onClick={() => {
+      //         setSelectedDiscrepancyId(record?._id); 
+      //         setSelectedProductName(record?.productName)
+      //         setModalVisible(true);
+      //         console.log(record);
+      //       }}
+      //     >
+      //       Take Action
+      //     </Button>
+      //   ),
+    }] : []),
   ];
 
 

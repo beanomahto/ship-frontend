@@ -40,8 +40,12 @@ const useShipNowCost = () => {
 };
 
 function handleInputErrors(orderId, wareHouseId) {
-  if (!orderId || !wareHouseId) {
-    alert("Please fill in all fields in useShipNow");
+  if (!wareHouseId) {
+    alert("warehouse not found");
+    return false;
+  }
+  if (!orderId) {
+    alert("please select the order");
     return false;
   }
   return true;
