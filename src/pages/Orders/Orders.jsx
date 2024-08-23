@@ -26,8 +26,10 @@ const Orders = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleBD, setModalVisibleBD] = useState(false);
   const [modalVisibleShipNow, setModalVisibleShipNow] = useState(false);
+  const [selectedOrderData, setSelectedOrderData] = useState([]);
   const [currentTab, setCurrentTab] = useState('tab1');
   console.log(orders);
+console.log(selectedOrderData);
 
   const showModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
@@ -37,6 +39,7 @@ const Orders = () => {
   const closeModalShipNow = () => setModalVisibleShipNow(false);
   const [modalLoading, setModalLoading] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
+  const [currentDeliveryCost, setCurrentDeliveryCost] = useState(null);
   const start = async () => {
     setLoading(true);
     try {
@@ -63,6 +66,10 @@ const Orders = () => {
   const onSelectChange = (newSelectedRowKeys) => {
     console.log(newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
+    const selectedData = newSelectedRowKeys.map(key => 
+      orders.orders.find(order => order._id === key)
+    );
+    setSelectedOrderData(selectedData);
   };
 
   const handleShipNow = async () => {
@@ -103,6 +110,7 @@ const Orders = () => {
   const dataSourceWithKeys = orders?.orders?.map((order) => ({
     ...order,
     key: order._id,
+    order:order
     // key: index.toString(),
   })) || [];
 
@@ -118,6 +126,7 @@ const Orders = () => {
     onChange: onSelectChange,
     // onSelect: showModalShipNow,
   };
+console.log(rowSelection);
 
   const hasSelected = selectedRowKeys.length > 1;
   console.log(dataSourceWithKeys);
@@ -152,10 +161,11 @@ const Orders = () => {
   console.log(selectedRowKeys);
   
   const cancelShipment = async () => {
-    console.log(selectedRowKeys);
+    console.log('Selected Row Keys:', selectedRowKeys);
     
+    const token = localStorage.getItem('token');
     try {
-      const token = localStorage.getItem('token');
+      
       const response = await axios.put(`https://backend.shiphere.in/api/orders/updateOrderStatus/${selectedRowKeys}`, {
         status: 'Cancelled'
       }, {
@@ -163,18 +173,43 @@ const Orders = () => {
           Authorization: `${token}`
         }
       });
-      if (response.status === 201) {
-        message.success('Order canceled successfully');
-        fetchOrders();
-        setSelectedRowKeys([]);
+  
+      if (response.status === 201) { 
+        if (selectedOrderData.length > 0) {
+          const walletRequestBody = {
+            userId: selectedOrderData[0].seller._id,
+            credit: selectedOrderData[0].shippingCost,
+            remark: `Credit charges for order ${selectedOrderData[0].orderId}`,
+          };
+          console.log('Wallet Request Body:', walletRequestBody);
+  
+          const increaseAmountResponse = await axios.post(`https://backend.shiphere.in/api/transactions/increaseAmount`, walletRequestBody, {
+            headers: {
+              Authorization: `${token}`
+            }
+          });
+          console.log('Increase Amount Response:', increaseAmountResponse);
+  
+          if (increaseAmountResponse.status === 200) {
+            message.success('Order cancelled and amount updated successfully');
+            fetchOrders();
+            setSelectedRowKeys([]);
+          } else {
+            message.error('Failed to update amount');
+          }
+        } else {
+          message.error('No order data available for wallet update');
+        }
+      } else {
+        message.error('Failed to cancel order');
       }
-
-    } catch (error) {
-      console.log(error);
       
+    } catch (error) {
+      console.log('Error:', error.response ? error.response.data : error.message);
       message.error('Failed to cancel order');
     }
   };
+  
   useEffect(() => {
     const fetchDeliveryCost = async () => {
       if (selectedOrderId) {
@@ -273,6 +308,8 @@ const Orders = () => {
                 setDeliveryCosts={setDeliveryCosts}
                 setSelectedOrderId={setSelectedOrderId}
                 selectedOrderId={selectedOrderId}
+                setCurrentDeliveryCost={setCurrentDeliveryCost}
+                currentDeliveryCost={currentDeliveryCost}
               />
             ) : (
               <span>No component for this tab</span>

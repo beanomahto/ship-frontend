@@ -82,7 +82,7 @@ const NDR = () => {
         </Tabs.TabPane>
         <Tabs.TabPane tab='Action Required' key='tab2'>
           <div style={{ marginBottom: 16, zIndex: 2 }}>
-            <Button type="primary" onClick={start} loading={loading}>Sync</Button>
+            {/* <Button type="primary" onClick={start} loading={loading}>Sync</Button> */}
             <div style={{
             width: 80,
             float:'inline-end'

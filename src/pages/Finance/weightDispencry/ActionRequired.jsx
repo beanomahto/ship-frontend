@@ -3,13 +3,15 @@ import { Table, Button } from 'antd';
 import UploadDiscrepancyImagesModal from './UploadDiscrepancyImagesModal';
 import { useAuthContext } from '../../../context/AuthContext';
 import moment from 'moment';
+import { useEffect } from 'react';
 
-const OpenWeightDispensory = ({ dataSource, rowSelection}) => {
+const ActionRequired = ({ dataSource, rowSelection}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDiscrepancyId, setSelectedDiscrepancyId] = useState(null);
   const [selectedProductName, setSelectedProductName] = useState(null);
   console.log(dataSource);
   const { authUser } = useAuthContext();
+  
   const columns = [
     {
       title: 'Weight Applied Date',
@@ -71,6 +73,7 @@ const OpenWeightDispensory = ({ dataSource, rowSelection}) => {
       }] : []),
   ];
 const actionRequired = dataSource?.filter(data => data.status === 'action required')
+
   return (
     <>
       <Table
@@ -91,4 +94,4 @@ const actionRequired = dataSource?.filter(data => data.status === 'action requir
   );
 };
 
-export default OpenWeightDispensory;
+export default ActionRequired;

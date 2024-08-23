@@ -31,11 +31,12 @@ const channelImages = {
   'Shopify': Shopify,
 };
 
-const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setModalLoading,modalLoading,deliveryCosts,setDeliveryCosts,setSelectedOrderId,selectedOrderId }) => {
+const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setModalLoading,modalLoading,deliveryCosts,setDeliveryCosts,setSelectedOrderId,selectedOrderId,currentDeliveryCost,setCurrentDeliveryCost }) => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
+  console.log(currentDeliveryCost);
   
-
+ 
   const [selectedPartner, setSelectedPartner] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -155,7 +156,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
       title: 'Channel',
       dataIndex: 'channel',
       render: (text) => (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-start', marginLeft:'25px' }}>
           <img
             // src={text === 'shopify' ? Shopify : Woo}
             src={text === 'shopify' ? Shopify : (text === 'Mannual' ? logo : Woo)}
@@ -214,24 +215,26 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
       const orderPrice = selectedOrder.productPrice;
       const partnerCost = partner.cost;
       const totalDebit = partnerCost;
-
+      setCurrentDeliveryCost(totalDebit)
       const walletRequestBody = {
         debit: totalDebit,
         userId: selectedOrder.seller._id,
         remark: `Shipping charge for order ${selectedOrder.orderId}`,
         orderId: selectedOrder._id,
       };
+// console.log(walletRequestBody);
 
       const walletResponse = await axios.post('https://backend.shiphere.in/api/transactions/decreaseAmount', walletRequestBody, {
         headers: {
           Authorization: localStorage.getItem('token'),
         },
       });
+// console.log(walletResponse);
 
       if (walletResponse.status === 200) {
         const orderResponse = await axios.put(
-          `https://backend.shiphere.in/api/orders/updateOrderStatus/${selectedOrderId}`,
-          { status: 'Shipped' },
+          `http://localhost:5000/api/orders/updateOrderStatus/${selectedOrderId}`,
+          { status: 'Shipped',shippingCost:currentDeliveryCost },
           {
             headers: {
               Authorization: `${localStorage.getItem('token')}`,

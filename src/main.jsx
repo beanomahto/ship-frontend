@@ -9,7 +9,6 @@ import { PaymentUserContextProvider } from './context/PaymentUserContext.jsx'
 import { DeliveryPartnerProvider } from './context/DeliveryPartners.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
     <AuthContextProvider>
       <OrderContextProvider>
         <WarehouseContextProvider>
@@ -21,5 +20,4 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         </WarehouseContextProvider>
       </OrderContextProvider>
     </AuthContextProvider>
-  </React.StrictMode>,
 )

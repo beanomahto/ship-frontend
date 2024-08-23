@@ -32,13 +32,16 @@ const UploadDiscrepancyImagesModal = ({ visible, onClose, discrepancyId, product
           Authorization: `${token}`,
         },
       });
-  
-      if (!uploadResponse.ok) {
-        throw new Error('Failed to upload images');
-      }
+      // if (!uploadResponse.ok) {
+      //   throw new Error('Failed to upload images');
+      // }
   
       const uploadResult = await uploadResponse.json();
+      console.log(uploadResponse);
+      
       message.success(uploadResult.message);
+  
+      console.log('Upload Result:', uploadResult);
   
       const updateResponse = await fetch(`https://backend.shiphere.in/api/weightdiscrepancy/updateStatus/${discrepancyId}`, {
         method: 'PUT',
@@ -56,12 +59,15 @@ const UploadDiscrepancyImagesModal = ({ visible, onClose, discrepancyId, product
       const updateResult = await updateResponse.json();
       message.success('Status updated to Open');
   
+      console.log('Update Result:', updateResult);
+  
       onClose();
     } catch (error) {
       console.error('Error:', error);
       message.error('Operation failed');
     }
   };
+  
   
 
 

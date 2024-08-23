@@ -1,6 +1,6 @@
 import React from 'react'
 // import {  ChromeFilled } from '@ant-design/icons'/
-import Ship from '../../utils/logo1.jpg'
+import Ship from '../../utils/logo.png'
 
 const Logo = () => {
   return (
@@ -8,7 +8,7 @@ const Logo = () => {
       <div className="logo-icon">
         {/* < ChromeFilled  /> */}
       {/* <Ship/> */}
-      <img src={Ship} alt="" width={50} height={50} style={{border:'2px solid #ddd', borderRadius:'50%'}} />
+      <img src={Ship} alt="" width={50} height={50} style={{border:'2px solid #ddd', borderRadius:'20%'}} />
       </div>
     </div>
   )
