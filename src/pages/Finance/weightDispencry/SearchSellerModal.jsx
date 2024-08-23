@@ -62,7 +62,7 @@ console.log(filteredData);
       visible={visible}
       onCancel={onClose}
       footer={null}
-      width='58rem'
+      width='70rem'
     >
       <Input
         placeholder="Enter seller email"

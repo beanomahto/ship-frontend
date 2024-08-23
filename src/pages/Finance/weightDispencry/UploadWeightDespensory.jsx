@@ -22,7 +22,8 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
             console.log(pair[0] + ':', pair[1]);
         }
         try {
-            const response = await fetch('https://backend.shiphere.in/api/weightdiscrepancy/upload-images', {
+            // const response = await fetch('https://backend.shiphere.in/api/weightdiscrepancy/uploadweightdiscrepancy', {
+            const response = await fetch('http://localhost:5000/api/weightdiscrepancy/uploadweightdiscrepancy', {
                 method: 'POST',
                 body: formData,
                     headers: {
@@ -30,6 +31,8 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
                     },
             });
             console.log(response)
+            console.log(await response.json());
+            
             if (response.ok) {
                 message.success('File uploaded successfully!');
                 onClose();

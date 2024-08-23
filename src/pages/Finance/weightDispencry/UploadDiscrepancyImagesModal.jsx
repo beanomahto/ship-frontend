@@ -13,15 +13,17 @@ const UploadDiscrepancyImagesModal = ({ visible, onClose, discrepancyId, product
       message.error('No product name provided');
       return;
     }
-
+  
     const formData = new FormData();
     fileList.forEach(file => {
       formData.append('files', file.originFileObj);
     });
     formData.append('productName', productName);
+  
     for (let pair of formData.entries()) {
       console.log(pair[0] + ':', pair[1]);
     }
+  
     try {
       const uploadResponse = await fetch(`https://backend.shiphere.in/api/weightdiscrepancy/upload-images`, {
         method: 'POST',
@@ -30,14 +32,14 @@ const UploadDiscrepancyImagesModal = ({ visible, onClose, discrepancyId, product
           Authorization: `${token}`,
         },
       });
-      console.log(uploadResponse);
+  
       if (!uploadResponse.ok) {
         throw new Error('Failed to upload images');
       }
-
+  
       const uploadResult = await uploadResponse.json();
       message.success(uploadResult.message);
-
+  
       const updateResponse = await fetch(`https://backend.shiphere.in/api/weightdiscrepancy/updateStatus/${discrepancyId}`, {
         method: 'PUT',
         headers: {
@@ -46,20 +48,21 @@ const UploadDiscrepancyImagesModal = ({ visible, onClose, discrepancyId, product
         },
         body: JSON.stringify({ status: 'Open' }),
       });
-
+  
       if (!updateResponse.ok) {
         throw new Error('Failed to update status');
       }
-
+  
       const updateResult = await updateResponse.json();
       message.success('Status updated to Open');
-
+  
       onClose();
     } catch (error) {
       console.error('Error:', error);
       message.error('Operation failed');
     }
   };
+  
 
 
 

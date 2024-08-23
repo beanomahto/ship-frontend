@@ -14,7 +14,7 @@ import XPB from '../../utils/xpressbees.png';
 import Column from 'antd/es/table/Column';
 import Shopify from '../../utils/shopify.png';
 import Woo from '../../utils/woocomerce.png'
-import logo from '../../utils/logo1.jpg' 
+import logo from '../../utils/logo1.jpg'
 import { Helmet } from 'react-helmet';
 import { useAuthContext } from '../../context/AuthContext';
 
@@ -31,32 +31,18 @@ const channelImages = {
   'Shopify': Shopify,
 };
 
-const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) => {
+const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setModalLoading,modalLoading,deliveryCosts,setDeliveryCosts,setSelectedOrderId,selectedOrderId }) => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
-  const [selectedOrderId, setSelectedOrderId] = useState(null);
-  const [deliveryCosts, setDeliveryCosts] = useState([]);
+  
+
   const [selectedPartner, setSelectedPartner] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const { shipNowCost } = useShipNowCost();
-  const { warehouse } = useWarehouseContext();
-  const [modalLoading, setModalLoading] = useState(false);
+
+ 
+ 
   const { authUser } = useAuthContext();
-  useEffect(() => {
-    const fetchDeliveryCost = async () => {
-      if (selectedOrderId) {
-        setModalLoading(true); // Set modal loading to true when fetching delivery costs
-        const costResponse = await shipNowCost(selectedOrderId, warehouse?.warehouses?.[0]?._id);
-        if (costResponse.success) {
-          setDeliveryCosts(costResponse.cost || []);
-        } else {
-          alert(costResponse.error || 'Failed to fetch delivery cost');
-        }
-        setModalLoading(false); // Set modal loading to false after fetching delivery costs
-      }
-    };
-    fetchDeliveryCost();
-  }, [selectedOrderId, warehouse]);
+
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -114,14 +100,14 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
       dataIndex: 'orderId',
       ...getColumnSearchProps('orderId'),
       render: (text, order) => (
-        <Link style={{color:'black', fontWeight:'400', fontFamily:'Poppins'}} to={`/orders/updateorder/${order?._id}/${order?.orderId}`}>{order.orderId}</Link>
+        <Link style={{ color: 'black', fontWeight: '400', fontFamily: 'Poppins' }} to={`/orders/updateorder/${order?._id}/${order?.orderId}`}>{order.orderId}</Link>
       ),
     },
     {
       title: 'Order Status',
       dataIndex: 'o_status',
       render: (text, order) => (
-        <Tag style={{display:'flex', maxWidth:'max-content', marginLeft:'3rem'}} color={order.status === 'New' ? 'green' : 'volcano'} >
+        <Tag style={{ display: 'flex', maxWidth: 'max-content', marginLeft: '3rem' }} color={order.status === 'New' ? 'green' : 'volcano'} >
           {order.status}
         </Tag>
       ),
@@ -146,7 +132,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
       ],
       onFilter: (value, record) => record.paymentMethod === value,
       render: (text, order) => (
-        <div style={{display:'flex', flexDirection:'column', maxWidth:'4.5rem',  marginLeft:'1rem',fontFamily: 'Poppins', fontSize: '.9rem', fontWeight: '500'}}>
+        <div style={{ display: 'flex', flexDirection: 'column', maxWidth: '4.5rem', marginLeft: '1rem', fontFamily: 'Poppins', fontSize: '.9rem', fontWeight: '500' }}>
           <div>&#8377; {order.productPrice}</div>
           <Tag color={order.paymentMethod === 'COD' ? 'green-inverse' : 'geekblue-inverse'} >
             {order.paymentMethod}
@@ -157,7 +143,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
     {
       title: 'Package Details',
       render: (text, order) => (
-        <div style={{fontFamily: 'Poppins', fontSize: '.9rem', fontWeight: '500'}}>
+        <div style={{ fontFamily: 'Poppins', fontSize: '.9rem', fontWeight: '500' }}>
           <div>pkg Wt. {order.weight}gm</div>
           <div>
             ({order.length}x{order.breadth}x{order.height}cm)
@@ -169,7 +155,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
       title: 'Channel',
       dataIndex: 'channel',
       render: (text) => (
-        <div style={{display:'flex', justifyContent:'center'}}>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
           <img
             // src={text === 'shopify' ? Shopify : Woo}
             src={text === 'shopify' ? Shopify : (text === 'Mannual' ? logo : Woo)}
@@ -199,8 +185,8 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
       ),
     },
     ...(authUser?.role === 'admin' ? [{
-      title: 'Seller Email', 
-      dataIndex: 'seller',  
+      title: 'Seller Email',
+      dataIndex: 'seller',
       // render: (_, record) => (
       //     <Button
       //       type="primary"
@@ -221,9 +207,9 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading }) =
     setSelectedOrderId(key);
     setIsModalVisible(true);
   };
-const handleAssign = async (partner) => {
+  const handleAssign = async (partner) => {
     try {
-      setModalLoading(true); // Start loading when assigning
+      setModalLoading(true);
       const selectedOrder = dataSource.find(order => order._id === selectedOrderId);
       const orderPrice = selectedOrder.productPrice;
       const partnerCost = partner.cost;
@@ -231,14 +217,14 @@ const handleAssign = async (partner) => {
 
       const walletRequestBody = {
         debit: totalDebit,
-        userId: selectedOrder.seller._id, 
+        userId: selectedOrder.seller._id,
         remark: `Shipping charge for order ${selectedOrder.orderId}`,
         orderId: selectedOrder._id,
       };
 
       const walletResponse = await axios.post('https://backend.shiphere.in/api/transactions/decreaseAmount', walletRequestBody, {
         headers: {
-          Authorization:  localStorage.getItem('token'),
+          Authorization: localStorage.getItem('token'),
         },
       });
 
@@ -267,23 +253,17 @@ const handleAssign = async (partner) => {
       message.error("Issue in shipping");
       console.error('Failed to update order status', error);
     } finally {
-      setModalLoading(false); // Stop loading after the operation is complete
+      setModalLoading(false);
     }
   };
-
-  
-  
-
   const newOrders = dataSource?.filter(order => order.status === 'New' || order.status === 'Cancelled');
-
-  
   return (
     <>
-       <Helmet>
-                <meta charSet='utf-8' />
-                <meta name='keyword' content={""} />
-                <title>Orders </title>
-            </Helmet>
+      <Helmet>
+        <meta charSet='utf-8' />
+        <meta name='keyword' content={""} />
+        <title>Orders </title>
+      </Helmet>
       {loading ? (
         <Skeleton active title={false} paragraph={{ rows: 10 }} style={{ height: '100%', width: '100%' }} />
       ) : (
@@ -295,7 +275,7 @@ const handleAssign = async (partner) => {
             scroll={{ y: 450 }}
             style={{ width: '100%', height: '545px' }}
             rowClassName={(record) => (record._id === selectedOrderId ? 'selected-row' : '')}
-            loading={loading} 
+            loading={loading}
           />
           <Modal
             title="Assign Delivery Partner"
@@ -303,13 +283,13 @@ const handleAssign = async (partner) => {
             onCancel={() => setIsModalVisible(false)}
             footer={null}
             width={1000}
-            confirmLoading={modalLoading} 
+            confirmLoading={modalLoading}
           >
             <Table
               dataSource={deliveryCosts}
               rowKey="id"
               pagination={{ pageSize: 10 }}
-              loading={modalLoading} 
+              loading={modalLoading}
             // style={{fontSize:'4rem'}}
             // className="delivery-cost-table"
 

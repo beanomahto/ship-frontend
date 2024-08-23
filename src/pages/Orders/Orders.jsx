@@ -11,10 +11,15 @@ import * as XLSX from 'xlsx';
 import { DownloadOutlined } from '@ant-design/icons';
 import AllOrderComponent from './AllOrderComponent';
 import axios from 'axios';
+import useShipNowCost from '../../hooks/useShipNowCost';
+import { useWarehouseContext } from '../../context/WarehouseContext';
 
 const { TabPane } = Tabs;
 
 const Orders = () => {
+  const { shipNowCost } = useShipNowCost();
+  const { warehouse } = useWarehouseContext();
+  const [deliveryCosts, setDeliveryCosts] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [loading, setLoading] = useState(false);
   const { orders, setOrders, fetchOrders } = useOrderContext();
@@ -30,7 +35,8 @@ const Orders = () => {
   const closeModalBD = () => setModalVisibleBD(false);
   const showModalShipNow = () => setModalVisibleShipNow(true);
   const closeModalShipNow = () => setModalVisibleShipNow(false);
-
+  const [modalLoading, setModalLoading] = useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
   const start = async () => {
     setLoading(true);
     try {
@@ -146,6 +152,8 @@ const Orders = () => {
   console.log(selectedRowKeys);
   
   const cancelShipment = async () => {
+    console.log(selectedRowKeys);
+    
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(`https://backend.shiphere.in/api/orders/updateOrderStatus/${selectedRowKeys}`, {
@@ -167,6 +175,21 @@ const Orders = () => {
       message.error('Failed to cancel order');
     }
   };
+  useEffect(() => {
+    const fetchDeliveryCost = async () => {
+      if (selectedOrderId) {
+        setModalLoading(true); 
+        const costResponse = await shipNowCost(selectedOrderId, warehouse?.warehouses?.[0]?._id);
+        if (costResponse.success) {
+          setDeliveryCosts(costResponse.cost || []);
+        } else {
+          alert(costResponse.error || 'Failed to fetch delivery cost');
+        }
+        setModalLoading(false); 
+      }
+    };
+    fetchDeliveryCost();
+  }, [selectedOrderId, warehouse]);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }} className="addorder">
@@ -244,6 +267,12 @@ const Orders = () => {
                 rowSelection={rowSelection}
                 fetchOrders={fetchOrders}
                 loading={loading}
+                setModalLoading={setModalLoading}
+                modalLoading={modalLoading}
+                deliveryCosts={deliveryCosts}
+                setDeliveryCosts={setDeliveryCosts}
+                setSelectedOrderId={setSelectedOrderId}
+                selectedOrderId={selectedOrderId}
               />
             ) : (
               <span>No component for this tab</span>
