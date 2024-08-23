@@ -140,20 +140,19 @@
 .early-cod-popup .ant-checkbox-wrapper a:hover {
   color: #096dd9;
 }
-
 .ant-modal {
-  top: 20px;
+  /* top: 30px; */
 }
 
 .ant-modal-content {
   border-radius: 10px;
 }
+/*
+
 
 .ant-modal-close {
   top: 20px;
   right: 20px;
 }
 
-.ant-modal-footer {
-  display: none;
-}
+ */

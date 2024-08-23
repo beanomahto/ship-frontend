@@ -59,7 +59,7 @@ const AddnewWarehouse = () => {
                 <title>Add Warehouse</title>
             </Helmet>
    {
-    loading ? <Spinner path='' /> :  <div >
+    loading ? '' :  <div >
     <div className='formCon'>
         <form class="form" onSubmit={handleOrderSubmit}>
             <p class="title">Create Warehouse</p>
