@@ -202,17 +202,17 @@ console.log(inputs)
 
                         <label>
                             <input class="input" type="number" placeholder="" required 
-                            value={inputs.weight}
-                            onChange={(e) => setInputs({ ...inputs, weight: e.target.value })}
-                            />
-                            <span>Weight in grm</span>
-                        </label>
-                        <label>
-                            <input class="input" type="number" placeholder="" required 
                             value={inputs.height}
                             onChange={(e) => setInputs({ ...inputs, height: e.target.value })}
                             />
                             <span>Height</span>
+                        </label>
+                        <label>
+                            <input class="input" type="number" placeholder="" required 
+                            value={inputs.weight}
+                            onChange={(e) => setInputs({ ...inputs, weight: e.target.value })}
+                            />
+                            <span>Weight in grm</span>
                         </label>
                         <div className="paymentSelect" style={{
                         }}  >

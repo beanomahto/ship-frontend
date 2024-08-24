@@ -300,7 +300,7 @@ const UpdateSingleOrder = () => {
                 setInputs({ ...inputs, breadth: e.target.value })
               }
             />
-            <span>Width</span>
+            <span>Breadth</span>
           </label>
         </div>
         <div className="flex">

@@ -39,8 +39,9 @@ const UploadStandardPricingModel = ({ visible, onClose }) => {
             message.error(`Error: ${error.message}`);
         }
     };
+  
     const downloadFile = () => {
-        return "sellerEmail,deliveryPartner,weightCategory,zoneA,zoneB,zoneC,zoneD,zoneE,codFixed,codPercentage"
+        return "deliveryPartner,weightCategory,zoneA,zoneB,zoneC,zoneD,zoneE,codFixed,codPercentage"
     }
     return (
         <Modal

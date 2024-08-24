@@ -40,7 +40,7 @@ const UploadPricingModel = ({ visible, onClose }) => {
         }
     };
     const downloadFile = () => {
-        return "deliveryPartner,weightCategory,zoneA,zoneB,zoneC,zoneD,zoneE,codFixed,codPercentage"
+        return "sellerEmail,deliveryPartner,weightCategory,zoneA,zoneB,zoneC,zoneD,zoneE,codFixed,codPercentage"
     }
     return (
         <Modal

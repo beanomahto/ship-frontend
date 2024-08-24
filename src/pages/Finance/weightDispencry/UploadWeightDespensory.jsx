@@ -2,18 +2,20 @@ import React, { useState } from 'react';
 import { Modal, Button, Upload, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import * as XLSX from 'xlsx';
+import axios from 'axios';
 import DownloadLink from 'react-download-link';
 
 const UploadWeightDespensory = ({ visible, onClose }) => {
     const [file, setFile] = useState(null);
     const [fileData, setFileData] = useState('');
-    const [extractedData, setExtractedData] = useState([]); // New state to store extracted data
+    const [extractedData, setExtractedData] = useState([]);
+    const [sellerIds, setSellerIds] = useState(''); 
 
-    const handleFileChange = ({ file }) => {
+    const handleFileChange = async ({ file }) => {
         setFile(file);
 
         const reader = new FileReader();
-        reader.onload = () => {
+        reader.onload = async () => {
             const data = new Uint8Array(reader.result);
             const workbook = XLSX.read(data, { type: 'array' });
             const sheetName = workbook.SheetNames[0];
@@ -21,18 +23,23 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
             const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
             if (json.length > 1) {
-                const keys = json[0]; // First row as header (keys)
-                const values = json.slice(1); // Remaining rows as values
+                const keys = json[0]; 
+                const values = json.slice(1);
 
                 const combined = values.map((row) => {
                     return keys.reduce((obj, key, index) => {
-                        obj[key] = row[index] || ''; // Safeguard against missing data
+                        obj[key] = row[index] || ''; 
                         return obj;
                     }, {});
                 });
 
-                setExtractedData(combined); // Store extracted data
-                setFileData(JSON.stringify(combined, null, 2)); // Convert combined data to JSON for display
+                setExtractedData(combined); 
+                setFileData(JSON.stringify(combined, null, 2)); 
+
+                const sellerEmails = combined.map(item => item.sellerEmail).filter(email => email);
+
+                const fetchedSellerIds = await fetchSellerIds(sellerEmails);
+                setSellerIds(fetchedSellerIds);
             } else {
                 setFileData('Invalid file format. Expected at least one header row and one data row.');
             }
@@ -40,15 +47,42 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
         reader.readAsArrayBuffer(file);
     };
 
+    const fetchSellerIds = async (sellerEmails) => {
+        const token = localStorage.getItem('token');
+        const sellerIds = [];
+    
+        for (const email of sellerEmails) {
+            try {
+                const response = await axios.get('https://backend.shiphere.in/api/users/search', {
+                    params: { query: email },
+                    headers: {
+                        Authorization: `${token}`
+                    }
+                });
+    
+                if (response.data && response.data.length > 0) {
+                    sellerIds.push(response.data[0]._id); 
+                } else {
+                    console.warn(`No user found for email: ${email}`);
+                }
+            } catch (error) {
+                console.error(`Error fetching user for email ${email}: ${error.message}`);
+            }
+        }
+    
+        return sellerIds.join(','); 
+    };
+    
+
     const handleUpload = async () => {
         if (!file) {
             message.error('Please upload a file.');
             return;
         }
-
+    
         const formData = new FormData();
         formData.append('file', file);
-
+    
         try {
             const response = await fetch('http://localhost:5000/api/weightdiscrepancy/uploadweightdiscrepancy', {
                 method: 'POST',
@@ -58,10 +92,11 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
                 },
             });
             const result = await response.json();
-
+    
             if (response.ok) {
                 message.success('File uploaded successfully!');
-                await callDeduceWalletAmount(); // Call the deduceWalletAmount API
+                await callDeduceWalletAmount();
+                await callIncreaseWalletAmount();
                 onClose();
             } else {
                 message.error(`Failed to upload file: ${result.error}`);
@@ -70,50 +105,105 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
             message.error(`Error: ${error.message}`);
         }
     };
-
-    const callDeduceWalletAmount = async () => {
+    const callIncreaseWalletAmount = async () => {
         try {
             for (const row of extractedData) {
-                const { sellerEmail, weightCharges, orderId } = row;
+                const { sellerEmail, settledCharges, orderId } = row;
     
-                if (sellerEmail && weightCharges && orderId) {
-                    const walletRequestBody = {
-                        debit: weightCharges,
-                        userId: sellerEmail,
-                        remark: `kat gye`,
-                        orderId: orderId,
-                    };
-                    
-                    console.log('Request Body:', walletRequestBody); // Debugging log
-                    
-                    const response = await fetch('https://backend.shiphere.in/api/transactions/decreaseAmount', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: localStorage.getItem('token'),
-                        },
-                        body: JSON.stringify(walletRequestBody),
-                    });
+                if (sellerEmail && settledCharges && orderId) {
+                    const userId = sellerIds; 
     
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        console.error(`Failed to deduce wallet amount for ${sellerEmail}: ${errorData.error}`); // Logging error
-                        message.error(`Failed to deduce wallet amount for ${sellerEmail}: ${errorData.error}`);
+                    if (userId) {
+                        const walletRequestBody = {
+                            credit: settledCharges, 
+                            userId: userId, 
+                            remark: `settled charges for order ${orderId}`,
+                        };
+    
+                        console.log('Request Body:', walletRequestBody); 
+    
+                        const response = await fetch('https://backend.shiphere.in/api/transactions/increaseAmount', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                Authorization: localStorage.getItem('token'),
+                            },
+                            body: JSON.stringify(walletRequestBody),
+                        });
+    
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            console.error(`Failed to credit wallet amount for ${sellerEmail}: ${errorData.error}`); // Logging error
+                            message.error(`Failed to credit wallet amount for ${sellerEmail}: ${errorData.error}`);
+                        } else {
+                            console.log(`Success: Wallet amount credited for ${sellerEmail}`); // Success log
+                            message.success(`Wallet amount credited for ${sellerEmail}`);
+                        }
                     } else {
-                        console.log(`Success: Wallet amount deduced for ${sellerEmail}`); // Success log
-                        message.success(`Wallet amount deduced for ${sellerEmail}`);
+                        console.warn(`No _id found for seller email: ${sellerEmail}`);
                     }
                 } else {
                     console.warn(`Skipping row due to missing data:`, row); // Log rows that are skipped
                 }
             }
         } catch (error) {
-            console.error(`Error during wallet deduction: ${error.message}`); // Catch block log
+            console.error(`Error during wallet crediting: ${error.message}`); // Catch block log
+            message.error(`Error during wallet crediting: ${error.message}`);
+        }
+    };
+    
+    const callDeduceWalletAmount = async () => {
+        try {
+            for (const row of extractedData) {
+                const { sellerEmail, weightCharges, orderId } = row;
+    
+                if (sellerEmail && weightCharges && orderId) {
+                    const userId = sellerIds; 
+    
+                    if (userId) {
+                        const walletRequestBody = {
+                            debit: weightCharges,
+                            userId: userId, 
+                            remark: `kat gye`,
+                            orderId: orderId,
+                        };
+    
+                        console.log('Request Body:', walletRequestBody); 
+    
+                        const response = await fetch('https://backend.shiphere.in/api/transactions/decreaseAmount', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                Authorization: localStorage.getItem('token'),
+                            },
+                            body: JSON.stringify(walletRequestBody),
+                        });
+    console.log(response);
+    console.log(await response.json());
+    
+    
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            console.error(`Failed to deduce wallet amount for ${sellerEmail}: ${errorData.error}`); 
+                            message.error(`Failed to deduce wallet amount for ${sellerEmail}: ${errorData.error}`);
+                        } else {
+                            console.log(`Success: Wallet amount deduced for ${sellerEmail}`); 
+                            message.success(`Wallet amount deduced for ${sellerEmail}`);
+                        }
+                    } else {
+                        console.warn(`No _id found for seller email: ${sellerEmail}`);
+                    }
+                } else {
+                    console.warn(`Skipping row due to missing data:`, row); 
+                }
+            }
+        } catch (error) {
+            console.error(`Error during wallet deduction: ${error.message}`);
             message.error(`Error during wallet deduction: ${error.message}`);
         }
     };
     
-
+    
     const downloadFile = () => {
         const header = `"sellerEmail","weightAppliedDate","enteredWeight","enteredDimension","orderId","awbNumber","productName","appliedWeight","weightCharges","settledCharges","remarks"`;
         const row1 = `"seller@email.com","2023_01_01","10.5","10x10x10","ORD123","AWB123","Product1","10","100","95","None"`;
@@ -142,7 +232,7 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
             <Upload beforeUpload={() => false} onChange={handleFileChange} accept=".xlsx">
                 <Button icon={<UploadOutlined />}>Select Weight Dispensory</Button>
             </Upload>
-            {/* {fileData && (
+            {fileData && (
                 <div style={{ marginTop: '16px' }}>
                     <h3>File Contents:</h3>
                     <textarea
@@ -151,7 +241,13 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
                         value={fileData}
                     />
                 </div>
-            )} */}
+            )}
+            {sellerIds.length > 0 && ( // Show fetched seller _ids
+                <div style={{ marginTop: '16px' }}>
+                    <h3>Fetched Seller IDs:</h3>
+                    {sellerIds}
+                </div>
+            )}
         </Modal>
     );
 };
