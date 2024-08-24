@@ -84,7 +84,7 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
         formData.append('file', file);
     
         try {
-            const response = await fetch('http://localhost:5000/api/weightdiscrepancy/uploadweightdiscrepancy', {
+            const response = await fetch('https://backend.shiphere.in/api/weightdiscrepancy/uploadweightdiscrepancy', {
                 method: 'POST',
                 body: formData,
                 headers: {
