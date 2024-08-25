@@ -16,7 +16,7 @@ const UploadDiscrepancyImagesModal = ({ visible, onClose, discrepancyId, product
   
     const formData = new FormData();
     fileList.forEach(file => {
-      formData.append('files', file.originFileObj);
+      formData.append('image', file.originFileObj);
     });
     formData.append('productName', productName);
   
@@ -67,11 +67,6 @@ const UploadDiscrepancyImagesModal = ({ visible, onClose, discrepancyId, product
       message.error('Operation failed');
     }
   };
-  
-  
-
-
-
 
   return (
     <Modal

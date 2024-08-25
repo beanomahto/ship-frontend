@@ -212,42 +212,54 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
     try {
       setModalLoading(true);
       const selectedOrder = dataSource.find(order => order._id === selectedOrderId);
-      const orderPrice = selectedOrder.productPrice;
       const partnerCost = partner.cost;
       const totalDebit = partnerCost;
-      setCurrentDeliveryCost(totalDebit)
+      
+      setCurrentDeliveryCost(totalDebit);
+      
       const walletRequestBody = {
         debit: totalDebit,
         userId: selectedOrder.seller._id,
         remark: `Shipping charge for order ${selectedOrder.orderId}`,
         orderId: selectedOrder._id,
       };
-// console.log(walletRequestBody);
-
-      const walletResponse = await axios.post('https://backend.shiphere.in/api/transactions/decreaseAmount', walletRequestBody, {
-        headers: {
-          Authorization: localStorage.getItem('token'),
-        },
-      });
-// console.log(walletResponse);
-
+      console.log(walletRequestBody);
+      
+      const walletResponse = await axios.post(
+        'https://backend.shiphere.in/api/transactions/decreaseAmount',
+        walletRequestBody,
+        {
+          headers: {
+            Authorization: localStorage.getItem('token'),
+          },
+        }
+      );
+      console.log(walletResponse);
+      
       if (walletResponse.status === 200) {
+        const updateBody = {
+          status: 'Shipped',
+          shippingCost: totalDebit,
+        };
         const orderResponse = await axios.put(
-          `http://localhost:5000/api/orders/updateOrderStatus/${selectedOrderId}`,
-          { status: 'Shipped',shippingCost:currentDeliveryCost },
+          `https://backend.shiphere.in/api/orders/updateOrderStatus/${selectedOrderId}`,
+          updateBody,
           {
             headers: {
               Authorization: `${localStorage.getItem('token')}`,
             },
           }
         );
-
+        console.log(updateBody);
+      
         if (orderResponse.status === 201) {
           message.success("Shipped successfully");
           fetchOrders();
           setIsModalVisible(false);
           setSelectedOrderId(null);
           setSelectedPartner(null);
+        } else {
+          message.error("Failed to update order status");
         }
       } else {
         message.error("Failed to debit wallet");
@@ -259,6 +271,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
       setModalLoading(false);
     }
   };
+  
   const newOrders = dataSource?.filter(order => order.status === 'New' || order.status === 'Cancelled');
   return (
     <>

@@ -9,7 +9,7 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
     const [file, setFile] = useState(null);
     const [fileData, setFileData] = useState('');
     const [extractedData, setExtractedData] = useState([]);
-    const [sellerIds, setSellerIds] = useState(''); 
+    const [sellerIds, setSellerIds] = useState('');
 
     const handleFileChange = async ({ file }) => {
         setFile(file);
@@ -23,18 +23,18 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
             const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
             if (json.length > 1) {
-                const keys = json[0]; 
+                const keys = json[0];
                 const values = json.slice(1);
 
                 const combined = values.map((row) => {
                     return keys.reduce((obj, key, index) => {
-                        obj[key] = row[index] || ''; 
+                        obj[key] = row[index] || '';
                         return obj;
                     }, {});
                 });
 
-                setExtractedData(combined); 
-                setFileData(JSON.stringify(combined, null, 2)); 
+                setExtractedData(combined);
+                setFileData(JSON.stringify(combined, null, 2));
 
                 const sellerEmails = combined.map(item => item.sellerEmail).filter(email => email);
 
@@ -50,7 +50,7 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
     const fetchSellerIds = async (sellerEmails) => {
         const token = localStorage.getItem('token');
         const sellerIds = [];
-    
+
         for (const email of sellerEmails) {
             try {
                 const response = await axios.get('https://backend.shiphere.in/api/users/search', {
@@ -59,9 +59,9 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
                         Authorization: `${token}`
                     }
                 });
-    
+
                 if (response.data && response.data.length > 0) {
-                    sellerIds.push(response.data[0]._id); 
+                    sellerIds.push(response.data[0]._id);
                 } else {
                     console.warn(`No user found for email: ${email}`);
                 }
@@ -69,20 +69,20 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
                 console.error(`Error fetching user for email ${email}: ${error.message}`);
             }
         }
-    
-        return sellerIds.join(','); 
+
+        return sellerIds.join(',');
     };
-    
+
 
     const handleUpload = async () => {
         if (!file) {
             message.error('Please upload a file.');
             return;
         }
-    
+
         const formData = new FormData();
         formData.append('file', file);
-    
+
         try {
             const response = await fetch('https://backend.shiphere.in/api/weightdiscrepancy/uploadweightdiscrepancy', {
                 method: 'POST',
@@ -92,11 +92,11 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
                 },
             });
             const result = await response.json();
-    
+
             if (response.ok) {
                 message.success('File uploaded successfully!');
                 await callDeduceWalletAmount();
-                await callIncreaseWalletAmount();
+                // await callIncreaseWalletAmount();
                 onClose();
             } else {
                 message.error(`Failed to upload file: ${result.error}`);
@@ -109,19 +109,19 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
         try {
             for (const row of extractedData) {
                 const { sellerEmail, settledCharges, orderId } = row;
-    
+
                 if (sellerEmail && settledCharges && orderId) {
-                    const userId = sellerIds; 
-    
+                    const userId = sellerIds;
+
                     if (userId) {
                         const walletRequestBody = {
-                            credit: settledCharges, 
-                            userId: userId, 
-                            remark: `settled charges for order ${orderId}`,
+                            credit: settledCharges,
+                            userId: userId,
+                            remark: `settledCharges ${settledCharges} is added on ${sellerEmail}`,
                         };
-    
-                        console.log('Request Body:', walletRequestBody); 
-    
+
+                        console.log('Request Body:', walletRequestBody);
+
                         const response = await fetch('https://backend.shiphere.in/api/transactions/increaseAmount', {
                             method: 'POST',
                             headers: {
@@ -130,7 +130,7 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
                             },
                             body: JSON.stringify(walletRequestBody),
                         });
-    
+
                         if (!response.ok) {
                             const errorData = await response.json();
                             console.error(`Failed to credit wallet amount for ${sellerEmail}: ${errorData.error}`); // Logging error
@@ -151,7 +151,6 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
             message.error(`Error during wallet crediting: ${error.message}`);
         }
     };
-    
     const callDeduceWalletAmount = async () => {
         try {
             for (const row of extractedData) {
@@ -163,38 +162,39 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
                     if (userId) {
                         const walletRequestBody = {
                             debit: weightCharges,
-                            userId: userId, 
-                            remark: `kat gye`,
+                            userId: userId,
+                            remark: `Weight charges ${weightCharges} are deducted from ${sellerEmail}`,
                             orderId: orderId,
                         };
     
-                        console.log('Request Body:', walletRequestBody); 
+                        console.log('Request Body:', walletRequestBody);
     
-                        const response = await fetch('https://backend.shiphere.in/api/transactions/decreaseAmount', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                Authorization: localStorage.getItem('token'),
-                            },
-                            body: JSON.stringify(walletRequestBody),
-                        });
-    console.log(response);
-    console.log(await response.json());
+                        const walletResponse = await axios.post(
+                            'https://backend.shiphere.in/api/transactions/decreaseAmount',
+                            walletRequestBody,
+                            {
+                                headers: {
+                                    Authorization: localStorage.getItem('token'),
+                                },
+                            }
+                        );
+                        
+                        console.log('Full Wallet Response:', walletResponse);
+                        
     
-    
-                        if (!response.ok) {
-                            const errorData = await response.json();
-                            console.error(`Failed to deduce wallet amount for ${sellerEmail}: ${errorData.error}`); 
-                            message.error(`Failed to deduce wallet amount for ${sellerEmail}: ${errorData.error}`);
+                        if (walletResponse.status === 200) {
+                            console.log(`Success: Wallet amount deducted for ${sellerEmail}`);
+                            message.success(`Wallet amount deducted for ${sellerEmail}`);
                         } else {
-                            console.log(`Success: Wallet amount deduced for ${sellerEmail}`); 
-                            message.success(`Wallet amount deduced for ${sellerEmail}`);
+                            console.error(`Failed to deduct wallet amount for ${sellerEmail}: ${walletResponse.data?.error || 'Unknown error'}`);
+                            message.error(`Failed to deduct wallet amount for ${sellerEmail}`);
                         }
+                        
                     } else {
-                        console.warn(`No _id found for seller email: ${sellerEmail}`);
+                        console.warn(`No userId found for seller email: ${sellerEmail}`);
                     }
                 } else {
-                    console.warn(`Skipping row due to missing data:`, row); 
+                    console.warn(`Skipping row due to missing data:`, row);
                 }
             }
         } catch (error) {
@@ -204,6 +204,7 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
     };
     
     
+
     const downloadFile = () => {
         const header = `"sellerEmail","weightAppliedDate","enteredWeight","enteredDimension","orderId","awbNumber","productName","appliedWeight","weightCharges","settledCharges","remarks"`;
         const row1 = `"seller@email.com","2023_01_01","10.5","10x10x10","ORD123","AWB123","Product1","10","100","95","None"`;
@@ -217,7 +218,7 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
             onCancel={onClose}
             footer={[
                 <Button key="download">
-                    <DownloadLink 
+                    <DownloadLink
                         label='Download Weight Dispensory CSV'
                         filename='sample.csv'
                         exportFile={downloadFile}
