@@ -96,7 +96,7 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
             if (response.ok) {
                 message.success('File uploaded successfully!');
                 await callDeduceWalletAmount();
-                // await callIncreaseWalletAmount();
+                await callIncreaseWalletAmount();
                 onClose();
             } else {
                 message.error(`Failed to upload file: ${result.error}`);

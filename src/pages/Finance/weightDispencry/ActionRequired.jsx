@@ -71,6 +71,16 @@ const ActionRequired = ({ dataSource, rowSelection}) => {
             </Button>
           ),
       }] : []),
+      ...(authUser?.role === 'admin' ? [{
+        title: 'Sellers', 
+        dataIndex: 'seller',  
+        render: (_, record) => (
+            <span
+            >
+              {record?.seller?.email}
+            </span>
+          ),
+      }] : []),
   ];
 const actionRequired = dataSource?.filter(data => data.status === 'action required')
 
