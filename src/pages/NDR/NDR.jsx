@@ -109,21 +109,21 @@ const NDR = () => {
         </Tabs.TabPane>
         <Tabs.TabPane tab='Action Taken' key='tab3'>
           <div style={{ marginBottom: 16, zIndex: 2 }}>
-            <Button type="primary" onClick={start} loading={loading}>Sync</Button>
+            {/* <Button type="primary" onClick={start} loading={loading}>Sync</Button> */}
             <span style={{ marginLeft: 8, }}>{hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}</span>
           </div>
           <Table className='table' rowSelection={rowSelection} scroll={{ y: 350, }} columns={columns} />
         </Tabs.TabPane>
         <Tabs.TabPane tab='Delivered' key='tab4'>
           <div style={{ marginBottom: 16, zIndex: 2 }}>
-            <Button type="primary" onClick={start} loading={loading}>Sync</Button>
+            {/* <Button type="primary" onClick={start} loading={loading}>Sync</Button> */}
             <span style={{ marginLeft: 8, }}>{hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}</span>
           </div>
           <Table className='table' rowSelection={rowSelection} scroll={{ y: 350, }} columns={columns} />
         </Tabs.TabPane>
         <Tabs.TabPane tab='RTO' key='tab5'>
           <div style={{ marginBottom: 16, zIndex: 2 }}>
-            <Button type="primary" onClick={start} loading={loading}>Sync</Button>
+            {/* <Button type="primary" onClick={start} loading={loading}>Sync</Button> */}
             <span style={{ marginLeft: 8, }}>{hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}</span>
           </div>
           <Table className='table' rowSelection={rowSelection} scroll={{ y: 350, }} columns={columns} />

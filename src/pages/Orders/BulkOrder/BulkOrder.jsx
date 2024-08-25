@@ -24,6 +24,9 @@ const BulkOrderUploadModal = ({ visible, onClose }) => {
             const response = await fetch('https://backend.shiphere.in/api/orders/createBulkOrder', {
                 method: 'POST',
                 body: formData,
+                headers: {
+                    Authorization: localStorage.getItem('token'),
+                },
             });
 
             if (response.ok) {
@@ -38,7 +41,7 @@ const BulkOrderUploadModal = ({ visible, onClose }) => {
         }
     };
     const downloadFile = () => {
-        return "customerName,customerEmail,orderId,customerPhone,productName,productPrice,address,landMark,pin,city,state,quantity,sku,weight,length,breadth,height,paymentMethod"
+        return "customerName,customerEmail,orderId,customerPhone,productName,productPrice,address,landMark,pincode,city,state,quantity,sku,weight,length,breadth,height,paymentMethod"
     }
     return (
         <Modal

@@ -140,7 +140,12 @@ console.log(users);
     },
     {
       title: 'Early COD',
-      key: 'earlycod',
+      dataIndex: 'earlyCod',
+      // render: (_, record) => (
+      //   <Button onClick={() => handleGetKYC(record._id)}>
+      //     <Link to={`/seller/getkyc/${record._id}`}>Get KYC</Link>
+      //   </Button>
+      // ),
     },
   ];
 

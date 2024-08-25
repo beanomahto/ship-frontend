@@ -18,8 +18,7 @@ const useShipNowCost = () => {
           Authorization: `${token}`
         },
       });
-
-      console.log(res);
+      console.log(await res.json());
 
       if (!res.ok) {
         throw new Error("Failed to fetch delivery cost. Please try again.");

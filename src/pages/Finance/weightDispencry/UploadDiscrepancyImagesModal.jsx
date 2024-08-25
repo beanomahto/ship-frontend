@@ -25,7 +25,7 @@ const UploadDiscrepancyImagesModal = ({ visible, onClose, discrepancyId, product
     }
   
     try {
-      const uploadResponse = await fetch(`http://localhost:5000/api/weightdiscrepancy/upload-images`, {
+      const uploadResponse = await fetch(`https://backend.shiphere.in/api/weightdiscrepancy/upload-images`, {
         method: 'POST',
         body: formData,
         headers: {
@@ -34,7 +34,7 @@ const UploadDiscrepancyImagesModal = ({ visible, onClose, discrepancyId, product
       });
 
       const uploadResult = await uploadResponse.json();
-      console.log(uploadResult);
+      console.log(uploadResponse.json());
       
       // if (!uploadResponse.ok) {
       //   throw new Error('Failed to upload images');
@@ -45,7 +45,7 @@ const UploadDiscrepancyImagesModal = ({ visible, onClose, discrepancyId, product
   
       console.log('Upload Result:', uploadResult);
   
-      const updateResponse = await fetch(`http://localhost:5000/api/weightdiscrepancy/updateStatus/${discrepancyId}`, {
+      const updateResponse = await fetch(`https://backend.shiphere.in/api/weightdiscrepancy/updateStatus/${discrepancyId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

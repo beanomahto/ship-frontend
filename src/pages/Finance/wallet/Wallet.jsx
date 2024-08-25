@@ -80,7 +80,7 @@ console.log(transactions);
            </div>
       <Table
         className='table'
-        scroll={{ y: 350 }}
+        scroll={{ y: 500 }}
         columns={newOrders}
         dataSource={transactions}
         loading={loading}

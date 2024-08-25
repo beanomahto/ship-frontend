@@ -64,7 +64,7 @@ const AdminWallet = () => {
            <Button onClick={showModal}>Payment</Button>
           <PaymentModel visible={modalVisible} onClose={closeModal}/>
       </div>
-        <Table className='table'  scroll={{ y: 350, }} dataSource={pUsers} columns={newOrders} />
+        <Table className='table'  scroll={{ y: 500, }} dataSource={pUsers} columns={newOrders} />
     </div>
   )
 }
