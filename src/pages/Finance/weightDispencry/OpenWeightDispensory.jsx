@@ -67,7 +67,7 @@ const OpenWeightDispensory = ({ dataSource }) => {
     },
   ];
 
-  const openData = dataSource?.filter(data => data.status === 'Open');
+  const openData = dataSource?.filter(data => data.status === 'open');
 console.log(openData);
 
   return (

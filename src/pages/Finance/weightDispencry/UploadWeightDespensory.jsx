@@ -202,8 +202,6 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
             message.error(`Error during wallet deduction: ${error.message}`);
         }
     };
-    
-    
 
     const downloadFile = () => {
         const header = `"sellerEmail","weightAppliedDate","enteredWeight","enteredDimension","orderId","awbNumber","productName","appliedWeight","weightCharges","settledCharges","remarks"`;
