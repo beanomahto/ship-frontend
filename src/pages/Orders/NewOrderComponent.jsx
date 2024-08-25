@@ -101,28 +101,33 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
       dataIndex: 'orderId',
       ...getColumnSearchProps('orderId'),
       render: (text, order) => (
-        <Link style={{ color: 'black', fontWeight: '400', fontFamily: 'Poppins' }} to={`/orders/updateorder/${order?._id}/${order?.orderId}`}>{order.orderId}</Link>
+        <Link style={{ color: 'black', fontWeight: '400', fontFamily: 'Poppins', textAlign: 'center' }} to={`/orders/updateorder/${order?._id}/${order?.orderId}`}>
+          {order.orderId}
+        </Link>
       ),
+      className: 'centered-row'
     },
     {
       title: 'Order Status',
       dataIndex: 'o_status',
       render: (text, order) => (
-        <Tag style={{ display: 'flex', maxWidth: 'max-content', marginLeft: '3rem' }} color={order.status === 'New' ? 'green' : 'volcano'} >
+        <Tag style={{ display: 'flex', justifyContent: 'center', maxWidth: 'max-content', marginLeft: '3rem' }} color={order.status === 'New' ? 'green' : 'volcano'}>
           {order.status}
         </Tag>
       ),
+      className: 'centered-row'
     },
     {
       title: 'Customer Info',
       dataIndex: 'customerName',
       ...getColumnSearchProps('customerName'),
       render: (text, order) => (
-        <>
-          <div style={{ fontFamily: 'Poppins', fontSize: '.9rem', fontWeight: '500' }}>{order.customerName}</div>
-          <div style={{ fontFamily: 'Poppins', fontSize: '.9rem', fontWeight: '500' }}>{order.customerEmail}</div>
-        </>
+        <div style={{ fontFamily: 'Poppins', fontSize: '.9rem', fontWeight: '500', textAlign: 'center' }}>
+          <div>{order.customerName}</div>
+          <div>{order.customerEmail}</div>
+        </div>
       ),
+      className: 'centered-row'
     },
     {
       title: 'Payment Details',
@@ -133,38 +138,38 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
       ],
       onFilter: (value, record) => record.paymentMethod === value,
       render: (text, order) => (
-        <div style={{ display: 'flex', flexDirection: 'column', maxWidth: '4.5rem', marginLeft: '1rem', fontFamily: 'Poppins', fontSize: '.9rem', fontWeight: '500' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: '4.5rem', marginLeft: '1rem', fontFamily: 'Poppins', fontSize: '.9rem', fontWeight: '500' }}>
           <div>&#8377; {order.productPrice}</div>
-          <Tag color={order.paymentMethod === 'COD' ? 'green-inverse' : 'geekblue-inverse'} >
+          <Tag color={order.paymentMethod === 'COD' ? 'green-inverse' : 'geekblue-inverse'}>
             {order.paymentMethod}
           </Tag>
         </div>
       ),
+      className: 'centered-row'
     },
     {
       title: 'Package Details',
       render: (text, order) => (
-        <div style={{ fontFamily: 'Poppins', fontSize: '.9rem', fontWeight: '500' }}>
+        <div style={{ fontFamily: 'Poppins', fontSize: '.9rem', fontWeight: '500', textAlign: 'center' }}>
           <div>pkg Wt. {order.weight}gm</div>
-          <div>
-            ({order.length}x{order.breadth}x{order.height}cm)
-          </div>
+          <div>({order.length}x{order.breadth}x{order.height}cm)</div>
         </div>
       ),
+      className: 'centered-row'
     },
     {
       title: 'Channel',
       dataIndex: 'channel',
       render: (text) => (
-        <div style={{ display: 'flex', justifyContent: 'flex-start', marginLeft:'25px' }}>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
           <img
-            // src={text === 'shopify' ? Shopify : Woo}
             src={text === 'shopify' ? Shopify : (text === 'Mannual' ? logo : Woo)}
             alt={text}
             style={{ width: 'max-content', height: '40px', borderRadius: '50%' }}
           />
         </div>
       ),
+      className: 'centered-row'
     },
     {
       title: 'Order Date',
@@ -172,30 +177,34 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
       ...getColumnSearchProps('createdAt'),
       sorter: (a, b) => moment(a.createdAt).unix() - moment(b.createdAt).unix(),
       render: (text, order) => moment(order?.createdAt).format('DD-MM-YYYY'),
+      className: 'centered-row'
     },
     {
       title: 'Quick Assign',
       dataIndex: 'q_assign',
       render: (text, order) => (
-        <div style={{ position: 'absolute', left: '2.3rem', top: '2rem' }} >
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
           <ThunderboltOutlined
             style={{ cursor: 'pointer', fontSize: '1.5rem', color: '#08c' }}
             onClick={() => handleExpandRow(order._id)}
           />
         </div>
       ),
+      className: 'centered-row'
     },
     ...(authUser?.role === 'admin' ? [{
       title: 'Seller Email',
       dataIndex: 'seller',
       render: (_, record) => (
-          <span
-          >
-            {record?.seller?.email}
-          </span>
-        ),
+        <span style={{ textAlign: 'center' }}>
+          {record?.seller?.email}
+        </span>
+      ),
+      className: 'centered-row'
     }] : []),
   ];
+  
+
 
   const handleExpandRow = (key) => {
     setSelectedOrderId(key);
@@ -285,6 +294,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
             style={{ width: '100%', height: '545px' }}
             rowClassName={(record) => (record._id === selectedOrderId ? 'selected-row' : '')}
             loading={loading}
+            className="centered-table"
           />
           <Modal
             title="Assign Delivery Partner"

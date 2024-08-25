@@ -1,11 +1,12 @@
 import { Table, Button, Modal, Image } from 'antd';
 import moment from 'moment';
 import React, { useState } from 'react';
+import { useAuthContext } from '../../../context/AuthContext';
 
 const OpenWeightDispensory = ({ dataSource }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentImages, setCurrentImages] = useState([]);
-
+  const { authUser } = useAuthContext();
   const showModal = (images) => {
     setCurrentImages(images);
     setIsModalVisible(true);
@@ -65,6 +66,16 @@ const OpenWeightDispensory = ({ dataSource }) => {
         </Button>
       ),
     },
+    ...(authUser?.role === 'admin' ? [{
+      title: 'Sellers', 
+      dataIndex: 'seller',  
+      render: (_, record) => (
+          <span
+          >
+            {record?.seller?.email}
+          </span>
+        ),
+    }] : []),
   ];
 
   const openData = dataSource?.filter(data => data.status === 'open');

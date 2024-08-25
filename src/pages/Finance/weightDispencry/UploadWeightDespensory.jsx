@@ -231,7 +231,7 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
             <Upload beforeUpload={() => false} onChange={handleFileChange} accept=".xlsx">
                 <Button icon={<UploadOutlined />}>Select Weight Dispensory</Button>
             </Upload>
-            {fileData && (
+            {/* {fileData && (
                 <div style={{ marginTop: '16px' }}>
                     <h3>File Contents:</h3>
                     <textarea
@@ -246,7 +246,7 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
                     <h3>Fetched Seller IDs:</h3>
                     {sellerIds}
                 </div>
-            )}
+            )} */}
         </Modal>
     );
 };

@@ -51,29 +51,32 @@ const WeightDispensory = () => {
       }
     },
   };
+const openNumber = weightDispensory?.data?.filter((amt) => amt.status === 'open')
+const closedNumber = weightDispensory?.data?.filter((amt) => amt.status === 'closed')
+const actionRequiredNumber = weightDispensory?.data?.filter((amt) => amt.status === 'action required')
 
   const tabsData = [
     {
       key: 'tab1',
-      tab: 'Action Required',
+      tab: `Action Required (${actionRequiredNumber?.length})`,
       Component: ActionRequired,
       dataSource: weightDispensory.data,
     },
     {
       key: 'tab2',
-      tab: 'Open',
+      tab: `Open (${openNumber?.length})`,
       Component: OpenWeightDispensory,
       dataSource: weightDispensory.data,
     },
     {
       key: 'tab3',
-      tab: 'Closed',
+      tab: `Closed (${closedNumber?.length})`,
       Component: ClosedWeightDispensory,
       dataSource: weightDispensory.data,
     },
     {
       key: 'tab4',
-      tab: 'All Dispute',
+      tab: `All Dispute (${weightDispensory.data.length})`,
       Component: OpenWeightDispensory,
       dataSource: weightDispensory.data,
     },

@@ -1,6 +1,14 @@
 .table{
     
 }
+/* Center align table headers */
+.ant-table-thead > tr > th {
+  text-align: center;
+}
+/* Apply specific class to center table headers */
+.centered-table .ant-table-thead > tr > th {
+  text-align: center;
+}
 
 .tabs{
     background-color: #fff;
@@ -8,6 +16,17 @@
     padding-left: 1rem;
     box-shadow: 1px 1px 1px 1px;
     border-radius: 15px;
+}
+.centered-row {
+  text-align: center;
+  vertical-align: middle;
+}
+.selected-row {
+  background-color: #f0f0f0; /* Adjust as needed */
+}
+.centered-table .ant-table-cell {
+  text-align: center;
+  vertical-align: middle;
 }
 
 .tabss{
