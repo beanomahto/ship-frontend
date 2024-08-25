@@ -32,14 +32,16 @@ const UploadDiscrepancyImagesModal = ({ visible, onClose, discrepancyId, product
           Authorization: `${token}`,
         },
       });
-      // if (!uploadResponse.ok) {
-      //   throw new Error('Failed to upload images');
-      // }
-  
+
       const uploadResult = await uploadResponse.json();
       console.log(uploadResponse);
       
-      message.success(uploadResult.message);
+      if (!uploadResponse.ok) {
+        throw new Error('Failed to upload images');
+      }
+  
+      
+      message.success("images uploaded");
   
       console.log('Upload Result:', uploadResult);
   

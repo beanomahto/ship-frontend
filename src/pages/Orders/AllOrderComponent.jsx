@@ -162,21 +162,14 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading }) => {
       render: (text, order) => moment(order?.createdAt).format('DD-MM-YYYY'),
     },
     ...(authUser?.role === 'admin' ? [{
-      title: 'Seller Email', 
-      dataIndex: 'seller',  
-      // render: (_, record) => (
-      //     <Button
-      //       type="primary"
-      //       onClick={() => {
-      //         setSelectedDiscrepancyId(record?._id); 
-      //         setSelectedProductName(record?.productName)
-      //         setModalVisible(true);
-      //         console.log(record);
-      //       }}
-      //     >
-      //       Take Action
-      //     </Button>
-      //   ),
+      title: 'Seller Email',
+      dataIndex: 'seller',
+      render: (_, record) => (
+          <span
+          >
+            {record?.seller?.email}
+          </span>
+        ),
     }] : []),
   ];
 

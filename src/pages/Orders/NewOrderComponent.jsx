@@ -188,19 +188,12 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
     ...(authUser?.role === 'admin' ? [{
       title: 'Seller Email',
       dataIndex: 'seller',
-      // render: (_, record) => (
-      //     <Button
-      //       type="primary"
-      //       onClick={() => {
-      //         setSelectedDiscrepancyId(record?._id); 
-      //         setSelectedProductName(record?.productName)
-      //         setModalVisible(true);
-      //         console.log(record);
-      //       }}
-      //     >
-      //       Take Action
-      //     </Button>
-      //   ),
+      render: (_, record) => (
+          <span
+          >
+            {record?.seller?.email}
+          </span>
+        ),
     }] : []),
   ];
 
