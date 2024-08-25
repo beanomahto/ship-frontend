@@ -7,6 +7,8 @@ const OpenWeightDispensory = ({ dataSource }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentImages, setCurrentImages] = useState([]);
   const { authUser } = useAuthContext();
+  console.log(authUser);
+  
   const showModal = (images) => {
     setCurrentImages(images);
     setIsModalVisible(true);

@@ -88,7 +88,7 @@ const actionRequired = dataSource?.filter(data => data.status === 'action requir
     <>
       <Table
         className='table'
-        scroll={{ y: 350 }}
+        scroll={{ y: 500 }}
         dataSource={actionRequired}
         columns={columns}
         rowKey="id"

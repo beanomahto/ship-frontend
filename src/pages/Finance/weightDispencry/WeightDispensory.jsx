@@ -76,7 +76,7 @@ const actionRequiredNumber = weightDispensory?.data?.filter((amt) => amt.status 
     },
     {
       key: 'tab4',
-      tab: `All Dispute (${weightDispensory.data.length})`,
+      tab: `All Dispute (${weightDispensory?.data?.length})`,
       Component: OpenWeightDispensory,
       dataSource: weightDispensory.data,
     },
