@@ -26,27 +26,29 @@ const LabelGenerator = () => {
   const labelRef = useRef(null);
   console.log(labelData);
   console.log(id);
+  const generateLabel = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`http://localhost:5000/api/shipping/getlabel/${id}`, {
+        headers: {
+          Authorization:`${token}`,
+        }
+      });
+      const logoBase64 = await getBase64ImageFromUrl(response.data.logoUrl);
+      setLabelData(response.data);
+      setBase64Logo(logoBase64);
+      setIsModalVisible(true);
+      console.log(response);
+      console.log(logoBase64);
+      
+    } catch (error) {
+      console.error('Error generating label:', error.message);
+      alert('Error generating label');
+    }
+  };
   useEffect(() => {
-    const generateLabel = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get(`https://backend.shiphere.in/api/shipping/getlabel/${id}`, {
-          headers: {
-            Authorization:`${token}`,
-          }
-        });
-        const logoBase64 = await getBase64ImageFromUrl(response.data.logoUrl);
-        setLabelData(response.data);
-        setBase64Logo(logoBase64);
-        setIsModalVisible(true);
-        console.log(response);
-      } catch (error) {
-        console.error('Error generating label:', error);
-        alert('Error generating label');
-      }
-    };
     generateLabel();
-  }, [id]);
+  }, []);
 
   const handleOk = () => {
     setIsModalVisible(false);

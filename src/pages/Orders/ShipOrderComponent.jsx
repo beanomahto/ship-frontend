@@ -74,7 +74,7 @@ const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) =
     },
     {
       title: 'Shipping Status',
-      dataIndex: 's_status',
+      dataIndex: 'awb',
       // filters: [
       //   { text: 'Shipped', value: 'Shipped' },
       //   { text: 'InTransit', value: 'InTransit' },
@@ -82,6 +82,11 @@ const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) =
       //   { text: 'Cancelled', value: 'Cancelled' },
       // ],
       onFilter: (value, record) => record.s_status.indexOf(value) === 0,
+      render:(value, record) => (
+        <>
+        <Link  to={`/tracking/shipment/${record.awb}`}><Button type='link'><div>{record.awb}</div></Button></Link>
+        </>
+      )
     },
     {
       title: 'Customer Info',
