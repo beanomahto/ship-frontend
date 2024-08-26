@@ -22,20 +22,33 @@ const WeightDispensory = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectedRowData, setSelectedRowData] = useState({ _id: null, name: '' });
 
+  const fetchWeightDespensory = async () => {
+    try {
+      const res = await fetch('https://backend.shiphere.in/api/weightdiscrepancy/getweightdiscrepancy', {
+        headers: {
+            Authorization: localStorage.getItem('token'),
+        },
+    });
+      const data = await res.json();
+      setWeightDispensory(data);
+    } catch (error) {
+      console.error("Failed to fetch weight discrepancy data:", error);
+    }
+  };
+   // const checkAndUpdateStatus = (record) => {
+  //   const dateApplied = moment(record.weightAppliedDate);
+  //   const today = moment();
+  //   const daysDifference = today.diff(dateApplied, 'days');
+
+  //   if (daysDifference > 7 && record.status !== 'closed') {
+  //     updateStatusToClosed(record.id);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   dataSource.forEach(checkAndUpdateStatus);
+  // }, [dataSource]);
   useEffect(() => {
-    const fetchWeightDespensory = async () => {
-      try {
-        const res = await fetch('https://backend.shiphere.in/api/weightdiscrepancy/getweightdiscrepancy', {
-          headers: {
-              Authorization: localStorage.getItem('token'),
-          },
-      });
-        const data = await res.json();
-        setWeightDispensory(data);
-      } catch (error) {
-        console.error("Failed to fetch weight discrepancy data:", error);
-      }
-    };
     fetchWeightDespensory();
   }, []);
   console.log(selectedRowData);
@@ -105,7 +118,7 @@ const actionRequiredNumber = weightDispensory?.data?.filter((amt) => amt.status 
           productName={selectedRowData.productName}
         />
         <CustomButton onClick={showModal}>Upload Weight</CustomButton>
-        <UploadWeightDespensory visible={modalVisible} onClose={closeModal} />
+        <UploadWeightDespensory visible={modalVisible} onClose={closeModal} fetchWeightDespensory={fetchWeightDespensory} />
         <CustomButton onClick={showSearchModal}>Search Seller</CustomButton>
         <SearchSellerModal weightDispensory={weightDispensory} visible={searchModalVisible} onClose={closeSearchModal} />
       </div>
@@ -116,6 +129,7 @@ const actionRequiredNumber = weightDispensory?.data?.filter((amt) => amt.status 
               <tab.Component
                 dataSource={tab.dataSource}
                 rowSelection={rowSelection}
+                fetchWeightDespensory={fetchWeightDespensory}
               />
             ) : (
               <span>No component for this tab</span>

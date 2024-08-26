@@ -15,7 +15,7 @@ import ProgressBar from './ProgressBar.jsx';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ChartDataLabels);
 
 const ShipmentStatusGraph = () => {
-  const labels = ['Returned', 'Delivered', 'Shipped', 'With Incidents'];
+  const labels = [ 'Delivered', 'Returned','Shipped', 'With Incidents'];
   const dataValues = [75, 18, 2, 1];
   const total = dataValues.reduce((acc, value) => acc + value, 0);
 

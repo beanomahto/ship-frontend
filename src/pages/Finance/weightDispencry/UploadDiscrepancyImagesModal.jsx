@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal, Upload, Button, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
-const UploadDiscrepancyImagesModal = ({ visible, onClose, discrepancyId, productName }) => {
+const UploadDiscrepancyImagesModal = ({ visible, onClose, discrepancyId, productName,fetchWeightDespensory }) => {
   const [fileList, setFileList] = useState([]);
   const token = localStorage.getItem('token');
 
@@ -40,7 +40,7 @@ const UploadDiscrepancyImagesModal = ({ visible, onClose, discrepancyId, product
       //   throw new Error('Failed to upload images');
       // }
   
-      
+      fetchWeightDespensory()
       message.success("images uploaded");
   
       console.log('Upload Result:', uploadResult);

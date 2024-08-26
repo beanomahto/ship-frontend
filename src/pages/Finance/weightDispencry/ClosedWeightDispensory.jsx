@@ -1,4 +1,5 @@
 import { Table, Button } from 'antd';
+import moment from 'moment';
 import React from 'react';
 
 const ClosedWeightDispensory = ({ dataSource }) => {
@@ -6,6 +7,7 @@ const ClosedWeightDispensory = ({ dataSource }) => {
     {
       title: 'Weight Applied Date',
       dataIndex: 'weightAppliedDate',
+      render: (text, data) => moment(data?.createdAt).format('DD-MM-YYYY'),
     },
     {
       title: 'Entered Weight',
@@ -45,7 +47,7 @@ const ClosedWeightDispensory = ({ dataSource }) => {
       dataIndex: 'remarks',
     },
   ];
-  const openData = dataSource?.filter(data => data.status === 'Closed')
+  const openData = dataSource?.filter(data => data.status === 'closed')
   return (
     <Table
       className='table'

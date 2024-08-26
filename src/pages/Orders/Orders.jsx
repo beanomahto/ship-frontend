@@ -78,16 +78,19 @@ console.log(selectedOrderData);
     }
     console.log(selectedRowKeys);
     const updatedOrders = await Promise.all(selectedRowKeys?.map(async (orderId) => {
-      const order = orders?.orders[orderId];
+      console.log(orderId);
+      
+      const order = orders?.orders.find(order => order._id === orderId);
       console.log(order);
       await fetch(`https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: localStorage.getItem('token')
         },
         body: JSON.stringify({ status: 'Shipped' }),
       });
-
+fetchOrders()
       return { ...order, status: 'Shipped' };
     }));
 
@@ -95,6 +98,7 @@ console.log(selectedOrderData);
     setOrders({
       orders: newOrdersCopy.concat(updatedOrders),
     });
+console.log(newOrdersCopy);
 
     setSelectedRowKeys([]);
     closeModalShipNow();
@@ -127,31 +131,35 @@ console.log(selectedOrderData);
     // onSelect: showModalShipNow,
   };
 console.log(rowSelection);
+const hasSelected = selectedRowKeys.length > 1;
+console.log(dataSourceWithKeys);
 
-  const hasSelected = selectedRowKeys.length > 1;
-  console.log(dataSourceWithKeys);
+const newOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 'New' || order.status === 'Cancelled');
+const shipOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 'Shipped');
+const inTransitOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 'InTransit');
+
   const tabsData = [
     {
       key: 'tab1',
-      tab: 'New Orders',
+      tab: `New Orders (${newOrdersAmt?.length})`,
       Component: NewOrderComponent,
       dataSource: dataSourceWithKeys,
     },
     {
       key: 'tab2',
-      tab: 'Ship Orders',
+      tab: `Ship Orders (${shipOrdersAmt?.length})`,
       Component: ShipOrderComponent,
       dataSource: dataSourceWithKeys,
     },
     {
       key: 'tab3',
-      tab: 'In Transit',
+      tab: `In Transit (${inTransitOrdersAmt?.length})`,
       Component: NewOrderComponent,
       dataSource: [],
     },
     {
       key: 'tab4',
-      tab: 'All Orders',
+      tab: `All Orders (${dataSourceWithKeys?.length})`,
       Component: AllOrderComponent,
       dataSource: dataSourceWithKeys
     },
@@ -302,6 +310,7 @@ console.log(rowSelection);
                 rowSelection={rowSelection}
                 fetchOrders={fetchOrders}
                 loading={loading}
+                warehouse={warehouse}
                 setModalLoading={setModalLoading}
                 modalLoading={modalLoading}
                 deliveryCosts={deliveryCosts}

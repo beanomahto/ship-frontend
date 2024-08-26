@@ -17,6 +17,7 @@ import Woo from '../../utils/woocomerce.png'
 import logo from '../../utils/logo1.jpg'
 import { Helmet } from 'react-helmet';
 import { useAuthContext } from '../../context/AuthContext';
+import useCreateShipment from '../../hooks/useCreateShipment';
 
 const partnerImages = {
   'Blue Dart': BD,
@@ -31,7 +32,7 @@ const channelImages = {
   'Shopify': Shopify,
 };
 
-const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setModalLoading,modalLoading,deliveryCosts,setDeliveryCosts,setSelectedOrderId,selectedOrderId,currentDeliveryCost,setCurrentDeliveryCost }) => {
+const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setModalLoading,modalLoading,deliveryCosts,setDeliveryCosts,setSelectedOrderId,selectedOrderId,currentDeliveryCost,setCurrentDeliveryCost,warehouse }) => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   console.log(currentDeliveryCost);
@@ -43,7 +44,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
  
  
   const { authUser } = useAuthContext();
-
+  const {shipOrder,error} = useCreateShipment()
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -195,6 +196,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
     ...(authUser?.role === 'admin' ? [{
       title: 'Seller Email',
       dataIndex: 'seller',
+      // ...getColumnSearchProps(''),
       render: (_, record) => (
         <span style={{ textAlign: 'center' }}>
           {record?.seller?.email}
@@ -210,6 +212,8 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
     setSelectedOrderId(key);
     setIsModalVisible(true);
   };
+ 
+
   const handleAssign = async (partner) => {
     try {
       setModalLoading(true);
@@ -218,7 +222,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
       const totalDebit = partnerCost;
       
       setCurrentDeliveryCost(totalDebit);
-      
+      await shipOrder(selectedOrder._id, warehouse?.warehouses?.[0]?._id, partner.deliveryPartner )
       const walletRequestBody = {
         debit: totalDebit,
         userId: selectedOrder.seller._id,
@@ -226,7 +230,6 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
         orderId: selectedOrder._id,
       };
       console.log(walletRequestBody);
-      
       const walletResponse = await axios.post(
         'https://backend.shiphere.in/api/transactions/decreaseAmount',
         walletRequestBody,

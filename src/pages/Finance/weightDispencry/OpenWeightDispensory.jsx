@@ -64,7 +64,7 @@ const OpenWeightDispensory = ({ dataSource }) => {
       title: 'Actions',
       render: (text, record) => (
         <Button type="link" onClick={() => showModal(record.images)}>
-          View Images
+         <h3 style={{fontWeight:'600'}} > View Images</h3>
         </Button>
       ),
     },

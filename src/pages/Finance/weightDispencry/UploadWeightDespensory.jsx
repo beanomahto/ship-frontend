@@ -5,7 +5,7 @@ import * as XLSX from 'xlsx';
 import axios from 'axios';
 import DownloadLink from 'react-download-link';
 
-const UploadWeightDespensory = ({ visible, onClose }) => {
+const UploadWeightDespensory = ({ visible, onClose,fetchWeightDespensory }) => {
     const [file, setFile] = useState(null);
     const [fileData, setFileData] = useState('');
     const [extractedData, setExtractedData] = useState([]);
@@ -97,6 +97,7 @@ const UploadWeightDespensory = ({ visible, onClose }) => {
                 message.success('File uploaded successfully!');
                 await callDeduceWalletAmount();
                 await callIncreaseWalletAmount();
+                await fetchWeightDespensory()
                 onClose();
             } else {
                 message.error(`Failed to upload file: ${result.error}`);

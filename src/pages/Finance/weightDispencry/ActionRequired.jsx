@@ -5,7 +5,7 @@ import { useAuthContext } from '../../../context/AuthContext';
 import moment from 'moment';
 import { useEffect } from 'react';
 
-const ActionRequired = ({ dataSource, rowSelection}) => {
+const ActionRequired = ({ dataSource, rowSelection,fetchWeightDespensory}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDiscrepancyId, setSelectedDiscrepancyId] = useState(null);
   const [selectedProductName, setSelectedProductName] = useState(null);
@@ -93,12 +93,15 @@ const actionRequired = dataSource?.filter(data => data.status === 'action requir
         columns={columns}
         rowKey="id"
         rowSelection={rowSelection}
+        // pagination={false}
+        // style={{ width: '100%', height: '505px' }}
       />
       <UploadDiscrepancyImagesModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         discrepancyId={selectedDiscrepancyId}
         productName={selectedProductName}
+        fetchWeightDespensory={fetchWeightDespensory}
       />
     </>
   );

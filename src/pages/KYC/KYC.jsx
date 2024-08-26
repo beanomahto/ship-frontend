@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './kyc.css';
-import { Checkbox, Select, Upload, Button, message } from 'antd';
+import { Checkbox, Select, Upload, Button, message, Image } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { Helmet } from 'react-helmet';
 import useKYC from './useKYC';
@@ -143,27 +143,31 @@ console.log(authUser);
                         <div className='picc'>
                             <label>
                                 <span>Upload</span>
+                               {formData.gstUrl ? (
+                                <Image src={formData.gstUrl} alt="GST Certificate"  style={{ width: '100%', maxWidth: '200px' }} />
+                               ) : (
                                 <Upload
-                                    customRequest={({ file, onSuccess, onError }) => {
-                                        setTimeout(() => {
-                                            try {
-                                                setFormData({ ...formData, gstUrl: file });
-                                                onSuccess(null, file);
-                                            } catch (error) {
-                                                onError(error);
-                                            }
-                                        }, 0);
-                                    }}
-                                    listType="picture-card"
+                                customRequest={({ file, onSuccess, onError }) => {
+                                    setTimeout(() => {
+                                        try {
+                                            setFormData({ ...formData, gstUrl: file });
+                                            onSuccess(null, file);
+                                        } catch (error) {
+                                            onError(error);
+                                        }
+                                    }, 0);
+                                }}
+                                listType="picture-card"
+                            >
+                                <button
+                                    style={{ border: 0, background: 'none' }}
+                                    type="button"
                                 >
-                                    <button
-                                        style={{ border: 0, background: 'none' }}
-                                        type="button"
-                                    >
-                                        <PlusOutlined />
-                                        <div style={{ marginTop: 8 }}>Upload</div>
-                                    </button>
-                                </Upload>
+                                    <PlusOutlined />
+                                    <div style={{ marginTop: 8 }}>Upload</div>
+                                </button>
+                            </Upload>
+                               )}
                             </label>
                         </div>
                       
@@ -212,27 +216,31 @@ console.log(authUser);
                         <div className='picc'>
                             <label>
                                 <span>Passbook</span>
+                            {formData.passbookUrl ? (
+                                <Image src={formData.passbookUrl} alt="Passbook" style={{ width: '100%', maxWidth: '200px'}} />
+                            ) : (
                                 <Upload
-                                    customRequest={({ file, onSuccess, onError }) => {
-                                        setTimeout(() => {
-                                            try {
-                                                setFormData({ ...formData, passbookUrl: file });
-                                                onSuccess(null, file);
-                                            } catch (error) {
-                                                onError(error);
-                                            }
-                                        }, 0);
-                                    }}
-                                    listType="picture-card"
+                                customRequest={({ file, onSuccess, onError }) => {
+                                    setTimeout(() => {
+                                        try {
+                                            setFormData({ ...formData, passbookUrl: file });
+                                            onSuccess(null, file);
+                                        } catch (error) {
+                                            onError(error);
+                                        }
+                                    }, 0);
+                                }}
+                                listType="picture-card"
+                            >
+                                <button
+                                    style={{ border: 0, background: 'none' }}
+                                    type="button"
                                 >
-                                    <button
-                                        style={{ border: 0, background: 'none' }}
-                                        type="button"
-                                    >
-                                        <PlusOutlined />
-                                        <div style={{ marginTop: 8 }}>Upload</div>
-                                    </button>
-                                </Upload>
+                                    <PlusOutlined />
+                                    <div style={{ marginTop: 8 }}>Upload</div>
+                                </button>
+                            </Upload>
+                            )}
                             </label>
                         </div>
                     </div>
@@ -288,27 +296,31 @@ console.log(authUser);
                         <div className='picc'>
                             <label>
                                 <span>PanCard Image</span>
+                            {formData.pancardUrl ? (
+                                <Image src={formData.pancardUrl} alt="pancard"  style={{ width: '100%', maxWidth: '200px' }}/>
+                            ) : (
                                 <Upload
-                                    customRequest={({ file, onSuccess, onError }) => {
-                                        setTimeout(() => {
-                                            try {
-                                                setFormData({ ...formData, pancardUrl: file });
-                                                onSuccess(null, file);
-                                            } catch (error) {
-                                                onError(error);
-                                            }
-                                        }, 0);
-                                    }}
-                                    listType="picture-card"
+                                customRequest={({ file, onSuccess, onError }) => {
+                                    setTimeout(() => {
+                                        try {
+                                            setFormData({ ...formData, pancardUrl: file });
+                                            onSuccess(null, file);
+                                        } catch (error) {
+                                            onError(error);
+                                        }
+                                    }, 0);
+                                }}
+                                listType="picture-card"
+                            >
+                                <button
+                                    style={{ border: 0, background: 'none' }}
+                                    type="button"
                                 >
-                                    <button
-                                        style={{ border: 0, background: 'none' }}
-                                        type="button"
-                                    >
-                                        <PlusOutlined />
-                                        <div style={{ marginTop: 8 }}>Upload</div>
-                                    </button>
-                                </Upload>
+                                    <PlusOutlined />
+                                    <div style={{ marginTop: 8 }}>Upload</div>
+                                </button>
+                            </Upload>
+                            )}
                             </label>
                         </div>
                     </div>

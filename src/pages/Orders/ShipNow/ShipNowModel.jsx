@@ -3,6 +3,7 @@ import { Button, Modal, Select } from 'antd';
 import { useWarehouseContext } from '../../../context/WarehouseContext';
 import useShipNowCost from '../../../hooks/useShipNowCost';
 import { useDeliveryPartner } from '../../../context/DeliveryPartners';
+import useCreateShipment from '../../../hooks/useCreateShipment';
 
 const ShipNowModel = ({ visible, onClose, onShipNow, selectedRowKeys, hasSelected }) => {
   const {deliveryPartners} = useDeliveryPartner();
@@ -11,7 +12,7 @@ const ShipNowModel = ({ visible, onClose, onShipNow, selectedRowKeys, hasSelecte
   console.log(warehouse);
   const [selectedWarehouse, setSelectedWarehouse] = useState( warehouse?.warehouses?.[0]?._id ||  null);
   const [deliveryPartner, setDeliveryPartner] = useState('');
-
+ const { shipOrder, loading, error } = useCreateShipment();
   const handleWarehouseChange = (value) => {
     setSelectedWarehouse(value);
   };
@@ -47,15 +48,10 @@ const ShipNowModel = ({ visible, onClose, onShipNow, selectedRowKeys, hasSelecte
           <span>Select Courier Partner</span>
           <Select className='input shipModel crr' onChange={handleDeliveryPartnerChange}>
           {deliveryPartners?.deliveryPartners?.map((d) => (
-              <Select.Option >{d.name}</Select.Option>
+              <Select.Option key={d._id} >{d.name}</Select.Option>
             ))}
           </Select>
         </label>
-        {/* {loading ? (
-          <p>Loading...</p>
-        ) : (
-          deliveryCost !== null && <h1>Delivery Cost: {deliveryCost}</h1>
-        )} */}
         <span style={{ marginLeft: 8 }}>{hasSelected ? `You Selected ${selectedRowKeys.length} items` : ''}</span>
       </div>
     </Modal>

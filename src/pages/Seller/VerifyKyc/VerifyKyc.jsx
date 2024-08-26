@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Select, Upload, message } from 'antd';
+import { Button, Select, Upload, message, Image } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
 
@@ -125,7 +125,7 @@ const VerifyKyc = () => {
                             <label>
                                 <span>GST Document</span>
                                 {formData.gstUrl ? (
-                                    <img src={formData.gstUrl} alt="GST Document" style={{ width: '100%', height: 'auto' }} />
+                                    <Image src={formData.gstUrl} alt="GST Document" style={{ width: '100%', maxWidth: '200px'}} />
                                 ) : (
                                     <Upload
                                         customRequest={({ file, onSuccess, onError }) => {
@@ -179,7 +179,7 @@ const VerifyKyc = () => {
                             <label>
                                 <span>Passbook</span>
                                 {formData.passbookUrl ? (
-                                    <img src={formData.passbookUrl} alt="Passbook" style={{ width: '100%', height: 'auto' }} />
+                                    <Image src={formData.passbookUrl} alt="Passbook" style={{ width: '100%', maxWidth: '200px'}} />
                                 ) : (
                                     <Upload
                                         customRequest={({ file, onSuccess, onError }) => {
@@ -255,7 +255,8 @@ const VerifyKyc = () => {
                             <label>
                                 <span>PAN Card</span>
                                 {formData.pancardUrl ? (
-                                    <img src={formData.pancardUrl} alt="PAN Card" style={{ width: '100%', height: 'auto' }} />
+                                    <Image src={formData.pancardUrl} alt="PAN Card" style={{ width: '100%', maxWidth: '200px'}}/>
+                                    
                                 ) : (
                                     <Upload
                                         customRequest={({ file, onSuccess, onError }) => {
