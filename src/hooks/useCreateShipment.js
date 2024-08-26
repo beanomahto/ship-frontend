@@ -17,7 +17,7 @@ const useCreateShipment = () => {
 
       switch (deliveryPartnerName) {
         case 'Ecom Express':
-          url = 'http://localhost:5000/api/ecomExpress/createShipment';
+          url = 'https://backend.shiphere.in/api/ecomExpress/createShipment';
           log = 'ecom hit';
           break;
         case 'Amazon Shipping':
@@ -26,15 +26,15 @@ const useCreateShipment = () => {
           break;
         case 'Xpressbees':
         //   url = 'https://backend.shiphere.in/api/xpressbees/createShipment';
-          url = 'http://localhost:5000/api/xpressbees/createShipment';
+          url = 'https://backend.shiphere.in/api/xpressbees/createShipment';
           log = 'xpress hit';
           break;
         case 'Delhivery':
-          url = 'http://localhost:5000/api/deliveryOne/create';
+          url = 'https://backend.shiphere.in/api/deliveryOne/create';
           log = 'delhivery hit';
           break;
         case 'Blue Dart':
-          url = 'http://http://localhost:5000/api/bluedart/createShipment';
+          url = 'http://https://backend.shiphere.in/api/bluedart/createShipment';
           log = 'bluedart hit';
           break;
         default:
