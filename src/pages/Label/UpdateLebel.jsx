@@ -37,7 +37,7 @@ const UpdateLabel = () => {
                 });
                 const fetchedData = response.data;
                 setInputs({
-                    logoUrl: fetchedData.logoUrl || '',
+                    logoUrl: fetchedData?.logoUrl || '',
                     theme: fetchedData.theme || '',
                     hideLogo: fetchedData.hideLogo ?? false,
                     hideCompanyName: fetchedData.hideCompanyName ?? false,

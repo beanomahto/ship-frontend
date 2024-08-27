@@ -29,7 +29,7 @@ const LabelGenerator = () => {
   const generateLabel = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:5000/api/shipping/getlabel/${id}`, {
+      const response = await axios.get(`https://backend.shiphere.in/api/shipping/getlabel/${id}`, {
         headers: {
           Authorization:`${token}`,
         }
@@ -91,59 +91,59 @@ const LabelGenerator = () => {
             <h1 style={{ textAlign: 'center' }}>Shipping Label</h1>
             <p><strong>Order Id</strong> 123231</p>
             <div style={labelData.logoUrl ? { display: 'flex' } : {}}>
-              <div className="section">
+              <div className="labelSection">
                 <img style={{ width: '11rem' }} src={`data:image/png;base64,${labelData.barcode}`} alt="Barcode" />
                 {/* <img style={{ width: '10rem' }} src={base64Logo} alt="" /> */}
               </div>
               {labelData.logoUrl &&
-                <div className="section" style={{ Width: '12rem' }} >
+                <div className="labelSection" style={{ Width: '12rem' }} >
                   <img style={{ width: '9rem' }} src={base64Logo} alt="" />
                 </div>
               }
             </div>
-            <div className="section">
-              <p><strong>Ship To:</strong><p><strong>Dheeraj Kumar</strong></p> FLAT NO-B16-403, SUPERTECH ECO VILLAGE-2, GH-1 SECTOR-16B, GREATER NOIDA, NOIDA, Gautam Buddha Nagar, Noida, Uttar Pradesh, India, 201301</p>
+            <div className="labelSection">
+              <p><strong>Ship To:</strong><p><strong>{labelData.customerName}</strong></p>{labelData?.returnWarehouse?.address} {labelData?.returnWarehouse?.state} {labelData?.returnWarehouse?.city}  {labelData?.returnWarehouse?.country} </p>
               <p>{labelData.customerName}</p>
               <p>{labelData.customerAddress}</p>
               <p>{labelData.customerCity}</p>
               <p><strong>PIN:</strong> 201007 {labelData.customerPin}</p>
             </div>
             <div style={{ display: 'flex' }}>
-              <div className="section" style={{ width: '16rem' }}>
+              <div className="labelSection" style={{ width: '16rem' }}>
                 <p><strong>{labelData.paymentType}</strong></p>
                 <p><strong>Product name</strong></p>
                 <p>{labelData.productName}</p>
               </div>
-              <div className="section" style={{ width: '10rem' }}>
+              <div className="labelSection" style={{ width: '10rem' }}>
                 <p><strong>{labelData.paymentType}</strong></p>
                 <p><strong>INR</strong></p>
                 <p>{labelData.amount}</p>
               </div>
-              <div className="section" style={{ width: '12rem' }}>
+              <div className="labelSection" style={{ width: '12rem' }}>
                 <p><strong>Price Total</strong></p>
                 <p>INR {labelData.amount}</p>
                 <p>Surface</p>
               </div>
             </div>
             <div style={{ display: 'flex' }}>
-              <div className="section" style={{ width: '12rem' }}>
+              <div className="labelSection" style={{ width: '12rem' }}>
                 <p><strong>Product (QTY)</strong></p>
               </div>
-              <div className="section" style={{ width: '12rem' }}>
+              <div className="labelSection" style={{ width: '12rem' }}>
                 <p>box({labelData?.productDetail?.quantity})</p>
               </div>
             </div>
             <div style={{ display: 'flex' }}>
-              <div className="section" style={{ width: '12rem' }}>
+              <div className="labelSection" style={{ width: '12rem' }}>
                 <p><strong>Total INR</strong></p>
               </div>
-              <div className="section" style={{ width: '12rem' }}>
+              <div className="labelSection" style={{ width: '12rem' }}>
                 <p>{labelData.amount}</p>
               </div>
             </div>
-            <div className="section">
+            <div className="labelSection">
               <p><strong>Return Address:</strong></p>
-              <p>C 1001 bhavani heights, near dmart, sudama chawk Surat, Surat, Gujarat, India, 394101</p>
+              <p>{labelData?.returnWarehouse?.address} {labelData?.returnWarehouse?.state} {labelData?.returnWarehouse?.city}  {labelData?.returnWarehouse?.country} </p>
             </div>
           </div>
         )}

@@ -3,7 +3,7 @@
   padding: 10px;
   border: 1px solid black;
   width: 4in; /* 4 inches */
-  height: 6in; /* 6 inches */
+  /* height: 6in; 6 inches */
   box-sizing: border-box;
 }
 
@@ -18,13 +18,13 @@
   padding: 0;
 }
 
-.section {
+.labelSection {
   margin-bottom: 10px;
   border: 1px solid black;
   padding: 5px;
 }
 
-.section img {
+.labelSection img {
   display: block;
   margin: auto;
   width: 100px;

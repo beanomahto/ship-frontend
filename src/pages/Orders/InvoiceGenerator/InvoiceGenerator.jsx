@@ -1,13 +1,40 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button, Modal } from 'antd';
+import { useParams } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import './InvoiceGenerator.css'; 
+import moment from 'moment';
+import { toWords } from 'number-to-words';
+import './InvoiceGenerator.css';
 
 const InvoiceGenerator = () => {
+  const { id } = useParams(); // Get the ID from the route parameters
   const [invoiceData, setInvoiceData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(true);
   const invoiceRef = useRef(null);
+
+  useEffect(() => {
+    // Fetch the invoice data from the API using the ID
+    const fetchInvoiceData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`http://localhost:5000/api/shipping/getinvoice/${id}`,{
+          headers: {
+            Authorization:`${token}`,
+          }
+        });
+        const data = await response.json();
+        setInvoiceData(data.invoiceData);
+      } catch (error) {
+        console.error("Error fetching invoice data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchInvoiceData();
+  }, [id]);
 
   const handleOk = () => {
     setIsModalVisible(false);
@@ -18,50 +45,32 @@ const InvoiceGenerator = () => {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF({
         orientation: 'portrait',
-        unit: 'pt', 
+        unit: 'pt',
         format: [595.28, 841.89],
       });
-  
-      const imgWidth = 595.28; 
+
+      const imgWidth = 595.28;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-  
+
       pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
       pdf.save('invoice.pdf');
     });
   };
 
-  const hardcodedInvoiceData = {
-    seller: {
-      name: "Neeraj Yadav yoga",
-      address: "BLOCK Y MANGOLPURI HOUSE NUMBER 841 CHODI GALI NEAR FABI NAAZ CONFECTIONERY STOR, North West Delhi 110083, Delhi, India",
-      gstin: "07ABCDE1234F1Z5"
-    },
-    buyer: {
-      name: "Rajeev Singh",
-      address: "ANGOLPURI HOUSE NUMBER 841 CHODI GALI NEAR FABI NAAZ CONFECTIONERY",
-    },
-    invoiceNumber: "Retail00280",
-    invoiceDate: "23/07/2024",
-    orderNumber: "4864225017",
-    orderDate: "03/07/2024",
-    paymentMethod: "prepaid",
-    shippedBy: "Delhivery Surface",
-    awbNumber: "19041610471476",
-    items: [
-      {
-        description: "Test SKU : SHJO1720015",
-        hsn: "1234",
-        qty: 1,
-        unitPrice: 1200,
-        total: 1200
-      }
-    ],
-    amountInWords: "One Thousand Two Hundred Rupees",
-    jurisdiction: "Delhi"
-  };
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-//   const data = invoiceData || hardcodedInvoiceData;
-  const data = hardcodedInvoiceData;
+  if (!invoiceData) {
+    return <div>Error loading invoice data.</div>;
+  }
+  const formattedInvoiceDate = moment(invoiceData.invoiceDate).format('MMMM Do YYYY');
+  const formattedOrderDate = moment(invoiceData.orderDate).format('MMMM Do YYYY');
+
+console.log(invoiceData);
+
+  const totalAmountInWords = toWords(invoiceData?.totalPrice);
+console.log(totalAmountInWords);
 
   return (
     <div>
@@ -70,7 +79,7 @@ const InvoiceGenerator = () => {
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleOk}
-        className="custom-modal" 
+        className="custom-modal"
         footer={[
           <Button key="download" type="primary" onClick={downloadInvoice}>
             Download Invoice
@@ -80,60 +89,53 @@ const InvoiceGenerator = () => {
           </Button>,
         ]}
       >
-          {data && (
-         <div ref={invoiceRef} className="invoice-container" style={{padding:'2rem' , fontFamily: 'Arial, sans-serif' }}>
-         {/* <h1>Invoice</h1> */}
-         <div className="invoice-section">
-           <div className="invoice-header">
-             <div className="sold-by" style={{padding:'12px',border: '1px solid #000000'}}>
-               <h2>Sold By:</h2>
-               <p style={{fontStyle:'italic'}}>{data.seller.name}</p>
-               <p style={{fontStyle:'italic'}}>{data.seller.address}</p>
-               <p style={{fontStyle:'italic'}}>GSTIN No.: {data.seller.gstin}</p>
-             </div>
-             <div className="delivered-to" style={{padding:'12px',border: '1px solid #000000'}}>
-               <h2>Delivered To:</h2>
-               <p style={{fontStyle:'italic'}}>{data.buyer.name}</p>
-               <p style={{fontStyle:'italic'}}>{data.buyer.address}</p>
-             </div>
-           </div>
-           <div className="invoice-details" style={{padding:'12px',border: '1px solid #000000'}}>
-             <p style={{fontStyle:'italic'}}><strong>Invoice No.: </strong>{data.invoiceNumber}</p>
-             <p style={{fontStyle:'italic'}}><strong>Invoice Date: </strong>{data.invoiceDate}</p>
-             <p style={{fontStyle:'italic'}}><strong>Order No.: </strong>{data.orderNumber}</p>
-             <p style={{fontStyle:'italic'}}><strong>Order Date: </strong>{data.orderDate}</p>
-           </div>
-         </div>
-         <div className="invoice-items" style={{ border: '1px solid #000000', width: '100%', borderCollapse: 'collapse' }}>
-           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-             <thead>
-               <tr>
-                 <th style={{ border: '1px solid #ddd', padding: '5px', backgroundColor: '#f4f4f4' }}>Description</th>
-                 <th style={{ border: '1px solid #ddd', padding: '5px', backgroundColor: '#f4f4f4' }}>HSN</th>
-                 <th style={{ border: '1px solid #ddd', padding: '5px', backgroundColor: '#f4f4f4' }}>Qty</th>
-                 <th style={{ border: '1px solid #ddd', padding: '5px', backgroundColor: '#f4f4f4' }}>Unit Price</th>
-                 <th style={{ border: '1px solid #ddd', padding: '5px', backgroundColor: '#f4f4f4' }}>Total</th>
-               </tr>
-             </thead>
-             <tbody>
-               {data.items.map((item, index) => (
-                 <tr key={index}>
-                   <td style={{ border: '1px solid #ddd', padding: '5px' }}>{item.description}</td>
-                   <td style={{ border: '1px solid #ddd', padding: '5px' }}>{item.hsn}</td>
-                   <td style={{ border: '1px solid #ddd', padding: '5px' }}>{item.qty}</td>
-                   <td style={{ border: '1px solid #ddd', padding: '5px' }}>{item.unitPrice.toFixed(2)}</td>
-                   <td style={{ border: '1px solid #ddd', padding: '5px' }}>{item.total.toFixed(2)}</td>
-                 </tr>
-               ))}
-             </tbody>
-           </table>
-         </div>
-         <div className="invoice-footer" style={{padding:'7px', border: '1px solid #000000'}}>
-           <p style={{fontStyle:'italic'}}>Net Amount Payable (In Words): {data.amountInWords}</p>
-           <p style={{fontStyle:'italic'}}>All disputes are subject to {data.jurisdiction} jurisdiction only.</p>
-         </div>
-       </div>
-       
+        {invoiceData && (
+          <div ref={invoiceRef} className="invoice-container" style={{ padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
+            {/* <h1>Invoice</h1> */}
+            <div className="invoice-section">
+              <div className="invoice-header">
+                <div className="sold-by" style={{ padding: '12px', border: '1px solid #000000' }}>
+                  <h2>Sold By:</h2>
+                  <p style={{ fontStyle: 'italic' }}>{invoiceData?.sellerName}</p>
+                  <p style={{ fontStyle: 'italic' }}>{invoiceData?.sellerAddress}</p>
+                  <p style={{ fontStyle: 'italic' }}>GSTIN No.: {invoiceData?.sellerGSTIN}</p>
+                </div>
+                <div className="delivered-to" style={{ padding: '12px', border: '1px solid #000000' }}>
+                  <h2>Delivered To:</h2>
+                  <p style={{ fontStyle: 'italic' }}>{invoiceData?.customerName}</p>
+                  <p style={{ fontStyle: 'italic' }}>{invoiceData?.customerAddress}</p>
+                </div>
+              </div>
+              <div className="invoice-details" style={{ padding: '12px', border: '1px solid #000000' }}>
+                <p style={{ fontStyle: 'italic' }}><strong>Invoice No.: </strong>{invoiceData.invoiceNumber}</p>
+                <p style={{ fontStyle: 'italic' }}><strong>Invoice Date: </strong>{formattedInvoiceDate}</p>
+                <p style={{ fontStyle: 'italic' }}><strong>Order Date: </strong>{formattedOrderDate}</p>
+              </div>
+            </div>
+            <div className="invoice-items" style={{ border: '1px solid #000000', width: '100%', borderCollapse: 'collapse' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <thead>
+                  <tr>
+                    <th style={{ border: '1px solid #ddd', padding: '5px', backgroundColor: '#f4f4f4' }}>Qty</th>
+                    <th style={{ border: '1px solid #ddd', padding: '5px', backgroundColor: '#f4f4f4' }}>Dimensions</th>
+                    <th style={{ border: '1px solid #ddd', padding: '5px', backgroundColor: '#f4f4f4' }}>Unit Price</th>
+                    <th style={{ border: '1px solid #ddd', padding: '5px', backgroundColor: '#f4f4f4' }}>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr >
+                    <td style={{ border: '1px solid #ddd', padding: '5px' }}>{invoiceData?.quantity}</td>
+                    <td style={{ border: '1px solid #ddd', padding: '5px' }}>{invoiceData?.dimensions.length}x{invoiceData?.dimensions.breadth}x{invoiceData?.dimensions.height}</td>
+                    <td style={{ border: '1px solid #ddd', padding: '5px' }}>{invoiceData?.unitPrice}</td>
+                    <td style={{ border: '1px solid #ddd', padding: '5px' }}>{invoiceData?.totalPrice}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div className="invoice-footer" style={{ padding: '7px', border: '1px solid #000000' }}>
+              <p style={{ fontStyle: 'italic' }}>Net Amount Payable (In Words): <strong>{totalAmountInWords}</strong></p>
+            </div>
+          </div>
         )}
       </Modal>
     </div>

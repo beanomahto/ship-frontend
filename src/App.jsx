@@ -80,7 +80,7 @@ const App = () => {
           <Route path="seller/getkyc/:id" element={
               <ProtectedRoute><VerifyKyc /></ProtectedRoute>
             }/>
-          {/* <Route path="label" element={<ProtectedRoute><Label /></ProtectedRoute>} /> */}
+          <Route path="label" element={<ProtectedRoute><Label /></ProtectedRoute>} />
           <Route path="updatelabel"element={
               <ProtectedRoute><UpdateLebel /></ProtectedRoute>
             }/>

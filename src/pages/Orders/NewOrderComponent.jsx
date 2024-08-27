@@ -84,10 +84,15 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
       </div>
     ),
     filterIcon: (filtered) => <SearchOutlined style={{ color: filtered ? '#1890ff' : 'black' }} />,
-    onFilter: (value, record) =>
-      record[dataIndex]
-        ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
-        : '',
+    onFilter: (value, record) => {
+      // Split the dataIndex in case it represents a nested field
+      const keys = dataIndex.split('.');
+      let data = record;
+      keys.forEach(key => {
+        data = data ? data[key] : null;
+      });
+      return data ? data.toString().toLowerCase().includes(value.toLowerCase()) : '';
+    },
     render: (text) =>
       searchedColumn === dataIndex ? (
         <span style={{ backgroundColor: '#ffc069', padding: 0 }}>{text}</span>
@@ -95,6 +100,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
         text
       ),
   });
+  
 
   const columns = [
     {
@@ -106,7 +112,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
           {order.orderId}
         </Link>
       ),
-      className: 'centered-row'
+      className: 'centered-row',
     },
     {
       title: 'Order Status',
@@ -116,7 +122,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
           {order.status}
         </Tag>
       ),
-      className: 'centered-row'
+      className: 'centered-row',
     },
     {
       title: 'Customer Info',
@@ -128,7 +134,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
           <div>{order.customerEmail}</div>
         </div>
       ),
-      className: 'centered-row'
+      className: 'centered-row',
     },
     {
       title: 'Payment Details',
@@ -146,7 +152,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
           </Tag>
         </div>
       ),
-      className: 'centered-row'
+      className: 'centered-row',
     },
     {
       title: 'Package Details',
@@ -156,7 +162,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
           <div>({order.length}x{order.breadth}x{order.height}cm)</div>
         </div>
       ),
-      className: 'centered-row'
+      className: 'centered-row',
     },
     {
       title: 'Channel',
@@ -170,7 +176,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
           />
         </div>
       ),
-      className: 'centered-row'
+      className: 'centered-row',
     },
     {
       title: 'Order Date',
@@ -178,7 +184,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
       ...getColumnSearchProps('createdAt'),
       sorter: (a, b) => moment(a.createdAt).unix() - moment(b.createdAt).unix(),
       render: (text, order) => moment(order?.createdAt).format('DD-MM-YYYY'),
-      className: 'centered-row'
+      className: 'centered-row',
     },
     {
       title: 'Quick Assign',
@@ -191,20 +197,21 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
           />
         </div>
       ),
-      className: 'centered-row'
+      className: 'centered-row',
     },
     ...(authUser?.role === 'admin' ? [{
       title: 'Seller Email',
-      dataIndex: 'seller',
-      // ...getColumnSearchProps(''),
+      dataIndex: 'seller.email',  // Nested path
+      ...getColumnSearchProps('seller.email'),  // Pass the nested path
       render: (_, record) => (
         <span style={{ textAlign: 'center' }}>
           {record?.seller?.email}
         </span>
       ),
-      className: 'centered-row'
+      className: 'centered-row',
     }] : []),
   ];
+  
   
 
 

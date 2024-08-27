@@ -18,19 +18,64 @@ const useLogin = () => {
 			});
 
 			const data = await res.json();
-			console.log(data);
 			if (data.error) {
 				throw new Error(data.error);
 			}
+			   
 			localStorage.setItem("token", data.token);
 			localStorage.setItem("ship-user", JSON.stringify(data));
 			setAuthUser(data);
+
+			console.log(data);
+			
+			await createDefaultLabelInfo(data._id);
 
 		} catch (error) {
 			console.error("Login error:", error);
 			alert(error.message);
 		} finally {
 			setLoading(false);
+		}
+	};
+	
+	const createDefaultLabelInfo = async (userId) => {
+		try {
+			const defaultLabelInfo = {
+				theme: "defaultTheme",
+				hideLogo: false,
+				hideCompanyName: false,
+				hideCompanyGSTIN: false,
+				hidePaymentType: false,
+				hidePrepaidAmount: false,
+				hideCustomerPhone: false,
+				hideInvoiceNumber: false,
+				hideInvoiceDate: false,
+				showProductDetail: true,
+				hideProductName: false,
+				hideReturnWarehouse: false,
+				hideWeight: false,
+				hideDimension: false,
+				userId,
+			};
+
+			const token = localStorage.getItem('token')
+			const res = await fetch("https://backend.shiphere.in/api/shipping/createlabelinfo", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: token,
+				},
+				body: JSON.stringify(defaultLabelInfo),
+			});
+
+			const labelInfoData = await res.json();
+			if (labelInfoData.error) {
+				console.warn("Labelinfo creation error:", labelInfoData.error);
+			} else {
+				console.log("Labelinfo created:", labelInfoData);
+			}
+		} catch (error) {
+			console.error("Error creating default Label Info:", error);
 		}
 	};
 
