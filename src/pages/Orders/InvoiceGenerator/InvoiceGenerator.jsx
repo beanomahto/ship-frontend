@@ -19,7 +19,7 @@ const InvoiceGenerator = () => {
     const fetchInvoiceData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:5000/api/shipping/getinvoice/${id}`,{
+        const response = await fetch(`https://backend.shiphere.in/api/shipping/getinvoice/${id}`,{
           headers: {
             Authorization:`${token}`,
           }
