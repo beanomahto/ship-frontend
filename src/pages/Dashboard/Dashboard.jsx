@@ -10,6 +10,7 @@ import revenueData from '../../components/Chart/RevenueData.json';
 import sourceData from '../../components/Chart/SourceData.json';
 import TopDestinationsGraph from './TopDestinationsGraph'; 
 import ShipmentStatusGraph from "./ShipmentStatusGraph";
+import { useOrderContext } from "../../context/OrderContext";
 
 ChartJS.register(
   CategoryScale,
@@ -23,6 +24,11 @@ ChartJS.register(
 );
 
 const Dashboard = () => {
+  const {orders} = useOrderContext()
+  const order = orders?.orders
+  const cancelOrdersAmt = order?.filter(order => order.status === 'Cancelled');
+const shipOrdersAmt = order?.filter(order => order.status === 'Shipped');
+const inTransitOrdersAmt = order?.filter(order => order.status === 'InTransit');
   return (
     <div className="mainCharts">
       <div className="dataCard topDestinationsCard">
@@ -36,7 +42,7 @@ const Dashboard = () => {
       <div className="orderSummaryContainer">
         <div className="orderSummaryCard">
           <div className="orderSummary">
-            <h3>548</h3>
+            <h3>{order?.length}</h3>
             <p>Total Orders</p>
           </div>
           <div className="orderIcon">
@@ -56,7 +62,7 @@ const Dashboard = () => {
 
         <div className="orderSummaryCard">
           <div className="orderSummary">
-            <h3>68</h3>
+            <h3>{cancelOrdersAmt?.length}</h3>
             <p>Cancelled Orders</p>
           </div>
           <div className="orderIcon">
