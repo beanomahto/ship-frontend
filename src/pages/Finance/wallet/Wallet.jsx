@@ -14,7 +14,9 @@ const Wallet = () => {
     {
       title: 'Date & Time',
       dataIndex: 'd&t',
-      render: (text, transaction) => moment(transaction?.updatedAt).format('DD-MM-YYYY'),
+      render: (text, transaction) => <>
+      <div>{moment(transaction?.updatedAt).format('DD-MM-YYYY')}<span style={{marginLeft:'10px', fontStyle:'italic'}}>{moment(transaction?.updatedAt).format('HH:mm:ss')}</span></div>
+      </>
     },
     {
       title: 'Transaction ID',

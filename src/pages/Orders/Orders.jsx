@@ -13,6 +13,7 @@ import AllOrderComponent from './AllOrderComponent';
 import axios from 'axios';
 import useShipNowCost from '../../hooks/useShipNowCost';
 import { useWarehouseContext } from '../../context/WarehouseContext';
+import useCreateShipment from '../../hooks/useCreateShipment';
 
 const { TabPane } = Tabs;
 
@@ -30,7 +31,7 @@ const Orders = () => {
   const [currentTab, setCurrentTab] = useState('tab1');
   console.log(orders);
 console.log(selectedOrderData);
-
+// const [shippingCosts, setShippingCosts] = useState([]);
   const showModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
   const showModalBD = () => setModalVisibleBD(true);
@@ -40,6 +41,7 @@ console.log(selectedOrderData);
   const [modalLoading, setModalLoading] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
   const [currentDeliveryCost, setCurrentDeliveryCost] = useState(null);
+  const {shipOrder,error} = useCreateShipment()
   const start = async () => {
     setLoading(true);
     try {
@@ -71,39 +73,105 @@ console.log(selectedOrderData);
     );
     setSelectedOrderData(selectedData);
   };
-
-  const handleShipNow = async () => {
-    if (selectedRowKeys.length === 0) {
-      return;
-    }
+  
+  const handleShipNow = async (selectedRowKeys, selectedWarehouse, selectedDeliveryPartner) => {
     console.log(selectedRowKeys);
-    const updatedOrders = await Promise.all(selectedRowKeys?.map(async (orderId) => {
-      console.log(orderId);
-      
-      const order = orders?.orders.find(order => order._id === orderId);
-      console.log(order);
-      await fetch(`https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: localStorage.getItem('token')
-        },
-        body: JSON.stringify({ status: 'Shipped' }),
-      });
-fetchOrders()
-      return { ...order, status: 'Shipped' };
-    }));
+    console.log(selectedWarehouse);
+    console.log(selectedDeliveryPartner);
 
-    const newOrdersCopy = orders.orders.filter((_, index) => !selectedRowKeys.includes(index));
-    setOrders({
-      orders: newOrdersCopy.concat(updatedOrders),
-    });
-console.log(newOrdersCopy);
+    if (selectedRowKeys.length === 0) {
+        message.warning('Please select at least one order to ship.');
+        return;
+    }
 
-    setSelectedRowKeys([]);
-    closeModalShipNow();
-  };
+    message.loading({ content: 'Processing shipment...', key: 'processing', duration: 0 });
 
+    try {
+        const updatedOrders = await Promise.all(
+            selectedRowKeys.map(async (orderId) => {
+                const order = orders?.orders.find((order) => order._id === orderId);
+                if (!order) return;
+
+                let selectedCost;
+
+                try {
+                    const costData = await shipNowCost(orderId, selectedWarehouse); 
+                    console.log('Cost Data for Order:', costData);
+
+                    selectedCost = costData.cost.find(
+                        (cost) => cost.deliveryPartner === selectedDeliveryPartner.name
+                    )?.cost;
+
+                } catch (error) {
+                    console.error('Error in shipOrder or shipNowCost:', error);
+                    message.error('Failed to calculate shipping cost or ship order. Please try again.');
+                }
+                
+                try {
+                  console.log('Calling shipOrder with:', { orderId, selectedWarehouse, selectedDeliveryPartner });
+                  await shipOrder(orderId, selectedWarehouse, selectedDeliveryPartner.name);
+
+                  console.log('Order shipped:', orderId);
+                  message.success('AWB generated');
+                } catch (error) {
+                  console.log('error in shipping with this partner:', error);
+                  message.error('Error in shipping with this partner');
+                }
+
+                if (selectedCost === undefined) {
+                    message.error(`No cost found for delivery partner for order ${orderId}.`);
+                }
+
+                await fetch(`https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: localStorage.getItem('token'),
+                    },
+                    body: JSON.stringify({
+                        status: 'Shipped',
+                        shippingCost: selectedCost,
+                    }),
+                });
+
+                const walletRequestBody = {
+                    debit: selectedCost,
+                    userId: order.seller._id,
+                    remark: `Shipping charge for order ${order.orderId}`,
+                    orderId: order._id,
+                };
+                console.log(walletRequestBody);
+
+                await fetch(`https://backend.shiphere.in/api/transactions/decreaseAmount`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: localStorage.getItem('token'),
+                    },
+                    body: JSON.stringify(walletRequestBody),
+                });
+
+                return { ...order, status: 'Shipped' };
+            })
+        );
+
+        const newOrdersCopy = orders.orders.filter((order) => !selectedRowKeys.includes(order._id));
+        setOrders({
+            orders: newOrdersCopy.concat(updatedOrders),
+        });
+
+        message.success({ content: 'Orders shipped successfully!', key: 'processing' });
+
+    } catch (error) {
+        console.error('Error processing shipment:', error);
+        message.error({ content: 'Failed to process the shipment. Please try again.', key: 'processing' });
+    } finally {
+        setSelectedRowKeys([]);
+        closeModalShipNow();
+    }
+};
+
+  
   const exportToExcel = () => {
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.json_to_sheet(orders.orders);

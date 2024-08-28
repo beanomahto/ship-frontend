@@ -14,6 +14,9 @@ import XPB from '../../utils/xpressbees.png';
 import Column from 'antd/es/table/Column';
 import Shopify from '../../utils/shopify.png';
 import Woo from '../../utils/woocomerce.png'
+import Ekart from '../../utils/ekart.jpeg'
+import Dtdc from '../../utils/dtdc.png'
+import SF from '../../utils/shadowFax.png'
 import logo from '../../utils/logo1.jpg'
 import { Helmet } from 'react-helmet';
 import { useAuthContext } from '../../context/AuthContext';
@@ -25,6 +28,9 @@ const partnerImages = {
   'Amazon Shipping': AS,
   'Ecom Express': EE,
   'Xpressbees': XPB,
+  'Ekart': Ekart,
+  'DTDC': Dtdc,
+  'Shadowfax':SF
 };
 
 
@@ -201,8 +207,8 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
     },
     ...(authUser?.role === 'admin' ? [{
       title: 'Seller Email',
-      dataIndex: 'seller.email',  // Nested path
-      ...getColumnSearchProps('seller.email'),  // Pass the nested path
+      dataIndex: 'seller.email',  
+      ...getColumnSearchProps('seller.email'),
       render: (_, record) => (
         <span style={{ textAlign: 'center' }}>
           {record?.seller?.email}
@@ -211,15 +217,11 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
       className: 'centered-row',
     }] : []),
   ];
-  
-  
-
 
   const handleExpandRow = (key) => {
     setSelectedOrderId(key);
     setIsModalVisible(true);
-  };
- 
+  }; 
 
   const handleAssign = async (partner) => {
     try {
@@ -283,6 +285,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
       setModalLoading(false);
     }
   };
+  console.log(deliveryCosts);
   
   const newOrders = dataSource?.filter(order => order.status === 'New' || order.status === 'Cancelled');
   return (

@@ -8,6 +8,9 @@ import DLVRY from '../../utils/delhivery.png';
 import AS from '../../utils/amazon-shipping.png';
 import EE from '../../utils/ecom-express.png';
 import XPB from '../../utils/xpressbees.png';
+import Ekart from '../../utils/ekart.jpeg'
+import Dtdc from '../../utils/dtdc.png'
+import SF from '../../utils/shadowFax.png'
 
 const { Title, Paragraph } = Typography;
 
@@ -17,6 +20,9 @@ const partnerImages = {
   'Amazon Shipping': AS,
   'Ecom Express': EE,
   'Xpressbees': XPB,
+  'Ekart': Ekart,
+  'DTDC': Dtdc,
+  'Shadowfax':SF
 };
 
 const RateCard = () => {

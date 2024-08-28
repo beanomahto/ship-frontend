@@ -122,7 +122,7 @@ console.log(authUser);
                                 onChange={(value) => setFormData({ ...formData, companyType: value })}
                             >
                                 <Select.Option value="individual">Individual</Select.Option>
-                                <Select.Option value="propertysip">Property Ship</Select.Option>
+                                <Select.Option value="propertysip">Proprietorship</Select.Option>
                                 <Select.Option value="pvt_lmt">PVT LMT</Select.Option>
                                 <Select.Option value="llp">LLP</Select.Option>
                             </Select>

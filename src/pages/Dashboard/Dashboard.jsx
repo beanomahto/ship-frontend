@@ -27,7 +27,7 @@ const Dashboard = () => {
   const {orders} = useOrderContext()
   const order = orders?.orders
   const cancelOrdersAmt = order?.filter(order => order.status === 'Cancelled');
-const shipOrdersAmt = order?.filter(order => order.status === 'Shipped');
+const newOrdersAmt = order?.filter(order => order.status === 'New');
 const inTransitOrdersAmt = order?.filter(order => order.status === 'InTransit');
   return (
     <div className="mainCharts">
@@ -52,7 +52,7 @@ const inTransitOrdersAmt = order?.filter(order => order.status === 'InTransit');
 
         <div className="orderSummaryCard">
           <div className="orderSummary">
-            <h3>304</h3>
+            <h3>{newOrdersAmt?.length}</h3>
             <p>Pending Orders</p>
           </div>
           <div className="orderIcon">
@@ -72,7 +72,7 @@ const inTransitOrdersAmt = order?.filter(order => order.status === 'InTransit');
 
         <div className="orderSummaryCard">
           <div className="orderSummary">
-            <h3>176</h3>
+            <h3>{inTransitOrdersAmt?.length}</h3>
             <p>Completed Orders</p>
           </div>
           <div className="orderIcon">
