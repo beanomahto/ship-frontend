@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Descriptions, Steps, Typography, Progress, Row, Col, Spin, message, Divider } from 'antd';
 import axios from 'axios';
-import { FaBox, FaInfoCircle, FaMapMarkerAlt, FaCheckCircle, FaExclamationCircle, FaHourglass } from 'react-icons/fa';
+import { FaBox, FaInfoCircle, FaMapMarkerAlt, FaCheckCircle, FaExclamationCircle, FaHourglass, FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext';
 
@@ -12,7 +12,8 @@ const Tracking = () => {
   const [trackingInfo, setTrackingInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const { shippingPartner, awb } = useParams();
-const {authUser} = useAuthContext()
+  const { authUser } = useAuthContext();
+
   useEffect(() => {
     axios.get(`https://backend.shiphere.in/api/${shippingPartner}/track/${awb}`)
       .then(response => {
@@ -45,6 +46,7 @@ const {authUser} = useAuthContext()
     return <p>No tracking information available.</p>;
   }
 
+  // Adjust statusMap if necessary
   const statusMap = {
     'pending pickup': 20,
     'in transit': 50,
@@ -52,8 +54,10 @@ const {authUser} = useAuthContext()
     'delivered': 100,
   };
 
+  // Determine the progress based on status
   const progress = statusMap[trackingInfo.status.toLowerCase()] || 0;
 
+  // Icons for different steps
   const icons = {
     'pending pickup': <FaBox />,
     'in transit': <FaInfoCircle />,
@@ -90,7 +94,12 @@ const {authUser} = useAuthContext()
         <Col xs={24} sm={16}>
           <Card style={{ borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)', marginBottom: '20px' }}>
             <Title level={4}>Shipment Progress</Title>
-            <Progress percent={progress} status={progress === 100 ? 'success' : 'active'} strokeColor="#52c41a" />
+            <Progress 
+              percent={progress} 
+              status={progress === 100 ? 'success' : 'active'} 
+              strokeColor={progress === 100 ? '#52c41a' : '#1890ff'} 
+              showInfo={true}
+            />
           </Card>
 
           <Card style={{ borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
@@ -118,6 +127,20 @@ const {authUser} = useAuthContext()
 
       <div style={{ textAlign: 'center', padding: '20px', backgroundColor: '#f0f2f5' }}>
         <p style={{ margin: 0 }}>Powered by <strong>ShipHere</strong></p>
+        <div style={{ marginTop: '10px' }}>
+          <a href="https://www.facebook.com/profile.php?id=61564399084185" target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px' }}>
+            <FaFacebookF size={20} />
+          </a>
+          <a href="https://twitter.com/shiphere" target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px' }}>
+            <FaTwitter size={20} />
+          </a>
+          <a href="https://www.linkedin.com/company/shiphere" target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px' }}>
+            <FaLinkedinIn size={20} />
+          </a>
+          <a href="https://www.instagram.com/ship_here_/?igsh=MWxmZzgzbTNzcHk0dA%3D%3D" target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px' }}>
+            <FaInstagram size={20} />
+          </a>
+        </div>
       </div>
     </div>
   );

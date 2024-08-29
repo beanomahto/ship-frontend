@@ -23,13 +23,13 @@ const Header = ({ darktheme }) => {
     },
   ];
 
-  const onSearch = (value) => {
+  const onSearch = (awb) => {
     const selectedOption = document.querySelector('.ant-select-selection-item')?.textContent.toLowerCase();
-    if (selectedOption && value) {
-      navigate(`/tracking/${selectedOption}/${value}`);
+    if (selectedOption && awb) {
+      navigate(`/tracking/${selectedOption}/Xpressbees/${awb}`);
     }
   };
-
+  https://backend.shiphere.in/api/${shippingPartner}/track/${awb}
   return (
     <div className={darktheme ? 'darkHeader' : 'main-header'}>
       <div className="header-container" style={{ display: 'flex', justifyContent: 'end', alignItems: 'center', gap: '1.5rem' }}>
