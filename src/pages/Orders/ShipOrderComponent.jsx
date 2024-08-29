@@ -53,11 +53,16 @@ const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) =
         </Space>
       </div>
     ),
-    filterIcon: (filtered) => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
-    onFilter: (value, record) =>
-      record[dataIndex]
-        ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
-        : '',
+    filterIcon: (filtered) => <SearchOutlined style={{ color: filtered ? '#1890ff' : 'black' }} />,
+    onFilter: (value, record) => {
+      // Split the dataIndex in case it represents a nested field
+      const keys = dataIndex.split('.');
+      let data = record;
+      keys.forEach(key => {
+        data = data ? data[key] : null;
+      });
+      return data ? data.toString().toLowerCase().includes(value.toLowerCase()) : '';
+    },
     render: (text) =>
       searchedColumn === dataIndex ? (
         <span style={{ backgroundColor: '#ffc069', padding: 0 }}>{text}</span>
@@ -71,6 +76,7 @@ const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) =
       title: 'Order Id',
       dataIndex: 'orderId',
       ...getColumnSearchProps('orderId'),
+      className: 'centered-row',
     },
     {
       title: 'Shipping Status',
@@ -86,7 +92,8 @@ const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) =
         <>
         <a target='_blank' href={`/tracking/shipment/${record.awb}`}><Button type='link'><div>{record.awb}</div></Button></a>
         </>
-      )
+      ),
+      className: 'centered-row',
     },
     {
       title: 'Customer Info',
@@ -98,6 +105,7 @@ const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) =
           <div>{order.customerEmail}</div>
         </>
       ),
+      className: 'centered-row',
     },
     {
       title: 'Payment Details',
@@ -115,6 +123,7 @@ const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) =
           </Tag>
         </>
       ),
+      className: 'centered-row',
     },
     {
       title: 'Package Details',
@@ -126,6 +135,7 @@ const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) =
           </div>
         </>
       ),
+      className: 'centered-row',
     },
     {
       title: 'Channel',
@@ -139,6 +149,7 @@ const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) =
           />
         </div>
       ),
+      className: 'centered-row',
     },
     {
       title: 'Order Date',
@@ -148,13 +159,14 @@ const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) =
     },
     ...(authUser?.role === 'admin' ? [{
       title: 'Seller Email',
-      dataIndex: 'seller',
+      dataIndex: 'seller.email',  
+      ...getColumnSearchProps('seller.email'),
       render: (_, record) => (
-          <span
-          >
-            {record?.seller?.email}
-          </span>
-        ),
+        <span style={{ textAlign: 'center' }}>
+          {record?.seller?.email}
+        </span>
+      ),
+      className: 'centered-row',
     }] : []),
   ];
 
@@ -185,6 +197,7 @@ const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) =
           rowSelection={rowSelection}
           columns={columns}
           dataSource={shippedOrders}
+           className="centered-table"
           rowKey="_id"
           scroll={{ y: 450 }}
           pagination={false}

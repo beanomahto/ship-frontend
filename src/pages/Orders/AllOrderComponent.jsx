@@ -26,26 +26,6 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading }) => {
     setSearchText('');
   };
 
-  const cancelShipment = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await axios.put(`https://backend.shiphere.in/api/orders/updateOrderStatus/${selectedRowKeys}`, {
-        status: 'Cancelled'
-      }, {
-        headers: {
-          Authorization: `${token}`
-        }
-      });
-      if (response.status === 201) {
-        message.success('Order canceled successfully');
-        fetchOrders();
-        setSelectedRowKeys([]);
-      }
-
-    } catch (error) {
-      message.error('Failed to cancel order');
-    }
-  };
 
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -73,11 +53,16 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading }) => {
         </Space>
       </div>
     ),
-    filterIcon: (filtered) => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
-    onFilter: (value, record) =>
-      record[dataIndex]
-        ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
-        : '',
+    filterIcon: (filtered) => <SearchOutlined style={{ color: filtered ? '#1890ff' : 'black' }} />,
+    onFilter: (value, record) => {
+      // Split the dataIndex in case it represents a nested field
+      const keys = dataIndex.split('.');
+      let data = record;
+      keys.forEach(key => {
+        data = data ? data[key] : null;
+      });
+      return data ? data.toString().toLowerCase().includes(value.toLowerCase()) : '';
+    },
     render: (text) =>
       searchedColumn === dataIndex ? (
         <span style={{ backgroundColor: '#ffc069', padding: 0 }}>{text}</span>
@@ -94,7 +79,13 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading }) => {
     },
     {
       title: 'Shipping Status',
-      dataIndex: 's_status',
+      dataIndex: 'awb',
+      render:(value, record) => (
+        <>
+        <a target='_blank' href={`/tracking/shipment/${record.shippingPartner}/${record.awb}`}><Button type='link'><div>{record.awb}</div></Button></a>
+        <span>{record?.shippingPartner}</span>
+        </>
+      ),
       // filters: [
       //   { text: 'Shipped', value: 'Shipped' },
       //   { text: 'InTransit', value: 'InTransit' },
@@ -163,13 +154,14 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading }) => {
     },
     ...(authUser?.role === 'admin' ? [{
       title: 'Seller Email',
-      dataIndex: 'seller',
+      dataIndex: 'seller.email',  
+      ...getColumnSearchProps('seller.email'),
       render: (_, record) => (
-          <span
-          >
-            {record?.seller?.email}
-          </span>
-        ),
+        <span style={{ textAlign: 'center' }}>
+          {record?.seller?.email}
+        </span>
+      ),
+      className: 'centered-row',
     }] : []),
   ];
 
@@ -203,6 +195,7 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading }) => {
           columns={columns}
           dataSource={dataSource}
           rowKey="_id"
+           className="centered-table"
           scroll={{ y: 450 }}
           pagination={false}
           style={{ width: '100%', height: '505px' }}

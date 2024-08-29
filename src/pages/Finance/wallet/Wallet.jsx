@@ -9,6 +9,7 @@ import {Link} from 'react-router-dom'
 const Wallet = () => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
+  console.log(transactions);
   
   const newOrders = [
     {
@@ -25,10 +26,16 @@ const Wallet = () => {
     {
       title: 'Order Id',
       dataIndex: 'ordr_id',
+      render: (text, transaction) => <>
+      <div>{transaction?.order?.orderId}</div>
+      </>
     },
     {
       title: 'Tracking Id',
       dataIndex: 'trcking_id',
+      render: (text, transaction) => <>
+      <div>{transaction?.order?.awb}</div>
+      </>
     },
     {
       title: 'Debit',

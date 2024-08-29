@@ -143,30 +143,31 @@ console.log(authUser);
                         <div className='picc'>
                             <label>
                                 <span>Upload</span>
-                               {formData.gstUrl ? (
-                                <Image src={formData.gstUrl} alt="GST Certificate"  style={{ width: '100%', maxWidth: '200px' }} />
+                               {!formData?.gstUrl ? (
+                                   <Upload
+                                   customRequest={({ file, onSuccess, onError }) => {
+                                       setTimeout(() => {
+                                           try {
+                                               setFormData({ ...formData, gstUrl: file });
+                                               onSuccess(null, file);
+                                           } catch (error) {
+                                               onError(error);
+                                           }
+                                       }, 0);
+                                   }}
+                                   listType="picture-card"
+                               >
+                                   <button
+                                       style={{ border: 0, background: 'none' }}
+                                       type="button"
+                                   >
+                                       <PlusOutlined />
+                                       <div style={{ marginTop: 8 }}>Upload</div>
+                                   </button>
+                               </Upload>
+                               
                                ) : (
-                                <Upload
-                                customRequest={({ file, onSuccess, onError }) => {
-                                    setTimeout(() => {
-                                        try {
-                                            setFormData({ ...formData, gstUrl: file });
-                                            onSuccess(null, file);
-                                        } catch (error) {
-                                            onError(error);
-                                        }
-                                    }, 0);
-                                }}
-                                listType="picture-card"
-                            >
-                                <button
-                                    style={{ border: 0, background: 'none' }}
-                                    type="button"
-                                >
-                                    <PlusOutlined />
-                                    <div style={{ marginTop: 8 }}>Upload</div>
-                                </button>
-                            </Upload>
+                                <Image src={formData.gstUrl} alt="GST Certificate"  style={{ width: '100%', maxWidth: '200px' }} />
                                )}
                             </label>
                         </div>

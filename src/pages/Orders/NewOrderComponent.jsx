@@ -106,7 +106,6 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
         text
       ),
   });
-  
 
   const columns = [
     {

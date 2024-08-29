@@ -96,9 +96,7 @@ const App = () => {
           <Route path="shipping/getInvoice/:id" element={
               <ProtectedRoute><InvoiceGenerator /></ProtectedRoute>
             }/>
-          <Route path="tracking/:selectedOption/:value" element={
-              <ProtectedRoute><Tracking /></ProtectedRoute>
-            }/>
+        
           <Route path="orders/bulkorder" element={
               <ProtectedRoute><BulkOrderUpload /></ProtectedRoute>
             }/>
@@ -169,6 +167,9 @@ const App = () => {
         <Route path="login" element={<Login1 />} />
         <Route path="resetpassword" element={<ResetPassword />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="tracking/:selectedOption/:shippingPartner/:awb" element={
+              <ProtectedRoute><Tracking /></ProtectedRoute>
+            }/>
       </Routes>
     </BrowserRouter>
   );

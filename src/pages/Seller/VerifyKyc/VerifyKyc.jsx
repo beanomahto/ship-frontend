@@ -125,7 +125,7 @@ const VerifyKyc = () => {
                             <label>
                                 <span>GST Document</span>
                                 {formData.gstUrl ? (
-                                    <Image src={formData.gstUrl} alt="GST Document" style={{ width: '100%', maxWidth: '200px'}} />
+                                    <Image src={formData.gstUrl} alt={formData.gstUrl} style={{ width: '100%', maxWidth: '200px'}} />
                                 ) : (
                                     <Upload
                                         customRequest={({ file, onSuccess, onError }) => {

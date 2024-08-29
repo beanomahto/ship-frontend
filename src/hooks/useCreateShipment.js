@@ -34,7 +34,7 @@ const useCreateShipment = () => {
           log = 'delhivery hit';
           break;
         case 'Blue Dart':
-          url = 'http://https://backend.shiphere.in/api/bluedart/createShipment';
+          url = 'https://backend.shiphere.in/api/bluedart/createShipment';
           log = 'bluedart hit';
           break;
         default:
