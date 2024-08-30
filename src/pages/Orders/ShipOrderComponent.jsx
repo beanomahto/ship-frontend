@@ -90,7 +90,8 @@ const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) =
       onFilter: (value, record) => record.s_status.indexOf(value) === 0,
       render:(value, record) => (
         <>
-        <a target='_blank' href={`/tracking/shipment/${record.awb}`}><Button type='link'><div>{record.awb}</div></Button></a>
+        <a target='_blank' href={`/tracking/shipment/${record.shippingPartner}/${record.awb}`}><Button type='link'><div>{record.awb}</div></Button></a>
+        <span>{record?.shippingPartner}</span>
         </>
       ),
       className: 'centered-row',

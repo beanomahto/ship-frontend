@@ -17,7 +17,7 @@ const useCreateShipment = () => {
 
       switch (deliveryPartnerName) {
         case 'Ecom Express':
-          url = 'https://backend.shiphere.in/api/ecomExpress/createShipment';
+          url = 'http://localhost:5000/api/ecomExpress/createShipment';
           log = 'ecom hit';
           break;
         case 'Amazon Shipping':
@@ -26,11 +26,11 @@ const useCreateShipment = () => {
           break;
         case 'Xpressbees':
         //   url = 'https://backend.shiphere.in/api/xpressbees/createShipment';
-          url = 'https://backend.shiphere.in/api/xpressbees/createShipment';
+          url = 'https://localhost:5000/api/xpressbees/createShipment';
           log = 'xpress hit';
           break;
         case 'Delhivery':
-          url = 'https://backend.shiphere.in/api/deliveryOne/create';
+          url = 'http://localhost:5000/api/deliveryOne/create';
           log = 'delhivery hit';
           break;
         case 'Blue Dart':
@@ -57,6 +57,8 @@ const useCreateShipment = () => {
 
       return response.data;
     } catch (err) {
+      console.log(err);
+      
       setError(err.response?.data?.message || 'An error occurred');
       throw err;
     } finally {

@@ -29,6 +29,7 @@ const Tracking = () => {
       })
       .finally(() => setLoading(false));
   }, [awb, shippingPartner]);
+console.log(trackingInfo);
 
   if (loading) {
     return (
@@ -46,7 +47,6 @@ const Tracking = () => {
     return <p>No tracking information available.</p>;
   }
 
-  // Adjust statusMap if necessary
   const statusMap = {
     'pending pickup': 20,
     'in transit': 50,
@@ -54,10 +54,8 @@ const Tracking = () => {
     'delivered': 100,
   };
 
-  // Determine the progress based on status
   const progress = statusMap[trackingInfo.status.toLowerCase()] || 0;
 
-  // Icons for different steps
   const icons = {
     'pending pickup': <FaBox />,
     'in transit': <FaInfoCircle />,

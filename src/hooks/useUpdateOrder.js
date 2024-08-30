@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios'; // You might need to install axios if not already installed
+import axios from 'axios';
 
 const useUpdateOrder = () => {
     const [loading, setLoading] = useState(false);
@@ -16,7 +16,7 @@ const useUpdateOrder = () => {
                 },
             });
             setLoading(false);
-            console.log('Updated order:', response.data);
+            return response.data;
         } catch (error) {
             setError(error);
             console.log(error);

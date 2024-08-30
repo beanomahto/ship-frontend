@@ -6,11 +6,13 @@ import useGetSingleOrderWithId from "../../../hooks/useGetSingleOrderWithId";
 import useUpdateOrder from "../../../hooks/useUpdateOrder";
 import pincodeData from "../../../utils/zones.json";
 import { useNavigate, useParams } from "react-router-dom";
+import { useOrderContext } from "../../../context/OrderContext";
 
 const UpdateSingleOrder = () => {
   const navigate = useNavigate();
   const { id, orderId } = useParams();
   console.log(orderId);
+  const { orders, fetchOrders } = useOrderContext();
   const {
     loading: singleOrderLoading,
     order: singleOrder,
@@ -100,6 +102,7 @@ const UpdateSingleOrder = () => {
   const handleOrderSubmit = async (e) => {
     e.preventDefault();
     await updateOrder(inputs);
+    await fetchOrders();
     navigate("/orders");
   };
 
