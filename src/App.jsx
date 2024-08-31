@@ -46,6 +46,7 @@ import WalletHistory from "./pages/Finance/wallet/WalletHistory";
 import Settings from "./pages/Settings/Settings";
 import Login1 from "./pages/Login/Login1";
 import Signup1 from "./pages/Signup/Signup1";
+import UpdateWarehouse from "./pages/Warehouses/updateWarehouse/UpdateWarehouse";
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -134,6 +135,9 @@ const App = () => {
             }/>
           <Route path="warehouse/addwarehouse" element={
               <ProtectedRoute><AddnewWarehouse /></ProtectedRoute>
+            }/>
+          <Route path="warehouse/:id" element={
+              <ProtectedRoute><UpdateWarehouse /></ProtectedRoute>
             }/>
           <Route path="ratecard" element={
               <ProtectedRoute><RateCard /></ProtectedRoute>

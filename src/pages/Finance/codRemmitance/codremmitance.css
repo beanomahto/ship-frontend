@@ -15,25 +15,53 @@
     height: 9rem;
     margin-bottom: 1rem;
     border-radius: 5px;
-}
-.rbtn1{
-    background-color: #F0F8FEFF;
-    border: 1px solid #b9e1ff;
+}.rbtn1 {
+    background-color: #d0e7ff; /* Slightly darker blue background */
+    border: 1px solid #8abfff; /* Darker blue border */
+    color: #003d80; /* Darker blue text color */
+    padding: 10px 20px; /* Add padding */
+    border-radius: 8px; /* Rounded corners */
+    font-size: 16px; /* Larger font size */
+    font-weight: 500; /* Medium font weight */
+    transition: all 0.3s ease; /* Smooth transition */
 }
 
-.rbtn2{
-    background-color: #fff9ee;
-    border: 1px solid #ffe1aa;
+.rbtn2 {
+    background-color: #ffebcc; /* Slightly darker orange background */
+    border: 1px solid #ffcc99; /* Darker orange border */
+    color: #cc6600; /* Dark orange text color */
+    padding: 10px 20px; /* Add padding */
+    border-radius: 8px; /* Rounded corners */
+    font-size: 16px; /* Larger font size */
+    font-weight: 500; /* Medium font weight */
+    transition: all 0.3s ease; /* Smooth transition */
 }
 
-.rbtn3{
-    background-color: #f3fbfa;
-    border: 1px solid #c4fef7;
+
+.rbtn3 {
+    background-color: #cceeed; /* Slightly darker teal background */
+    border: 1px solid #7fe3d4; /* Darker teal border */
+    color: #00695c; /* Dark teal text color */
+    padding: 10px 20px; /* Add padding */
+    border-radius: 8px; /* Rounded corners */
+    font-size: 16px; /* Larger font size */
+    font-weight: 500; /* Medium font weight */
+    transition: all 0.3s ease; /* Smooth transition */
 }
-.rbtn4{
-    background-color: #fff0f4;
-    border: 1px solid #ffc9d8;
+
+
+.rbtn4 {
+    background-color: #f7d8e2; /* Slightly darker pink background */
+    border: 1px solid #ff9db4; /* Darker pink border */
+    color: #d63f77; /* Dark pink text color */
+    padding: 10px 20px; /* Add padding */
+    border-radius: 8px; /* Rounded corners */
+    font-size: 16px; /* Larger font size */
+    font-weight: 500; /* Medium font weight */
+    transition: all 0.3s ease; /* Smooth transition */
 }
+
+
 p{
     font-size: 0.8rem;
     font-weight: 300;

@@ -172,12 +172,21 @@ console.log(selectedOrderData);
 };
 
   
-  const exportToExcel = () => {
-    const workbook = XLSX.utils.book_new();
-    const worksheet = XLSX.utils.json_to_sheet(orders.orders);
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Orders');
-    XLSX.writeFile(workbook, 'Orders.xlsx');
-  };
+const exportToExcel = () => {
+  const ordersToExport = selectedRowKeys.length > 0
+    ? orders.orders.filter(order => selectedRowKeys.includes(order._id))
+    : orders.orders;
+
+  if (ordersToExport.length === 0) {
+    message.warning('No orders available to export.');
+    return;
+  }
+
+  const workbook = XLSX.utils.book_new();
+  const worksheet = XLSX.utils.json_to_sheet(ordersToExport);
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Orders');
+  XLSX.writeFile(workbook, 'Orders.xlsx');
+};
 
   const dataSourceWithKeys = orders?.orders?.map((order) => ({
     ...order,

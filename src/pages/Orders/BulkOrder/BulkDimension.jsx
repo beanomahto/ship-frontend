@@ -41,7 +41,7 @@ const BulkDimensionUploadModal = ({ visible, onClose }) => {
         }
     };
     const downloadFile = () => {
-        return "customerName,customerEmail,orderId,customerPhone,productName,productPrice,address,landMark,pin,city,state,quantity,sku,weight,length,breadth,height,paymentMethod"
+        return "orderId,weight,length,breadth,height"
     }
     return (
         <Modal

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, Table, Tabs, Tag } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useWarehouseContext } from '../../context/WarehouseContext';
 import { Helmet } from 'react-helmet';
 
@@ -38,6 +38,11 @@ const ActiveWarehouses = () => {
         {
           title: 'Action',
           dataIndex: 'action',
+          render: (text, warehouse) => (
+            <>
+              <NavLink to={`${warehouse?._id}`} >Edit</NavLink>
+            </>
+          ),
         }
     ];
     

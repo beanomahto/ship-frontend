@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button, Upload, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
+import DownloadLink from 'react-download-link'
 
 const UploadCodRemittance = ({ visible, onClose }) => {
     const [file, setFile] = useState(null);
@@ -39,12 +40,23 @@ const UploadCodRemittance = ({ visible, onClose }) => {
             message.error(`Error: ${error.message}`);
         }
     };
+    const downloadFile = () => {
+        return "sellerEmail, generatedDate, refId, generatedCOD, ecodCharge, netCODAmt, amountPaid, transactionDetail, count, status"
+    }
     return (
         <Modal
             title="Upload Cod Remittance"
             visible={visible}
             onCancel={onClose}
             footer={[
+                <Button key="download" >
+                <DownloadLink
+                    label='Download Sample CSV'
+                    filename='sample.csv'
+                    exportFile={downloadFile}
+                    style={{ textDecoration: 'none' }}
+                />
+            </Button>,
                 <Button key="submit" type="primary" onClick={handleUpload}>
                     Upload
                 </Button>,

@@ -22,6 +22,7 @@ const useSignup = () => {
 			if (data.error) {
 				throw new Error(data.error);
 			}
+console.log(data);
 
 			localStorage.setItem("token", data.token);
 			localStorage.setItem("ship-user", JSON.stringify(data));

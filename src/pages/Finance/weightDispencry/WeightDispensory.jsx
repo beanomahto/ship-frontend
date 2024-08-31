@@ -35,19 +35,6 @@ const WeightDispensory = () => {
       console.error("Failed to fetch weight discrepancy data:", error);
     }
   };
-   // const checkAndUpdateStatus = (record) => {
-  //   const dateApplied = moment(record.weightAppliedDate);
-  //   const today = moment();
-  //   const daysDifference = today.diff(dateApplied, 'days');
-
-  //   if (daysDifference > 7 && record.status !== 'closed') {
-  //     updateStatusToClosed(record.id);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   dataSource.forEach(checkAndUpdateStatus);
-  // }, [dataSource]);
   useEffect(() => {
     fetchWeightDespensory();
   }, []);
