@@ -12,6 +12,8 @@ import EarlyCodPopup from './EarlyCodPopup';
 
 const CodRemmitance = () => {
   const { authUser } = useAuthContext();
+  console.log(authUser);
+  
   const [remittanceData, setRemittanceData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [searchModalVisible, setSearchModalVisible] = useState(false);
@@ -38,7 +40,7 @@ const CodRemmitance = () => {
   const closeModal = () => setModalVisible(false);
   const showSearchModal = () => setSearchModalVisible(true);
   const closeSearchModal = () => setSearchModalVisible(false);
-  const showEarlyCodModal = () => setEarlyCodVisible(true); // Show Early COD popup
+  const showEarlyCodModal = () => setEarlyCodVisible(true); 
   const closeEarlyCodModal = () => setEarlyCodVisible(false); 
   console.log(remittanceData.remittances
   );

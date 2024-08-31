@@ -3,10 +3,13 @@ import pincodeData from '../../../utils/zones.json';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { message } from 'antd';
+import { useWarehouseContext } from '../../../context/WarehouseContext';
 
 const UpdateWarehouse = () => {
     const navigate = useNavigate();
     const { id } = useParams(); 
+    console.log(id);
+    const {warehouse,fetchWarehouse} = useWarehouseContext();
     const [inputs, setInputs] = useState({
         contactPerson: '',
         contactEmail: '',
@@ -24,18 +27,24 @@ const UpdateWarehouse = () => {
         const fetchWarehouseData = async () => {
             setLoading(true);
             try {
-                const response = await fetch(`http://localhost:5000/api/warehouse/updateWarehouse/${id}`);
+                const response = await fetch(`http://localhost:5000/api/warehouses/getSingleWarehouse/${id}`,{
+                    headers:{
+                        Authorization:localStorage.getItem('token')
+                    }
+                });
                 const data = await response.json();
+                console.log(data);
+                
                 setInputs({
-                    contactPerson: data.contactPerson || '',
-                    contactEmail: data.contactEmail || '',
-                    contactNumber: data.contactNumber || '',
-                    pincode: data.pincode || '',
-                    city: data.city || '',
-                    state: data.state || '',
-                    address: data.address || '',
-                    landmark: data.landmark || '',
-                    country: data.country || 'India',
+                    contactPerson: data?.warehouse?.contactPerson || '',
+                    contactEmail: data?.warehouse?.contactEmail || '',
+                    contactNumber: data?.warehouse?.contactNumber || '',
+                    pincode: data?.warehouse?.pincode || '',
+                    city: data?.warehouse?.city || '',
+                    state: data?.warehouse?.state || '',
+                    address: data?.warehouse?.address || '',
+                    landmark: data?.warehouse?.landmark || '',
+                    country: data?.warehouse?.country || 'India',
                 });
             } catch (error) {
                 console.error("Error fetching warehouse data:", error);
@@ -73,9 +82,10 @@ const UpdateWarehouse = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await fetch(`/api/warehouse/${id}`, {
+            const response = await fetch(`http://localhost:5000/api/warehouses/updateWarehouse/${id}`, {
                 method: 'PUT', 
                 headers: {
+                    Authorization:localStorage.getItem('token'),
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(inputs),
@@ -83,6 +93,7 @@ const UpdateWarehouse = () => {
 
             if (response.ok) {
                 navigate('/warehouse'); 
+                fetchWarehouse()
             } else {
                 message.error("Failed to update warehouse")
                 console.error("Failed to update warehouse");

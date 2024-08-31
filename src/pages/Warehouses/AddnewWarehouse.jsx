@@ -4,8 +4,10 @@ import { Button } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import useAddWarehouse from '../../hooks/useAddWarehouse';
 import { Helmet } from 'react-helmet';
+import { useWarehouseContext } from '../../context/WarehouseContext';
 
 const AddnewWarehouse = () => {
+    const {warehouse,fetchWarehouse} = useWarehouseContext();
     const navigate = useNavigate()
     const [inputs, setInputs] = useState({
         contactPerson:'',
@@ -48,6 +50,7 @@ const AddnewWarehouse = () => {
  const handleOrderSubmit = async(e) => {	
             e.preventDefault();
             await addWarehouse(inputs)
+            fetchWarehouse()
             navigate('/warehouse')
             // setInputs('')
         }

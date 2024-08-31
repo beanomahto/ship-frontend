@@ -5,7 +5,7 @@ import { useWarehouseContext } from '../../context/WarehouseContext';
 import { Helmet } from 'react-helmet';
 
 const ActiveWarehouses = () => {
-  const {warehouse} = useWarehouseContext();
+  const {warehouse,fetchWarehouse} = useWarehouseContext();
   console.log(warehouse.warehouses);
     const newOrders = [
         {

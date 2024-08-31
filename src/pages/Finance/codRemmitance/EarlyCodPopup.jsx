@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Modal, Checkbox, Button } from 'antd';
+import { Modal, Checkbox, Button, message } from 'antd';
+import axios from 'axios';
 import './earlyCodPopup.css';
 
 const EarlyCodPopup = ({ visible, onClose }) => {
@@ -14,9 +15,49 @@ const EarlyCodPopup = ({ visible, onClose }) => {
     setSelectedCard(option);
   };
 
+  const handleActivate = async () => {
+    let earlyCod;
+  switch (selectedCard) {
+    case 'D + 2 Days':
+      earlyCod = 'D+2';
+      break;
+    case 'D + 3 Days':
+      earlyCod = 'D+3';
+      break;
+    case 'D + 4 Days':
+      earlyCod = 'D+4';
+      break;
+    default:
+      earlyCod = 'D+7';
+  }
+    if (!earlyCod) {
+      message.error('Please select an option.');
+      return;
+    }
+    console.log(earlyCod);
+    
+    const token = localStorage.getItem('token');
+    try {
+      const response = await axios.put('http://localhost:5000/api/users/updateEarlyCod', {
+        earlyCod:earlyCod,
+      }, {
+        headers: {
+          'Authorization': `${token}`,
+        }
+      });
+console.log(response);
+console.log(selectedCard);
+
+      message.success('Early COD option activated successfully!');
+      onClose();
+    } catch (error) {
+      message.error('Failed to activate Early COD option.');
+    }
+  };
+
   return (
     <Modal 
-    style={{top:'20px'}}
+      style={{top: '20px'}}
       visible={visible} 
       onCancel={onClose} 
       footer={null} 
@@ -39,7 +80,13 @@ const EarlyCodPopup = ({ visible, onClose }) => {
             <li>Steady Cash Flow</li>
             <li>50% faster business Cycle</li>
           </ul>
-          <Button type="primary" disabled={!termsAccepted}>Activate</Button>
+          <Button 
+            type="primary" 
+            disabled={!termsAccepted} 
+            onClick={handleActivate}
+          >
+            Activate
+          </Button>
         </div>
 
         <div 
@@ -52,7 +99,13 @@ const EarlyCodPopup = ({ visible, onClose }) => {
             <li>Guaranteed Remit in 3 days</li>
             <li>Steady Cash Flow</li>
           </ul>
-          <Button type="primary" disabled={!termsAccepted}>Activate</Button>
+          <Button 
+            type="primary" 
+            disabled={!termsAccepted} 
+            onClick={handleActivate}
+          >
+            Activate
+          </Button>
         </div>
 
         <div 
@@ -65,7 +118,13 @@ const EarlyCodPopup = ({ visible, onClose }) => {
             <li>Guaranteed Remit in 4 days</li>
             <li>Steady Cash Flow</li>
           </ul>
-          <Button type="primary" disabled={!termsAccepted}>Activate</Button>
+          <Button 
+            type="primary" 
+            disabled={!termsAccepted} 
+            onClick={handleActivate}
+          >
+            Activate
+          </Button>
         </div>
       </div>
 

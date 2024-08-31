@@ -11,7 +11,7 @@ export const WarehouseContextProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
+
         const fetchWarehouse = async () => {
             try {
                 setLoading(true);
@@ -32,12 +32,12 @@ export const WarehouseContextProvider = ({ children }) => {
                 setLoading(false);
             }
         };
-
+useEffect(() => {
         fetchWarehouse();
     }, [setWarehouse]);
 
     return (
-        <WarehouseContext.Provider value={{ warehouse, setWarehouse, loading, error }}>
+        <WarehouseContext.Provider value={{ warehouse, setWarehouse,fetchWarehouse, loading, error }}>
             {children}
         </WarehouseContext.Provider>
     );

@@ -104,8 +104,8 @@ const Signup1 = () => {
                 onChange={(e) => setInputs({ ...inputs, password: e.target.value })}
               />
             </div>
-            <div className='terms'>
-              <Checkbox checked={agree} onChange={(e) => setAgree(e.target.checked)} style={{marginTop:'2rem', marginBottom:'-1rem', marginLeft:'3rem'}}>
+            <div className='terms' >
+              <Checkbox checked={agree} onChange={(e) => setAgree(e.target.checked)} style={{marginTop:'2rem', marginBottom:'1rem', marginLeft:'3rem'}}>
                 I agree to the <a href='/terms-and-conditions' target='_blank' rel='noopener noreferrer'>Terms and Conditions</a>
               </Checkbox>
             </div>
