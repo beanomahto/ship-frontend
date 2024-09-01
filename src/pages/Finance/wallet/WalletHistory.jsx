@@ -61,6 +61,7 @@ const WalletHistory = () => {
 
     fetchTransactions();
   }, []);
+
   console.log(transactions);
 
   return (

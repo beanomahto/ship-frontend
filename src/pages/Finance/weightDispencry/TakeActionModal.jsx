@@ -14,7 +14,7 @@ const TakeActionModal = ({ visible, onClose, discrepancyId, productName }) => {
 
     const formData = new FormData();
     fileList.forEach(file => {
-      formData.append('files', file.originFileObj);
+      formData.append('image', file.originFileObj);
     });
     formData.append('productName', productName);
 
@@ -42,7 +42,7 @@ const TakeActionModal = ({ visible, onClose, discrepancyId, productName }) => {
           'Content-Type': 'application/json',
           Authorization: localStorage.getItem('token'),
         },
-        body: JSON.stringify({ status: 'Open' }),
+        body: JSON.stringify({ status: 'open' }),
       });
 
       if (!updateResponse.ok) {

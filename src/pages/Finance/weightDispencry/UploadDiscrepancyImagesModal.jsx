@@ -36,10 +36,6 @@ const UploadDiscrepancyImagesModal = ({ visible, onClose, discrepancyId, product
       const uploadResult = await uploadResponse.json();
       console.log(uploadResponse.json());
       
-      // if (!uploadResponse.ok) {
-      //   throw new Error('Failed to upload images');
-      // }
-  
       fetchWeightDespensory()
       message.success("images uploaded");
   
