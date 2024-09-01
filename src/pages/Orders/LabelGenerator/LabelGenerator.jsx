@@ -89,10 +89,11 @@ const LabelGenerator = () => {
         {labelData && (
           <div ref={labelRef} className="label-container">
             <h1 style={{ textAlign: 'center' }}>Shipping Label</h1>
-            <p><strong>Order Id</strong> 123231</p>
+            <p><strong>Order Id:-</strong>{labelData.orderId}</p>
             <div style={labelData.logoUrl ? { display: 'flex' } : {}}>
               <div className="labelSection">
                 <img style={{ width: '11rem' }} src={`data:image/png;base64,${labelData.barcode}`} alt="Barcode" />
+                <p><>{labelData.shippingPartner}</></p>
                 {/* <img style={{ width: '10rem' }} src={base64Logo} alt="" /> */}
               </div>
               {labelData.logoUrl &&
@@ -103,9 +104,9 @@ const LabelGenerator = () => {
             </div>
             <div className="labelSection">
               <p><strong>Ship To:</strong><p><strong>{labelData.customerName}</strong></p>{labelData?.returnWarehouse?.address} {labelData?.returnWarehouse?.state} {labelData?.returnWarehouse?.city}  {labelData?.returnWarehouse?.country} </p>
-              <p>{labelData.customerName}</p>
-              <p>{labelData.customerAddress}</p>
-              <p>{labelData.customerCity}</p>
+              {/* <p>{labelData.customerName}</p> */}
+              {/* <p>{labelData.customerAddress}</p> */}
+              {/* <p>{labelData.customerCity}</p> */}
               <p><strong>PIN:</strong> 201007 {labelData.customerPin}</p>
             </div>
             <div style={{ display: 'flex' }}>
@@ -145,6 +146,7 @@ const LabelGenerator = () => {
               <p><strong>Return Address:</strong></p>
               <p>{labelData?.returnWarehouse?.address} {labelData?.returnWarehouse?.state} {labelData?.returnWarehouse?.city}  {labelData?.returnWarehouse?.country} </p>
             </div>
+              <p>Powered by <strong>ShipHere</strong></p>
           </div>
         )}
       </Modal>

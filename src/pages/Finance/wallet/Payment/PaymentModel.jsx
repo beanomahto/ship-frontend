@@ -45,7 +45,7 @@ const PaymentModel = ({ visible, onClose }) => {
 
     try {
       const response = await axios.post(
-        'https://backend.shiphere.in/api/transactions/increaseAmount',
+        'https://backend.shiphere.in/api/recharge/recharge',
         {
           userId: hoveredUser._id,
           credit: parseFloat(paymentAmount),

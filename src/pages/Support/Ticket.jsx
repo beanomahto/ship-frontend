@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Input, Select, Button, message, Table } from 'antd';
+import { Modal, Input, Select, Button, message, Table, Space } from 'antd';
+import { SearchOutlined, ThunderboltOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 // import './ticket.css';
 import CustomButton from '../../components/Button/Button';
@@ -14,6 +15,7 @@ const Ticket = () => {
     const [currentComplaint, setCurrentComplaint] = useState(null);
     const [remedy, setRemedy] = useState('');
     const [status, setStatus] = useState('');
+    const [searchedColumn, setSearchedColumn] = useState('');
 
     const fetchComplaints = async () => {
         try {
@@ -81,11 +83,64 @@ const Ticket = () => {
             message.error('An error occurred while updating the complaint');
         }
     };
+    const handleSearch = (selectedKeys, confirm, dataIndex) => {
+        confirm();
+        setSearchText(selectedKeys[0]);
+        setSearchedColumn(dataIndex);
+      };
+    
+      const handleReset = (clearFilters) => {
+        clearFilters();
+        setSearchText('');
+      };
+    const getColumnSearchProps = (dataIndex) => ({
+        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+          <div style={{ padding: 8 }}>
+            <Input
+              placeholder={`Search ${dataIndex}`}
+              value={selectedKeys[0]}
+              onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+              onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+              style={{ marginBottom: 8, display: 'block' }}
+            />
+            <Space>
+              <Button
+                type="primary"
+                onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+                icon={<SearchOutlined />}
+                size="small"
+                style={{ width: 90 }}
+              >
+                Search
+              </Button>
+              <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+                Reset
+              </Button>
+            </Space>
+          </div>
+        ),
+        filterIcon: (filtered) => <SearchOutlined style={{ color: filtered ? '#1890ff' : 'black' }} />,
+        onFilter: (value, record) => {
+          const keys = dataIndex.split('.');
+          let data = record;
+          keys.forEach(key => {
+            data = data ? data[key] : null;
+          });
+          return data ? data.toString().toLowerCase().includes(value.toLowerCase()) : '';
+        },
+        render: (text) =>
+          searchedColumn === dataIndex ? (
+            <span style={{ backgroundColor: '#ffc069', padding: 0 }}>{text}</span>
+          ) : (
+            text
+          ),
+      });    
 
     const columns = [
         {
             title: 'Ticket Number',
             dataIndex: 'ticketNumber',
+            ...getColumnSearchProps('ticketNumber'),
         },
         {
             title: 'Seller',

@@ -46,7 +46,7 @@ const WalletHistory = () => {
     const fetchTransactions = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('https://backend.shiphere.in/api/transactions/getTransactions', {
+        const response = await axios.get('https://backend.shiphere.in/api/recharge/getUserRecharge', {
           headers: {
             Authorization: `${token}`,
           },

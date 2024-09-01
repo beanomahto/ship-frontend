@@ -16,7 +16,7 @@ export const PaymentUserContextProvider = ({ children }) => {
             try {
                 setLoading(true);
                 const token = localStorage.getItem('token');
-                const response = await fetch('https://backend.shiphere.in/api/transactions/getAllTransactions', {
+                const response = await fetch('https://backend.shiphere.in/api/recharge/getAllRecharges', {
                     headers: {
                         Authorization: `${token}`,
                     },
@@ -25,6 +25,8 @@ export const PaymentUserContextProvider = ({ children }) => {
                     throw new Error('Failed to fetch Payment Users');
                 }
                 const data = await response.json();
+                console.log(data);
+                
                 setPUers(data);
             } catch (error) {
                 setError(error.message);

@@ -57,8 +57,9 @@ const WeightDispensory = () => {
   
   const dataSourceWithKeys = weightDispensory?.data?.map((data) => ({
     ...data,
-    key: data._id, // Ensure unique key for each row
+    key: data._id,
   })) || [];
+  
 console.log(dataSourceWithKeys);
 
   const tabsData = [
