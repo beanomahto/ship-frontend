@@ -52,7 +52,7 @@
     font-size: 1.5em;
     text-transform: uppercase;
     margin-bottom: 20px;
-    border-bottom: 4px solid #ff4584;
+    border-bottom: 4px solid #03a9f4;
     letter-spacing: 1px;
 }
 
@@ -85,7 +85,7 @@
 }
 
 .section .contentBx .formBx .inputBx input[type="submit"]{
-    background-color: #ff4584;
+    background-color: #03a9f4;
     color: #fff;
     outline: none;
     border: none;
@@ -94,7 +94,7 @@
 }
 
 .section .contentBx .formBx .inputBx input[type="submit"]:hover{
-    background-color: #f53677;
+    background-color: #03a9f4;
 }
 
 .section .contentBx .formBx .remember{
@@ -109,7 +109,7 @@
 }
 
 .section .contentBx .formBx .inputBx p a{
-    color: #ff4584;
+    color: #03a9f4;
 }
 
 @media (max-width: 768px) {

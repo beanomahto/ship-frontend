@@ -192,7 +192,6 @@ const exportToExcel = () => {
     ...order,
     key: order._id,
     order:order
-    // key: index.toString(),
   })) || [];
 
   console.log(orders);

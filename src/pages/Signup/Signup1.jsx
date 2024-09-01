@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-// import './login1.css'; 
 import { Link, useNavigate } from 'react-router-dom';
 import { Checkbox } from 'antd';
 import useSignup from '../../hooks/useSignup';
 import { useOrderContext } from '../../context/OrderContext';
 import imgg from '../../utils/new.png';
-import gyb from '../../utils/gyb.mp4'
-import vid1 from '../../utils/res.mp4'
+
 const Signup1 = () => {
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
@@ -20,9 +18,30 @@ const Signup1 = () => {
   const [agree, setAgree] = useState(false);
   const { loading, signup } = useSignup();
   const { fetchOrders } = useOrderContext();
+  const [phoneError, setPhoneError] = useState('');
+
+  const validatePhoneNumber = (phoneNumber) => {
+    const phoneRegex = /^[0-9]{10}$/; 
+    return phoneRegex.test(phoneNumber);
+  };
+
+  const handlePhoneNumberChange = (e) => {
+    const { value } = e.target;
+    setInputs({ ...inputs, phoneNumber: value });
+
+    if (!validatePhoneNumber(value)) {
+      setPhoneError('Please enter a valid 10-digit phone number.');
+    } else {
+      setPhoneError('');
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (phoneError) {
+      return;
+    }
+
     try {
       await signup(inputs);
       fetchOrders();
@@ -36,9 +55,6 @@ const Signup1 = () => {
     <div className='section'>
       <div className='imgBx'>
         <img src={imgg} alt='Background' />
-        {/* <video style={{height:'100%', width:'100%'}} autoPlay loop src={vid1}>
-          <source src={vid1} type="video/mp4" />
-        </video> */}
       </div>
       <div className='contentBx'>
         <div className="formBx">
@@ -87,12 +103,13 @@ const Signup1 = () => {
             <div className="inputBx">
               <label htmlFor="phoneNumber">Phone No.</label>
               <input
-                type='number'
+                type='text'
                 id='phoneNumber'
                 placeholder='Phone No.'
                 value={inputs.phoneNumber}
-                onChange={(e) => setInputs({ ...inputs, phoneNumber: e.target.value })}
+                onChange={handlePhoneNumberChange}
               />
+              {phoneError && <span style={{ color: 'red' }}>{phoneError}</span>}
             </div>
             <div className="inputBx">
               <label htmlFor="password">Password</label>
@@ -104,14 +121,18 @@ const Signup1 = () => {
                 onChange={(e) => setInputs({ ...inputs, password: e.target.value })}
               />
             </div>
-            <div className='terms' >
-              <Checkbox checked={agree} onChange={(e) => setAgree(e.target.checked)} style={{marginTop:'2rem', marginBottom:'1rem', marginLeft:'3rem'}}>
+            <div className='terms'>
+              <Checkbox
+                checked={agree}
+                onChange={(e) => setAgree(e.target.checked)}
+                style={{ marginTop: '2rem', marginBottom: '1rem', marginLeft: '3rem' }}
+              >
                 I agree to the <a href='/terms-and-conditions' target='_blank' rel='noopener noreferrer'>Terms and Conditions</a>
               </Checkbox>
             </div>
 
             <div className="inputBx">
-              <input type="submit" value='Signup' disabled={!agree || loading} />
+              <input type="submit" value='Signup' disabled={!agree || loading || phoneError} />
             </div>
             <div className="inputBx">
               <p>Already have an account? <Link to='/login'>Click here!</Link></p>

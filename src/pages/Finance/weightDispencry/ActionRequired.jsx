@@ -135,8 +135,6 @@ const ActionRequired = ({ dataSource, rowSelection, fetchWeightDespensory }) => 
       : []),
   ];
 
-
-
   return (
     <>
       <Table
@@ -144,7 +142,7 @@ const ActionRequired = ({ dataSource, rowSelection, fetchWeightDespensory }) => 
         scroll={{ y: 300 }}
         dataSource={actionRequired}
         columns={columns}
-        rowKey="id"
+        rowKey="_id"
         rowSelection={rowSelection}
       />
       <UploadDiscrepancyImagesModal
