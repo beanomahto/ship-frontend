@@ -144,7 +144,11 @@ const LabelGenerator = () => {
             </div>
             <div className="labelSection">
               <p><strong>Return Address:</strong></p>
-              <p>{labelData?.returnWarehouse?.address} {labelData?.returnWarehouse?.state} {labelData?.returnWarehouse?.city}  {labelData?.returnWarehouse?.country} </p>
+              <p>{labelData?.pickupAddress
+?.address} {labelData?.pickupAddress
+?.state} {labelData?.pickupAddress
+?.city}  {labelData?.pickupAddress
+?.country} </p>
             </div>
               <p>Powered by <strong>ShipHere</strong></p>
           </div>
