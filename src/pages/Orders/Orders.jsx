@@ -83,96 +83,98 @@ console.log(selectedOrderData);
     console.log(selectedDeliveryPartner);
 
     if (selectedRowKeys.length === 0) {
-        message.warning('Please select at least one order to ship.');
-        return;
+      message.warning('Please select at least one order to ship.');
+      return;
     }
 
     message.loading({ content: 'Processing shipment...', key: 'processing', duration: 0 });
 
     try {
-        const updatedOrders = await Promise.all(
-            selectedRowKeys.map(async (orderId) => {
-                const order = orders?.orders.find((order) => order._id === orderId);
-                if (!order) return;
+      const updatedOrders = [];
 
-                let selectedCost;
+      for (const orderId of selectedRowKeys) {
+        const order = orders?.orders.find((order) => order._id === orderId);
+        if (!order) continue;
 
-                try {
-                    const costData = await shipNowCost(orderId, selectedWarehouse); 
-                    console.log('Cost Data for Order:', costData);
+        let selectedCost;
 
-                    selectedCost = costData.cost.find(
-                        (cost) => cost.deliveryPartner === selectedDeliveryPartner.name
-                    )?.cost;
+        try {
+          const costData = await shipNowCost(orderId, selectedWarehouse);
+          console.log('Cost Data for Order:', costData);
 
-                } catch (error) {
-                    console.error('Error in shipOrder or shipNowCost:', error);
-                    message.error('Failed to calculate shipping cost or ship order. Please try again.');
-                }
-                
-                try {
-                  console.log('Calling shipOrder with:', { orderId, selectedWarehouse, selectedDeliveryPartner });
-                  await shipOrder(orderId, selectedWarehouse, selectedDeliveryPartner.name);
+          selectedCost = costData.cost.find(
+            (cost) => cost.deliveryPartner === selectedDeliveryPartner.name
+          )?.cost;
 
-                  console.log('Order shipped:', orderId);
-                  message.success('AWB generated');
-                } catch (error) {
-                  console.log('error in shipping with this partner:', error);
-                  message.error('Error in shipping with this partner');
-                }
+        } catch (error) {
+          console.error('Error in shipOrder or shipNowCost:', error);
+          message.error('Failed to calculate shipping cost or ship order. Please try again.');
+          continue;
+        }
 
-                if (selectedCost === undefined) {
-                    message.error(`No cost found for delivery partner for order ${orderId}.`);
-                }
+        try {
+          console.log('Calling shipOrder with222:', { orderId, selectedWarehouse, selectedDeliveryPartner });
+          await shipOrder(orderId, selectedWarehouse, selectedDeliveryPartner.name);
 
-                await fetch(`https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: localStorage.getItem('token'),
-                    },
-                    body: JSON.stringify({
-                        status: 'Shipped',
-                        shippingCost: selectedCost,
-                    }),
-                });
+          console.log('Order shipped:', orderId);
+          message.success('AWB generated');
+        } catch (error) {
+          console.log('Error in shipping with this partner:', error);
+          message.error('Error in shipping with this partner');
+          continue;
+        }
 
-                const walletRequestBody = {
-                    debit: selectedCost,
-                    userId: order.seller._id,
-                    remark: `Shipping charge for order ${order.orderId}`,
-                    orderId: order._id,
-                };
-                console.log(walletRequestBody);
+        if (selectedCost === undefined) {
+          message.error(`No cost found for delivery partner for order ${orderId}.`);
+        }
 
-                await fetch(`https://backend.shiphere.in/api/transactions/decreaseAmount`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: localStorage.getItem('token'),
-                    },
-                    body: JSON.stringify(walletRequestBody),
-                });
-
-                return { ...order, status: 'Shipped' };
-            })
-        );
-
-        const newOrdersCopy = orders.orders.filter((order) => !selectedRowKeys.includes(order._id));
-        setOrders({
-            orders: newOrdersCopy.concat(updatedOrders),
+        await fetch(`https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: localStorage.getItem('token'),
+          },
+          body: JSON.stringify({
+            status: 'Shipped',
+            shippingCost: selectedCost,
+          }),
         });
 
-        message.success({ content: 'Orders shipped successfully!', key: 'processing' });
+        const walletRequestBody = {
+          debit: selectedCost,
+          userId: order.seller._id,
+          remark: `Shipping charge for order ${order.orderId}`,
+          orderId: order._id,
+        };
+        console.log(walletRequestBody);
+
+        await fetch(`https://backend.shiphere.in/api/transactions/decreaseAmount`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: localStorage.getItem('token'),
+          },
+          body: JSON.stringify(walletRequestBody),
+        });
+
+        updatedOrders.push({ ...order, status: 'Shipped' });
+      }
+
+      const newOrdersCopy = orders.orders.filter((order) => !selectedRowKeys.includes(order._id));
+      setOrders({
+        orders: newOrdersCopy.concat(updatedOrders),
+      });
+
+      message.success({ content: 'Orders shipped successfully!', key: 'processing' });
 
     } catch (error) {
-        console.error('Error processing shipment:', error);
-        message.error({ content: 'Failed to process the shipment. Please try again.', key: 'processing' });
+      console.error('Error processing shipment:', error);
+      message.error({ content: 'Failed to process the shipment. Please try again.', key: 'processing' });
     } finally {
-        setSelectedRowKeys([]);
-        closeModalShipNow();
+      setSelectedRowKeys([]);
+      closeModalShipNow();
     }
-};
+  };
 
   
 const exportToExcel = () => {
