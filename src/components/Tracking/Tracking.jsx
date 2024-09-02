@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Descriptions, Steps, Typography, Progress, Row, Col, Spin, message, Divider } from 'antd';
+import { Card, Descriptions, Spin, message, Row, Col, Divider, Typography, Steps, Progress } from 'antd';
 import axios from 'axios';
-import { FaBox, FaInfoCircle, FaMapMarkerAlt, FaCheckCircle, FaExclamationCircle, FaHourglass, FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
-import { useAuthContext } from '../../context/AuthContext';
+import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
 
 const { Title } = Typography;
 const { Step } = Steps;
@@ -12,30 +11,41 @@ const Tracking = () => {
   const [trackingInfo, setTrackingInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const { shippingPartner, awb } = useParams();
-  const { authUser } = useAuthContext();
 
   useEffect(() => {
-    axios.get(`https://backend.shiphere.in/api/${shippingPartner}/track/${awb}`)
-      .then(response => {
-        if (response.data.success) {
-          setTrackingInfo(response.data.trackingInfo);
+    const fetchTrackingInfo = async () => {
+      try {
+        const response = await axios.get(`https://backend.shiphere.in/api/${shippingPartner.replace(/\s+/g, '')}/track/${awb}`);
+        
+        if (shippingPartner.toLowerCase() === 'ecom express') {
+          const parser = new DOMParser();
+          const xmlDoc = parser.parseFromString(response.data.data, "application/xml");
+          const fields = xmlDoc.getElementsByTagName('field');
+          const data = {};
+          Array.from(fields).forEach(field => {
+            const name = field.getAttribute('name');
+            const value = field.textContent.trim();
+            data[name] = value;
+          });
+          setTrackingInfo(data);
         } else {
-          message.error('Failed to retrieve tracking information.');
+          setTrackingInfo(response.data.trackingInfo);
         }
-      })
-      .catch(error => {
+      } catch (error) {
         console.error('API error:', error);
         message.error('Error fetching tracking information.');
-      })
-      .finally(() => setLoading(false));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTrackingInfo();
   }, [awb, shippingPartner]);
-console.log(trackingInfo);
 
   if (loading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#f0f2f5' }}>
         <Spin 
-          indicator={<FaBox style={{ fontSize: 48, color: '#1890ff' }} spin />} 
           tip="Loading Tracking Information..." 
           size="large" 
         />
@@ -47,22 +57,13 @@ console.log(trackingInfo);
     return <p>No tracking information available.</p>;
   }
 
-  const statusMap = {
-    'pending pickup': 20,
-    'in transit': 50,
-    'out for delivery': 80,
-    'delivered': 100,
-  };
+  const trackingHistory = [
+    { status: 'Dispatched', location: 'OKHLA-OKR', date: '2024-09-01 10:00' },
+    { status: 'In Transit', location: 'DELHI-DLJ', date: '2024-09-02 14:00' },
+    { status: 'Delivered', location: 'DELHI-DLJ', date: '2024-09-03 18:00' }
+  ];
 
-  const progress = statusMap[trackingInfo.status.toLowerCase()] || 0;
-
-  const icons = {
-    'pending pickup': <FaBox />,
-    'in transit': <FaInfoCircle />,
-    'out for delivery': <FaMapMarkerAlt />,
-    'delivered': <FaCheckCircle />,
-    'default': <FaHourglass />,
-  };
+  const progress = (trackingHistory.length / 3) * 100; 
 
   return (
     <div style={{ padding: '20px', backgroundColor: '#ffffff', minHeight: '100vh' }}>
@@ -72,19 +73,16 @@ console.log(trackingInfo);
             <Title level={4}>Tracking Information</Title>
             <Descriptions bordered column={1} labelStyle={{ fontWeight: 'bold' }}>
               <Descriptions.Item label="AWB Number">{trackingInfo.awb_number}</Descriptions.Item>
-              <Descriptions.Item label="Order Number">{trackingInfo.order_number}</Descriptions.Item>
-              <Descriptions.Item label="Order ID">{trackingInfo.order_id}</Descriptions.Item>
-              <Descriptions.Item label="Courier ID">{trackingInfo.courier_id}</Descriptions.Item>
-              <Descriptions.Item label="Status">{trackingInfo.status}</Descriptions.Item>
-              <Descriptions.Item label="Created">{trackingInfo.created}</Descriptions.Item>
-              {authUser.role === 'admin' && (
-                <>
-                  <Descriptions.Item label="Warehouse ID">{trackingInfo.warehouse_id}</Descriptions.Item>
-                  {trackingInfo.rto_warehouse_id && (
-                    <Descriptions.Item label="RTO Warehouse ID">{trackingInfo.rto_warehouse_id}</Descriptions.Item>
-                  )}
-                </>
-              )}
+              <Descriptions.Item label="Order ID">{trackingInfo.orderid}</Descriptions.Item>
+              <Descriptions.Item label="Actual Weight">{trackingInfo.actual_weight}</Descriptions.Item>
+              <Descriptions.Item label="Origin">{trackingInfo.origin}</Descriptions.Item>
+              <Descriptions.Item label="Destination">{trackingInfo.destination}</Descriptions.Item>
+              <Descriptions.Item label="Current Location Name">{trackingInfo.current_location_name}</Descriptions.Item>
+              <Descriptions.Item label="Current Location Code">{trackingInfo.current_location_code}</Descriptions.Item>
+              <Descriptions.Item label="Customer">{trackingInfo.customer}</Descriptions.Item>
+              <Descriptions.Item label="Pincode">{trackingInfo.pincode}</Descriptions.Item>
+              <Descriptions.Item label="City">{trackingInfo.city}</Descriptions.Item>
+              <Descriptions.Item label="State">{trackingInfo.state}</Descriptions.Item>
             </Descriptions>
           </Card>
         </Col>
@@ -102,18 +100,17 @@ console.log(trackingInfo);
 
           <Card style={{ borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
             <Title level={4}>Tracking History</Title>
-            <Steps direction="vertical" current={trackingInfo.history.length - 1}>
-              {trackingInfo.history.map((event, index) => (
+            <Steps direction="vertical" current={trackingHistory.length - 1}>
+              {trackingHistory.map((step, index) => (
                 <Step 
                   key={index} 
-                  title={event.message} 
+                  title={step.status} 
                   description={
                     <>
-                      <p>{event.location}</p>
-                      <p>{event.event_time}</p>
+                      <p>{step.location}</p>
+                      <p>{step.date}</p>
                     </>
                   }
-                  icon={icons[event.status_code.toLowerCase()] || icons.default}
                 />
               ))}
             </Steps>

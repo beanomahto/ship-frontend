@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Table, Input, Button, Space, message, Tag, Skeleton } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import Shopify from '../../utils/shopify.png';
 import Woo from '../../utils/woocomerce.png'
@@ -13,7 +11,6 @@ import { useAuthContext } from '../../context/AuthContext';
 const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const { authUser } = useAuthContext();
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -81,12 +78,6 @@ const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) =
     {
       title: 'Shipping Status',
       dataIndex: 'awb',
-      // filters: [
-      //   { text: 'Shipped', value: 'Shipped' },
-      //   { text: 'InTransit', value: 'InTransit' },
-      //   { text: 'Delivered', value: 'Delivered' },
-      //   { text: 'Cancelled', value: 'Cancelled' },
-      // ],
       onFilter: (value, record) => record.s_status.indexOf(value) === 0,
       render:(value, record) => (
         <>
@@ -172,14 +163,7 @@ const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) =
   ];
 
 
-  // const rowSelection = {
-  //   selectedRowKeys,
-  //   onChange: (selectedKeys) => {
-  //     setSelectedRowKeys(selectedKeys);
-  //   },
-  // };
   const shippedOrders = dataSource?.filter(order => order?.status === 'Shipped');
-  // console.log(rowSelection);
   console.log(shippedOrders);
   
   return (

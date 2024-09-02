@@ -14,7 +14,10 @@ import axios from 'axios';
 import useShipNowCost from '../../hooks/useShipNowCost';
 import { useWarehouseContext } from '../../context/WarehouseContext';
 import useCreateShipment from '../../hooks/useCreateShipment';
-
+import LabelGenerator from './LabelGenerator/LabelGenerator';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import moment from 'moment';
 const { TabPane } = Tabs;
 
 const Orders = () => {
@@ -245,54 +248,62 @@ const inTransitOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 
   console.log(selectedRowKeys);
   
   const cancelShipment = async () => {
-    console.log('Selected Row Keys:', selectedRowKeys);
-    
+    if (selectedRowKeys.length === 0) {
+        message.error('No orders selected');
+        return;
+    }
+
     const token = localStorage.getItem('token');
     try {
-      
-      const response = await axios.put(`https://backend.shiphere.in/api/orders/updateOrderStatus/${selectedRowKeys}`, {
-        status: 'Cancelled'
-      }, {
-        headers: {
-          Authorization: `${token}`
-        }
-      });
-  
-      if (response.status === 201) { 
-        if (selectedOrderData.length > 0) {
-          const walletRequestBody = {
-            userId: selectedOrderData[0].seller._id,
-            credit: selectedOrderData[0].shippingCost,
-            remark: `Credit charges for order ${selectedOrderData[0].orderId}`,
-          };
-          console.log('Wallet Request Body:', walletRequestBody);
-  
-          const increaseAmountResponse = await axios.post(`https://backend.shiphere.in/api/transactions/increaseAmount`, walletRequestBody, {
-            headers: {
-              Authorization: `${token}`
+        const cancelRequests = selectedRowKeys.map(orderId =>
+            axios.put(`https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`, {
+                status: 'Cancelled'
+            }, {
+                headers: {
+                    Authorization: `${token}`
+                }
+            })
+        );
+
+        const cancelResponses = await Promise.all(cancelRequests);
+
+        const allCancelSuccess = cancelResponses.every(response => response.status === 201);
+
+        if (allCancelSuccess) {
+            const walletRequests = selectedOrderData.map(order => {
+                const walletRequestBody = {
+                    userId: order.seller._id,
+                    credit: order.shippingCost,
+                    remark: `Credit charges for order ${order.orderId}`,
+                };
+                return axios.post(`https://backend.shiphere.in/api/transactions/increaseAmount`, walletRequestBody, {
+                    headers: {
+                        Authorization: `${token}`
+                    }
+                });
+            });
+
+            const walletResponses = await Promise.all(walletRequests);
+
+            const walletSuccess = walletResponses.every(response => response.status === 200);
+
+            if (walletSuccess) {
+                message.success('Orders cancelled and amounts updated successfully');
+            } else {
+                message.error('Failed to update some amounts');
             }
-          });
-          console.log('Increase Amount Response:', increaseAmountResponse);
-  
-          if (increaseAmountResponse.status === 200) {
-            message.success('Order cancelled and amount updated successfully');
+
             fetchOrders();
             setSelectedRowKeys([]);
-          } else {
-            message.error('Failed to update amount');
-          }
         } else {
-          message.error('No order data available for wallet update');
+            message.error('Failed to cancel some orders');
         }
-      } else {
-        message.error('Failed to cancel order');
-      }
-      
     } catch (error) {
-      console.log('Error:', error.response ? error.response.data : error.message);
-      message.error('Failed to cancel order');
+        console.log('Error:', error.response ? error.response.data : error.message);
+        message.error('Failed to cancel orders');
     }
-  };
+};
+
   
   useEffect(() => {
     const fetchDeliveryCost = async () => {
@@ -309,6 +320,124 @@ const inTransitOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 
     };
     fetchDeliveryCost();
   }, [selectedOrderId, warehouse]);
+  console.log(selectedRowKeys);
+  
+  const downloadMultipleLabels = async () => {
+    for (const orderId of selectedRowKeys) {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.get(`https://backend.shiphere.in/api/shipping/getlabel/${orderId}`, {
+                headers: {
+                    Authorization: `${token}`,
+                },
+            });
+            const labelData = response.data;
+            const labelContainer = document.createElement('div');
+            labelContainer.style.position = 'absolute';
+            labelContainer.style.top = '-9999px';
+            document.body.appendChild(labelContainer);
+console.log(labelData);
+
+            const logoBase64 = await getBase64ImageFromUrl(labelData.logoUrl);
+            const labelHtml = `
+                <div class="label-container">
+                    <h1 style="text-align: center;">Shipping Label</h1>
+                    <p><strong>Order Id:-</strong> ${labelData?.orderId}</p>
+                    <div style="${labelData.logoUrl ? 'display: flex;' : ''}">
+                        <div class="labelSection">
+                            <img style="width: 11rem;" src="data:image/png;base64,${labelData.barcode}" alt="Barcode" />
+                            <p>${labelData.shippingPartner}</p>
+                        </div>
+                        ${logoBase64 ? `
+                            <div class="labelSection" style="width: 12rem;">
+                                <img style="width: 9rem;" src="${logoBase64}" alt="Logo" />
+                            </div>` : ''}
+                    </div>
+                    <div class="labelSection">
+                        <p><strong>Ship To:</strong></p>
+                        <p><strong>${labelData.customerName}</strong></p>
+                        <p>${labelData?.returnWarehouse?.address} ${labelData?.returnWarehouse?.state} ${labelData?.returnWarehouse?.city} ${labelData?.returnWarehouse?.country}</p>
+                        <p><strong>PIN:</strong> ${labelData.customerPin}</p>
+                    </div>
+                    <div style="display: flex;">
+                        <div class="labelSection" style="width: 16rem;">
+                            <p><strong>${labelData.paymentType}</strong></p>
+                            <p><strong>Product name</strong></p>
+                            <p>${labelData.productName}</p>
+                        </div>
+                        <div class="labelSection" style="width: 10rem;">
+                            <p><strong>${labelData.paymentType}</strong></p>
+                            <p><strong>INR</strong></p>
+                            <p>${labelData.amount}</p>
+                        </div>
+                        <div class="labelSection" style="width: 12rem;">
+                            <p><strong>Price Total</strong></p>
+                            <p>INR ${labelData.amount}</p>
+                            <p>Surface</p>
+                        </div>
+                    </div>
+                    <div style="display: flex;">
+                        <div class="labelSection" style="width: 12rem;">
+                            <p><strong>Product (QTY)</strong></p>
+                        </div>
+                        <div class="labelSection" style="width: 12rem;">
+                            <p>box (${labelData?.productDetail?.quantity})</p>
+                        </div>
+                    </div>
+                    <div style="display: flex;">
+                        <div class="labelSection" style="width: 12rem;">
+                            <p><strong>Total INR</strong></p>
+                        </div>
+                        <div class="labelSection" style="width: 12rem;">
+                            <p>${labelData.amount}</p>
+                        </div>
+                    </div>
+                    <div class="labelSection">
+                        <p><strong>Return Address:</strong></p>
+                        <p>${labelData?.pickupAddress?.address} ${labelData?.pickupAddress?.state} ${labelData?.pickupAddress?.city} ${labelData?.pickupAddress?.country}</p>
+                    </div>
+                    <p>Powered by <strong>ShipHere</strong></p>
+                </div>
+            `;
+
+            labelContainer.innerHTML = labelHtml;
+
+            const canvas = await html2canvas(labelContainer);
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'in',
+                format: [4, 6],
+            });
+            pdf.addImage(imgData, 'PNG', 0, 0, 4, 6);
+            pdf.save(`shipping_label_${orderId}.pdf`);
+
+            document.body.removeChild(labelContainer);
+        } catch (error) {
+            console.error('Error generating label:', error.message);
+            alert(`Error generating label for order ID ${orderId}`);
+        }
+    }
+};
+
+
+  const getBase64ImageFromUrl = async (imageUrl) => {
+    try {
+      const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+      const base64 = btoa(
+        new Uint8Array(response.data).reduce(
+          (data, byte) => data + String.fromCharCode(byte),
+          ''
+        )
+      );
+      return `data:image/png;base64,${base64}`;
+    } catch (error) {
+      console.error('Error converting image to base64:', error.message);
+      return null;
+    }
+  };
+
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }} className="addorder">
@@ -324,13 +453,17 @@ const inTransitOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 
           </Button>
   {
       currentTab === 'tab2' &&   <div style={{display:'flex',justifyContent:'space-evenly', gap:'2rem'}} >
-        <Button disabled={selectedRowKeys.length !== 1} style={{ borderColor: 'black', borderRadius:'50px' }}>
-              <Link to={`/shipping/getlabel/${selectedRowKeys[0]}`}>Shipping Label</Link>
-            </Button>
+        <Button
+        disabled={selectedRowKeys.length === 0}
+        style={{ borderColor: 'black', borderRadius: '50px' }}
+        onClick={downloadMultipleLabels}
+      >
+        Shipping Label
+      </Button>
             <Button disabled={selectedRowKeys.length !== 1} style={{ borderColor: 'gray', borderRadius:'50px' }}>
               <Link to={`/shipping/getInvoice/${selectedRowKeys[0]}`}>Invoice</Link>
             </Button>
-            <Button disabled={selectedRowKeys.length !== 1} style={{ borderColor: 'red', borderRadius:'50px' }} onClick={cancelShipment} >Cancel Shipment</Button>
+            <Button disabled={selectedRowKeys.length === 0} style={{ borderColor: 'red', borderRadius:'50px' }} onClick={cancelShipment} >Cancel Shipment</Button>
         </div>
   }
         </div>

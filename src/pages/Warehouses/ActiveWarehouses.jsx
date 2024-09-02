@@ -3,9 +3,10 @@ import { Button, Table, Tabs, Tag } from 'antd';
 import { Link, NavLink } from 'react-router-dom';
 import { useWarehouseContext } from '../../context/WarehouseContext';
 import { Helmet } from 'react-helmet';
-
+import { useAuthContext } from '../../context/AuthContext';
 const ActiveWarehouses = () => {
   const {warehouse,fetchWarehouse} = useWarehouseContext();
+  const {authUser} = useAuthContext()
   console.log(warehouse.warehouses);
     const newOrders = [
         {
@@ -43,7 +44,20 @@ const ActiveWarehouses = () => {
               <NavLink to={`${warehouse?._id}`} >Edit</NavLink>
             </>
           ),
-        }
+        },
+        ...(authUser?.role === 'admin'
+          ? [
+              {
+                title: 'Seller',
+                dataIndex: 'seller',
+                render: (text, warehouse) => (
+                  <>
+                    <div>{warehouse?.seller?.email}</div>
+                  </>
+                ),
+              },
+            ]
+          : []),
     ];
     
   const dataSourceWithKeys = warehouse?.warehouses?.map((warehouse, index) => ({

@@ -284,6 +284,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
       setModalLoading(false);
     }
   };
+  
   console.log(deliveryCosts);
   
   const newOrders = dataSource?.filter(order => order.status === 'New' || order.status === 'Cancelled');
