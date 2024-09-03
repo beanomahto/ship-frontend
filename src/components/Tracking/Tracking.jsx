@@ -28,6 +28,8 @@ const Tracking = () => {
             data[name] = value;
           });
           setTrackingInfo(data);
+          console.log(data);
+          
         } else {
           setTrackingInfo(response.data.trackingInfo);
         }

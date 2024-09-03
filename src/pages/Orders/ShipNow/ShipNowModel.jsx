@@ -7,7 +7,7 @@ import useShipNowCost from '../../../hooks/useShipNowCost';
 const ShipNowModel = ({ visible, onClose, onShipNow, selectedRowKeys, hasSelected }) => {
   const { deliveryPartners } = useDeliveryPartner();
   const { warehouse } = useWarehouseContext();
-  const { shipNowCost } = useShipNowCost(); // Hook to calculate shipping cost
+  const { shipNowCost } = useShipNowCost(); 
 
   const [selectedWarehouse, setSelectedWarehouse] = useState(warehouse?.warehouses?.[0]?._id || null);
   const [selectedDeliveryPartner, setSelectedDeliveryPartner] = useState(null);

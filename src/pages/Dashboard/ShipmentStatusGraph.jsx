@@ -16,7 +16,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend,
 
 const ShipmentStatusGraph = () => {
   const labels = [ 'Delivered', 'Returned','Shipped', 'With Incidents'];
-  const dataValues = [75, 18, 2, 1];
+  const dataValues = [0,0,0,0];
   const total = dataValues.reduce((acc, value) => acc + value, 0);
 
   const colors = ['#4caf50', '#2196f3', '#ff9800', '#f44336']; 

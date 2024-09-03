@@ -16,7 +16,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend,
 
 const TopDestinationsGraph = () => {
   const labels = ['Uttar Pradesh', 'Maharashtra', 'Karnataka', 'Haryana', 'Telangana'];
-  const dataValues = [77, 61, 49, 43, 43];
+  const dataValues = [0,0,0,0,0];
   const total = dataValues.reduce((acc, value) => acc + value, 0); 
 
   const colors = ['#4caf50', '#2196f3', '#ff9800', '#f44336', '#9c27b0']; 

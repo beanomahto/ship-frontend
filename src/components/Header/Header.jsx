@@ -22,7 +22,7 @@ const Header = ({ darktheme }) => {
       label: 'OrderId',
     },
   ];
-
+const amount = parseFloat(authUser?.amount.toFixed(2))
   const onSearch = (awb) => {
     const selectedOption = document.querySelector('.ant-select-selection-item')?.textContent.toLowerCase();
     if (selectedOption && awb) {
@@ -38,7 +38,7 @@ const Header = ({ darktheme }) => {
           <Search placeholder='Search AWB Number(s)' onSearch={onSearch} />
         </Space.Compact>
         <span className='span'></span>
-        <Button className='money' type="default">&#8377; {authUser?.amount}</Button>
+        <Button className='money' type="default">&#8377;  {amount}</Button>
         <span className='span'></span>
         {authUser ? (
           <>

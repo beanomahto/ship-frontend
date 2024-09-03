@@ -1,28 +1,23 @@
 [
+  {
+    "label": "Ecom Express",
+    "revenue": 91208,
+    "cost": 41893
+  },
     {
-      "label": "ExpressBees",
+      "label": "Xpressbees",
       "revenue": 54628,
       "cost": 42393
     },
     {
-      "label": "Delivery",
+      "label": "Delhivery",
       "revenue": 117238,
       "cost": 50262
     },
     {
-      "label": "Ecom",
-      "revenue": 91208,
-      "cost": 41893
-    },
-    {
-      "label": "Amazon ATS",
+      "label": "Amazon Shipping",
       "revenue": 82919,
       "cost": 37590
-    },
-    {
-      "label": "Shree Maruti",
-      "revenue": 62407,
-      "cost": 43349
     },
     {
       "label": "Blue Dart",
@@ -30,23 +25,18 @@
       "cost": 45324
     },
     {
-      "label": "Bhejoo",
+      "label": "Ekart",
       "revenue": 56979,
       "cost": 47978
     },
     {
-      "label": "Dec",
-      "revenue": 87436,
-      "cost": 39175
+      "label": "DTDC",
+      "revenue": 117238,
+      "cost": 50262
     },
     {
-      "label": "Delhivery Preferred",
-      "revenue": 82919,
-      "cost": 64731
-    },
-    {
-      "label": "Ecom Preferred",
-      "revenue": 62407,
+      "label": "Delhivery",
+      "revenue": 117238,
       "cost": 50262
     }
   ]
