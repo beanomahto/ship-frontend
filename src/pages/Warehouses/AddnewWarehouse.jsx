@@ -10,6 +10,7 @@ const AddnewWarehouse = () => {
     const {warehouse,fetchWarehouse} = useWarehouseContext();
     const navigate = useNavigate()
     const [inputs, setInputs] = useState({
+        warehouseName:'',
         contactPerson:'',
         contactEmail: '',
         contactNumber: '',
@@ -68,6 +69,13 @@ const AddnewWarehouse = () => {
             <p class="title">Create Warehouse</p>
 
             <div className="flex">
+                <label>
+                    <input class="input" type="text" placeholder="" required 
+                    value={inputs.warehouseName} 
+                    onChange={(e) => setInputs({ ...inputs, warehouseName: e.target.value })} 
+                    />
+                    <span>Warehouse Name</span>
+                </label>
                 <label>
                     <input class="input" type="text" placeholder="" required 
                     value={inputs.contactPerson} 

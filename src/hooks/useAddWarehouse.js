@@ -6,6 +6,7 @@ const useAddWarehouse = () => {
 
 	const addWarehouse = async ({
         contactPerson,
+		warehouseName,
         contactEmail,
         contactNumber,
        pincode,
@@ -15,6 +16,7 @@ const useAddWarehouse = () => {
        landmark,
        country,}) => {
 		const success = handleInputErrors({  contactPerson,
+			warehouseName,
             contactEmail,
             contactNumber,
            pincode,
@@ -30,7 +32,7 @@ const useAddWarehouse = () => {
 			const res = await fetch("https://backend.shiphere.in/api/warehouses/createWarehouse", {
 				method: "POST",
 				headers: { "Content-Type": "application/json",  Authorization: `${token}`, },
-				body: JSON.stringify({   contactPerson,contactEmail,contactNumber,pincode,city,state,address,landmark,country }),
+				body: JSON.stringify({   warehouseName,contactPerson,contactEmail,contactNumber,pincode,city,state,address,landmark,country }),
 			});
 
 			const data = await res.json();
@@ -50,12 +52,13 @@ const useAddWarehouse = () => {
 export default useAddWarehouse;
 
 function handleInputErrors( {  contactPerson,
+	warehouseName,
     contactEmail,
     contactNumber,
    address,
    landmark,}){
 
-	if( !contactPerson || !contactEmail || !contactNumber || !address || !landmark) {
+	if(!warehouseName || !contactPerson || !contactEmail || !contactNumber || !address || !landmark) {
 		alert("Please fill in all fields");
 		return false;
 	}
