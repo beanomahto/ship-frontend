@@ -10,7 +10,7 @@ const { Step } = Steps;
 const Tracking = () => {
   const [trackingInfo, setTrackingInfo] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [trackingHistory, setTrackingHistory] = useState([]);
+  const [steps, setSteps] = useState([]);
   const { shippingPartner, awb } = useParams();
 
   useEffect(() => {
@@ -29,10 +29,10 @@ const Tracking = () => {
             data[name] = value;
           });
           setTrackingInfo(data);
-          console.log(data);
+          updateSteps(data);
         } else {
           setTrackingInfo(response.data.trackingInfo);
-          setTrackingHistory(response.data.trackingInfo.trackingHistory || []);
+          updateSteps(response.data.trackingInfo);
         }
       } catch (error) {
         console.error('API error:', error);
@@ -40,6 +40,17 @@ const Tracking = () => {
       } finally {
         setLoading(false);
       }
+    };
+
+    const updateSteps = (newTrackingInfo) => {
+      setSteps(prevSteps => [
+        ...prevSteps,
+        {
+          status: newTrackingInfo.status,
+          tracking_status: newTrackingInfo.tracking_status,
+          updated_on: newTrackingInfo.updated_on
+        }
+      ]);
     };
 
     fetchTrackingInfo();
@@ -60,7 +71,7 @@ const Tracking = () => {
     return <p>No tracking information available.</p>;
   }
 
-  const progress = (trackingHistory.length / 3) * 100; // Assuming 3 is the maximum steps; adjust based on your data
+  const progress = (steps.length / 3) * 100; 
 
   return (
     <div style={{ padding: '20px', backgroundColor: '#ffffff', minHeight: '100vh' }}>
@@ -71,15 +82,8 @@ const Tracking = () => {
             <Descriptions bordered column={1} labelStyle={{ fontWeight: 'bold' }}>
               <Descriptions.Item label="AWB Number">{trackingInfo.awb_number}</Descriptions.Item>
               <Descriptions.Item label="Order ID">{trackingInfo.orderid}</Descriptions.Item>
-              <Descriptions.Item label="Actual Weight">{trackingInfo.actual_weight}</Descriptions.Item>
-              <Descriptions.Item label="Origin">{trackingInfo.origin}</Descriptions.Item>
-              <Descriptions.Item label="Destination">{trackingInfo.destination}</Descriptions.Item>
-              <Descriptions.Item label="Current Location Name">{trackingInfo.current_location_name}</Descriptions.Item>
-              <Descriptions.Item label="Current Location Code">{trackingInfo.current_location_code}</Descriptions.Item>
-              <Descriptions.Item label="Customer">{trackingInfo.customer}</Descriptions.Item>
+              <Descriptions.Item label="Destination">{trackingInfo.destination}</Descriptions.Item> 
               <Descriptions.Item label="Pincode">{trackingInfo.pincode}</Descriptions.Item>
-              <Descriptions.Item label="City">{trackingInfo.city}</Descriptions.Item>
-              <Descriptions.Item label="State">{trackingInfo.state}</Descriptions.Item>
             </Descriptions>
           </Card>
         </Col>
@@ -97,15 +101,15 @@ const Tracking = () => {
 
           <Card style={{ borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
             <Title level={4}>Tracking History</Title>
-            <Steps direction="vertical" current={trackingHistory.length - 1}>
-              {trackingHistory.map((step, index) => (
+            <Steps direction="vertical">
+              {steps.map((step, index) => (
                 <Step 
-                  key={index} 
-                  title={step.tracking_status} 
+                  key={index}
                   description={
                     <>
-                      <p>{step.location}</p>
-                      <p>{step.updated_time}</p>
+                      <p>{step.status}</p>
+                      <p>{step.tracking_status}</p>
+                      <p>{step.updated_on}</p>
                     </>
                   }
                 />
