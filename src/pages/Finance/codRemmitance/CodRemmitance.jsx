@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Table } from 'antd';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Button, Table, Input } from 'antd';
 import RemmitanceData from './RemmitanceData';
 import './codremmitance.css';
 import UploadCodRemittance from './UploadCodRemittance';
@@ -9,15 +9,18 @@ import CustomButton from '../../../components/Button/Button';
 import { useAuthContext } from '../../../context/AuthContext';
 import { Helmet } from 'react-helmet';
 import EarlyCodPopup from './EarlyCodPopup';
+import { CSVLink } from 'react-csv';
+
+const { Search } = Input;
 
 const CodRemmitance = () => {
   const { authUser } = useAuthContext();
-  console.log(authUser);
-  
   const [remittanceData, setRemittanceData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [searchModalVisible, setSearchModalVisible] = useState(false);
   const [earlyCodVisible, setEarlyCodVisible] = useState(false); 
+  const [searchText, setSearchText] = useState('');
+
   useEffect(() => {
     const fetchRemittance = async () => {
       try {
@@ -42,8 +45,43 @@ const CodRemmitance = () => {
   const closeSearchModal = () => setSearchModalVisible(false);
   const showEarlyCodModal = () => setEarlyCodVisible(true); 
   const closeEarlyCodModal = () => setEarlyCodVisible(false); 
-  console.log(remittanceData.remittances
-  );
+
+  // Function to check if any field contains the search text
+  const matchesSearchText = (record, searchText) => {
+    const lowercasedText = searchText.toLowerCase();
+    return (
+      moment(record?.remittances?.createdAt).format('DD-MM-YYYY').includes(lowercasedText) ||
+      (record?.refId?.toLowerCase().includes(lowercasedText)) ||
+      (record?.generatedCOD?.toString().toLowerCase().includes(lowercasedText)) ||
+      (record?.ecodCharge?.toString().toLowerCase().includes(lowercasedText)) ||
+      (record?.netCODAmt?.toString().toLowerCase().includes(lowercasedText)) ||
+      (record?.amountPaid?.toString().toLowerCase().includes(lowercasedText)) ||
+      (record?.transactionDetail?.toLowerCase().includes(lowercasedText)) ||
+      (record?.count?.toString().toLowerCase().includes(lowercasedText)) ||
+      (record?.status?.toLowerCase().includes(lowercasedText))
+    );
+  };
+
+  // Filtered data based on the search text across all fields
+  const filteredData = useMemo(() => {
+    return remittanceData.remittances?.filter((record) => matchesSearchText(record, searchText)) || [];
+  }, [remittanceData.remittances, searchText]);
+
+  // Function to convert data to CSV format
+  const generateCsvData = () => {
+    return filteredData.map(record => ({
+      'Generated Date': moment(record?.remittances?.createdAt).format('DD-MM-YYYY'),
+      'Ref ID': record.refId,
+      'Generated COD': record.generatedCOD,
+      'ECOD Charge': record.ecodCharge,
+      'Net COD Amt': record.netCODAmt,
+      'Amount Paid': record.amountPaid,
+      'Transaction Detail': record.transactionDetail,
+      'Count': record.count,
+      'Status': record.status,
+    }));
+  };
+
   const newOrders = [
     ...(authUser?.role === 'admin' ? [{
       title: 'Seller',
@@ -83,9 +121,7 @@ const CodRemmitance = () => {
       title: 'Count',
       dataIndex: 'count',
       render: (text, data) => (
-        <>
-          <div style={{ display: 'flex', justifyContent: 'center', fontFamily: 'sans-serif', fontSize: '1rem', marginRight: '3rem' }}>{data.count}</div>
-        </>
+        <div style={{ display: 'flex', justifyContent: 'center', fontFamily: 'sans-serif', fontSize: '1rem', marginRight: '3rem' }}>{data.count}</div>
       ),
     },
     {
@@ -96,35 +132,63 @@ const CodRemmitance = () => {
   console.log(remittanceData);
   return (
     <div>
-         <Helmet>
-                <meta charSet='utf-8' />
-                <meta name='keyword' content={""} />
-                <title>COD Remmitance</title>
-            </Helmet>
+      <Helmet>
+        <meta charSet='utf-8' />
+        <meta name='keyword' content={""} />
+        <title>COD Remittance</title>
+      </Helmet>
       <div style={{
         display: 'flex',
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         gap: '1rem',
         marginBottom: '1rem'
-      }} className="addorder">
+      }}>
         <CustomButton onClick={showModal}>Upload Remittance</CustomButton>
         <UploadCodRemittance visible={modalVisible} onClose={closeModal} />
         <CustomButton onClick={showSearchModal}>Search Seller</CustomButton>
         <SearchSellerModal visible={searchModalVisible} remittanceData={remittanceData} onClose={closeSearchModal} />
-        <Button style={{borderRadius:'34px'}} onClick={showEarlyCodModal}>Early COD</Button>
+        <Button style={{ borderRadius: '34px' }} onClick={showEarlyCodModal}>Early COD</Button>
+      </div>  
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '1rem',
+        marginBottom: '1rem'
+      }}>
+        <Search
+          placeholder="Search across all fields"
+          onSearch={value => setSearchText(value)}
+          onChange={e => setSearchText(e.target.value)}
+          value={searchText}
+          style={{ width: 300 }}
+        />
+        <Button onClick={() => setSearchText('')} style={{ borderRadius: '34px' }}>
+          X
+        </Button>
+        {filteredData.length > 0 && (
+          <CSVLink
+            data={generateCsvData()}
+            filename={"filtered_remittance_data.csv"}
+            className="ant-btn ant-btn-primary"
+          >
+            <Button style={{ borderRadius: '34px' }}>Download CSV</Button>
+          </CSVLink>
+        )}
       </div>
-      <RemmitanceData remittanceData={remittanceData.remittances} />
+      <RemmitanceData remittanceData={filteredData} />
       <Table
         className='table'
         scroll={{ y: 350 }}
         columns={newOrders}
-        dataSource={remittanceData.remittances}
+        dataSource={filteredData}
         rowKey="id"
         pagination={false}
       />
-       <EarlyCodPopup visible={earlyCodVisible} onClose={closeEarlyCodModal} /> 
+      <EarlyCodPopup visible={earlyCodVisible} onClose={closeEarlyCodModal} />
     </div>
   );
+  
 };
 
 export default CodRemmitance;

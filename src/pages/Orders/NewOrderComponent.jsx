@@ -226,30 +226,59 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
     try {
       setModalLoading(true);
       const selectedOrder = dataSource.find(order => order._id === selectedOrderId);
-      const partnerCost = partner.cost;
-      const totalDebit = partnerCost;
+      
+      const { codCost, forwardCost } = partner;
+      const totalDebit = forwardCost;
       
       setCurrentDeliveryCost(totalDebit);
-      await shipOrder(selectedOrder._id, warehouse?.warehouses?.[0]?._id, partner.deliveryPartner )
-      const walletRequestBody = {
-        debit: totalDebit,
+      
+      await shipOrder(
+        selectedOrder._id, 
+        warehouse?.warehouses?.[0]?._id, 
+        partner.deliveryPartner
+      );
+      
+      if (codCost > 0) {
+        const codWalletRequestBody = {
+          debit: codCost,
+          userId: selectedOrder.seller._id,
+          remark: `COD charge for order ${selectedOrder.orderId}`,
+          orderId: selectedOrder._id,
+        };
+        const codWalletResponse = await axios.post(
+          'https://backend.shiphere.in/api/transactions/decreaseAmount',
+          codWalletRequestBody,
+          {
+            headers: {
+              Authorization: localStorage.getItem('token'),
+            },
+          }
+        );
+  
+        if (codWalletResponse.status !== 200) {
+          message.error("Failed to debit COD cost from wallet");
+          return; // Exit the function if the COD cost debit fails
+        }
+      }
+  
+      // Decrease wallet amount for forwardCost
+      const forwardWalletRequestBody = {
+        debit: forwardCost,
         userId: selectedOrder.seller._id,
-        remark: `Shipping charge for order ${selectedOrder.orderId}`,
+        remark: `Forward charge for order ${selectedOrder.orderId}`,
         orderId: selectedOrder._id,
       };
-      console.log(walletRequestBody);
-      const walletResponse = await axios.post(
+      const forwardWalletResponse = await axios.post(
         'https://backend.shiphere.in/api/transactions/decreaseAmount',
-        walletRequestBody,
+        forwardWalletRequestBody,
         {
           headers: {
             Authorization: localStorage.getItem('token'),
           },
         }
       );
-      console.log(walletResponse);
-      
-      if (walletResponse.status === 200) {
+  
+      if (forwardWalletResponse.status === 200) {
         const updateBody = {
           status: 'Shipped',
           shippingCost: totalDebit,
@@ -263,8 +292,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
             },
           }
         );
-        console.log(updateBody);
-      
+        
         if (orderResponse.status === 201) {
           message.success("Shipped successfully");
           fetchOrders();
@@ -275,7 +303,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
           message.error("Failed to update order status");
         }
       } else {
-        message.error("Failed to debit wallet");
+        message.error("Failed to debit forward cost from wallet");
       }
     } catch (error) {
       message.error("Issue in shipping");
@@ -284,6 +312,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
       setModalLoading(false);
     }
   };
+  
   
   console.log(deliveryCosts);
   

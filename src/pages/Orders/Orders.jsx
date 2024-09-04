@@ -18,13 +18,11 @@ import LabelGenerator from './LabelGenerator/LabelGenerator';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import moment from 'moment';
-import useInvoiceGenerator from './useInvoiceGenerator';
 const { TabPane } = Tabs;
 
 const Orders = () => {
   const { shipNowCost } = useShipNowCost();
   const { warehouse } = useWarehouseContext();
-  // const { isModalVisible, showModall, handleOk, downloadInvoices } = useInvoiceGenerator();
   const [deliveryCosts, setDeliveryCosts] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -308,7 +306,6 @@ const inTransitOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 
     }
 };
 
-  
   useEffect(() => {
     const fetchDeliveryCost = async () => {
       if (selectedOrderId) {
@@ -582,17 +579,17 @@ const downloadInvoices = async () => {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }} className="addorder">
        {currentTab === 'tab1' &&  <Button type="primary" style={{ alignSelf: 'flex-start', borderRadius:'34px',fontFamily:'Poppins', fontSize:'1rem', fontWeight:'500' }} onClick={start} loading={loading}>Sync</Button>}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '2rem', fontSize:'2rem',fontFamily:'Poppins' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '4rem', fontSize:'2rem',fontFamily:'Poppins' }}>
           {currentTab === 'tab1' && <Button style={{borderRadius:'34px'}} disabled={!hasSelected} onClick={showModalShipNow}>Ship Now</Button>}
 
 {
   <div>
-  <div style={{ display: 'flex', justifyContent: 'space-between',flexDirection:'row', gap: '65rem' }}>
-  <Button type="primary" shape="round" onClick={exportToExcel} icon={<DownloadOutlined />} size='middle'>
+  <div style={{ display: 'flex', justifyContent: 'space-between',flexDirection:'row', gap: '60rem' }}>
+  <Button type="primary" shape="round" onClick={exportToExcel} icon={<DownloadOutlined />} style={{minWidth:'9rem',}} size='middle'>
             Download
           </Button>
   {
-      currentTab === 'tab2' &&   <div style={{display:'flex',justifyContent:'space-evenly', gap:'2rem'}} >
+      currentTab === 'tab2' &&   <div style={{display:'flex',justifyContent:'space-evenly', gap:'3rem'}} >
         <Button
         disabled={selectedRowKeys.length === 0}
         style={{ borderColor: 'black', borderRadius: '50px' }}
