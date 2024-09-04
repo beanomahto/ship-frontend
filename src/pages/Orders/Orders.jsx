@@ -18,11 +18,13 @@ import LabelGenerator from './LabelGenerator/LabelGenerator';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import moment from 'moment';
+import useInvoiceGenerator from './useInvoiceGenerator';
 const { TabPane } = Tabs;
 
 const Orders = () => {
   const { shipNowCost } = useShipNowCost();
   const { warehouse } = useWarehouseContext();
+  // const { isModalVisible, showModall, handleOk, downloadInvoices } = useInvoiceGenerator();
   const [deliveryCosts, setDeliveryCosts] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -325,6 +327,12 @@ const inTransitOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 
   console.log(selectedRowKeys);
   
   const downloadMultipleLabels = async () => {
+    const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'in',
+        format: [4, 6],
+    });
+
     for (const orderId of selectedRowKeys) {
         try {
             const token = localStorage.getItem('token');
@@ -333,6 +341,7 @@ const inTransitOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 
                     Authorization: `${token}`,
                 },
             });
+
             const labelData = response.data;
             const labelContainer = document.createElement('div');
             labelContainer.style.position = 'absolute';
@@ -342,6 +351,26 @@ console.log(labelData);
 
             const logoBase64 = await getBase64ImageFromUrl(labelData.logoUrl);
             const labelHtml = `
+                 <style>
+          .label-container {
+            font-weight: bold;
+          }
+          .label-section {
+            margin-bottom: 0.5rem;
+          }
+          .label-section img {
+            width: 11rem;
+          }
+          .label-section p {
+            margin: 0;
+          }
+            p{
+             font-weight: 500;
+            }
+          .label-section div {
+            margin-bottom: 0.5rem;
+          }
+        </style>
                 <div class="label-container">
                     <h1 style="text-align: center;">Shipping Label</h1>
                     <p><strong>Order Id:-</strong> ${labelData?.orderId}</p>
@@ -350,16 +379,12 @@ console.log(labelData);
                             <img style="width: 11rem;" src="data:image/png;base64,${labelData.barcode}" alt="Barcode" />
                             <p>${labelData.shippingPartner}</p>
                         </div>
-                        ${logoBase64 ? `
-                            <div class="labelSection" style="width: 12rem;">
-                                <img style="width: 9rem;" src="${logoBase64}" alt="Logo" />
-                            </div>` : ''}
                     </div>
                     <div class="labelSection">
                         <p><strong>Ship To:</strong></p>
                         <p><strong>${labelData.customerName}</strong></p>
-                        <p>${labelData?.returnWarehouse?.address} ${labelData?.returnWarehouse?.state} ${labelData?.returnWarehouse?.city} ${labelData?.returnWarehouse?.country}</p>
-                        <p><strong>PIN:</strong> ${labelData.customerPin}</p>
+                        <p>${labelData?.address?.address} ${labelData?.address?.city} ${labelData?.returnWarehouse?.city} ${labelData?.returnWarehouse?.state}</p>
+                        <p><strong>PIN:</strong> ${labelData.address?.pincode}</p>
                     </div>
                     <div style="display: flex;">
                         <div class="labelSection" style="width: 16rem;">
@@ -406,13 +431,12 @@ console.log(labelData);
 
             const canvas = await html2canvas(labelContainer);
             const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF({
-                orientation: 'portrait',
-                unit: 'in',
-                format: [4, 6],
-            });
+
             pdf.addImage(imgData, 'PNG', 0, 0, 4, 6);
-            pdf.save(`shipping_label_${orderId}.pdf`);
+
+            if (orderId !== selectedRowKeys[selectedRowKeys.length - 1]) {
+                pdf.addPage();
+            }
 
             document.body.removeChild(labelContainer);
         } catch (error) {
@@ -420,25 +444,139 @@ console.log(labelData);
             alert(`Error generating label for order ID ${orderId}`);
         }
     }
+
+    pdf.save('labels.pdf');
 };
 
-
-  const getBase64ImageFromUrl = async (imageUrl) => {
+const getBase64ImageFromUrl = async (imageUrl) => {
     try {
-      const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
-      const base64 = btoa(
-        new Uint8Array(response.data).reduce(
-          (data, byte) => data + String.fromCharCode(byte),
-          ''
-        )
-      );
-      return `data:image/png;base64,${base64}`;
+        const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+        const base64 = btoa(
+            new Uint8Array(response.data).reduce(
+                (data, byte) => data + String.fromCharCode(byte),
+                ''
+            )
+        );
+        return `data:image/png;base64,${base64}`;
     } catch (error) {
-      console.error('Error converting image to base64:', error.message);
-      return null;
+        console.error('Error converting image to base64:', error.message);
+        return null;
     }
-  };
+};
 
+const downloadInvoices = async () => {
+  const pdf = new jsPDF({
+    orientation: 'portrait',
+    unit: 'pt',
+    format: 'a4',
+  });
+
+  const promises = selectedRowKeys.map(orderId =>
+    fetch(`https://backend.shiphere.in/api/shipping/getinvoice/${orderId}`, {
+      headers: {
+        Authorization: `${localStorage.getItem('token')}`,
+      },
+    })
+      .then(response => response.json())
+      .then(data => {
+        const invoiceData = data.invoiceData;
+        console.log(invoiceData);
+        
+        // Create a hidden div to render the invoice
+        const invoiceDiv = document.createElement('div');
+        invoiceDiv.style.position = 'absolute';
+        invoiceDiv.style.left = '-9999px';
+        invoiceDiv.style.width = '595.28pt'; // A4 width in points
+        invoiceDiv.style.minHeight = '841.89pt'; // A4 height in points
+        invoiceDiv.style.padding = '2rem';
+        invoiceDiv.style.fontFamily = 'Arial, sans-serif';
+        invoiceDiv.style.boxSizing = 'border-box';
+
+        invoiceDiv.innerHTML = `
+          <div class="invoice-container" style="padding: 2rem; font-family: Arial, sans-serif;">
+            <div class="invoice-section">
+              <div class="invoice-header">
+                <div class="sold-by" style="padding: 12px; border: 1px solid #000000;">
+                  <h2>Sold By:</h2>
+                  <p style="font-style: italic;">${invoiceData?.sellerName}</p>
+                  <p style="font-style: italic;">${invoiceData?.sellerAddress}</p>
+                  <p style="font-style: italic;">GSTIN No.: ${invoiceData?.sellerGSTIN}</p>
+                </div>
+                <div class="delivered-to" style="padding: 12px; border: 1px solid #000000;">
+                  <h2>Delivered To:</h2>
+                  <p style="font-style: italic;">${invoiceData?.customerName}</p>
+                  <p style="font-style: italic;">${invoiceData?.customerAddress}</p>
+                </div>
+              </div>
+              <div class="invoice-details" style="padding: 12px; border: 1px solid #000000;">
+                <p style="font-style: italic;"><strong>Invoice No.: </strong>${invoiceData.invoiceNumber}</p>
+                <p style="font-style: italic;"><strong>Invoice Date: </strong>${invoiceData.invoiceDate}</p>
+                <p style="font-style: italic;"><strong>Order Date: </strong>${invoiceData.orderDate}</p>
+              </div>
+            </div>
+            <div class="invoice-items" style="border: 1px solid #000000; width: 100%; border-collapse: collapse;">
+              <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                  <tr>
+                    <th style="border: 1px solid #ddd; padding: 5px; background-color: #f4f4f4;">Qty</th>
+                    <th style="border: 1px solid #ddd; padding: 5px; background-color: #f4f4f4;">Dimensions</th>
+                    <th style="border: 1px solid #ddd; padding: 5px; background-color: #f4f4f4;">Unit Price</th>
+                    <th style="border: 1px solid #ddd; padding: 5px; background-color: #f4f4f4;">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="border: 1px solid #ddd; padding: 5px;">${invoiceData?.quantity}</td>
+                    <td style="border: 1px solid #ddd; padding: 5px;">${invoiceData?.dimensions.length}x${invoiceData?.dimensions.breadth}x${invoiceData?.dimensions.height}</td>
+                    <td style="border: 1px solid #ddd; padding: 5px;">${invoiceData?.unitPrice}</td>
+                    <td style="border: 1px solid #ddd; padding: 5px;">${invoiceData?.totalPrice}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="invoice-footer" style="padding: 7px; border: 1px solid #000000;">
+              <p style="font-style: italic;">Net Amount Payable (In Words): <strong>${invoiceData.netAmountInWords}</strong></p>
+            </div>
+          </div>
+        `;
+
+        document.body.appendChild(invoiceDiv);
+
+        return html2canvas(invoiceDiv, { scale: 2 }).then(canvas => {
+          const imgData = canvas.toDataURL('image/png');
+          const imgWidth = 595.28; // A4 width in points
+          const pageHeight = 841.89; // A4 height in points
+          const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+          let heightLeft = imgHeight;
+          let position = 0;
+
+          if (orderId !== selectedRowKeys[0]) {
+            pdf.addPage(); // Add a new page for each invoice if needed
+          }
+          
+          // Add image to the PDF and manage page breaks
+          while (heightLeft > 0) {
+            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, Math.min(imgHeight, pageHeight));
+            heightLeft -= pageHeight;
+            position = heightLeft > 0 ? -pageHeight : 0;
+            if (heightLeft > 0) {
+              pdf.addPage();
+            }
+          }
+
+          document.body.removeChild(invoiceDiv);
+        });
+      })
+      .catch(error => {
+        console.error("Error generating invoice:", error);
+      })
+  );
+
+  Promise.all(promises).then(() => {
+    pdf.save('all_invoices.pdf');
+  });
+};
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -462,9 +600,10 @@ console.log(labelData);
       >
         Shipping Label
       </Button>
-            <Button disabled={selectedRowKeys.length !== 1} style={{ borderColor: 'gray', borderRadius:'50px' }}>
-              <Link to={`/shipping/getInvoice/${selectedRowKeys[0]}`}>Invoice</Link>
-            </Button>
+      {/* <Button disabled={selectedRowKeys.length === 0} style={{ borderColor: 'gray', borderRadius: '50px' }} onClick={downloadInvoices}>
+                    Invoice
+                  </Button> */}
+                  <Button disabled={selectedRowKeys.length !== 1} style={{ borderColor: 'gray', borderRadius: '50px' }}><Link to={`/shipping/getInvoice/${selectedRowKeys[0]}`} >Invoice</Link></Button>
             <Button disabled={selectedRowKeys.length === 0} style={{ borderColor: 'red', borderRadius:'50px' }} onClick={cancelShipment} >Cancel Shipment</Button>
         </div>
   }

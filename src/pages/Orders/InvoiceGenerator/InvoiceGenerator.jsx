@@ -5,7 +5,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import moment from 'moment';
 import { toWords } from 'number-to-words';
-import './InvoiceGenerator.css';
+// import './InvoiceGenerator.css';
 
 const InvoiceGenerator = () => {
   const { id } = useParams(); // Get the ID from the route parameters
@@ -41,22 +41,35 @@ const InvoiceGenerator = () => {
   };
 
   const downloadInvoice = () => {
-    html2canvas(invoiceRef.current).then((canvas) => {
+    html2canvas(invoiceRef.current, { scale: 2 }).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'pt',
-        format: [595.28, 841.89],
+        format: 'a4',
       });
-
+  
       const imgWidth = 595.28;
+      const pageHeight = 841.89;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+      let heightLeft = imgHeight;
+  
+      let position = 0;
+  
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+  
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+  
       pdf.save('invoice.pdf');
     });
   };
-
+  
   if (isLoading) {
     return <div>Loading...</div>;
   }
