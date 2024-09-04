@@ -6,17 +6,20 @@ import shopifyInt from "../../../utils/shopifyInt.png.jpg";
 import woo from "../../../utils/woocomerce.png";
 
 const WooCommerce = () => {
-  const { slug } = useParams();
+  // const { slug } = useParams();
+  // console.log(slug);
+  const slug = "wooCommerce"
+  console.log(slug);
+  
   const [data, setData] = useState(null);
   const [storeInputs, setStoreInputs] = useState({
     storeName: "",
-    salesChannel: "",
+    salesChannel: slug,
     apiKey: "",
     apiSecret: "",
-    token: "",
+    token: "tokenioioi",
   });
-  const { channelIntegration } = useChannelIntegration();
-
+  
   useEffect(() => {
     const getChannelInfo = async () => {
       try {
@@ -30,30 +33,67 @@ const WooCommerce = () => {
           }
         );
         const result = await res.json();
-        setData(result);
-        setStoreInputs({
-          storeName: result.storeName || "",
-          salesChannel: result.salesChannel || "",
-          apiKey: result.apiKey || "",
-          apiSecret: result.apiSecret || "",
-          token: result.token || "",
-        });
+  console.log(result);
+  
+        if (result.storeName) {
+          setData(result);
+          setStoreInputs({
+            storeName: result.storeName || "",
+            salesChannel: result.salesChannel || "",
+            apiKey: result.apiKey || "",
+            apiSecret: result.apiSecret || "",
+            token: result.token || "",
+          });
+        } else {
+          console.error("Invalid response or API key not found");
+        }
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching channel info:", error);
       }
     };
+  
     getChannelInfo();
   }, [slug]);
+console.log(data);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (data) {
-      await updateChannelInfo();
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    if (data === null) {
+      await integrateWooCommerceChannel();
+      message.success("Channel created successfully");
     } else {
-      await channelIntegration(storeInputs);
-      message.success("Integrated Successfully");
+      await updateChannelInfo();
     }
-  };
+  } catch (error) {
+    message.error("An error occurred while integrating the channel");
+  }
+};
+console.log(storeInputs);
+
+const integrateWooCommerceChannel = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await fetch(
+      `https://backend.shiphere.in/api/integration/createApi`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+        body: JSON.stringify(storeInputs),
+      }
+    );
+  console.log(storeInputs);
+  console.log(await res.json());
+
+  } catch (error) {
+    console.error("Error integrating Shopify channel:", error);
+    throw error;
+  }
+};
 
   const updateChannelInfo = async () => {
     try {
@@ -160,7 +200,7 @@ const WooCommerce = () => {
                 type="text"
                 placeholder=""
                 required
-                value={slug}
+                value={storeInputs.apiKey}
                 onChange={(e) =>
                   setStoreInputs({ ...storeInputs, apiKey: e.target.value })
                 }

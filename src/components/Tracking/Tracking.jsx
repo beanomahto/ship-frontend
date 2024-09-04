@@ -10,6 +10,7 @@ const { Step } = Steps;
 const Tracking = () => {
   const [trackingInfo, setTrackingInfo] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [trackingHistory, setTrackingHistory] = useState([]);
   const { shippingPartner, awb } = useParams();
 
   useEffect(() => {
@@ -29,9 +30,9 @@ const Tracking = () => {
           });
           setTrackingInfo(data);
           console.log(data);
-          
         } else {
           setTrackingInfo(response.data.trackingInfo);
+          setTrackingHistory(response.data.trackingInfo.trackingHistory || []);
         }
       } catch (error) {
         console.error('API error:', error);
@@ -59,13 +60,7 @@ const Tracking = () => {
     return <p>No tracking information available.</p>;
   }
 
-  const trackingHistory = [
-    { status: 'Dispatched', location: 'OKHLA-OKR', date: '2024-09-01 10:00' },
-    { status: 'In Transit', location: 'DELHI-DLJ', date: '2024-09-02 14:00' },
-    { status: 'Delivered', location: 'DELHI-DLJ', date: '2024-09-03 18:00' }
-  ];
-
-  const progress = (trackingHistory.length / 3) * 100; 
+  const progress = (trackingHistory.length / 3) * 100; // Assuming 3 is the maximum steps; adjust based on your data
 
   return (
     <div style={{ padding: '20px', backgroundColor: '#ffffff', minHeight: '100vh' }}>
@@ -106,11 +101,11 @@ const Tracking = () => {
               {trackingHistory.map((step, index) => (
                 <Step 
                   key={index} 
-                  title={step.status} 
+                  title={step.tracking_status} 
                   description={
                     <>
                       <p>{step.location}</p>
-                      <p>{step.date}</p>
+                      <p>{step.updated_time}</p>
                     </>
                   }
                 />
