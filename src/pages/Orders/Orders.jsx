@@ -56,6 +56,7 @@ console.log(selectedOrderData);
       if (response.ok) {
         const result = await response.json();
         console.log('Sync successful', result);
+        message.success('Sync successful');
       } else {
         console.error('Sync failed', response.statusText);
       }

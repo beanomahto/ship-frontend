@@ -136,7 +136,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
       render: (text, order) => (
         <div style={{ fontFamily: 'Poppins', fontSize: '.9rem', fontWeight: '500', textAlign: 'center' }}>
           <div>{order.customerName}</div>
-          <div>{order.customerEmail}</div>
+          <div>{order.customerPhone}</div>
         </div>
       ),
       className: 'centered-row',
@@ -257,11 +257,10 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
   
         if (codWalletResponse.status !== 200) {
           message.error("Failed to debit COD cost from wallet");
-          return; // Exit the function if the COD cost debit fails
+          return; 
         }
       }
   
-      // Decrease wallet amount for forwardCost
       const forwardWalletRequestBody = {
         debit: forwardCost,
         userId: selectedOrder.seller._id,

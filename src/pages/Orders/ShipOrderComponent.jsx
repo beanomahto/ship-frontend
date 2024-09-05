@@ -94,7 +94,7 @@ const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) =
       render: (text, order) => (
         <>
           <div>{order.customerName}</div>
-          <div>{order.customerEmail}</div>
+          <div>{order.customerPhone}</div>
         </>
       ),
       className: 'centered-row',

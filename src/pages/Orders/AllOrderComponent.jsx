@@ -55,7 +55,6 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading }) => {
     ),
     filterIcon: (filtered) => <SearchOutlined style={{ color: filtered ? '#1890ff' : 'black' }} />,
     onFilter: (value, record) => {
-      // Split the dataIndex in case it represents a nested field
       const keys = dataIndex.split('.');
       let data = record;
       keys.forEach(key => {
@@ -101,7 +100,7 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading }) => {
       render: (text, order) => (
         <>
           <div>{order.customerName}</div>
-          <div>{order.customerEmail}</div>
+          <div>{order.customerPhone}</div>
         </>
       ),
     },

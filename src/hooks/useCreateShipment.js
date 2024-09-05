@@ -25,7 +25,6 @@ const useCreateShipment = () => {
           log = 'amazon hit';
           break;
         case 'Xpressbees':
-        //   url = 'https://backend.shiphere.in/api/xpressbees/createShipment';
           url = 'https://backend.shiphere.in/api/xpressbees/createShipment';
           log = 'xpress hit';
           break;
@@ -58,7 +57,6 @@ const useCreateShipment = () => {
       return response.data;
     } catch (err) {
       console.log(err);
-      
       setError(err.response?.data?.message || 'An error occurred');
       throw err;
     } finally {

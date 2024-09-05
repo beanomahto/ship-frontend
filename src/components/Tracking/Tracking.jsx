@@ -71,7 +71,8 @@ const Tracking = () => {
     return <p>No tracking information available.</p>;
   }
 
-  const progress = (steps.length / 3) * 100; 
+  const totalSteps = 5; 
+  const progressPercentage = ((steps.length / totalSteps) * 100).toFixed(2);
 
   return (
     <div style={{ padding: '20px', backgroundColor: '#ffffff', minHeight: '100vh' }}>
@@ -92,9 +93,9 @@ const Tracking = () => {
           <Card style={{ borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)', marginBottom: '20px' }}>
             <Title level={4}>Shipment Progress</Title>
             <Progress 
-              percent={progress} 
-              status={progress === 100 ? 'success' : 'active'} 
-              strokeColor={progress === 100 ? '#52c41a' : '#1890ff'} 
+              percent={parseFloat(progressPercentage)} 
+              status={parseFloat(progressPercentage) === 100 ? 'success' : 'active'} 
+              strokeColor={parseFloat(progressPercentage) === 100 ? '#52c41a' : '#1890ff'} 
               showInfo={true}
             />
           </Card>
@@ -107,9 +108,9 @@ const Tracking = () => {
                   key={index}
                   description={
                     <>
-                      <p>{step.status}</p>
-                      <p>{step.tracking_status}</p>
-                      <p>{step.updated_on}</p>
+                      <p style={{ color: index === steps.length - 1 ? '#1890ff' : '#000' }}>{step.status}</p>
+                      <p style={{ color: index === steps.length - 1 ? '#1890ff' : '#000' }}>{step.tracking_status}</p>
+                      <p style={{ color: index === steps.length - 1 ? '#1890ff' : '#000' }}>{step.updated_on}</p>
                     </>
                   }
                 />
@@ -118,7 +119,6 @@ const Tracking = () => {
           </Card>
         </Col>
       </Row>
-
       <Divider style={{ marginTop: '40px' }} />
 
       <div style={{ textAlign: 'center', padding: '20px', backgroundColor: '#f0f2f5' }}>
@@ -132,7 +132,7 @@ const Tracking = () => {
           </a>
           <a href="https://www.linkedin.com/company/shiphere" target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px' }}>
             <FaLinkedinIn size={20} />
-          </a>
+          </a>  
           <a href="https://www.instagram.com/ship_here_/?igsh=MWxmZzgzbTNzcHk0dA%3D%3D" target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px' }}>
             <FaInstagram size={20} />
           </a>
