@@ -144,19 +144,20 @@ const CodRemmitance = () => {
         gap: '1rem',
         marginBottom: '1rem'
       }}>
-        <CustomButton onClick={showModal}>Upload Remittance</CustomButton>
         <UploadCodRemittance visible={modalVisible} onClose={closeModal} />
-        <CustomButton onClick={showSearchModal}>Search Seller</CustomButton>
-        <SearchSellerModal visible={searchModalVisible} remittanceData={remittanceData} onClose={closeSearchModal} />
-        <Button style={{ borderRadius: '34px' }} onClick={showEarlyCodModal}>Early COD</Button>
+        {/* <CustomButton onClick={showSearchModal}>Search Seller</CustomButton>
+        <SearchSellerModal visible={searchModalVisible} remittanceData={remittanceData} onClose={closeSearchModal} /> */}
       </div>  
       <div style={{
         display: 'flex',
         alignItems: 'center',
         gap: '1rem',
+        justifyContent:'space-between',
         marginBottom: '1rem'
       }}>
-        <Search
+
+     <div style={{display:'flex', gap:'2rem'}} >
+     <Search
           placeholder="Search across all fields"
           onSearch={value => setSearchText(value)}
           onChange={e => setSearchText(e.target.value)}
@@ -172,9 +173,14 @@ const CodRemmitance = () => {
             filename={"filtered_remittance_data.csv"}
             className="ant-btn ant-btn-primary"
           >
-            <Button style={{ borderRadius: '34px' }}>Download CSV</Button>
+            <Button style={{ borderRadius: '' }}>Download CSV</Button>
           </CSVLink>
         )}
+     </div>
+     <div style={{display:'flex', gap:'2rem'}} >
+          <Button style={{ borderRadius: '34px' }} onClick={showEarlyCodModal}>Early COD</Button>
+        <CustomButton onClick={showModal}>Upload Remittance</CustomButton>
+        </div>
       </div>
       <RemmitanceData remittanceData={filteredData} />
       <Table

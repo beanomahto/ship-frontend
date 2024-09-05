@@ -11,7 +11,7 @@ const ActiveWarehouses = () => {
     const newOrders = [
         {
           title: 'Warehouse Name',
-          dataIndex: 'address',
+          dataIndex: 'warehouseName',
         },
         {
           title: 'Contact Details',
