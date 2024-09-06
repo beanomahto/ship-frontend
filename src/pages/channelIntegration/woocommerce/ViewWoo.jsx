@@ -5,7 +5,7 @@ import { message } from "antd";
 import shopifyInt from "../../../utils/shopifyInt.png.jpg";
 import woo from "../../../utils/woocomerce.png";
 
-const WooCommerce = () => {
+const ViewWoo = () => {
   // const { slug } = useParams();
   // console.log(slug);
   const slug = "wooCommerce"
@@ -20,41 +20,41 @@ const WooCommerce = () => {
     token: "tokenioioi",
   });
   
-//   useEffect(() => {
-//     const getChannelInfo = async () => {
-//       try {
-//         const token = localStorage.getItem("token");
-//         const res = await fetch(
-//           `https://backend.shiphere.in/api/integration/getApi/${slug}`,
-//           {
-//             headers: {
-//               Authorization: `${token}`,
-//             },
-//           }
-//         );
-//         const result = await res.json();
-//   console.log(result);
+  useEffect(() => {
+    const getChannelInfo = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await fetch(
+          `https://backend.shiphere.in/api/integration/getApi/${slug}`,
+          {
+            headers: {
+              Authorization: `${token}`,
+            },
+          }
+        );
+        const result = await res.json();
+  console.log(result);
   
-//         if (result.storeName) {
-//           setData(result);
-//           setStoreInputs({
-//             storeName: result.storeName || "",
-//             salesChannel: result.salesChannel || "",
-//             apiKey: result.apiKey || "",
-//             apiSecret: result.apiSecret || "",
-//             token: result.token || "",
-//           });
-//         } else {
-//           console.error("Invalid response or API key not found");
-//         }
-//       } catch (error) {
-//         console.error("Error fetching channel info:", error);
-//       }
-//     };
+        if (result.storeName) {
+          setData(result);
+          setStoreInputs({
+            storeName: result.storeName || "",
+            salesChannel: result.salesChannel || "",
+            apiKey: result.apiKey || "",
+            apiSecret: result.apiSecret || "",
+            token: result.token || "",
+          });
+        } else {
+          console.error("Invalid response or API key not found");
+        }
+      } catch (error) {
+        console.error("Error fetching channel info:", error);
+      }
+    };
   
-//     getChannelInfo();
-//   }, [slug]);
-// console.log(data);
+    getChannelInfo();
+  }, [slug]);
+console.log(data);
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -158,8 +158,8 @@ const integrateWooCommerceChannel = async () => {
         </ol>
       </div>
       <div className="inte">
-        <form className="form" onSubmit={handleSubmit}>
-          <p className="title">Integrate WooCommerce</p>
+        <form className="form">
+          <p className="title">Your WooCommerce Channel</p>
           <div className="flex">
             <label>
               <input
@@ -243,4 +243,4 @@ const integrateWooCommerceChannel = async () => {
   );
 };
 
-export default WooCommerce;
+export default ViewWoo;

@@ -70,4 +70,31 @@
    .steps ol ul{
     padding-left: 3rem;
    }
-   
+   .channelINMain {
+    padding: 20px;
+  }
+  
+  .channelsToIn {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap; /* Allow items to wrap onto the next line */
+  }
+  
+  .channelCard {
+    width: 250px; /* Set a fixed width for cards */
+    text-align: center;
+    margin-bottom: 16px; /* Add some spacing between rows */
+  }
+  
+  .userChannels {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap; /* Allow items to wrap onto the next line */
+  }
+  
+  .userChannels .channelCard {
+    width: 250px; /* Set a fixed width for cards */
+    text-align: center;
+    margin-bottom: 16px; /* Add some spacing between rows */
+  }
+  

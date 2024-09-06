@@ -90,6 +90,7 @@ const UpdateWarehouse = () => {
                 },
                 body: JSON.stringify(inputs),
             });
+console.log(response);
 
             if (response.ok) {
                 navigate('/warehouse'); 

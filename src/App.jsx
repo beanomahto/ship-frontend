@@ -47,6 +47,8 @@ import Settings from "./pages/Settings/Settings";
 import Login1 from "./pages/Login/Login1";
 import Signup1 from "./pages/Signup/Signup1";
 import UpdateWarehouse from "./pages/Warehouses/updateWarehouse/UpdateWarehouse";
+import ViewShopify from "./pages/channelIntegration/shopify/ViewShopify";
+import ViewWoo from "./pages/channelIntegration/woocommerce/ViewWoo";
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -163,8 +165,14 @@ const App = () => {
           <Route path="channelintegration/Shopify" element={
               <ProtectedRoute><Shopify /></ProtectedRoute>
             }/>
+          <Route path="channelintegration/yourChannel/shopify" element={
+              <ProtectedRoute><ViewShopify /></ProtectedRoute>
+            }/>
           <Route path="channelintegration/WooCommerce" element={
               <ProtectedRoute><WooCommerce /></ProtectedRoute>
+            }/>
+          <Route path="channelintegration/yourChannel/wooCommerce" element={
+              <ProtectedRoute><ViewWoo /></ProtectedRoute>
             }/>
         </Route>
         <Route path="signup" element={<Signup1 />} />

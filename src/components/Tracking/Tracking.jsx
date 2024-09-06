@@ -3,6 +3,7 @@ import { Card, Descriptions, Spin, message, Row, Col, Divider, Typography, Steps
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
+import { CheckCircleOutlined, ClockCircleOutlined, SyncOutlined, CloseCircleOutlined, CheckOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
 const { Step } = Steps;
@@ -74,6 +75,23 @@ const Tracking = () => {
   const totalSteps = 5; 
   const progressPercentage = ((steps.length / totalSteps) * 100).toFixed(2);
 
+  const getStepIcon = (status) => {
+    switch (status.toLowerCase()) {
+      case 'delivered':
+        return <CheckCircleOutlined style={{ color: '#52c41a' }} />;
+      case 'in transit':
+        return <SyncOutlined style={{ color: '#1890ff' }} spin />;
+      case 'out for delivery':
+        return <ClockCircleOutlined style={{ color: '#faad14' }} />;
+      case 'failed':
+        return <CloseCircleOutlined style={{ color: '#ff4d4f' }} />;
+      case 'shipped':
+        return <CheckOutlined style={{ color: '#1890ff' }} />;
+      default:
+        return <ClockCircleOutlined />;
+    }
+  };
+
   return (
     <div style={{ padding: '20px', backgroundColor: '#ffffff', minHeight: '100vh' }}>
       <Row gutter={16}>
@@ -106,6 +124,7 @@ const Tracking = () => {
               {steps.map((step, index) => (
                 <Step 
                   key={index}
+                  icon={getStepIcon(step.status)}
                   description={
                     <>
                       <p style={{ color: index === steps.length - 1 ? '#1890ff' : '#000' }}>{step.status}</p>

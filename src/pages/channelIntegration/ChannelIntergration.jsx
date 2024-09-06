@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import {Link} from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
 import { Card, Button } from 'antd';
+import axios from 'axios';
 import './channelIntegration.css';
 import shopify from '../../utils/shopify.png';
 import woo from '../../utils/woocomerce.png';
@@ -9,7 +9,29 @@ import { Helmet } from 'react-helmet';
 
 const ChannelIntegration = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedChannel, setSelectedChannel] = useState('');
+  const [selectedChannel, setSelectedChannel] = useState(null); // Changed to null for better control
+  const [userChannels, setUserChannels] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchChannels = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/integration/getAllApi', {
+          headers: {
+            Authorization: localStorage.getItem('token')
+          }
+        });
+        setUserChannels(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError('Failed to fetch channels');
+        setLoading(false);
+      }
+    };
+
+    fetchChannels();
+  }, []);
 
   const showModal = (channel) => {
     setSelectedChannel(channel);
@@ -26,12 +48,13 @@ const ChannelIntegration = () => {
 
   return (
     <div className='channelINMain'>
-        <Helmet>
-                <meta charSet='utf-8' />
-                <meta name='keyword' content={""} />
-                <title>Channel Integration</title>
-            </Helmet>
-        <h2 >Channel Integration</h2>
+      <Helmet>
+        <meta charSet='utf-8' />
+        <meta name='keyword' content={""} />
+        <title>Channel Integration</title>
+      </Helmet>
+
+      <h2>Channel Integration</h2>
       <div className='channelsToIn'>
         <Card
           title="Shopify"
@@ -39,8 +62,8 @@ const ChannelIntegration = () => {
           bordered={true}
         >
           <img className='logo' src={shopify} alt="Shopify Logo" />
-          <Button type="primary">
-            <Link to={'/channelintegration/shopify'} >Integrate</Link>
+          <Button type="primary" onClick={() => showModal({ salesChannel: "shopify", logo: shopify })}>
+            Integrate
           </Button>
         </Card>
         <Card
@@ -49,18 +72,45 @@ const ChannelIntegration = () => {
           bordered={true}
         >
           <img className='logo' src={woo} alt="WooCommerce Logo" />
-          <Button type="primary">
-          <Link to={'/channelintegration/wooCommerce'} >Integrate</Link>
+          <Button type="primary" onClick={() => showModal({ salesChannel: "wooCommerce", logo: woo })}>
+            Integrate
           </Button>
         </Card>
       </div>
 
-      <ChannelIntegrationModel 
-        visible={isModalVisible} 
-        channel={selectedChannel} 
-        onOk={handleOk} 
-        onCancel={handleCancel}
-      />
+      <h2>Your Channels</h2>
+      <div className='userChannels'>
+        {loading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p>{error}</p>
+        ) : userChannels.length > 0 ? (
+          userChannels.map(channel => (
+            <Card
+              key={channel.id}
+              title={channel.salesChannel}
+              className='channelCard'
+              bordered={true}
+            >
+              <img className='logo' src={channel.salesChannel === "shopify" ? shopify : woo} alt={`${channel.salesChannel} Logo`} />
+              <Button type="primary" onClick={() => showModal(channel)}>
+                View
+              </Button>
+            </Card>
+          ))
+        ) : (
+          <p>You have no connected channels.</p>
+        )}
+      </div>
+
+      {selectedChannel && (
+        <ChannelIntegrationModel
+          visible={isModalVisible}
+          channel={selectedChannel}
+          onOk={handleOk}
+          onCancel={handleCancel}
+        />
+      )}
     </div>
   );
 };

@@ -47,7 +47,7 @@ const useCreateShipment = () => {
       const token = localStorage.getItem('token');
 
       if (['Blue Dart', 'Ekart', 'DTDC'].includes(deliveryPartnerName)) {
-        // First API call (with warehouseId only)
+        console.log(warehouseId);
         const response = await axios.post(url, {
           warehouseId,
         }, {
@@ -59,16 +59,14 @@ const useCreateShipment = () => {
         console.log(log);
         console.log(response);
 
-        // Assign the correct courierId based on the delivery partner
         let courierId;
         if (deliveryPartnerName === 'Ekart') courierId = 9;
         else if (deliveryPartnerName === 'Blue Dart') courierId = 14;
         else if (deliveryPartnerName === 'DTDC') courierId = 17;
 
-        // Second API call (with warehouseId, orderId, and courierId)
         const secondResponse = await axios.post(fshipCreateShipUrl, {
-          warehouseId,
           orderId,
+          warehouseId,
           courierId,
         }, {
           headers: {
@@ -81,7 +79,6 @@ const useCreateShipment = () => {
 
         return secondResponse.data;
       } else {
-        // Single API call for other delivery partners
         const response = await axios.post(url, {
           warehouseId,
           orderId,
