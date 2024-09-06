@@ -234,10 +234,9 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
       const totalDebit = forwardCostWithGst;
   
       setCurrentDeliveryCost(totalDebit);
-  
       await shipOrder(
         selectedOrder._id, 
-        warehouse?.warehouses?.[0]?._id, 
+        warehouse?.warehouses?.[0], 
         partner.deliveryPartner
       );
   
@@ -245,7 +244,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
         const codWalletRequestBody = {
           debit: codCostWithGst,
           userId: selectedOrder.seller._id,
-          remark: `COD charge (including GST) for order ${selectedOrder.orderId}`,
+          remark: `COD charge for order ${selectedOrder.orderId}`,
           orderId: selectedOrder._id,
         };
         const codWalletResponse = await axios.post(
@@ -267,7 +266,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
       const forwardWalletRequestBody = {
         debit: forwardCostWithGst,
         userId: selectedOrder.seller._id,
-        remark: `Forward charge (including GST) for order ${selectedOrder.orderId}`,
+        remark: `Forward charge for order ${selectedOrder.orderId}`,
         orderId: selectedOrder._id,
       };
       const forwardWalletResponse = await axios.post(
@@ -308,7 +307,7 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
         message.error("Failed to debit forward cost from wallet");
       }
     } catch (error) {
-      message.error("Issue in shipping");
+      message.error("Insufficient Balance");
       console.error('Failed to update order status', error);
     } finally {
       setModalLoading(false);

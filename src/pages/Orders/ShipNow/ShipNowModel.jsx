@@ -9,7 +9,7 @@ const ShipNowModel = ({ visible, onClose, onShipNow, selectedRowKeys, hasSelecte
   const { warehouse } = useWarehouseContext();
   const { shipNowCost } = useShipNowCost(); 
 
-  const [selectedWarehouse, setSelectedWarehouse] = useState(warehouse?.warehouses?.[0]?._id || null);
+  const [selectedWarehouse, setSelectedWarehouse] = useState(warehouse?.warehouses?.[0] || null);
   const [selectedDeliveryPartner, setSelectedDeliveryPartner] = useState(null);
   const [shippingCosts, setShippingCosts] = useState([]);
 

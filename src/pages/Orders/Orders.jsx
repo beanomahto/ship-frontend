@@ -100,7 +100,7 @@ console.log(selectedOrderData);
         let forwardCharge, codCharge;
   
         try {
-          const costData = await shipNowCost(orderId, selectedWarehouse);
+          const costData = await shipNowCost(orderId, selectedWarehouse?._id);
           console.log('Cost Data for Order:', costData);
   
           forwardCharge = costData.cost.find(

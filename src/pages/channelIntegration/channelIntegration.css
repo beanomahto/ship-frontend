@@ -76,25 +76,25 @@
   
   .channelsToIn {
     display: flex;
-    gap: 16px;
-    flex-wrap: wrap; /* Allow items to wrap onto the next line */
+    gap: 6rem;
+    flex-wrap: wrap; 
   }
   
   .channelCard {
-    width: 250px; /* Set a fixed width for cards */
+    width: 250px; 
     text-align: center;
-    margin-bottom: 16px; /* Add some spacing between rows */
+    margin-bottom: 16px;
   }
   
   .userChannels {
     display: flex;
-    gap: 16px;
-    flex-wrap: wrap; /* Allow items to wrap onto the next line */
+    gap: 6rem;
+    flex-wrap: wrap; 
   }
   
   .userChannels .channelCard {
-    width: 250px; /* Set a fixed width for cards */
+    width: 250px;
     text-align: center;
-    margin-bottom: 16px; /* Add some spacing between rows */
+    margin-bottom: 16px; 
   }
   
