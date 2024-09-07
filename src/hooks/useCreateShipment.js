@@ -17,7 +17,7 @@ const useCreateShipment = () => {
       let url = '';
       let log = '';
       const fshipUrl = 'https://backend.shiphere.in/api/fship/createWarehouse'; 
-      const fshipCreateShipUrl = 'http://localhost:5000/api/fship/createforwardorder'; 
+      const fshipCreateShipUrl = 'https://backend.shiphere.in/api/fship/createforwardorder'; 
 
       switch (deliveryPartnerName) {
         case 'Ecom Express':
@@ -33,7 +33,7 @@ const useCreateShipment = () => {
           log = 'xpress hit';
           break;
         case 'Delhivery':
-          url = 'http://localhost:5000/api/deliveryOne/create';
+          url = 'https://backend.shiphere.in/api/deliveryOne/create';
           log = 'delhivery hit';
           break;
         case 'Blue Dart':
@@ -50,7 +50,7 @@ const useCreateShipment = () => {
         if (fShipWarehouseId === 0) {
           console.log(warehouseIds);
           const warehouseResponse = await axios.post(fshipUrl, {
-            warehouseIds,
+            warehouseId: warehouseIds,
           }, {
             headers: {
               'Authorization': `${token}`,
@@ -61,7 +61,6 @@ const useCreateShipment = () => {
           console.log(warehouseResponse);
 
           if (warehouseResponse.status === 200) {
-            // Determine courierId
             let courierId;
             if (deliveryPartnerName === 'Ekart') courierId = 9;
             else if (deliveryPartnerName === 'Blue Dart') courierId = 14;

@@ -307,7 +307,8 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
         message.error("Failed to debit forward cost from wallet");
       }
     } catch (error) {
-      message.error("Insufficient Balance");
+      // message.error("Insufficient Balance");
+      message.error(error.message)
       console.error('Failed to update order status', error);
     } finally {
       setModalLoading(false);

@@ -46,10 +46,10 @@ const CodRemmitance = () => {
   const showEarlyCodModal = () => setEarlyCodVisible(true); 
   const closeEarlyCodModal = () => setEarlyCodVisible(false); 
 
-  // Function to check if any field contains the search text
   const matchesSearchText = (record, searchText) => {
     const lowercasedText = searchText.toLowerCase();
     return (
+      (record?.seller?.email?.toLowerCase().includes(lowercasedText)) ||
       moment(record?.remittances?.createdAt).format('DD-MM-YYYY').includes(lowercasedText) ||
       (record?.refId?.toLowerCase().includes(lowercasedText)) ||
       (record?.generatedCOD?.toString().toLowerCase().includes(lowercasedText)) ||
@@ -62,14 +62,13 @@ const CodRemmitance = () => {
     );
   };
 
-  // Filtered data based on the search text across all fields
   const filteredData = useMemo(() => {
     return remittanceData.remittances?.filter((record) => matchesSearchText(record, searchText)) || [];
   }, [remittanceData.remittances, searchText]);
 
-  // Function to convert data to CSV format
   const generateCsvData = () => {
     return filteredData.map(record => ({
+      'Seller Id': record.seller.email,
       'Generated Date': moment(record?.remittances?.createdAt).format('DD-MM-YYYY'),
       'Ref ID': record.refId,
       'Generated COD': record.generatedCOD,

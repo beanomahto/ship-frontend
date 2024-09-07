@@ -4,12 +4,13 @@ import axios from 'axios';
 import './channelIntegration.css';
 import shopify from '../../utils/shopify.png';
 import woo from '../../utils/woocomerce.png';
+import { Link } from 'react-router-dom';
 import ChannelIntegrationModel from './channelIntegrationMoodel/ChannelIntegrationModel';
 import { Helmet } from 'react-helmet';
 
 const ChannelIntegration = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedChannel, setSelectedChannel] = useState(null); // Changed to null for better control
+  const [selectedChannel, setSelectedChannel] = useState(null); 
   const [userChannels, setUserChannels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,7 +18,7 @@ const ChannelIntegration = () => {
   useEffect(() => {
     const fetchChannels = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/integration/getAllApi', {
+        const response = await axios.get('https://backend.shiphere.in/api/integration/getAllApi', {
           headers: {
             Authorization: localStorage.getItem('token')
           }
@@ -62,8 +63,8 @@ const ChannelIntegration = () => {
           bordered={true}
         >
           <img className='logo' src={shopify} alt="Shopify Logo" />
-          <Button type="primary" onClick={() => showModal({ salesChannel: "shopify", logo: shopify })}>
-            Integrate
+          <Button type="primary">
+            <Link to={'/channelintegration/shopify'} >Integrate</Link>
           </Button>
         </Card>
         <Card
@@ -72,8 +73,8 @@ const ChannelIntegration = () => {
           bordered={true}
         >
           <img className='logo' src={woo} alt="WooCommerce Logo" />
-          <Button type="primary" onClick={() => showModal({ salesChannel: "wooCommerce", logo: woo })}>
-            Integrate
+          <Button type="primary">
+          <Link to={'/channelintegration/wooCommerce'} >Integrate</Link>
           </Button>
         </Card>
       </div>
