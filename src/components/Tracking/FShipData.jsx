@@ -40,7 +40,7 @@ const FShipData = ({ trackingInfo }) => {
             <Descriptions bordered column={1} labelStyle={{ fontWeight: 'bold' }}>
               <Descriptions.Item label="AWB Number">{trackingInfo?.summary?.waybill}</Descriptions.Item>
               <Descriptions.Item label="Order ID">{trackingInfo?.summary?.orderid}</Descriptions.Item>
-              <Descriptions.Item label="Destination">{trackingInfo?.summary?.destination}</Descriptions.Item>
+              <Descriptions.Item label="Ordered On">{new Date(trackingInfo?.summary?.orderedon).toLocaleString()}</Descriptions.Item>
               <Descriptions.Item label="Status">{trackingInfo?.summary?.status}</Descriptions.Item>
             </Descriptions>
           </Card>
