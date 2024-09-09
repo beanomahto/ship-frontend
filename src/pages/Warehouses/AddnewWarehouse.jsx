@@ -67,14 +67,23 @@ const AddnewWarehouse = () => {
     <div className='formCon'>
         <form class="form" onSubmit={handleOrderSubmit}>
             <p class="title">Create Warehouse</p>
-
             <div className="flex">
+
                 <label>
                     <input class="input" type="text" placeholder="" required 
                     value={inputs.warehouseName} 
                     onChange={(e) => setInputs({ ...inputs, warehouseName: e.target.value })} 
                     />
                     <span>Warehouse Name</span>
+                </label>
+            </div>
+            <div className="flex">
+            <label>
+                    <input class="input" type="email" placeholder="" required 
+                    value={inputs.contactEmail}
+                    onChange={(e) => setInputs({ ...inputs, contactEmail: e.target.value })}
+                    />
+                    <span>Contact Email</span>
                 </label>
                 <label>
                     <input class="input" type="text" placeholder="" required 
@@ -84,20 +93,25 @@ const AddnewWarehouse = () => {
                     <span>Contact Person</span>
                 </label>
                 <label>
-                    <input class="input" type="number" placeholder="" required 
-                    value={inputs.contactNumber}
-                    onChange={(e) => setInputs({ ...inputs, contactNumber: e.target.value })}
-                    />
-                    <span>Contact Number</span>
-                </label>
-                <label>
-                    <input class="input" type="email" placeholder="" required 
-                    value={inputs.contactEmail}
-                    onChange={(e) => setInputs({ ...inputs, contactEmail: e.target.value })}
-                    />
-                    <span>Contact Email</span>
-                </label>
+    <input 
+        class="input" 
+        type="text" 
+        placeholder="" 
+        required 
+        maxLength="10"
+        value={inputs.contactNumber}
+        onChange={(e) => {
+            const value = e.target.value;
+            if (/^\d{0,10}$/.test(value)) {
+                setInputs({ ...inputs, contactNumber: value });
+            }
+        }}
+    />
+    <span>Contact Number</span>
+</label>
+
             </div>
+
             <div class="flex">
                 <label>
                     <input class="input" type="text" placeholder="" required

@@ -133,16 +133,22 @@ console.log(response);
                                 <span>Contact Person</span>
                             </label>
                             <label>
-                                <input
-                                    className="input"
-                                    type="number"
-                                    placeholder=""
-                                    required
-                                    value={inputs.contactNumber}
-                                    onChange={(e) => setInputs({ ...inputs, contactNumber: e.target.value })}
-                                />
-                                <span>Contact Number</span>
-                            </label>
+    <input 
+        class="input" 
+        type="text" 
+        placeholder="" 
+        required 
+        maxLength="10"
+        value={inputs.contactNumber}
+        onChange={(e) => {
+            const value = e.target.value;
+            if (/^\d{0,10}$/.test(value)) {
+                setInputs({ ...inputs, contactNumber: value });
+            }
+        }}
+    />
+    <span>Contact Number</span>
+</label>
                             <label>
                                 <input
                                     className="input"

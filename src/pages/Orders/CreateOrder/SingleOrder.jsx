@@ -62,7 +62,6 @@ console.log(inputs)
         e.preventDefault();
 		await createSingleOrder(inputs);
         fetchOrders();
-        // setInputs('')
         navigate('/orders')
     }
 
@@ -85,12 +84,22 @@ console.log(inputs)
                             <span>Customer Name</span>
                         </label>
                         <label>
-                            <input class="input" type="number" placeholder="" required 
-                            value={inputs.customerPhone}
-                            onChange={(e) => setInputs({ ...inputs, customerPhone: e.target.value })}
-                            />
-                            <span>Customer Mobile No.</span>
-                        </label>
+    <input class="input" 
+        type="text" 
+        placeholder="" 
+        required 
+        maxLength="10"
+        value={inputs.customerPhone}
+        onChange={(e) => {
+            const value = e.target.value;
+            if (/^\d{0,10}$/.test(value)) {
+                setInputs({ ...inputs, customerPhone: value });
+            }
+        }}
+    />
+    <span>Customer Mobile No.</span>
+</label>
+
                         <label>
                             <input class="input" type="email" placeholder="" required 
                             value={inputs.customerEmail}
@@ -128,7 +137,6 @@ console.log(inputs)
                         <label>
                             <input class="input" type="text" placeholder=""  
                             value={inputs.city}
-                            // onChange={(e) => setInputs({ ...inputs, city: e.target.value })}
                             />
                             <span>City</span>
                         </label>
@@ -136,8 +144,6 @@ console.log(inputs)
                         <label>
                             <input class="input" type="text" placeholder=""  
                             value={inputs.state}
-                            // readOnly
-                            // onChange={(e) => setInputs({ ...inputs, state: e.target.value })}
                             />
                             <span>State</span>
                         </label>
@@ -216,16 +222,6 @@ console.log(inputs)
                         </label>
                         <div className="paymentSelect" style={{
                         }}  >
-                            {/* <Select placeholder='Select Payment Method' 
-                            value={inputs.paymentMethod} 
-                            onChange={(e) => setInputs({ ...inputs, paymentMethod: e })}
-                            options={[
-                                { value: 'COD', label: 'Cash on delivery' },
-                                { value: 'prepaid', label: 'prepaid' },
-                            ]}
-                            >
-
-                            </Select> */}
                              <Radio.Group
               style={{ marginTop: "20px" }}
               value={inputs.paymentMethod}
@@ -244,9 +240,4 @@ console.log(inputs)
         </>
     )
 }
-{/* <Button htmlType='submit' type='primary' style={{
-                    marginTop:'1rem',
-                    marginLeft:'50%',
-                    fontSize:'1rem'
-                }} >Submit</Button> */}
 export default SingleOrder

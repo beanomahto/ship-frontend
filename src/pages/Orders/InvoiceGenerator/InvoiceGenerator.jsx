@@ -109,20 +109,20 @@ console.log(totalAmountInWords);
               <div className="invoice-header">
                 <div className="sold-by" style={{ padding: '12px', border: '1px solid #000000' }}>
                   <h2>Sold By:</h2>
-                  <p style={{ fontStyle: 'italic' }}>{invoiceData?.sellerName}</p>
-                  <p style={{ fontStyle: 'italic' }}>{invoiceData?.sellerAddress}</p>
-                  <p style={{ fontStyle: 'italic' }}>GSTIN No.: {invoiceData?.sellerGSTIN}</p>
+                  <p style={{ fontStyle: 'italic', fontWeight:'600' }}>{invoiceData?.sellerName}</p>
+                  <p style={{ fontStyle: 'italic', fontWeight:'600' }}>{invoiceData?.sellerAddress}</p>
+                  <p style={{ fontStyle: 'italic', fontWeight:'600' }}>GSTIN No.: {invoiceData?.sellerGSTIN}</p>
                 </div>
                 <div className="delivered-to" style={{ padding: '12px', border: '1px solid #000000' }}>
                   <h2>Delivered To:</h2>
-                  <p style={{ fontStyle: 'italic' }}>{invoiceData?.customerName}</p>
-                  <p style={{ fontStyle: 'italic' }}>{invoiceData?.customerAddress}</p>
+                  <p style={{ fontStyle: 'italic', fontWeight:'600' }}>{invoiceData?.customerName}</p>
+                  <p style={{ fontStyle: 'italic', fontWeight:'600' }}>{invoiceData?.customerAddress}</p>
                 </div>
               </div>
               <div className="invoice-details" style={{ padding: '12px', border: '1px solid #000000' }}>
-                <p style={{ fontStyle: 'italic' }}><strong>Invoice No.: </strong>{invoiceData.invoiceNumber}</p>
-                <p style={{ fontStyle: 'italic' }}><strong>Invoice Date: </strong>{formattedInvoiceDate}</p>
-                <p style={{ fontStyle: 'italic' }}><strong>Order Date: </strong>{formattedOrderDate}</p>
+                <p style={{ fontStyle: 'italic', fontWeight:'600' }}><strong>Invoice No.: </strong>{invoiceData.invoiceNumber}</p>
+                <p style={{ fontStyle: 'italic', fontWeight:'600' }}><strong>Invoice Date: </strong>{formattedInvoiceDate}</p>
+                <p style={{ fontStyle: 'italic', fontWeight:'600' }}><strong>Order Date: </strong>{formattedOrderDate}</p>
               </div>
             </div>
             <div className="invoice-items" style={{ border: '1px solid #000000', width: '100%', borderCollapse: 'collapse' }}>
@@ -146,7 +146,7 @@ console.log(totalAmountInWords);
               </table>
             </div>
             <div className="invoice-footer" style={{ padding: '7px', border: '1px solid #000000' }}>
-              <p style={{ fontStyle: 'italic' }}>Net Amount Payable (In Words): <strong>{totalAmountInWords}</strong></p>
+              <p style={{ fontStyle: 'italic', fontWeight: '600' }}>Net Amount Payable (In Words): <strong>{totalAmountInWords}</strong></p>
             </div>
           </div>
         )}

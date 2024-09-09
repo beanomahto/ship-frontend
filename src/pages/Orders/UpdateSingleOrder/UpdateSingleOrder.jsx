@@ -130,18 +130,23 @@ const UpdateSingleOrder = () => {
             <span>Customer Name</span>
           </label>
           <label>
-            <input
-              className="input"
-              type="number"
-              placeholder=""
-              required
-              value={inputs.customerPhone}
-              onChange={(e) =>
-                setInputs({ ...inputs, customerPhone: e.target.value })
-              }
-            />
-            <span>Customer Phone</span>
-          </label>
+    <input
+        className="input"
+        type="text"
+        placeholder=""
+        required
+        maxLength="10"
+        value={inputs.customerPhone}
+        onChange={(e) => {
+            const value = e.target.value;
+            if (/^\d{0,10}$/.test(value)) {
+                setInputs({ ...inputs, customerPhone: value });
+            }
+        }}
+    />
+    <span>Customer Phone</span>
+</label>
+
           <label>
             <input
               className="input"

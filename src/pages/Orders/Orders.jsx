@@ -403,7 +403,7 @@ console.log(labelData);
                     <div class="labelSection">
                         <p><strong>Ship To:</strong></p>
                         <p><strong>${labelData.customerName}</strong></p>
-                        <p>${labelData?.address?.address} ${labelData?.address?.city} ${labelData?.returnWarehouse?.city} ${labelData?.returnWarehouse?.state}</p>
+                        <p>${labelData?.address?.address} ${labelData?.address?.city} ${labelData?.address?.state}</p>
                         <p><strong>PIN:</strong> ${labelData.address?.pincode}</p>
                     </div>
                     <div style="display: flex;">

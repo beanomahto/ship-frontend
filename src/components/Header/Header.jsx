@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext';
 import useLogout from '../../hooks/useLogout';
 import './header.css';
+import { useOrderContext } from '../../context/OrderContext';
 
 const { Search } = Input;
 
@@ -22,13 +23,36 @@ const Header = ({ darktheme }) => {
       label: 'OrderId',
     },
   ];
+
+  const {orders} = useOrderContext();
+
+
+  const kookok = orders?.orders?.filter((awb) => awb?.awb === "7D5681702")
+  console.log(kookok);
+  
 const amount = parseFloat(authUser?.amount.toFixed(2))
-  const onSearch = (awb) => {
-    const selectedOption = document.querySelector('.ant-select-selection-item')?.textContent.toLowerCase();
-    if (selectedOption && awb) {
-      navigate(`/tracking/${selectedOption}/Xpressbees/${awb}`);
+const onSearch = (awb) => {
+  console.log(awb);
+    
+  const selectedOption = document.querySelector('.ant-select-selection-item')?.textContent.toLowerCase();
+  
+  const filteredOrder = orders?.orders?.filter((order) => order?.awb === awb);
+
+  console.log(filteredOrder);
+  
+  if (selectedOption && filteredOrder.length > 0) {
+    const shippingPartner = filteredOrder[0]?.shippingPartner; 
+
+    if (shippingPartner) {
+      navigate(`/tracking/${selectedOption}/${shippingPartner}/${awb}`);
+    } else {
+      console.log('No shipping partner found for the matching order');
     }
-  };
+  } else {
+    console.log('No matching order found');
+  }
+};
+
   https://backend.shiphere.in/api/${shippingPartner}/track/${awb}
   return (
     <div className={darktheme ? 'darkHeader' : 'main-header'}>

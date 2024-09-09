@@ -17,11 +17,11 @@ const useCreateShipment = () => {
       let url = '';
       let log = '';
       const fshipUrl = 'https://backend.shiphere.in/api/fship/createWarehouse'; 
-      const fshipCreateShipUrl = 'https://backend.shiphere.in/api/fship/createforwardorder'; 
+      const fshipCreateShipUrl = 'http://localhost:5000/api/fship/createforwardorder'; 
 
       switch (deliveryPartnerName) {
         case 'Ecom Express':
-          url = 'https://backend.shiphere.in/api/ecomExpress/createShipment';
+          url = 'http://localhost:5000/api/ecomExpress/createShipment';
           log = 'ecom hit';
           break;
         case 'Amazon Shipping':
@@ -39,6 +39,7 @@ const useCreateShipment = () => {
         case 'Blue Dart':
         case 'Ekart':
         case 'DTDC':
+        case 'Shadowfax':
           break;
         default:
           throw new Error('Invalid delivery partner');
@@ -46,7 +47,7 @@ const useCreateShipment = () => {
 
       const token = localStorage.getItem('token');
 
-      if (['Ekart', 'Blue Dart', 'DTDC'].includes(deliveryPartnerName)) {
+      if (['Ekart', 'Blue Dart', 'DTDC', 'Shadowfax'].includes(deliveryPartnerName)) {
         if (fShipWarehouseId === 0) {
           console.log(warehouseIds);
           const warehouseResponse = await axios.post(fshipUrl, {
@@ -65,6 +66,7 @@ const useCreateShipment = () => {
             if (deliveryPartnerName === 'Ekart') courierId = 9;
             else if (deliveryPartnerName === 'Blue Dart') courierId = 14;
             else if (deliveryPartnerName === 'DTDC') courierId = 17;
+            else if (deliveryPartnerName === 'Shadowfax') courierId = 43;
 
             const forwardShipBody = {
               orderId,
@@ -94,13 +96,13 @@ const useCreateShipment = () => {
           if (deliveryPartnerName === 'Ekart') courierId = 9;
           else if (deliveryPartnerName === 'Blue Dart') courierId = 14;
           else if (deliveryPartnerName === 'DTDC') courierId = 17;
+          else if (deliveryPartnerName === 'Shadowfax') courierId = 43;
           const forwardShipBody = {
             orderId,
             warehouseId: warehouseIds,
             courierId, 
             shippingPartner: deliveryPartnerName,
           };
-          console.log(forwardShipBody);
 
           const forwardOrderResponse = await axios.post(fshipCreateShipUrl, forwardShipBody, {
             headers: {
@@ -116,7 +118,7 @@ const useCreateShipment = () => {
         }
       } else {
         const response = await axios.post(url, {
-          warehouseIds,
+          warehouseId:warehouseIds,
           orderId,
         }, {
           headers: {
@@ -131,7 +133,7 @@ const useCreateShipment = () => {
       }
     } catch (err) {
       console.log(err);
-      setError(err.response?.data?.message || err.message || 'An error occurred');
+      message.error(err.response?.data?.message || err.message || 'An error occurred');
       throw err;
     } finally {
       setLoading(false);
