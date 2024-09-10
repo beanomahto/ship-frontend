@@ -17,7 +17,7 @@ const useCreateShipment = () => {
       let url = '';
       let log = '';
       const fshipUrl = 'https://backend.shiphere.in/api/fship/createWarehouse'; 
-      const fshipCreateShipUrl = 'https://backend.shiphere.in/api/fship/createforwardorder'; 
+      const fshipCreateShipUrl = 'http://localhost:5000/api/fship/createforwardorder'; 
 
       switch (deliveryPartnerName) {
         case 'Ecom Express':

@@ -356,7 +356,7 @@ const inTransitOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 
     for (const orderId of selectedRowKeys) {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get(`https://backend.shiphere.in/api/shipping/getlabel/${orderId}`, {
+            const response = await axios.get(`http://localhost:5000/api/shipping/getlabel/${orderId}`, {
                 headers: {
                     Authorization: `${token}`,
                 },
