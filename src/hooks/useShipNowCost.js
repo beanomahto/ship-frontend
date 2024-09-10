@@ -4,6 +4,8 @@ const useShipNowCost = () => {
   const [loading, setLoading] = useState(false);
 
   const shipNowCost = async (orderId, wareHouseId) => {
+    console.log(wareHouseId);
+    
     const success = handleInputErrors(orderId, wareHouseId);
     if (!success) return { success: false };
 

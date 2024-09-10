@@ -27,7 +27,7 @@ const Tracking = () => {
         console.log(fShipPartner);
         
        if (fShipPartner) {
-        const response = await axios.post(`http://localhost:5000/api/fship/trackingHistory`,{
+        const response = await axios.post(`https://backend.shiphere.in/api/fship/trackingHistory`,{
           waybill:awb
         });
         setTrackingInfo(response.data);

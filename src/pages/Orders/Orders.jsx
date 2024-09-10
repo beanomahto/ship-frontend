@@ -18,11 +18,13 @@ import LabelGenerator from './LabelGenerator/LabelGenerator';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import moment from 'moment';
+import useCancelShipment from '../../hooks/useCancelShipment';
 const { TabPane } = Tabs;
 
 const Orders = () => {
   const { shipNowCost } = useShipNowCost();
   const { warehouse } = useWarehouseContext();
+  const {cancelOrder} = useCancelShipment()
   const [deliveryCosts, setDeliveryCosts] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -31,10 +33,10 @@ const Orders = () => {
   const [modalVisibleBD, setModalVisibleBD] = useState(false);
   const [modalVisibleShipNow, setModalVisibleShipNow] = useState(false);
   const [selectedOrderData, setSelectedOrderData] = useState([]);
+  const [selectedWarehouseId, setSelectedWarehouseId] = useState([]);
   const [currentTab, setCurrentTab] = useState('tab1');
   console.log(orders);
 console.log(selectedOrderData);
-// const [shippingCosts, setShippingCosts] = useState([]);
   const showModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
   const showModalBD = () => setModalVisibleBD(true);
@@ -77,12 +79,13 @@ console.log(selectedOrderData);
     );
     setSelectedOrderData(selectedData);
   };
+  console.log(selectedWarehouseId);
   
   const handleShipNow = async (selectedRowKeys, selectedWarehouse, selectedDeliveryPartner) => {
     console.log(selectedRowKeys);
     console.log(selectedWarehouse);
     console.log(selectedDeliveryPartner);
-  
+    setSelectedWarehouseId(selectedWarehouse)
     if (selectedRowKeys.length === 0) {
       message.warning('Please select at least one order to ship.');
       return;
@@ -103,11 +106,11 @@ console.log(selectedOrderData);
           const costData = await shipNowCost(orderId, selectedWarehouse?._id);
           console.log('Cost Data for Order:', costData);
   
-          forwardCharge = costData.cost.find(
+          forwardCharge = costData?.cost?.find(
             (cost) => cost.deliveryPartner === selectedDeliveryPartner.name
           )?.forwardCost;
   
-          codCharge = costData.cost.find(
+          codCharge = costData?.cost?.find(
             (cost) => cost.deliveryPartner === selectedDeliveryPartner.name
           )?.codCost;
   
@@ -235,7 +238,7 @@ const exportToExcel = () => {
     // onSelect: showModalShipNow,
   };
 console.log(rowSelection);
-const hasSelected = selectedRowKeys.length > 1;
+const hasSelected = selectedRowKeys.length > 0;
 console.log(dataSourceWithKeys);
 
 const newOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 'New' || order.status === 'Cancelled');
@@ -270,7 +273,7 @@ const inTransitOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 
   ];
 
   console.log(tabsData);
-  console.log(selectedRowKeys);
+  console.log(selectedOrderData);
   
   const cancelShipment = async () => {
     if (selectedRowKeys.length === 0) {
@@ -279,7 +282,11 @@ const inTransitOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 
     }
 
     const token = localStorage.getItem('token');
+
     try {
+
+      await cancelOrder(selectedOrderData)
+
         const cancelRequests = selectedRowKeys.map(orderId =>
             axios.put(`https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`, {
                 status: 'Cancelled'
@@ -356,7 +363,7 @@ const inTransitOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 
     for (const orderId of selectedRowKeys) {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get(`http://localhost:5000/api/shipping/getlabel/${orderId}`, {
+            const response = await axios.get(`https://backend.shiphere.in/api/shipping/getlabel/${orderId}`, {
                 headers: {
                     Authorization: `${token}`,
                 },
@@ -680,6 +687,7 @@ const downloadInvoices = async () => {
                 rowSelection={rowSelection}
                 fetchOrders={fetchOrders}
                 loading={loading}
+                selectedWarehouseId={selectedWarehouseId}
                 warehouse={warehouse}
                 setModalLoading={setModalLoading}
                 modalLoading={modalLoading}
@@ -689,6 +697,7 @@ const downloadInvoices = async () => {
                 selectedOrderId={selectedOrderId}
                 setCurrentDeliveryCost={setCurrentDeliveryCost}
                 currentDeliveryCost={currentDeliveryCost}
+                selectedOrderData={selectedOrderData}
               />
             ) : (
               <span>No component for this tab</span>

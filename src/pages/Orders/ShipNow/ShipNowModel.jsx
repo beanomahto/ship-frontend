@@ -9,49 +9,28 @@ const ShipNowModel = ({ visible, onClose, onShipNow, selectedRowKeys, hasSelecte
   const { warehouse } = useWarehouseContext();
   const { shipNowCost } = useShipNowCost(); 
 
-  const [selectedWarehouse, setSelectedWarehouse] = useState(warehouse?.warehouses?.[0] || null);
+  const [selectedWarehouse, setSelectedWarehouse] = useState(warehouse?.warehouses?.[0]?._id || null);
   const [selectedDeliveryPartner, setSelectedDeliveryPartner] = useState(null);
   const [shippingCosts, setShippingCosts] = useState([]);
 
   const handleWarehouseChange = (value) => {
-    setSelectedWarehouse(value);
+    const selectedWarehouseData = warehouse?.warehouses?.find((w) => w._id === value);
+    setSelectedWarehouse(selectedWarehouseData);
   };
 
   const handleDeliveryPartnerChange = (value) => {
     const selectedPartner = deliveryPartners.deliveryPartners.find((d) => d._id === value);
     setSelectedDeliveryPartner(selectedPartner);
-
-    // if (selectedWarehouse && selectedRowKeys.length > 0) {
-    //   calculateShippingCost(selectedWarehouse, selectedRowKeys);
-    // }
   };
+console.log(selectedWarehouse);
 
-
-console.log(selectedDeliveryPartner);
-
-const handleShipNow = () => {
-  console.log("ok");
-  console.log(selectedDeliveryPartner);
-  
-  if (selectedDeliveryPartner) {
-    console.log("ok1");
-    console.log(shippingCosts);
-    onShipNow(selectedRowKeys, selectedWarehouse,selectedDeliveryPartner);
-  }
-    
-  //   const selectedCost = shippingCosts?.cost?.find(
-  //     (cost) => cost.deliveryPartner === selectedDeliveryPartner.name
-  //   )?.cost;
-    
-  //   if (selectedCost === undefined) {
-  //     message.error('No cost found for the selected delivery partner.');
-  //     return;
-  //   }
-  // } else {
-  //     message.error('Please select a valid delivery partner and warehouse.');
-  // }
-};
-
+  const handleShipNow = () => {
+    if (selectedDeliveryPartner && selectedWarehouse) {
+      onShipNow(selectedRowKeys, selectedWarehouse, selectedDeliveryPartner);
+    } else {
+      message.error("Please select both a warehouse and a delivery partner.");
+    }
+  };
 
   return (
     <Modal
@@ -75,7 +54,7 @@ const handleShipNow = () => {
         <label>
           <span>Select Warehouse</span>
           <Select
-            defaultValue={selectedWarehouse}
+            defaultValue={selectedWarehouse?._id}
             className="input shipModel"
             onChange={handleWarehouseChange}
           >

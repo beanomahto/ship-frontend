@@ -38,10 +38,12 @@ const channelImages = {
   'Shopify': Shopify,
 };
 
-const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setModalLoading,modalLoading,deliveryCosts,setDeliveryCosts,setSelectedOrderId,selectedOrderId,currentDeliveryCost,setCurrentDeliveryCost,warehouse }) => {
+const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setModalLoading,modalLoading,deliveryCosts,setDeliveryCosts,setSelectedOrderId,selectedOrderId,currentDeliveryCost,setCurrentDeliveryCost,warehouse,selectedWarehouse,selectedWarehouseId,selectedOrderData }) => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   console.log(currentDeliveryCost);
+  console.log(warehouse);
+  console.log(selectedWarehouseId);
   
  
   const [selectedPartner, setSelectedPartner] = useState(null);
@@ -233,10 +235,17 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
       const forwardCostWithGst = forwardCost * (1 + gstRate);
       const totalDebit = forwardCostWithGst;
   
+      const sendWarehouse = Array.isArray(selectedWarehouseId) && selectedWarehouseId.length === 0
+  ? warehouse?.warehouses?.[0]
+  : selectedWarehouseId;
+
+console.log(sendWarehouse);
+
+      
       setCurrentDeliveryCost(totalDebit);
       await shipOrder(
-        selectedOrder._id, 
-        warehouse?.warehouses?.[0], 
+        selectedOrder, 
+        sendWarehouse, 
         partner.deliveryPartner
       );
   
@@ -354,8 +363,6 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
               rowKey="id"
               pagination={{ pageSize: 10 }}
               loading={modalLoading}
-            // style={{fontSize:'4rem'}}
-            // className="delivery-cost-table"
 
             >
               <Column

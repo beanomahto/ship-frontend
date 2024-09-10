@@ -12,12 +12,16 @@ const useCreateShipment = () => {
 
     const warehouseIds = warehouseId?._id;
     const fShipWarehouseId = warehouseId?.fshipWarehouseId;
+console.log(warehouseIds);
+const orderIds = orderId?._id
+console.log(orderIds);
 
     try {
       let url = '';
       let log = '';
       const fshipUrl = 'https://backend.shiphere.in/api/fship/createWarehouse'; 
-      const fshipCreateShipUrl = 'http://localhost:5000/api/fship/createforwardorder'; 
+      const fshipCreateForwardOrderUrl = 'https://backend.shiphere.in/api/fship/createforwardorder'; 
+      const fshipCreateShipmentUrl = 'http://localhost:5000/api/fship/shipOrder'; 
 
       switch (deliveryPartnerName) {
         case 'Ecom Express':
@@ -49,7 +53,6 @@ const useCreateShipment = () => {
 
       if (['Ekart', 'Blue Dart', 'DTDC', 'Shadowfax'].includes(deliveryPartnerName)) {
         if (fShipWarehouseId === 0) {
-          console.log(warehouseIds);
           const warehouseResponse = await axios.post(fshipUrl, {
             warehouseId: warehouseIds,
           }, {
@@ -57,9 +60,6 @@ const useCreateShipment = () => {
               'Authorization': `${token}`,
             },
           });
-
-          console.log('FShip createWarehouse API hit');
-          console.log(warehouseResponse);
 
           if (warehouseResponse.status === 200) {
             let courierId;
@@ -69,24 +69,40 @@ const useCreateShipment = () => {
             else if (deliveryPartnerName === 'Shadowfax') courierId = 43;
 
             const forwardShipBody = {
-              orderId,
+              orderId:orderIds,
               warehouseId: warehouseIds,
               courierId,
               shippingPartner: deliveryPartnerName,
             };
-            console.log(forwardShipBody);
 
-            const forwardOrderResponse = await axios.post(fshipCreateShipUrl, forwardShipBody, {
+            const forwardOrderResponse = await axios.post(fshipCreateForwardOrderUrl, forwardShipBody, {
               headers: {
                 'Authorization': `${token}`,
               },
             });
 
-            message.success("Order shipped successfully");
-            console.log('FShip createforwardorder API hit');
+            const fhipApiOrderId = forwardOrderResponse.data?.apiorderid;
             console.log(forwardOrderResponse);
+            
+            if (fhipApiOrderId) {
+              const createShipmentResponse = await axios.post(fshipCreateShipmentUrl, {
+                apiorderid:fhipApiOrderId,
+                courierId
+              }, {
+                headers: {
+                  'Authorization': `${token}`,
+                },
+              });
 
-            return forwardOrderResponse.data;
+              message.success("Order shipped successfully with shipment created on warehouse " + warehouseId?.warehouseName);
+              console.log('FShip createShipment API hit');
+              console.log(createShipmentResponse);
+
+              return createShipmentResponse.data;
+            } else {
+              message.error('Failed to retrieve fhipApiOrderId');
+              throw new Error('Failed to retrieve fhipApiOrderId');
+            }
           } else {
             message.error('Failed to create warehouse');
             throw new Error('Failed to create warehouse');
@@ -97,35 +113,53 @@ const useCreateShipment = () => {
           else if (deliveryPartnerName === 'Blue Dart') courierId = 14;
           else if (deliveryPartnerName === 'DTDC') courierId = 17;
           else if (deliveryPartnerName === 'Shadowfax') courierId = 43;
+
           const forwardShipBody = {
-            orderId,
+            orderId:orderIds,
             warehouseId: warehouseIds,
-            courierId, 
+            courierId,
             shippingPartner: deliveryPartnerName,
           };
 
-          const forwardOrderResponse = await axios.post(fshipCreateShipUrl, forwardShipBody, {
+          const forwardOrderResponse = await axios.post(fshipCreateForwardOrderUrl, forwardShipBody, {
             headers: {
               'Authorization': `${token}`,
             },
           });
 
-          message.success("Order shipped successfully");
-          console.log('FShip createforwardorder API hit');
+          const fhipApiOrderId = forwardOrderResponse.data?.apiorderid;
           console.log(forwardOrderResponse);
+          if (fhipApiOrderId) {
+            const createShipmentResponse = await axios.post(fshipCreateShipmentUrl, {
+              apiorderid:fhipApiOrderId,
+              courierId
+            }, {
+              headers: {
+                'Authorization': `${token}`,
+              },
+            });
 
-          return forwardOrderResponse.data;
+            message.success("Order shipped successfully with shipment created on warehouse " + warehouseId?.warehouseName);
+            console.log('FShip createShipment API hit');
+            console.log(createShipmentResponse);
+
+            return createShipmentResponse.data;
+          } else {
+            message.error('Failed to retrieve fhipApiOrderId');
+            throw new Error('Failed to retrieve fhipApiOrderId');
+          }
         }
       } else {
         const response = await axios.post(url, {
-          warehouseId:warehouseIds,
-          orderId,
+          warehouseId: warehouseIds,
+          orderId:orderIds,
         }, {
           headers: {
             'Authorization': `${token}`,
           },
         });
 
+        message.success("Order shipped successfully on warehouse " + warehouseId?.warehouseName);
         console.log(log);
         console.log(response);
 
