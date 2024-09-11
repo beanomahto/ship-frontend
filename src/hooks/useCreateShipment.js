@@ -9,20 +9,29 @@ const useCreateShipment = () => {
   const shipOrder = async (orderId, warehouseId, deliveryPartnerName) => {
     setLoading(true);
     setError(null);
-
+    console.log(orderId);
+  
     const warehouseIds = warehouseId?._id;
     const fShipWarehouseId = warehouseId?.fshipWarehouseId;
-console.log(warehouseIds);
-const orderIds = orderId?._id
-console.log(orderIds);
-
+    console.log(warehouseIds);
+  
+    let orderIds = [];
+  
+    if (Array.isArray(orderId)) {
+      orderIds = orderId.map((ordId) => ordId?._id);  
+    } else if (orderId && typeof orderId === 'object') {
+      orderIds = [orderId?._id]; 
+    }
+  
+    console.log(orderIds); 
+  
     try {
       let url = '';
       let log = '';
       const fshipUrl = 'https://backend.shiphere.in/api/fship/createWarehouse'; 
       const fshipCreateForwardOrderUrl = 'https://backend.shiphere.in/api/fship/createforwardorder'; 
-      const fshipCreateShipmentUrl = 'http://localhost:5000/api/fship/shipOrder'; 
-
+      const fshipCreateShipmentUrl = 'http://backend.shiphere.in/api/fship/shipOrder'; 
+  
       switch (deliveryPartnerName) {
         case 'Ecom Express':
           url = 'https://backend.shiphere.in/api/ecomExpress/createShipment';
@@ -48,9 +57,9 @@ console.log(orderIds);
         default:
           throw new Error('Invalid delivery partner');
       }
-
+  
       const token = localStorage.getItem('token');
-
+  
       if (['Ekart', 'Blue Dart', 'DTDC', 'Shadowfax'].includes(deliveryPartnerName)) {
         if (fShipWarehouseId === 0) {
           const warehouseResponse = await axios.post(fshipUrl, {
@@ -60,44 +69,44 @@ console.log(orderIds);
               'Authorization': `${token}`,
             },
           });
-
+  
           if (warehouseResponse.status === 200) {
             let courierId;
             if (deliveryPartnerName === 'Ekart') courierId = 9;
             else if (deliveryPartnerName === 'Blue Dart') courierId = 14;
             else if (deliveryPartnerName === 'DTDC') courierId = 17;
             else if (deliveryPartnerName === 'Shadowfax') courierId = 43;
-
+  
             const forwardShipBody = {
-              orderId:orderIds,
+              orderId: orderIds, // Using normalized orderIds array
               warehouseId: warehouseIds,
               courierId,
               shippingPartner: deliveryPartnerName,
             };
-
+  
             const forwardOrderResponse = await axios.post(fshipCreateForwardOrderUrl, forwardShipBody, {
               headers: {
                 'Authorization': `${token}`,
               },
             });
-
+  
             const fhipApiOrderId = forwardOrderResponse.data?.apiorderid;
             console.log(forwardOrderResponse);
             
             if (fhipApiOrderId) {
               const createShipmentResponse = await axios.post(fshipCreateShipmentUrl, {
-                apiorderid:fhipApiOrderId,
-                courierId
+                apiorderid: fhipApiOrderId,
+                courierId,
               }, {
                 headers: {
                   'Authorization': `${token}`,
                 },
               });
-
+  
               message.success("Order shipped successfully with shipment created on warehouse " + warehouseId?.warehouseName);
               console.log('FShip createShipment API hit');
               console.log(createShipmentResponse);
-
+  
               return createShipmentResponse.data;
             } else {
               message.error('Failed to retrieve fhipApiOrderId');
@@ -113,36 +122,36 @@ console.log(orderIds);
           else if (deliveryPartnerName === 'Blue Dart') courierId = 14;
           else if (deliveryPartnerName === 'DTDC') courierId = 17;
           else if (deliveryPartnerName === 'Shadowfax') courierId = 43;
-
+  
           const forwardShipBody = {
-            orderId:orderIds,
+            orderId: orderIds, // Using normalized orderIds array
             warehouseId: warehouseIds,
             courierId,
             shippingPartner: deliveryPartnerName,
           };
-
+  
           const forwardOrderResponse = await axios.post(fshipCreateForwardOrderUrl, forwardShipBody, {
             headers: {
               'Authorization': `${token}`,
             },
           });
-
+  
           const fhipApiOrderId = forwardOrderResponse.data?.apiorderid;
           console.log(forwardOrderResponse);
           if (fhipApiOrderId) {
             const createShipmentResponse = await axios.post(fshipCreateShipmentUrl, {
-              apiorderid:fhipApiOrderId,
-              courierId
+              apiorderid: fhipApiOrderId,
+              courierId,
             }, {
               headers: {
                 'Authorization': `${token}`,
               },
             });
-
+  
             message.success("Order shipped successfully with shipment created on warehouse " + warehouseId?.warehouseName);
             console.log('FShip createShipment API hit');
             console.log(createShipmentResponse);
-
+  
             return createShipmentResponse.data;
           } else {
             message.error('Failed to retrieve fhipApiOrderId');
@@ -152,17 +161,17 @@ console.log(orderIds);
       } else {
         const response = await axios.post(url, {
           warehouseId: warehouseIds,
-          orderId:orderIds,
+          orderId: orderIds, // Using normalized orderIds array
         }, {
           headers: {
             'Authorization': `${token}`,
           },
         });
-
+  
         message.success("Order shipped successfully on warehouse " + warehouseId?.warehouseName);
         console.log(log);
         console.log(response);
-
+  
         return response.data;
       }
     } catch (err) {
@@ -173,7 +182,7 @@ console.log(orderIds);
       setLoading(false);
     }
   };
-
+  
   return {
     shipOrder,
     loading,

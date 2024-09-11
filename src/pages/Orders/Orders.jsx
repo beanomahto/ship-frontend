@@ -86,7 +86,10 @@ console.log(selectedOrderData);
     console.log(selectedWarehouse);
     console.log(selectedDeliveryPartner);
     setSelectedWarehouseId(selectedWarehouse)
-    if (selectedRowKeys.length === 0) {
+    const selectedRows = selectedOrderData?.map((ordId) => ordId?._id)
+    console.log(selectedRows);
+    
+    if (selectedRows.length === 0) {
       message.warning('Please select at least one order to ship.');
       return;
     }
@@ -99,6 +102,8 @@ console.log(selectedOrderData);
       for (const orderId of selectedRowKeys) {
         const order = orders?.orders.find((order) => order._id === orderId);
         if (!order) continue;
+  console.log(orderId);
+  console.log(order);
   
         let forwardCharge, codCharge;
   
@@ -121,8 +126,8 @@ console.log(selectedOrderData);
         }
   
         try {
-          console.log('Calling shipOrder with:', { orderId, selectedWarehouse, selectedDeliveryPartner });
-          await shipOrder(orderId, selectedWarehouse, selectedDeliveryPartner.name);
+          console.log('Calling shipOrder with:', { order, selectedWarehouse, selectedDeliveryPartner });
+          await shipOrder(order, selectedWarehouse, selectedDeliveryPartner.name);
   
           console.log('Order shipped:', orderId);
           message.success('AWB generated');
@@ -187,7 +192,7 @@ console.log(selectedOrderData);
         updatedOrders.push({ ...order, status: 'Shipped' });
       }
   
-      const newOrdersCopy = orders.orders.filter((order) => !selectedRowKeys.includes(order._id));
+      const newOrdersCopy = orders.orders.filter((order) => !selectedRows.includes(order._id));
       setOrders({
         orders: newOrdersCopy.concat(updatedOrders),
       });

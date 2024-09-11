@@ -4,11 +4,12 @@ import { useWarehouseContext } from '../../../context/WarehouseContext';
 import { useDeliveryPartner } from '../../../context/DeliveryPartners';
 import useShipNowCost from '../../../hooks/useShipNowCost';
 
-const ShipNowModel = ({ visible, onClose, onShipNow, selectedRowKeys, hasSelected }) => {
+const ShipNowModel = ({ visible, onClose, onShipNow, selectedRowKeys, hasSelected, selectedOrderData }) => {
   const { deliveryPartners } = useDeliveryPartner();
   const { warehouse } = useWarehouseContext();
   const { shipNowCost } = useShipNowCost(); 
-
+  console.log(selectedOrderData);
+  
   const [selectedWarehouse, setSelectedWarehouse] = useState(warehouse?.warehouses?.[0]?._id || null);
   const [selectedDeliveryPartner, setSelectedDeliveryPartner] = useState(null);
   const [shippingCosts, setShippingCosts] = useState([]);
