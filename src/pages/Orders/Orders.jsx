@@ -404,59 +404,60 @@ console.log(labelData);
           }
         </style>
                 <div class="label-container">
-                    <h1 style="text-align: center;">Shipping Label</h1>
-                    <p><strong>Order Id:-</strong> ${labelData?.orderId}</p>
-                    <div style="${labelData.logoUrl ? 'display: flex;' : ''}">
-                        <div class="labelSection">
-                            <img style="width: 11rem;" src="data:image/png;base64,${labelData.barcode}" alt="Barcode" />
-                            <p>${labelData.shippingPartner}</p>
-                        </div>
-                    </div>
-                    <div class="labelSection">
-                        <p><strong>Ship To:</strong></p>
-                        <p><strong>${labelData.customerName}</strong></p>
-                        <p>${labelData?.address?.address} ${labelData?.address?.city} ${labelData?.address?.state}</p>
-                        <p><strong>PIN:</strong> ${labelData.address?.pincode}</p>
-                    </div>
-                    <div style="display: flex;">
-                        <div class="labelSection" style="width: 16rem;">
-                            <p><strong>${labelData.paymentType}</strong></p>
-                            <p><strong>Product name</strong></p>
-                            <p>${labelData.productName}</p>
-                        </div>
-                        <div class="labelSection" style="width: 10rem;">
-                            <p><strong>${labelData.paymentType}</strong></p>
-                            <p><strong>INR</strong></p>
-                            <p>${labelData.amount}</p>
-                        </div>
-                        <div class="labelSection" style="width: 12rem;">
-                            <p><strong>Price Total</strong></p>
-                            <p>INR ${labelData.amount}</p>
-                            <p>Surface</p>
-                        </div>
-                    </div>
-                    <div style="display: flex;">
-                        <div class="labelSection" style="width: 12rem;">
-                            <p><strong>Product (QTY)</strong></p>
-                        </div>
-                        <div class="labelSection" style="width: 12rem;">
-                            <p>box (${labelData?.productDetail?.quantity})</p>
-                        </div>
-                    </div>
-                    <div style="display: flex;">
-                        <div class="labelSection" style="width: 12rem;">
-                            <p><strong>Total INR</strong></p>
-                        </div>
-                        <div class="labelSection" style="width: 12rem;">
-                            <p>${labelData.amount}</p>
-                        </div>
-                    </div>
-                    <div class="labelSection">
-                        <p><strong>Return Address:</strong></p>
-                        <p>${labelData?.pickupAddress?.address} ${labelData?.pickupAddress?.state} ${labelData?.pickupAddress?.city} ${labelData?.pickupAddress?.country}</p>
-                    </div>
-                    <p>Powered by <strong>ShipHere</strong></p>
-                </div>
+    <h1 style="text-align: center;">Shipping Label</h1>
+    <p><strong>Order Id:-</strong> ${labelData?.orderId ? labelData?.orderId : ""}</p>
+    <div style="${labelData?.logoUrl ? 'display: flex;' : ''}">
+        <div class="labelSection">
+            <img style="width: 11rem;" src="data:image/png;base64,${labelData?.barcode ? labelData?.barcode : ""}" alt="Barcode" />
+            <p>${labelData?.shippingPartner ? labelData?.shippingPartner : ""}</p>
+        </div>
+    </div>
+    <div class="labelSection">
+        <p><strong>Ship To:</strong></p>
+        <p><strong>${labelData?.customerName ? labelData?.customerName : ""}</strong></p>
+        <p>${labelData?.address?.address ? labelData?.address?.address : ""} ${labelData?.address?.city ? labelData?.address?.city : ""} ${labelData?.address?.state ? labelData?.address?.state : ""}</p>
+        <p><strong>PIN:</strong> ${labelData?.address?.pincode ? labelData?.address?.pincode : ""}</p>
+    </div>
+    <div style="display: flex;">
+        <div class="labelSection" style="width: 16rem;">
+            <p><strong>${labelData?.paymentType ? labelData?.paymentType : ""}</strong></p>
+            <p><strong>Product name</strong></p>
+            <p>${labelData?.productName ? labelData?.productName : ""}</p>
+        </div>
+        <div class="labelSection" style="width: 10rem;">
+            <p><strong>${labelData?.paymentType ? labelData?.paymentType : ""}</strong></p>
+            <p><strong>INR</strong></p>
+            <p>${labelData?.amount ? labelData?.amount : ""}</p>
+        </div>
+        <div class="labelSection" style="width: 12rem;">
+            <p><strong>Price Total</strong></p>
+            <p>INR ${labelData?.amount ? labelData?.amount : ""}</p>
+            <p>Surface</p>
+        </div>
+    </div>
+    <div style="display: flex;">
+        <div class="labelSection" style="width: 12rem;">
+            <p><strong>Product (QTY)</strong></p>
+        </div>
+        <div class="labelSection" style="width: 12rem;">
+            <p>box (${labelData?.productDetail?.quantity ? labelData?.productDetail?.quantity : ""})</p>
+        </div>
+    </div>
+    <div style="display: flex;">
+        <div class="labelSection" style="width: 12rem;">
+            <p><strong>Total INR</strong></p>
+        </div>
+        <div class="labelSection" style="width: 12rem;">
+            <p>${labelData?.amount ? labelData?.amount : ""}</p>
+        </div>
+    </div>
+    <div class="labelSection">
+        <p><strong>Return Address:</strong></p>
+        <p>${labelData?.pickupAddress?.address ? labelData?.pickupAddress?.address : ""} ${labelData?.pickupAddress?.state ? labelData?.pickupAddress?.state : ""} ${labelData?.pickupAddress?.city ? labelData?.pickupAddress?.city : ""} ${labelData?.pickupAddress?.country ? labelData?.pickupAddress?.country : ""}</p>
+    </div>
+    <p>Powered by <strong>ShipHere</strong></p>
+</div>
+
             `;
 
             labelContainer.innerHTML = labelHtml;
