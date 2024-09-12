@@ -11,6 +11,7 @@ const UpdateWarehouse = () => {
     console.log(id);
     const {warehouse,fetchWarehouse} = useWarehouseContext();
     const [inputs, setInputs] = useState({
+        warehouseName:'',
         contactPerson: '',
         contactEmail: '',
         contactNumber: '',
@@ -36,6 +37,7 @@ const UpdateWarehouse = () => {
                 console.log(data);
                 
                 setInputs({
+                    warehouseName: data?.warehouse?.warehouseName || '',
                     contactPerson: data?.warehouse?.contactPerson || '',
                     contactEmail: data?.warehouse?.contactEmail || '',
                     contactNumber: data?.warehouse?.contactNumber || '',
@@ -119,8 +121,18 @@ console.log(response);
                 <div className='formCon'>
                     <form className="form" onSubmit={handleOrderSubmit}>
                         <p className="title">Update Warehouse</p>
-
                         <div className="flex">
+                            
+                            <label>
+                    <input class="input" type="text" placeholder="" required 
+                    value={inputs.warehouseName} 
+                    onChange={(e) => setInputs({ ...inputs, warehouseName: e.target.value })} 
+                    />
+                    <span>Warehouse Name</span>
+                </label>
+                        </div>
+                        <div className="flex">
+                            
                             <label>
                                 <input
                                     className="input"

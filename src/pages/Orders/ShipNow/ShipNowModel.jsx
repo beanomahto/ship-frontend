@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Modal, Select, message } from 'antd';
 import { useWarehouseContext } from '../../../context/WarehouseContext';
 import { useDeliveryPartner } from '../../../context/DeliveryPartners';
@@ -8,11 +8,17 @@ const ShipNowModel = ({ visible, onClose, onShipNow, selectedRowKeys, hasSelecte
   const { deliveryPartners } = useDeliveryPartner();
   const { warehouse } = useWarehouseContext();
   const { shipNowCost } = useShipNowCost(); 
-  console.log(selectedOrderData);
+
+  const defaultWarehouse = warehouse?.warehouses?.[0];
   
-  const [selectedWarehouse, setSelectedWarehouse] = useState(warehouse?.warehouses?.[0]?._id || null);
+  const [selectedWarehouse, setSelectedWarehouse] = useState(defaultWarehouse || null);
   const [selectedDeliveryPartner, setSelectedDeliveryPartner] = useState(null);
-  const [shippingCosts, setShippingCosts] = useState([]);
+
+  useEffect(() => {
+    if (defaultWarehouse) {
+      setSelectedWarehouse(defaultWarehouse);
+    }
+  }, [defaultWarehouse]);
 
   const handleWarehouseChange = (value) => {
     const selectedWarehouseData = warehouse?.warehouses?.find((w) => w._id === value);
@@ -20,10 +26,9 @@ const ShipNowModel = ({ visible, onClose, onShipNow, selectedRowKeys, hasSelecte
   };
 
   const handleDeliveryPartnerChange = (value) => {
-    const selectedPartner = deliveryPartners.deliveryPartners.find((d) => d._id === value);
+    const selectedPartner = deliveryPartners?.deliveryPartners?.find((d) => d._id === value);
     setSelectedDeliveryPartner(selectedPartner);
   };
-console.log(selectedWarehouse);
 
   const handleShipNow = () => {
     if (selectedDeliveryPartner && selectedWarehouse) {
@@ -55,18 +60,19 @@ console.log(selectedWarehouse);
         <label>
           <span>Select Warehouse</span>
           <Select
-            defaultValue={selectedWarehouse?._id}
+            value={selectedWarehouse?._id}  
             className="input shipModel"
             onChange={handleWarehouseChange}
           >
             {warehouse?.warehouses?.map((w) => (
               <Select.Option key={w._id} value={w._id}>
-                {w.address}
+                {w.warehouseName}
               </Select.Option>
             ))}
           </Select>
           <span>Select Courier Partner</span>
           <Select
+            value={selectedDeliveryPartner?._id}  
             className="input shipModel crr"
             onChange={handleDeliveryPartnerChange}
           >

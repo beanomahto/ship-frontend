@@ -30,8 +30,8 @@ const useCreateShipment = () => {
       let log = '';
       const fshipUrl = 'https://backend.shiphere.in/api/fship/createWarehouse'; 
       const fshipCreateForwardOrderUrl = 'https://backend.shiphere.in/api/fship/createforwardorder'; 
-      const fshipCreateShipmentUrl = 'http://backend.shiphere.in/api/fship/shipOrder'; 
-  
+      const fshipCreateShipmentUrl = 'https://backend.shiphere.in/api/fship/shipOrder'; 
+   
       switch (deliveryPartnerName) {
         case 'Ecom Express':
           url = 'https://backend.shiphere.in/api/ecomExpress/createShipment';
@@ -78,7 +78,7 @@ const useCreateShipment = () => {
             else if (deliveryPartnerName === 'Shadowfax') courierId = 43;
   
             const forwardShipBody = {
-              orderId: orderIds, // Using normalized orderIds array
+              orderId: orderIds, 
               warehouseId: warehouseIds,
               courierId,
               shippingPartner: deliveryPartnerName,
@@ -124,7 +124,7 @@ const useCreateShipment = () => {
           else if (deliveryPartnerName === 'Shadowfax') courierId = 43;
   
           const forwardShipBody = {
-            orderId: orderIds, // Using normalized orderIds array
+            orderId: orderIds,
             warehouseId: warehouseIds,
             courierId,
             shippingPartner: deliveryPartnerName,
@@ -161,7 +161,7 @@ const useCreateShipment = () => {
       } else {
         const response = await axios.post(url, {
           warehouseId: warehouseIds,
-          orderId: orderIds, // Using normalized orderIds array
+          orderId: orderIds,
         }, {
           headers: {
             'Authorization': `${token}`,

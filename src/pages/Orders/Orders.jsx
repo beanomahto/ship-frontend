@@ -153,8 +153,7 @@ console.log(selectedOrderData);
           },
           body: JSON.stringify({
             status: 'Shipped',
-            forwardCharge: forwardChargeWithGST,
-            codCharge: codChargeWithGST,
+            shippingCost: forwardChargeWithGST,
           }),
         });
   
@@ -191,7 +190,7 @@ console.log(selectedOrderData);
   
         updatedOrders.push({ ...order, status: 'Shipped' });
       }
-  
+      fetchOrders()
       const newOrdersCopy = orders.orders.filter((order) => !selectedRows.includes(order._id));
       setOrders({
         orders: newOrdersCopy.concat(updatedOrders),
@@ -313,7 +312,11 @@ const inTransitOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 
                     credit: order.shippingCost,
                     remark: `Credit charges for order ${order.orderId}`,
                 };
-                return axios.post(`https://backend.shiphere.in/api/transactions/increaseAmount`, walletRequestBody, {
+                console.log(order);
+                
+                console.log(walletRequestBody);
+                
+                return axios.post(`http://localhost:5000/api/transactions/increaseAmount`, walletRequestBody, {
                     headers: {
                         Authorization: `${token}`
                     }
