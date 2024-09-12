@@ -149,7 +149,9 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading }) => {
       title: 'Order Date',
       dataIndex: 'createdAt',
       sorter: (a, b) => moment(a.createdAt).unix() - moment(b.createdAt).unix(),
-      render: (text, order) => moment(order?.createdAt).format('DD-MM-YYYY'),
+      render: (text, order) => <>
+      <div>{moment(order?.createdAt).format('DD-MM-YYYY')}<span style={{marginLeft:'10px', fontStyle:'italic'}}>{moment(order?.createdAt).format('HH:mm')}</span></div>
+      </>,
     },
     ...(authUser?.role === 'admin' ? [{
       title: 'Seller Email',

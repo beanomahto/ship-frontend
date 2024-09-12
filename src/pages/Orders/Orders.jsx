@@ -25,28 +25,32 @@ const Orders = () => {
   const { shipNowCost } = useShipNowCost();
   const { warehouse } = useWarehouseContext();
   const {cancelOrder} = useCancelShipment()
+  const {shipOrder,error} = useCreateShipment()
+  const { orders, setOrders, fetchOrders } = useOrderContext();
+
+  // states
   const [deliveryCosts, setDeliveryCosts] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { orders, setOrders, fetchOrders } = useOrderContext();
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleBD, setModalVisibleBD] = useState(false);
   const [modalVisibleShipNow, setModalVisibleShipNow] = useState(false);
   const [selectedOrderData, setSelectedOrderData] = useState([]);
   const [selectedWarehouseId, setSelectedWarehouseId] = useState([]);
   const [currentTab, setCurrentTab] = useState('tab1');
+  const [modalLoading, setModalLoading] = useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
+  const [currentDeliveryCost, setCurrentDeliveryCost] = useState(null);
+
   console.log(orders);
 console.log(selectedOrderData);
+// models
   const showModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
   const showModalBD = () => setModalVisibleBD(true);
   const closeModalBD = () => setModalVisibleBD(false);
   const showModalShipNow = () => setModalVisibleShipNow(true);
   const closeModalShipNow = () => setModalVisibleShipNow(false);
-  const [modalLoading, setModalLoading] = useState(false);
-  const [selectedOrderId, setSelectedOrderId] = useState(null);
-  const [currentDeliveryCost, setCurrentDeliveryCost] = useState(null);
-  const {shipOrder,error} = useCreateShipment()
   const start = async () => {
     setLoading(true);
     try {
@@ -316,7 +320,7 @@ const inTransitOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 
                 
                 console.log(walletRequestBody);
                 
-                return axios.post(`http://localhost:5000/api/transactions/increaseAmount`, walletRequestBody, {
+                return axios.post(`https://backend.shiphere.in/api/transactions/increaseAmount`, walletRequestBody, {
                     headers: {
                         Authorization: `${token}`
                     }

@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { Table, Input, Button, Space, message, Tag, Skeleton } from 'antd';
+import React from 'react';
+import { Table, Input, Button, Space, Tag, Skeleton } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { Helmet } from 'react-helmet';
 import Shopify from '../../utils/shopify.png';
-import Woo from '../../utils/woocomerce.png'
-import logo from '../../utils/logo1.jpg' 
+import Woo from '../../utils/woocomerce.png';
+import logo from '../../utils/logo1.jpg';
 import { useAuthContext } from '../../context/AuthContext';
 
-const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) => {
-  const [searchText, setSearchText] = useState('');
-  const [searchedColumn, setSearchedColumn] = useState('');
+const ShipOrderComponent = ({ rowSelection, dataSource, fetchOrders, loading }) => {
+  const [searchText, setSearchText] = React.useState('');
+  const [searchedColumn, setSearchedColumn] = React.useState('');
   const { authUser } = useAuthContext();
+
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -23,6 +24,10 @@ const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) =
     setSearchText('');
   };
 
+  const formatDateInIST = (dateString) => {
+    // Convert to IST and format using moment
+    return moment.utc(dateString).local().format('DD-MM-YYYY HH:mm');
+  };
 
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -52,7 +57,6 @@ const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) =
     ),
     filterIcon: (filtered) => <SearchOutlined style={{ color: filtered ? '#1890ff' : 'black' }} />,
     onFilter: (value, record) => {
-      // Split the dataIndex in case it represents a nested field
       const keys = dataIndex.split('.');
       let data = record;
       keys.forEach(key => {
@@ -79,11 +83,13 @@ const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) =
       title: 'Shipping Status',
       dataIndex: 'awb',
       onFilter: (value, record) => record.s_status.indexOf(value) === 0,
-      render:(value, record) => (
-        <>
-        <a target='_blank' href={`/tracking/shipment/${record.shippingPartner}/${record.awb}`}><Button type='link'><div>{record.awb}</div></Button></a>
-        <span>{record?.shippingPartner}</span>
-        </>
+      render: (value, record) => (
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <a target='_blank' href={`/tracking/shipment/${record.shippingPartner}/${record.awb}`}>
+            <Button type='link'>{record.awb}</Button>
+          </a>
+          <span>{record?.shippingPartner}</span>
+        </div>
       ),
       className: 'centered-row',
     },
@@ -92,10 +98,10 @@ const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) =
       dataIndex: 'customerName',
       ...getColumnSearchProps('customerName'),
       render: (text, order) => (
-        <>
+        <div>
           <div>{order.customerName}</div>
           <div>{order.customerPhone}</div>
-        </>
+        </div>
       ),
       className: 'centered-row',
     },
@@ -108,24 +114,22 @@ const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) =
       ],
       onFilter: (value, record) => record.paymentMethod === value,
       render: (text, order) => (
-        <>
+        <div>
           <div>&#8377; {order.productPrice}</div>
-          <Tag color={order.paymentMethod === 'COD' ? 'green-inverse' : 'geekblue-inverse'} >
+          <Tag color={order.paymentMethod === 'COD' ? 'green-inverse' : 'geekblue-inverse'}>
             {order.paymentMethod}
           </Tag>
-        </>
+        </div>
       ),
       className: 'centered-row',
     },
     {
       title: 'Package Details',
       render: (text, order) => (
-        <>
+        <div>
           <div>pkg Wt. {order.weight}gm</div>
-          <div>
-            ({order.length}x{order.breadth}x{order.height}cm)
-          </div>
-        </>
+          <div>({order.length}x{order.breadth}x{order.height}cm)</div>
+        </div>
       ),
       className: 'centered-row',
     },
@@ -133,9 +137,9 @@ const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) =
       title: 'Channel',
       dataIndex: 'channel',
       render: (text) => (
-        <div style={{display:'flex', justifyContent:'center'}}>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
           <img
-           src={text === 'shopify' ? Shopify : (text === 'Mannual' ? logo : Woo)}
+            src={text === 'shopify' ? Shopify : (text === 'Mannual' ? logo : Woo)}
             alt={text}
             style={{ width: 'max-content', height: '40px', borderRadius: '50%' }}
           />
@@ -146,12 +150,14 @@ const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) =
     {
       title: 'Order Date',
       dataIndex: 'createdAt',
-      sorter: (a, b) => moment(a.createdAt).unix() - moment(b.createdAt).unix(),
-      render: (text, order) => moment(order?.createdAt).format('DD-MM-YYYY'),
+      sorter: (a, b) => moment(a.updatedAt).isAfter(moment(b.updatedAt)) ? 1 : -1,
+      render: (text, order) => (
+        <div>{formatDateInIST(order?.updatedAt)}</div>
+      ),
     },
     ...(authUser?.role === 'admin' ? [{
       title: 'Seller Email',
-      dataIndex: 'seller.email',  
+      dataIndex: 'seller.email',
       ...getColumnSearchProps('seller.email'),
       render: (_, record) => (
         <span style={{ textAlign: 'center' }}>
@@ -162,32 +168,30 @@ const ShipOrderComponent = ({ rowSelection,dataSource, fetchOrders, loading }) =
     }] : []),
   ];
 
-
   const shippedOrders = dataSource?.filter(order => order?.status === 'Shipped');
-  console.log(shippedOrders);
-  
+
   return (
     <>
       <Helmet>
-                <meta charSet='utf-8' />
-                <meta name='keyword' content={""} />
-                <title>Orders </title>
-            </Helmet>
+        <meta charSet='utf-8' />
+        <meta name='keyword' content={""} />
+        <title>Orders </title>
+      </Helmet>
       {
         loading ? (
-          <Skeleton active title={false}
-            paragraph={{ rows: 10 }} style={{ height: '100%', width: '100%' }}
+          <Skeleton active title={false} paragraph={{ rows: 10 }} style={{ height: '100%', width: '100%' }} />
+        ) : (
+          <Table
+            rowSelection={rowSelection}
+            columns={columns}
+            dataSource={shippedOrders}
+            className="centered-table"
+            rowKey="_id"
+            scroll={{ y: 450 }}
+            pagination={false}
+            style={{ width: '100%', height: '505px' }}
           />
-        ) : <Table
-          rowSelection={rowSelection}
-          columns={columns}
-          dataSource={shippedOrders}
-           className="centered-table"
-          rowKey="_id"
-          scroll={{ y: 450 }}
-          pagination={false}
-          style={{ width: '100%', height: '505px' }}
-        />
+        )
       }
     </>
   );
