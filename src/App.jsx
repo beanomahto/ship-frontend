@@ -49,6 +49,7 @@ import Signup1 from "./pages/Signup/Signup1";
 import UpdateWarehouse from "./pages/Warehouses/updateWarehouse/UpdateWarehouse";
 import ViewShopify from "./pages/channelIntegration/shopify/ViewShopify";
 import ViewWoo from "./pages/channelIntegration/woocommerce/ViewWoo";
+import Employee from "./pages/Employee/Employee";
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -77,6 +78,9 @@ const App = () => {
           <Route path="orders" element={
               <ProtectedRoute><Orders /></ProtectedRoute>
             }/>
+          <Route path="employee" element={
+              <ProtectedRoute><Employee /></ProtectedRoute>
+            }/>
           <Route path="seller" element={
               <ProtectedRoute><Seller /></ProtectedRoute>
             }/>
@@ -90,7 +94,7 @@ const App = () => {
           <Route path="orders/singleorder"element={
               <ProtectedRoute><SingleOrder /> </ProtectedRoute>
             }/>
-          <Route path="orders/updateorder/:id/:orderId" element={
+          <Route path="orders/:tabs/updateorder/:id/:orderId" element={
               <ProtectedRoute><UpdatesingleOrder /></ProtectedRoute>
             }/>
           <Route path="shipping/getlabel/:id" element={

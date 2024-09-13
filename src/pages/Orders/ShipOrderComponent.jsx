@@ -7,8 +7,10 @@ import Shopify from '../../utils/shopify.png';
 import Woo from '../../utils/woocomerce.png';
 import logo from '../../utils/logo1.jpg';
 import { useAuthContext } from '../../context/AuthContext';
+import { Link } from 'react-router-dom';
 
-const ShipOrderComponent = ({ rowSelection, dataSource, fetchOrders, loading }) => {
+const ShipOrderComponent = ({ rowSelection, dataSource, fetchOrders, loading, tab }) => {
+  console.log(tab);
   const [searchText, setSearchText] = React.useState('');
   const [searchedColumn, setSearchedColumn] = React.useState('');
   const { authUser } = useAuthContext();
@@ -24,8 +26,7 @@ const ShipOrderComponent = ({ rowSelection, dataSource, fetchOrders, loading }) 
     setSearchText('');
   };
 
-  const formatDateInIST = (dateString) => {
-    // Convert to IST and format using moment
+  const formatDateInIST = (dateString) => { 
     return moment.utc(dateString).local().format('DD-MM-YYYY HH:mm');
   };
 
@@ -71,12 +72,18 @@ const ShipOrderComponent = ({ rowSelection, dataSource, fetchOrders, loading }) 
         text
       ),
   });
-
+  const tabs =  tab.tab.split(' ')[0];
+  console.log(tabs);
   const columns = [
     {
       title: 'Order Id',
       dataIndex: 'orderId',
       ...getColumnSearchProps('orderId'),
+      render: (text, order) => (
+        <Link style={{ color: 'black', fontWeight: '400', fontFamily: 'Poppins', textAlign: 'center' }} to={`/orders/${tabs}/updateorder/${order?._id}/${order?.orderId}`}>
+          {order.orderId}
+        </Link>
+      ),
       className: 'centered-row',
     },
     {

@@ -5,7 +5,7 @@ import { LuLayoutDashboard, LuWarehouse } from "react-icons/lu";
 import { IoCartOutline, IoFileTrayFullOutline  } from "react-icons/io5";
 import { MdOutlineIntegrationInstructions, MdShoppingCart  } from "react-icons/md";
 import { CiSettings } from "react-icons/ci";
-import { FaRegAddressCard, FaTools,FaUserAlt  } from "react-icons/fa";
+import { FaRegAddressCard, FaTools, FaUserAlt, FaUserTie  } from "react-icons/fa";
 import { LiaRupeeSignSolid } from "react-icons/lia";
 import { MdMoney } from "react-icons/md";
 import { TbReportSearch } from "react-icons/tb";
@@ -25,9 +25,15 @@ const MenuList = ({darktheme}) => {
                 <Link to='/orders'><span style={{fontWeight:500}} >Orders</span></Link>
             </Menu.Item>
            {
-           authUser?.role === 'admin' && <Menu.Item key='seller' icon={<FaUserAlt size='1.2rem' />} >
+           authUser?.role === 'admin' && 
+           <>
+           <Menu.Item key='seller' icon={<FaUserAlt size='1.2rem' />} >
            <Link to='/seller'><span style={{fontWeight:500}} >Seller</span></Link>
        </Menu.Item>
+           <Menu.Item key='employee' icon={<FaUserTie size='1.2rem' />} >
+           <Link to='/employee'><span style={{fontWeight:500}} >Employee</span></Link>
+       </Menu.Item>
+           </>
            }
            
             <Menu.Item key='ndr' icon={<IoFileTrayFullOutline size='1.4rem' />} >

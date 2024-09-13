@@ -695,6 +695,7 @@ const downloadInvoices = async () => {
           <TabPane key={tab.key} tab={tab.tab}>
             {tab.Component ? (
               <tab.Component
+              tab={tab}
                 dataSource={tab.dataSource}
                 // rowSelection={tab.key === 'tab1' ? rowSelection : null}
                 rowSelection={rowSelection}

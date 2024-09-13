@@ -38,7 +38,8 @@ const channelImages = {
   'Shopify': Shopify,
 };
 
-const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setModalLoading,modalLoading,deliveryCosts,setDeliveryCosts,setSelectedOrderId,selectedOrderId,currentDeliveryCost,setCurrentDeliveryCost,warehouse,selectedWarehouse,selectedWarehouseId,selectedOrderData }) => {
+const NewOrderComponent = ({ tab,dataSource, rowSelection, fetchOrders, loading,setModalLoading,modalLoading,deliveryCosts,setDeliveryCosts,setSelectedOrderId,selectedOrderId,currentDeliveryCost,setCurrentDeliveryCost,warehouse,selectedWarehouse,selectedWarehouseId,selectedOrderData }) => {
+  console.log(tab);
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   console.log(currentDeliveryCost);
@@ -108,14 +109,15 @@ const NewOrderComponent = ({ dataSource, rowSelection, fetchOrders, loading,setM
         text
       ),
   });
-
+  const tabs =  tab.tab.split(' ')[0];
+  console.log(tabs);
   const columns = [
     {
       title: 'Order Id',
       dataIndex: 'orderId',
       ...getColumnSearchProps('orderId'),
       render: (text, order) => (
-        <Link style={{ color: 'black', fontWeight: '400', fontFamily: 'Poppins', textAlign: 'center' }} to={`/orders/updateorder/${order?._id}/${order?.orderId}`}>
+        <Link style={{ color: 'black', fontWeight: '400', fontFamily: 'Poppins', textAlign: 'center' }} to={`/orders/${tabs}/updateorder/${order?._id}/${order?.orderId}`}>
           {order.orderId}
         </Link>
       ),

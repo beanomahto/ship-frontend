@@ -10,7 +10,8 @@ import Woo from '../../utils/woocomerce.png'
 import logo from '../../utils/logo1.jpg' 
 import { useAuthContext } from '../../context/AuthContext';
 
-const AllOrderComponent = ({ dataSource, fetchOrders, loading }) => {
+const AllOrderComponent = ({ dataSource, fetchOrders, loading,tab }) => {
+  console.log(tab);
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -69,12 +70,18 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading }) => {
         text
       ),
   });
-
+  const tabs =  tab.tab.split(' ')[0];
+  console.log(tabs);
   const columns = [
     {
       title: 'Order Id',
       dataIndex: 'orderId',
       ...getColumnSearchProps('orderId'),
+      render: (text, order) => (
+        <Link style={{ color: 'black', fontWeight: '400', fontFamily: 'Poppins', textAlign: 'center' }} to={`/orders/${tabs}/updateorder/${order?._id}/${order?.orderId}`}>
+          {order.orderId}
+        </Link>
+      ),
     },
     {
       title: 'Shipping Status',
