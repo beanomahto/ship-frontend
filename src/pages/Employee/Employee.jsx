@@ -1,16 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Tag, Button, Input, Space } from 'antd';
+import { Table, Tag, Button, Input, Space, message, Modal } from 'antd';
 import { Link, NavLink } from 'react-router-dom';
 import { SearchOutlined } from '@ant-design/icons';
 import { Helmet } from 'react-helmet';
 import CustomButton from '../../components/Button/Button';
-
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import axios from 'axios';
 const Employee = () => {
+  const { confirm } = Modal;
   const [users, setUsers] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   console.log(users);
-
+  const handleDelete = async (id) => {
+    console.log(id);
+    
+    try {
+      await axios.delete(`https://backend.shiphere.in/api/employee/deleteEmployee/${id}`, {
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+      });
+      message.success('Employee deleted successfully');
+      fetchUsers();
+    } catch (error) {
+      console.error('Error deleting Employee:', error);
+      message.error('Failed to delete Employee');
+    }
+  };
   const fetchUsers = async () => {
     try {
       const response = await fetch('https://backend.shiphere.in/api/employee/getEmployees', {
@@ -79,7 +96,22 @@ console.log(users);
         text
       ),
   });
-console.log(users);
+
+const showDeleteConfirm = (id) => {
+  confirm({
+    title: 'Are you sure you want to delete this warehouse?',
+    content: 'This action cannot be undone.',
+    okText: 'Yes',
+    okType: 'danger',
+    cancelText: 'No',
+    onOk() {
+      handleDelete(id); 
+    },
+    onCancel() {
+      console.log('Cancel deletion');
+    },
+  });
+};
 
 const columns = [
     {
@@ -124,11 +156,17 @@ const columns = [
     },
     {
       title: 'Action',
-      key: 'action',
-      render: (_, record) => (
-        <Button onClick={() => handleViewDetails(record.employeeCode)}>
-          <Link to={`/employee/details/${record.employeeCode}`}>View Details</Link>
-        </Button>
+      dataIndex: 'action',
+      render: (text, employee) => (
+        <>
+          <NavLink to={`${employee?._id}`}>
+            <EditOutlined />
+          </NavLink>
+          <DeleteOutlined
+            style={{ color: 'red', marginLeft: '1rem', cursor: 'pointer' }}
+            onClick={() => showDeleteConfirm(employee._id)} 
+          />
+        </>
       ),
     },
   ];
