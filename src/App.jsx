@@ -50,6 +50,7 @@ import UpdateWarehouse from "./pages/Warehouses/updateWarehouse/UpdateWarehouse"
 import ViewShopify from "./pages/channelIntegration/shopify/ViewShopify";
 import ViewWoo from "./pages/channelIntegration/woocommerce/ViewWoo";
 import Employee from "./pages/Employee/Employee";
+import CreateEmployee from "./pages/Employee/CreateEmployee/CreateEmployee";
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -80,6 +81,9 @@ const App = () => {
             }/>
           <Route path="employee" element={
               <ProtectedRoute><Employee /></ProtectedRoute>
+            }/>
+          <Route path="employee/addEmployee" element={
+              <ProtectedRoute><CreateEmployee /></ProtectedRoute>
             }/>
           <Route path="seller" element={
               <ProtectedRoute><Seller /></ProtectedRoute>

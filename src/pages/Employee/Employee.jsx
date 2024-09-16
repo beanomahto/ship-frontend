@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Tag, Button, Input, Space } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { SearchOutlined } from '@ant-design/icons';
 import { Helmet } from 'react-helmet';
+import CustomButton from '../../components/Button/Button';
 
 const Employee = () => {
   const [users, setUsers] = useState([]);
@@ -10,25 +11,24 @@ const Employee = () => {
   const [searchedColumn, setSearchedColumn] = useState('');
   console.log(users);
 
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch('https://backend.shiphere.in/api/employee/getEmployees', {
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+      });
+
+      const data = await response.json();
+      setUsers(data);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await fetch('https://backend.shiphere.in/api/employee/getEmployees', {
-          headers: {
-            Authorization: localStorage.getItem('token'),
-          },
-        });
-
-        const data = await response.json();
-        const companyUsers = data.filter((user) => user.role === 'company');
-        setUsers(companyUsers);
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      }
-    };
-
     fetchUsers();
   }, []);
+console.log(users);
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -132,19 +132,17 @@ const columns = [
       ),
     },
   ];
-  
-
-  const handleGetKYC = (id) => {
-    console.log(`Get KYC for user with id: ${id}`);
-  };
 
   return (
     <div style={{ backgroundColor: '#fff', height: '45rem', borderRadius: '1rem' }}>
       <Helmet>
         <meta charSet='utf-8' />
         <meta name='keyword' content={""} />
-        <title>Sellers</title>
+        <title>Employee</title>
       </Helmet>
+     <div style={{display:'flex', justifyContent:'flex-end', marginRight:'2rem'}} >
+     <CustomButton ><NavLink to={'addEmployee'} >Add Employee</NavLink></CustomButton>
+     </div>
       <Table dataSource={users} columns={columns} rowKey="_id" pagination={false} />
     </div>
   );

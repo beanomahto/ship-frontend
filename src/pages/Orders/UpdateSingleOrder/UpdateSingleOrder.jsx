@@ -87,7 +87,7 @@ const UpdateSingleOrder = () => {
         state: matchedData.StateName,
       });
     } else {
-      tabs === "New" && setInputs({
+      tabs === "New" &&  setInputs({
         ...inputs,
         pincode: enteredPincode,
         city: "",
