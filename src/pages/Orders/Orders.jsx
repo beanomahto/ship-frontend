@@ -517,7 +517,7 @@ const downloadInvoices = async () => {
   const pageHeight = 841.89; // A4 page height in points
 
   const promises = selectedRowKeys.map(orderId =>
-    fetch(`http://localhost:5000/api/shipping/getinvoice/${orderId}`, {
+    fetch(`https://backend.shiphere.in/api/shipping/getinvoice/${orderId}`, {
       headers: {
         Authorization: `${localStorage.getItem('token')}`,
       },
