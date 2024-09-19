@@ -20,6 +20,8 @@ import html2canvas from 'html2canvas';
 import moment from 'moment';
 import useCancelShipment from '../../hooks/useCancelShipment';
 const { TabPane } = Tabs;
+import Logo from '../../utils/logo.png'
+import { toWords } from 'number-to-words';
 
 const Orders = () => {
   const { shipNowCost } = useShipNowCost();
@@ -511,8 +513,11 @@ const downloadInvoices = async () => {
     format: 'a4',
   });
 
+  const pageWidth = 595.28; // A4 page width in points
+  const pageHeight = 841.89; // A4 page height in points
+
   const promises = selectedRowKeys.map(orderId =>
-    fetch(`https://backend.shiphere.in/api/shipping/getinvoice/${orderId}`, {
+    fetch(`http://localhost:5000/api/shipping/getinvoice/${orderId}`, {
       headers: {
         Authorization: `${localStorage.getItem('token')}`,
       },
@@ -520,72 +525,114 @@ const downloadInvoices = async () => {
       .then(response => response.json())
       .then(data => {
         const invoiceData = data.invoiceData;
-        console.log(invoiceData);
-        
+console.log(invoiceData);
+
         // Create a hidden div to render the invoice
         const invoiceDiv = document.createElement('div');
-        invoiceDiv.style.position = 'absolute';
-        invoiceDiv.style.left = '-9999px';
-        invoiceDiv.style.width = '595.28pt'; // A4 width in points
-        invoiceDiv.style.minHeight = '841.89pt'; // A4 height in points
-        invoiceDiv.style.padding = '2rem';
+        // invoiceDiv.style.position = 'absolute';
+        // invoiceDiv.style.left = '-9999px';
+        invoiceDiv.style.width = `${pageWidth}px`;
+        invoiceDiv.style.height = `${pageHeight}px`;
+        // invoiceDiv.style.maxHeight = `${pageHeight}px`; 
+        invoiceDiv.style.padding = '20px';
         invoiceDiv.style.fontFamily = 'Arial, sans-serif';
-        invoiceDiv.style.boxSizing = 'border-box';
+        // invoiceDiv.style.boxSizing = 'border-box';
+        // invoiceDiv.style.overflow = 'hidden';
+        const formattedInvoiceDate = moment(invoiceData.invoiceDate).format('MMMM Do YYYY');
+  const formattedOrderDate = moment(invoiceData.orderDate).format('MMMM Do YYYY');
 
-        invoiceDiv.innerHTML = `
-          <div class="invoice-container" style="padding: 2rem; font-family: Arial, sans-serif;">
-            <div class="invoice-section">
-              <div class="invoice-header">
-                <div class="sold-by" style="padding: 12px; border: 1px solid #000000;">
-                  <h2>Sold By:</h2>
-                  <p style="font-style: italic;">${invoiceData?.sellerName}</p>
-                  <p style="font-style: italic;">${invoiceData?.sellerAddress}</p>
-                  <p style="font-style: italic;">GSTIN No.: ${invoiceData?.sellerGSTIN}</p>
-                </div>
-                <div class="delivered-to" style="padding: 12px; border: 1px solid #000000;">
-                  <h2>Delivered To:</h2>
-                  <p style="font-style: italic;">${invoiceData?.customerName}</p>
-                  <p style="font-style: italic;">${invoiceData?.customerAddress}</p>
-                </div>
-              </div>
-              <div class="invoice-details" style="padding: 12px; border: 1px solid #000000;">
-                <p style="font-style: italic;"><strong>Invoice No.: </strong>${invoiceData.invoiceNumber}</p>
-                <p style="font-style: italic;"><strong>Invoice Date: </strong>${invoiceData.invoiceDate}</p>
-                <p style="font-style: italic;"><strong>Order Date: </strong>${invoiceData.orderDate}</p>
-              </div>
-            </div>
-            <div class="invoice-items" style="border: 1px solid #000000; width: 100%; border-collapse: collapse;">
-              <table style="width: 100%; border-collapse: collapse;">
-                <thead>
-                  <tr>
-                    <th style="border: 1px solid #ddd; padding: 5px; background-color: #f4f4f4;">Qty</th>
-                    <th style="border: 1px solid #ddd; padding: 5px; background-color: #f4f4f4;">Dimensions</th>
-                    <th style="border: 1px solid #ddd; padding: 5px; background-color: #f4f4f4;">Unit Price</th>
-                    <th style="border: 1px solid #ddd; padding: 5px; background-color: #f4f4f4;">Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td style="border: 1px solid #ddd; padding: 5px;">${invoiceData?.quantity}</td>
-                    <td style="border: 1px solid #ddd; padding: 5px;">${invoiceData?.dimensions.length}x${invoiceData?.dimensions.breadth}x${invoiceData?.dimensions.height}</td>
-                    <td style="border: 1px solid #ddd; padding: 5px;">${invoiceData?.unitPrice}</td>
-                    <td style="border: 1px solid #ddd; padding: 5px;">${invoiceData?.totalPrice}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="invoice-footer" style="padding: 7px; border: 1px solid #000000;">
-              <p style="font-style: italic;">Net Amount Payable (In Words): <strong>${invoiceData.netAmountInWords}</strong></p>
-            </div>
-          </div>
-        `;
+console.log(invoiceData);
+
+  const totalAmountInWords = toWords(invoiceData?.totalPrice);
+  invoiceDiv.innerHTML = `
+  <div class="invoice-container" style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #000;">
+    
+    <!-- Top header: Image in the left, logo text in the right -->
+    <div class="invoice-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <!-- Top left image -->
+      <div class="logo-image" style="width: 50%;">
+        <img src=${Logo} alt="Logo" style="width: 100px; height: auto;" />
+      </div>
+      <!-- Top right text (logo) -->
+    </div>
+    
+    <!-- Invoice Details Section (Sold By / Delivered To) -->
+    <div class="invoice-section" style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+      <div class="sold-by" style="width: 48%; border: 1px solid #000; padding: 12px;">
+        <h2 style="font-size: 14pt; margin-bottom: 10px; padding-left: 50px">Sold By:</h2>
+        <p style="font-size: 10pt; margin: 0; font-weight: 600;">${invoiceData?.sellerName}</p>
+        <p style="font-size: 10pt; margin: 0; font-weight: 600;">${invoiceData?.sellerAddress}</p>
+        <p style="font-size: 10pt; margin: 0;">.</p>
+        <p style="font-size: 10pt; margin: 0; font-weight: 600;">GSTIN No.: ${invoiceData?.sellerGSTIN}</p>
+        <p style="font-size: 10pt; margin: 0; font-weight: 600;">Pincode : ${invoiceData?.order.pincode}</p>
+      </div>
+      
+      <div class="delivered-to" style="width: 48%; border: 1px solid #000; padding: 12px;">
+        <h2 style="font-size: 14pt; margin-bottom: 10px;">Delivered To:</h2>
+        <p style="font-size: 10pt; margin: 0; font-weight: 600;">${invoiceData?.customerName}</p>
+        <p style="font-size: 10pt; margin: 0; font-weight: 600;">${invoiceData?.customerAddress}</p>
+        <p style="font-size: 10pt; margin: 0;">.</p>
+        <p style="font-size: 10pt; margin: 0; font-weight: 600;">Mobile No.: ${invoiceData?.customerPhone}</p>
+        <p style="font-size: 10pt; margin: 0; font-weight: 600;">Shipped By.: ${invoiceData?.order?.shippingPartner}</p>
+        <p style="font-size: 10pt; margin: 0; font-weight: 600;">Payment Method: ${invoiceData?.paymentMethod}</p>
+      </div>
+    </div>
+
+    <!-- Invoice Number, Date, and Order Info -->
+    <div class="invoice-details" style="border: 1px solid #000; display:flex; gap:.5rem; flex-direction:column; padding: 12px; margin-bottom: 20px;">
+      <p style="font-size: 10pt; margin: 0; font-weight: 600;"><strong>Invoice No.:</strong> ${invoiceData.invoiceNumber}</p>
+      <p style="font-size: 10pt; margin: 0; font-weight: 600;"><strong>Invoice Date:</strong> ${formattedInvoiceDate}</p>
+      <p style="font-size: 10pt; margin: 0; font-weight: 600;"><strong>Order Date:</strong> ${formattedOrderDate}</p>
+      <p style="font-size: 10pt; margin: 0; font-weight: 600;"><strong>Order ID:</strong> ${invoiceData.order.orderId}</p>
+    </div>
+
+    <!-- Itemized Table -->
+    <div class="invoice-items" style="border: 1px solid #000;">
+      <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr>
+            <th style="border: 1px solid #000; padding: 5px; background-color: #f4f4f4; font-size: 10pt;">Description</th>
+            <th style="border: 1px solid #000; padding: 5px; background-color: #f4f4f4; font-size: 10pt;">Qty</th>
+            <th style="border: 1px solid #000; padding: 5px; background-color: #f4f4f4; font-size: 10pt;">Dimensions</th>
+            <th style="border: 1px solid #000; padding: 5px; background-color: #f4f4f4; font-size: 10pt;">Unit Price</th>
+            <th style="border: 1px solid #000; padding: 5px; background-color: #f4f4f4; font-size: 10pt;">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="border: 1px solid #000; padding: 5px; font-size: 10pt;">
+              ${invoiceData?.productName}, SKU ${invoiceData?.sku}
+            </td>
+            <td style="border: 1px solid #000; padding: 5px; font-size: 10pt; font-weight: 600;">${invoiceData?.quantity}</td>
+            <td style="border: 1px solid #000; padding: 5px; font-size: 10pt; font-weight: 600;">${invoiceData?.dimensions.length}x${invoiceData?.dimensions.breadth}x${invoiceData?.dimensions.height}</td>
+            <td style="border: 1px solid #000; padding: 5px; font-size: 10pt; font-weight: 600;">${invoiceData?.unitPrice}</td>
+            <td style="border: 1px solid #000; padding: 5px; font-size: 10pt; font-weight: 600;">${invoiceData?.totalPrice}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Invoice Footer -->
+    <div class="invoice-footer" style="border: 1px solid #000; padding: 12px; margin-top: 20px;">
+      <p style="font-size: 10pt; font-weight: 600;">Net Amount Payable (In Words): <strong>${totalAmountInWords}</strong></p>
+    </div>
+
+    <!-- Terms Section -->
+    <div class="invoice-terms" style="border: 1px solid #000; padding: 12px; margin-top: 100px;">
+      <p style="font-size: 10pt; margin: 0; font-weight: 600;">All disputes are subject to Delhi jurisdiction only.</p>
+      <p style="font-size: 10pt; margin: 0; font-weight: 600;">Goods once sold will only be taken back or exchanged as per the store's return policy.</p>
+      <p style="font-size: 10pt; margin: 0; font-weight: 600;">Payment is due within 30 days from the invoice date.</p>
+      <!-- Add more terms if needed -->
+    </div>
+  </div>
+`;
 
         document.body.appendChild(invoiceDiv);
-
+        
+        // Convert invoice div to canvas
         return html2canvas(invoiceDiv, { scale: 2 }).then(canvas => {
           const imgData = canvas.toDataURL('image/png');
-          const imgWidth = 595.28; // A4 width in points
-          const pageHeight = 841.89; // A4 height in points
+          const imgWidth = pageWidth;
           const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
           let heightLeft = imgHeight;
@@ -594,12 +641,12 @@ const downloadInvoices = async () => {
           if (orderId !== selectedRowKeys[0]) {
             pdf.addPage(); // Add a new page for each invoice if needed
           }
-          
-          // Add image to the PDF and manage page breaks
+
           while (heightLeft > 0) {
             pdf.addImage(imgData, 'PNG', 0, position, imgWidth, Math.min(imgHeight, pageHeight));
             heightLeft -= pageHeight;
             position = heightLeft > 0 ? -pageHeight : 0;
+
             if (heightLeft > 0) {
               pdf.addPage();
             }
@@ -617,6 +664,7 @@ const downloadInvoices = async () => {
     pdf.save('all_invoices.pdf');
   });
 };
+
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -640,10 +688,10 @@ const downloadInvoices = async () => {
       >
         Shipping Label
       </Button>
-      {/* <Button disabled={selectedRowKeys.length === 0} style={{ borderColor: 'gray', borderRadius: '50px' }} onClick={downloadInvoices}>
+      <Button disabled={selectedRowKeys.length === 0} style={{ borderColor: 'gray', borderRadius: '50px' }} onClick={downloadInvoices}>
                     Invoice
-                  </Button> */}
-                  <Button disabled={selectedRowKeys.length !== 1} style={{ borderColor: 'gray', borderRadius: '50px' }}><Link to={`/shipping/getInvoice/${selectedRowKeys[0]}`} >Invoice</Link></Button>
+                  </Button>
+                  {/* <Button disabled={selectedRowKeys.length !== 1} style={{ borderColor: 'gray', borderRadius: '50px' }}><Link to={`/shipping/getInvoice/${selectedRowKeys[0]}`} >Invoice</Link></Button> */}
             <Button disabled={selectedRowKeys.length === 0} style={{ borderColor: 'red', borderRadius:'50px' }} onClick={cancelShipment} >Cancel Shipment</Button>
         </div>
   }
