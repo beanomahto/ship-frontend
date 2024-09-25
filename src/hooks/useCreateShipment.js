@@ -42,7 +42,7 @@ const useCreateShipment = () => {
           log = 'amazon hit';
           break;
         case 'Xpressbees':
-          url = 'https://backend.shiphere.in/api/xpressbees/createShipment';
+          url = 'http://localhost:5000/api/xpressbees/createShipment';
           log = 'xpress hit';
           break;
         case 'Delhivery':

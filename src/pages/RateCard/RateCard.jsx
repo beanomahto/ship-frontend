@@ -176,7 +176,7 @@ const RateCard = () => {
             <li>Volumetric weight is calculated as (Length x Breadth x Height) / 5000 for all courier companies. (Dimensions should be taken in centimeters and divided by the denominator to get the weight in kilograms).</li>
             <li>COD charges are determined by either fixed COD charges or a percentage of the order value, whichever is higher.</li>
             <li>Prices are subject to change based on fuel surcharges and courier company base rates.</li>
-            <li>Shipway will not assist or be held responsible for shipping goods categorized as prohibited, dangerous, or restricted.</li>
+            <li>Shiphere will not assist or be held responsible for shipping goods categorized as prohibited, dangerous, or restricted.</li>
             <li>The sender is liable for any costs, charges, and fees incurred in returning, storing, or disposing of an undelivered shipment.</li>
             <li>If a shipment cannot be delivered, cleared through customs, or returned, it may be transferred.</li>
             <li>For any queries, a ticket should be raised via support@shipshed.in.</li>

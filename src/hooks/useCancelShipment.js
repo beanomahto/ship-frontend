@@ -32,7 +32,7 @@ const useCancelShipment = () => {
 
         switch (deliveryPartnerName) {
           case 'Xpressbees':
-            url = 'https://backend.shiphere.in/api/xpressbees/createShipment';
+            url = 'http://localhost:5000/api/xpressbees/cancel';
             log = 'Xpressbees hit';
             break;
           case 'Blue Dart':
