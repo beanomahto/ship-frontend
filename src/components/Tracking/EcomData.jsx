@@ -59,9 +59,9 @@ const EcomData = ({trackingInfo, steps}) => {
                   icon={getStepIcon(step.status)}
                   description={
                     <>
-                      <p style={{ color: index === steps.length - 1 ? '#1890ff' : '#000' }}>{step.status}</p>
-                      <p style={{ color: index === steps.length - 1 ? '#1890ff' : '#000' }}>{step.tracking_status}</p>
-                      <p style={{ color: index === steps.length - 1 ? '#1890ff' : '#000' }}>{step.updated_on}</p>
+                      <p style={{ color: index === steps.length - 1 ? '#1890ff' : '#000' }}>{trackingInfo?.scan}</p>
+                      {/* <p style={{ color: index === steps.length - 1 ? '#1890ff' : '#000' }}>{step.tracking_status}</p>
+                      <p style={{ color: index === steps.length - 1 ? '#1890ff' : '#000' }}>{step.updated_on}</p> */}
                     </>
                   }
                 />
