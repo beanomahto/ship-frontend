@@ -7,6 +7,7 @@ import { CheckCircleOutlined, ClockCircleOutlined, SyncOutlined, CloseCircleOutl
 import EcomData from './EcomData';
 import Footer from './Footer';
 import FShipData from './FShipData';
+import Xressbees from './Xressbees';
 
 const { Title } = Typography;
 const { Step } = Steps;
@@ -95,13 +96,17 @@ const Tracking = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <div style={{ flexGrow: 1, padding: '20px', backgroundColor: '#ffffff' }}>
-        {
-          shippingPartner.toLowerCase() === 'ecom express' ? <>
-<EcomData trackingInfo={trackingInfo} steps={steps} />
-          </> : <>
-<FShipData trackingInfo={trackingInfo} />
-          </> 
-        }
+      {
+        shippingPartner && shippingPartner.toLowerCase() === 'ecom express' ? (
+          <EcomData trackingInfo={trackingInfo} steps={steps} />
+        ) : (
+          shippingPartner && shippingPartner === 'Xpressbees' ? (
+            <Xressbees trackingInfo={trackingInfo} />
+          ) : (
+            <FShipData trackingInfo={trackingInfo} />
+          )
+        )
+      }
       </div>
       <Footer />
     </div>

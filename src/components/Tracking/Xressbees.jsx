@@ -5,8 +5,8 @@ import { CheckCircleOutlined, CloseCircleOutlined, SyncOutlined, ClockCircleOutl
 const { Title } = Typography;
 const { Step } = Steps;
 
-const FShipData = ({ trackingInfo }) => {
-  console.log("nbg"+trackingInfo);
+const Xressbees = ({ trackingInfo }) => {
+  console.log(trackingInfo);
 
   const trackingHistory = trackingInfo?.trackingdata || [];
   const totalSteps = trackingHistory.length;
@@ -38,10 +38,10 @@ const FShipData = ({ trackingInfo }) => {
           <Card style={{ borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
             <Title level={4}>Tracking Information</Title>
             <Descriptions bordered column={1} labelStyle={{ fontWeight: 'bold' }}>
-              <Descriptions.Item label="AWB Number">{trackingInfo?.summary?.waybill}</Descriptions.Item>
-              <Descriptions.Item label="Order ID">{trackingInfo?.summary?.orderid}</Descriptions.Item>
-              <Descriptions.Item label="Ordered On">{new Date(trackingInfo?.summary?.orderedon).toLocaleString()}</Descriptions.Item>
-              <Descriptions.Item label="Status">{trackingInfo?.summary?.status}</Descriptions.Item>
+              <Descriptions.Item label="AWB Number">{trackingInfo?.awb_number}</Descriptions.Item>
+              <Descriptions.Item label="Order ID">{trackingInfo?.order_id}</Descriptions.Item>
+              <Descriptions.Item label="Ordered On">{new Date(trackingInfo?.created).toLocaleString()}</Descriptions.Item>
+              <Descriptions.Item label="Status">{trackingInfo?.status}</Descriptions.Item>
             </Descriptions>
           </Card>
         </Col>
@@ -59,11 +59,16 @@ const FShipData = ({ trackingInfo }) => {
             <Title level={4}>Tracking History</Title>
             <div style={{ maxHeight: '300px', overflowY: 'auto' }}>  
               <Steps direction="vertical" current={currentStepIndex}>
-                {trackingHistory.map((step, index) => (
+                {trackingInfo?.history?.map((step, index) => (
                   <Step
                     key={index}
-                    title={`${step.status} - ${step.location}`}
-                    description={`Date: ${new Date(step.dateandTime).toLocaleString()}`}
+                    title={`${step.event_time}`}
+                    description={
+                        <>
+                          <p><strong>Status:</strong> {step?.message}</p>
+                          <p><strong>City:</strong> {step?.location}</p>
+                        </>
+                      }
                     icon={getStatusIcon(step.status)}
                   />
                 ))}
@@ -76,4 +81,4 @@ const FShipData = ({ trackingInfo }) => {
   );
 };
 
-export default FShipData;
+export default Xressbees;
