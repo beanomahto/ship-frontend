@@ -3,13 +3,45 @@
     grid-template-columns: 1rem 1fr;
     grid-template-rows: auto 1fr;
     height: 100vh;
-    /* position: sticky; */
     overflow: hidden;
-    /* background: linear-gradient(25deg, rgba(206,234,254,1) 0%, rgba(255,164,253,1) 100%); */
 }
 .main{
-    width: 99rem;
+    /* width: 99rem; */
     overflow: auto;
     margin-left: 5rem;
     margin-top: 2rem;
+}
+
+
+@media (max-width: 1024px) {
+    .layout {
+        grid-template-columns: 200px 1fr; /* Smaller sidebar for medium screens */
+    }
+    
+    .main {
+        padding: 1rem; /* Adjust padding */
+    }
+}
+
+@media (max-width: 768px) {
+    .layout {
+        grid-template-columns: 1fr; /* Sidebar collapses */
+        grid-template-rows: auto auto 1fr; /* Header, Sidebar, then Main */
+    }
+    
+    .main {
+        margin-left: 0; /* No margin for smaller screens */
+        padding: 1rem; /* Adjust padding */
+    }
+    
+    .Sidebar {
+        grid-row: 2; /* Sidebar moves below the header */
+        width: 100%; /* Full-width sidebar on small screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .main {
+        padding: 0.5rem; /* Even smaller padding for mobile */
+    }
 }

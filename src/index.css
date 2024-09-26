@@ -7,14 +7,10 @@
 body {
   height: 100%;
   width: 100%;
- /* background: rgb(206,234,254);
-background: radial-gradient(circle, rgba(206,234,254,1) 0%, rgba(255,164,253,1) 100%); */
 background-color:  #e7e7e73f;;
-/* #f1f1f17d; */
 }
 
 ::-webkit-scrollbar-track {
-  /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
   border-radius: 10px;
   background-color: #F5F5F5;
 }
@@ -25,7 +21,6 @@ background-color:  #e7e7e73f;;
 }
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3); */
   background-color: #3987c8;
 }
 
@@ -40,7 +35,6 @@ background-color:  #e7e7e73f;;
 }
 .ant-table-body::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3); */
   background-color: #3987c8 !important;
 }
 .ant-tabs-nav-list{
@@ -59,11 +53,6 @@ background-color:  #e7e7e73f;;
 tr{
   font-size: 1rem;
 }
-
-/* .ant-table-cell:nth-child(even) {
-  background-color: #e7e7e73f;
-} */
-
 div{
   display:'flex';
   flex-direction:'column'; 

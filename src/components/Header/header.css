@@ -1,47 +1,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-.main-header{
+.main-header {
     padding: 1rem;
-    /* background-color:#cde8ff; */
     background-color: #fff;
-    /* background-color: rgba(255, 249, 249, 0.971); */
-    /* position: fixed; */
-    /* width: 98vw; */
 }
-.darkHeader{
+
+.darkHeader {
     padding: 1rem;
     background-color: #001529;
+}
 
-.appBox{
+.appBox {
     border: 1px solid rgb(255, 255, 255);
     margin: 0.1rem;
     width: 2px;
     height: 2px;
 }
-.money{
+
+.money {
     font-size: 1.1rem;
     color: #dcfce7;
     background-color: #15803d;
     border: 0px;
 }
-/* .span{
-    color: white;
-} */
-/* .name{
-    color: white;
-} */
-}
 
-.Auth_Navbar{
+.Auth_Navbar {
     width: fit-content;
     margin: auto 0.5rem;
     position: relative;
     display: flex;
 }
 
-
-
-.Symbol_logo_App{
+.Symbol_logo_App {
     display: flex;
     margin: auto 0.5rem;
     justify-content: center;
@@ -54,73 +44,66 @@
     font-weight: 600;
 }
 
-.money{
+.money {
     font-size: 1.1rem;
     background-color: #dcfce7;
     color: #15803d;
 }
 
-.name{
+.name {
     align-self: center;
     font-size: 1rem;
     color: rgb(0, 0, 0);
-    /* color: white; */
     font-family: "Poppins", sans-serif;
 }
 
-/* .name:hover{
-  color: white !important;
-} */
-
-.fstChar_logo_App{
-    /* color: white; */
+.fstChar_logo_App {
     font-size: 1rem;
     font-weight: 600;
     font-family: "Poppins", sans-serif;
 }
-.ant-input-search-button{
-  background-color: black;
-  color: white;
-  font-weight: 900;
+
+.ant-input-search-button {
+    background-color: black;
+    color: white;
+    font-weight: 900;
 }
-.anticon-search{
-  color: white;
+
+.anticon-search {
+    color: white;
 }
-.span{
+
+.span {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* background-color: rgb(255, 255, 255); */
     background-color: rgb(0, 0, 0);
     border-radius: 10%;
     height: 2.3rem;
-    width: .03rem;
+    width: 0.03rem;
 }
 
-.apps_Box{
+.apps_Box {
     width: 25px;
     margin: auto 0.7rem;
     height: 25px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    
 }
-.appBox{
+
+.appBox {
     border: 1px solid rgb(0, 0, 0);
     margin: 0.1rem;
     width: 2px;
     height: 2px;
 }
 
-
-
-.btn{
+.btn {
     font-size: 1.2rem;
     font-weight: 400;
-    background-color:#e0f2fe ;
-    color:#0369a1 ;
-    /* color:#cde8ff; */
+    background-color: #e0f2fe;
+    color: #0369a1;
 }
 
 .Btn {
@@ -134,29 +117,30 @@
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    transition-duration: .3s;
+    transition-duration: 0.3s;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
     background-color: rgb(255, 65, 65);
-  }
-  
-  /* plus sign */
-  .sign {
+}
+
+/* plus sign */
+.sign {
     width: 100%;
-    transition-duration: .3s;
+    transition-duration: 0.3s;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  
-  .sign svg {
+}
+
+.sign svg {
     width: 17px;
-  }
-  
-  .sign svg path {
+}
+
+.sign svg path {
     fill: white;
-  }
-  /* logout */
-  .logout {
+}
+
+/* logout */
+.logout {
     position: absolute;
     right: 0%;
     width: 0%;
@@ -164,59 +148,63 @@
     color: white;
     font-size: 1.2em;
     font-weight: 600;
-    transition-duration: .3s;
-  }
-  /* hover effect on button width */
-  .Btn:hover {
+    transition-duration: 0.3s;
+}
+
+.Btn:hover {
     width: 125px;
     border-radius: 40px;
-    transition-duration: .3s;
-  }
-  
-  .Btn:hover .sign {
+    transition-duration: 0.3s;
+}
+
+.Btn:hover .sign {
     width: 30%;
-    transition-duration: .3s;
+    transition-duration: 0.3s;
     padding-left: 20px;
-  }
-  /* hover effect button's logout */
-  .Btn:hover .logout {
+}
+
+.Btn:hover .logout {
     opacity: 1;
     width: 70%;
-    transition-duration: .3s;
+    transition-duration: 0.3s;
     padding-right: 10px;
-  }
-  /* button click effect*/
-  .Btn:active {
-    transform: translate(2px ,2px);
-  }
+}
+
+.Btn:active {
+    transform: translate(2px, 2px);
+}
+
+/* Drawer */
+.ant-drawer {
+    z-index: 1050;
+}
 
 /*=============== BREAKPOINTS ===============*/
-/* For large devices */
+
+/* Large devices */
 @media screen and (max-width: 992px) {
-  .main-header{
-    width: 58vw;
-}
+    .main-header {
+        width: 75vw;
+    }
 }
 
-/* For medium devices */
+/* Medium devices */
 @media screen and (max-width: 768px) {
-  .main-header{
-    /* position: fixed; */
-    width: 58vw;
-}
+    .main-header {
+        width: 98vw;
+    }
 }
 
+/* Small devices */
 @media screen and (max-width: 576px) {
-  .main-header{
-    /* position: fixed; */
-    width: 58vw;
-}
+    .main-header {
+        width: 96vw;
+    }
 }
 
-/* For small devices */
+/* Extra small devices */
 @media screen and (max-width: 350px) {
-  .main-header{
-    /* position: fixed; */
-    width: 58vw;
-}
+    .main-header {
+        width: 60vw;
+    }
 }

@@ -1,17 +1,9 @@
-.dashboard{
-    /* background-color: chartreuse; */
-    /* background: linear-gradient(25deg, rgba(206,234,254,1) 0%, rgba(255,164,253,1) 100%); */
-    /* padding: 4rem 4.8rem 6.4rem;
-    font-size: 3rem;
-    height: 70vh; */
-}
-
 .mainCharts {
-  height: 100vh;
+  height: auto; /* Allow height to adjust based on content */
   width: 100%;
   display: flex;
   flex-direction: row;
-  margin-top: 8rem;
+  margin-top: 1rem;
   align-items: center;
   justify-content: center;
   align-content: center;
@@ -26,42 +18,35 @@
   padding: 1em;
 }
 
+.revenueCard,
+.customerCard,
+.categoryCard,
+.polarCard,
+.indiaMapCard,
+.pieCard {
+  height: 20rem;
+}
+
 .revenueCard {
   width: 92%;
-  height: 20rem;
 }
 
-.customerCard {
+.customerCard,
+.categoryCard,
+.polarCard,
+.pieCard {
   width: 40%;
-  height: 20rem;
-}
-
-.categoryCard {
-  width: 40%;
-  height: 20rem;
-}
-
-.polarCard {
-  width: 40%;
-  height: 20rem;
 }
 
 .indiaMapCard {
   width: 50%;
-  height: 20rem;
-}
-
-.pieCard {
-  width: 40%;
-  height: 20rem;
 }
 
 .orderSummaryContainer {
   display: grid;
   grid-template-columns: repeat(2, 1fr); 
   grid-template-rows: repeat(2, auto); 
-  gap: 78px; /* */
-  /* margin-bottom: 20px; */
+  gap: 78px; 
 }
 
 .orderSummaryCard {
@@ -89,4 +74,75 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/*=============== MEDIA QUERIES ===============*/
+
+/* For large devices (desktop) */
+@media screen and (max-width: 992px) {
+  .mainCharts {
+    flex-direction: column; /* Stack cards vertically */
+    gap: 1.5vw; /* Reduce gap */
+  }
+
+  .customerCard,
+  .categoryCard,
+  .polarCard,
+  .pieCard {
+    width: 90%; /* Wider cards on smaller screens */
+  }
+
+  .indiaMapCard {
+    width: 90%; /* Adjust width for map card */
+  }
+}
+
+/* For medium devices (tablets) */
+@media screen and (max-width: 768px) {
+  .mainCharts {
+    margin-top: 4rem; /* Reduce top margin */
+  }
+
+  .customerCard,
+  .categoryCard,
+  .polarCard,
+  .pieCard {
+    width: 100%; /* Full width cards */
+  }
+
+  .orderSummaryContainer {
+    grid-template-columns: 1fr; /* Single column layout */
+    gap: 40px; /* Adjust gap */
+  }
+
+  .orderSummaryCard {
+    padding: 20px; /* Reduce padding */
+  }
+}
+
+/* For small devices (mobile) */
+@media screen and (max-width: 576px) {
+  .mainCharts {
+    margin-top: 2rem; /* Further reduce top margin */
+  }
+
+  .revenueCard,
+  .customerCard,
+  .categoryCard,
+  .polarCard,
+  .pieCard {
+    height: auto; /* Allow cards to adjust height */
+  }
+
+  .orderSummaryCard {
+    padding: 15px; /* Reduce padding for mobile */
+  }
+
+  .orderSummary h3 {
+    font-size: 20px; /* Smaller heading size */
+  }
+
+  .orderSummary p {
+    font-size: 12px; /* Smaller paragraph size */
+  }
 }
