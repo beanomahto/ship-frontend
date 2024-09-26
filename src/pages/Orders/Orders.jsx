@@ -564,7 +564,7 @@ console.log(invoiceData);
         <p style="font-size: 10pt; margin: 0; font-weight: 600;">${invoiceData?.sellerAddress}</p>
         <p style="font-size: 10pt; margin: 0;">.</p>
         <p style="font-size: 10pt; margin: 0; font-weight: 600;">GSTIN No.: ${invoiceData?.sellerGSTIN}</p>
-        <p style="font-size: 10pt; margin: 0; font-weight: 600;">Pincode : ${invoiceData?.order.pincode}</p>
+        <p style="font-size: 10pt; margin: 0; font-weight: 600;">Pincode : ${invoiceData?.order?.pincode}</p>
       </div>
       
       <div class="delivered-to" style="width: 48%; border: 1px solid #000; padding: 12px;">

@@ -202,7 +202,7 @@
     }
 }
 
-/* Extra small devices */
+/* Extra small devices */ 
 @media screen and (max-width: 350px) {
     .main-header {
         width: 60vw;
