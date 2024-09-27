@@ -57,10 +57,12 @@ const onSearch = (awb) => {
   return (
     <div className={darktheme ? 'darkHeader' : 'main-header'}>
       <div className="header-container" style={{ display: 'flex', justifyContent: 'end', alignItems: 'center', gap: '1.5rem' }}>
+        <div className="header-search">
         <Space.Compact>
           <Select defaultValue='shipment' options={options} />
           <Search placeholder='Search AWB Number(s)' onSearch={onSearch} />
         </Space.Compact>
+        </div>
         <span className='span'></span>
         <Button className='money' type="default">&#8377;  {amount}</Button>
         <span className='span'></span>
