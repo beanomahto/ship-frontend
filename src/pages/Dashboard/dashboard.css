@@ -105,7 +105,7 @@
   }
 
   .orderSummaryContainer {
-    grid-template-columns: 1fr; /* Single column for tablets */
+    /* grid-template-columns: 1fr; */
     gap: 50px; /* Adjust gap */
   }
 }
@@ -161,7 +161,9 @@
   .orderSummary h3 {
     font-size: 18px;
   }
-
+.revenueCard{
+  display: none;
+}
   .orderSummary p {
     font-size: 11px;
   }
