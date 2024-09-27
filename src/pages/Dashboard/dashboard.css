@@ -1,5 +1,5 @@
 .mainCharts {
-  height: auto; /* Allow height to adjust based on content */
+  height: auto;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -24,7 +24,7 @@
 .polarCard,
 .indiaMapCard,
 .pieCard {
-  height: 20rem;
+  min-height: 20rem;
 }
 
 .revenueCard {
@@ -44,9 +44,9 @@
 
 .orderSummaryContainer {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); 
-  grid-template-rows: repeat(2, auto); 
-  gap: 78px; 
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, auto);
+  gap: 78px;
 }
 
 .orderSummaryCard {
@@ -78,71 +78,95 @@
 
 /*=============== MEDIA QUERIES ===============*/
 
-/* For large devices (desktop) */
-@media screen and (max-width: 992px) {
+/* Large devices (desktop) */
+@media screen and (max-width: 1200px) {
   .mainCharts {
-    flex-direction: column; /* Stack cards vertically */
-    gap: 1.5vw; /* Reduce gap */
-  }
-
-  .customerCard,
-  .categoryCard,
-  .polarCard,
-  .pieCard {
-    width: 90%; /* Wider cards on smaller screens */
-  }
-
-  .indiaMapCard {
-    width: 90%; /* Adjust width for map card */
+    gap: 1.5vw;
   }
 }
 
-/* For medium devices (tablets) */
-@media screen and (max-width: 768px) {
+/* Medium devices (tablets) */
+@media screen and (max-width: 992px) {
   .mainCharts {
-    margin-top: 4rem; /* Reduce top margin */
+    flex-direction: column;
+    gap: 2rem; /* Adjust gap for stacking */
   }
 
   .customerCard,
   .categoryCard,
   .polarCard,
-  .pieCard {
-    width: 100%; /* Full width cards */
+  .pieCard,
+  .indiaMapCard {
+    width: 90%; /* Full width on medium devices */
+  }
+  
+  .revenueCard {
+    width: 100%;
   }
 
   .orderSummaryContainer {
-    grid-template-columns: 1fr; /* Single column layout */
-    gap: 40px; /* Adjust gap */
-  }
-
-  .orderSummaryCard {
-    padding: 20px; /* Reduce padding */
+    grid-template-columns: 1fr; /* Single column for tablets */
+    gap: 50px; /* Adjust gap */
   }
 }
 
-/* For small devices (mobile) */
-@media screen and (max-width: 576px) {
+/* Small devices (mobile) */
+@media screen and (max-width: 768px) {
   .mainCharts {
-    margin-top: 2rem; /* Further reduce top margin */
+    margin-top: 3rem;
   }
 
   .revenueCard,
   .customerCard,
   .categoryCard,
   .polarCard,
-  .pieCard {
-    height: auto; /* Allow cards to adjust height */
+  .pieCard,
+  .indiaMapCard {
+    width: 100%;
+    height: auto;
   }
 
   .orderSummaryCard {
-    padding: 15px; /* Reduce padding for mobile */
+    padding: 15px;
   }
 
   .orderSummary h3 {
-    font-size: 20px; /* Smaller heading size */
+    font-size: 20px;
   }
 
   .orderSummary p {
-    font-size: 12px; /* Smaller paragraph size */
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .mainCharts {
+    margin-top: 2rem;
+  }
+
+  .revenueCard,
+  .customerCard,
+  .categoryCard,
+  .polarCard,
+  .pieCard,
+  .indiaMapCard {
+    width: 100%;
+    height: auto;
+  }
+
+  .orderSummaryCard {
+    padding: 12px;
+  }
+
+  .orderSummary h3 {
+    font-size: 18px;
+  }
+
+  .orderSummary p {
+    font-size: 11px;
+  }
+
+  .orderSummaryContainer {
+    gap: 30px; /* Smaller gap for mobile */
   }
 }
