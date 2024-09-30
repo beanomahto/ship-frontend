@@ -1,3 +1,4 @@
+
 .flex1,.flex2{
     border: 1px solid rgb(196, 176, 176);
     border-radius: 5px;
@@ -17,4 +18,23 @@ width: 46rem;
 
 .bn{
     margin-top: -9rem;
+}
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+    .flex{
+        /* gap: 10rem; */
+        margin-bottom: 2rem;
+    }
+    .form label .add {
+        width: 100%;
+    }
+.bn{
+    margin-top: 2rem;
+}
+}
+
+@media (max-width: 480px) {
+ .title{
+    margin-left: 3rem;
+ } 
 }

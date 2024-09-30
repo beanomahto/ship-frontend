@@ -134,7 +134,6 @@ const Profile = () => {
                                 <span>Company Logo<span><p>(optional)</p></span></span>
                                 <img
                                     className='input img'
-                                    // src={inputs.logo}
                                     alt="Company Logo"
                                 />
                             </label>
