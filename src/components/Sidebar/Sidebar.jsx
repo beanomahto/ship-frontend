@@ -12,21 +12,25 @@ const Sidebar = ({ darktheme, toggleTheme }) => {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
+  // Function to show the drawer
   const showDrawer = () => {
     setDrawerVisible(true);
   };
 
+  // Function to close the drawer
   const closeDrawer = () => {
     setDrawerVisible(false);
   };
 
+  // Function to handle screen size changes
   const handleResize = () => {
-    setIsMobile(window.innerWidth <= 768); 
+    setIsMobile(window.innerWidth <= 768); // Set mobile view if screen width <= 768px
   };
 
+  // Add event listener for window resize
   useEffect(() => {
     window.addEventListener('resize', handleResize);
-    handleResize(); 
+    handleResize(); // Check on initial load
     return () => {
       window.removeEventListener('resize', handleResize);
     };
@@ -52,7 +56,7 @@ const Sidebar = ({ darktheme, toggleTheme }) => {
             bodyStyle={{ padding: 0 }}
           >
             <Logo />
-            <MenuList darktheme={darktheme} />
+            <MenuList darktheme={darktheme} closeDrawer={closeDrawer} />
           </Drawer>
         </>
       ) : (

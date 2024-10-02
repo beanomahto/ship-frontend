@@ -82,7 +82,7 @@
 
     .ant-drawer-content-wrapper {
         box-shadow: none !important;
-        width: 75%; /* Adjust for better mobile fit */
+        width: 75% !important;
     }
 
     .ant-drawer-content {
@@ -100,6 +100,8 @@
 
     .ant-drawer-body {
         padding: 0;
+        margin-bottom: 2rem;
+        overflow: hidden !important;
     }
 }
 

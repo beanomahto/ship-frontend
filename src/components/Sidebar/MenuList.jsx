@@ -13,11 +13,16 @@ import { BiSupport } from "react-icons/bi";
 import { Link } from 'react-router-dom'
 import { useAuthContext } from '../../context/AuthContext';
 
-const MenuList = ({darktheme}) => {
+const MenuList = ({darktheme, closeDrawer }) => {
     const {authUser} = useAuthContext()
+    const handleMenuClick = () => {
+        if (closeDrawer) {
+          closeDrawer();
+        }
+      };
     return (
        <div style={{overflowY: 'auto', height: 'calc(100% - 80px)'}}>
-         <Menu theme={darktheme ? 'dark' : 'light' } mode='inline' className='menu-bar' style={{display:'flex', flexDirection:'column', gap:'1.3rem'}} >
+         <Menu onClick={handleMenuClick} theme={darktheme ? 'dark' : 'light' } mode='inline' className='menu-bar' style={{display:'flex', flexDirection:'column', gap:'1.3rem'}} >
             <Menu.Item key='home' icon={<LuLayoutDashboard size='1.4rem' />} >
                 <Link to='/dashboard'><span style={{fontWeight:500}} >Dashboard</span></Link>
             </Menu.Item>
