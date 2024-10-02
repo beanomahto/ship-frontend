@@ -92,6 +92,12 @@
         background: #ffffff;
     }
 
+    .ant-btn-icon{
+        position: absolute;
+        top: -7px;
+        left: 7px;
+    }
+
     .ant-drawer-body {
         padding: 0;
     }
