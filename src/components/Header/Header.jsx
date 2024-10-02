@@ -56,7 +56,7 @@ const onSearch = (awb) => {
   https://backend.shiphere.in/api/${shippingPartner}/track/${awb}
   return (
     <div className={darktheme ? 'darkHeader' : 'main-header'}>
-      <div className="header-container" style={{ display: 'flex', justifyContent: 'end', alignItems: 'center', gap: '1.5rem' }}>
+      <div className="header-container" >
         <div className="header-search">
         <Space.Compact>
           <Select defaultValue='shipment' options={options} />

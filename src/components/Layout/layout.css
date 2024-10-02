@@ -15,33 +15,33 @@
 
 @media (max-width: 1024px) {
     .layout {
-        grid-template-columns: 200px 1fr; /* Smaller sidebar for medium screens */
+        grid-template-columns: 200px 1fr;
     }
     
     .main {
-        padding: 1rem; /* Adjust padding */
+        padding: 1rem; 
     }
 }
 
 @media (max-width: 768px) {
     .layout {
-        grid-template-columns: 1fr; /* Sidebar collapses */
-        grid-template-rows: auto auto 1fr; /* Header, Sidebar, then Main */
+        grid-template-columns: 1fr; 
+        grid-template-rows: auto auto 1fr; 
     }
     
     .main {
-        margin-left: 0; /* No margin for smaller screens */
-        padding: 1rem; /* Adjust padding */
+        margin-left: 0; 
+        padding: 1rem;
     }
     
     .Sidebar {
-        grid-row: 2; /* Sidebar moves below the header */
-        width: 100%; /* Full-width sidebar on small screens */
+        grid-row: 2;
+        width: 100%; 
     }
 }
 
 @media (max-width: 480px) {
     .main {
-        padding: 0.5rem; /* Even smaller padding for mobile */
+        padding: 0.5rem; 
     }
 }
