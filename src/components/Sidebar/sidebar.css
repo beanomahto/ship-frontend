@@ -69,39 +69,31 @@
     display: block;
     position: absolute;
     top: 16px;
-    left: 167px;
-    z-index: 210040;
+    left: 20px; /* Adjusted to a more consistent value for mobile */
+    z-index: 1000; /* Ensure the button stays on top */
     cursor: pointer;
     font-size: 2rem;
 }
+
 @media (max-width: 768px) {
     .sidebar {
-        position: fixed;
-        left: 0;
-        top: 7;
-        bottom: 0;
-        /* width: 250px; */
-        height: 100vh;
-        background-color: blue;
-        transform: translateX(-100%); 
+        transform: translateX(-100%); /* Keep it hidden initially */
     }
 
-    .hamburger-menu {
-        display: block;
+    .ant-drawer-content-wrapper {
+        box-shadow: none !important;
+        width: 75%; /* Adjust for better mobile fit */
     }
-    .ant-drawer-content-wrapper .ant-drawer-content-wrapper{
-    display: block;
-    /* min-width: 18rem; */
-    box-shadow: none !important;
-}
-    .ant-drawer-content{
-        display: flex;
-        flex-direction: column;
-        width: 67%;
+
+    .ant-drawer-content {
+        width: 100%;
         height: 100%;
         overflow: auto;
         background: #ffffff;
-        pointer-events: auto;
     }
-    .ant-drawer-body{}
+
+    .ant-drawer-body {
+        padding: 0;
+    }
 }
+
