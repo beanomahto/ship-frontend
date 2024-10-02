@@ -77,7 +77,7 @@
 
 @media (max-width: 768px) {
     .sidebar {
-        transform: translateX(-100%); /* Keep it hidden initially */
+        /* transform: translateX(-100%); Keep it hidden initially */
     }
 
     .ant-drawer-content-wrapper {
