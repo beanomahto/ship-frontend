@@ -151,7 +151,8 @@ const CodRemmitance = () => {
             value={searchText}
             style={{ width: 300 }}
           />
-          <Button onClick={() => setSearchText('')} style={{ borderRadius: '34px' }}>X</Button>
+         <div style={{marginLeft:'1px'}} >
+         <Button onClick={() => setSearchText('')} style={{ borderRadius: '34px' }}>X</Button>
           {filteredData.length > 0 && (
             <CSVLink
               data={generateCsvData()}
@@ -161,6 +162,7 @@ const CodRemmitance = () => {
               <Button style={{ borderRadius: '34px' }}>Download CSV</Button>
             </CSVLink>
           )}
+         </div>
         </div>
         <div className="right-actions">
           <Button style={{ borderRadius: '34px' }} onClick={showEarlyCodModal}>Early COD</Button>

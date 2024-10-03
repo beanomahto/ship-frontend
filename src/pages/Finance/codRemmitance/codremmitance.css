@@ -97,11 +97,17 @@ p{
 }
 
 @media (max-width: 768px) {
+    .search-actions{
+        /* display: block; */
+    }
   .search-actions, .right-actions {
-    flex-direction: column;
+    flex-direction: row;
     gap: 1rem;
+    margin-bottom: 20px;
   }
-
+  .ant-input-search{
+    width: 156px !important;
+  }
   .table {
     width: 100%;
     overflow-x: auto;
