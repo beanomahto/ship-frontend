@@ -1,37 +1,28 @@
 .section{
     position: relative;
-    width: 99%;
-    height: 97vh;
+    width: 100%;
+    height: 100vh;
     display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 
 .section .imgBx{
     position: relative;
-    width: 47%;
+    width: 50%;
     height: 100%;
     left: 104px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-/* #3987c8 */
-.section .imgBx::before{
-    /* content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(225deg, #e91e63,#03a9f4);
-    z-index: 1;
-    mix-blend-mode: screen; */
-}
-
 .section .imgBx img{
-    position: absolute;
-    top: -15px;
-    left: -99px;
-    width: 119%;
-    height: 104%;
-    border-radius: 58px;
-    object-fit: contain;
+    width: 100%;
+    height: auto;
+    border-radius: 30px;
+    object-fit: cover;
 }
 
 .section .contentBx{
@@ -40,14 +31,16 @@
     align-items: center;
     width: 50%;
     height: 100%;
+    padding: 20px;
 }
 
 .section .contentBx .formBx{
-    width: 50%;
+    width: 100%;
+    max-width: 400px;
 }
 
 .section .contentBx .formBx h2{
-    color: '#607d8b';
+    color: #607d8b;
     font-weight: 600;
     font-size: 1.5em;
     text-transform: uppercase;
@@ -55,7 +48,6 @@
     border-bottom: 4px solid #03a9f4;
     letter-spacing: 1px;
 }
-
 
 .section .contentBx .formBx .inputBx{
     margin-bottom: 20px;
@@ -65,9 +57,8 @@
     font-size: 16px;
     margin-bottom: 5px;
     display: inline-block;
-    color: '#607d8b';
+    color: #607d8b;
     font-weight: 300;
-    font-size: 16px;
     letter-spacing: 1px;
 }
 
@@ -79,7 +70,6 @@
     border: 1px solid #607d8b;
     color: #607d8b;
     font-size: 16px;
-    letter-spacing: 1px;
     background: transparent;
     border-radius: 30px;
 }
@@ -94,7 +84,7 @@
 }
 
 .section .contentBx .formBx .inputBx input[type="submit"]:hover{
-    background-color: #03a9f4;
+    background-color: #0288d1;
 }
 
 .section .contentBx .formBx .remember{
@@ -112,36 +102,62 @@
     color: #03a9f4;
 }
 
-@media (max-width: 768px) {
-    .section .imgBx{
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+@media (max-width: 1024px) {
+    .section {
+        flex-direction: column;
     }
 
-    .section .contentBx{
-        display: flex;
+    .section .imgBx {
+        width: 100%;
+        height: 50vh;
+        left: 0;
+    }
+
+    .section .contentBx {
+        width: 100%;
+    }
+
+    .section .contentBx .formBx {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .section {
+        flex-direction: column;
         justify-content: center;
         align-items: center;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
     }
 
-    .section .contentBx .formBx{
+    .section .imgBx {
+        display: none;
+    }
+
+    .section .contentBx {
         width: 100%;
+        padding: 20px;
+    }
+
+    .section .contentBx .formBx {
         padding: 40px;
-        background: rgb(255, 255, 255/0.9);
-        margin: 50px;
+        background: rgba(255, 255, 255, 0.9);
+        margin: 20px;
     }
 
-    .section .contentBx .formBx h3{
-        color: #607d8b;
-        text-align: center;
-        margin: 30px 0 10px;
-        font-weight: 500;
+    .section .contentBx .formBx h2 {
+        font-size: 1.2em;
     }
 
+    .section .contentBx .formBx .inputBx {
+        margin-bottom: 8px;
+    }
+
+    .section .contentBx .formBx .inputBx input {
+        font-size: 14px;
+    }
+
+    .section .contentBx .formBx .inputBx input[type="submit"] {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
 }
