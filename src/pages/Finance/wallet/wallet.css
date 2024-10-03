@@ -1,0 +1,47 @@
+.admin-wallet {
+    /* Styles for the main container, if needed */
+  }
+  
+  .admin-wallet__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .admin-wallet__search {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .admin-wallet__search-input {
+    width: 300px;
+  }
+  
+  .admin-wallet__clear-button {
+    margin-left: 8px;
+  }
+  
+  .admin-wallet__actions {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .admin-wallet__payment-button {
+    background-color: #1890ff;
+    border-color: #1890ff;
+  }
+  
+  .admin-wallet__download-button {
+    border-color: #d9d9d9;
+    color: #1890ff;
+  }
+  
+  @media (max-width: 768px) {
+    .admin-wallet__header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+  }
