@@ -663,6 +663,12 @@ console.log(invoiceData);
     pdf.save('all_invoices.pdf');
   });
 };
+const handleTabChange = (key) => {
+  setCurrentTab(key);
+  setSelectedRowKeys([]);
+};
+
+console.log(currentTab);
 
 
   return (
@@ -670,7 +676,7 @@ console.log(invoiceData);
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }} className="addorder">
        {currentTab === 'tab1' &&  <Button type="primary" style={{ alignSelf: 'flex-start', borderRadius:'34px',fontFamily:'Poppins', fontSize:'1rem', fontWeight:'500' }} onClick={start} loading={loading}>Sync</Button>}
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '4rem', fontSize:'2rem',fontFamily:'Poppins' }}>
-          {currentTab === 'tab1' && <Button style={{borderRadius:'34px'}} disabled={!hasSelected} onClick={showModalShipNow}>Ship Now</Button>}
+          {currentTab === 'tab1' && <Button style={{borderRadius:'34px'}} disabled={!hasSelected && currentTab === 'tab1'} onClick={showModalShipNow}>Ship Now</Button>}
 
 {
   <div>
@@ -690,7 +696,6 @@ console.log(invoiceData);
       <Button disabled={selectedRowKeys.length === 0} style={{ borderColor: 'gray', borderRadius: '50px' }} onClick={downloadInvoices}>
                     Invoice
                   </Button>
-                  {/* <Button disabled={selectedRowKeys.length !== 1} style={{ borderColor: 'gray', borderRadius: '50px' }}><Link to={`/shipping/getInvoice/${selectedRowKeys[0]}`} >Invoice</Link></Button> */}
             <Button disabled={selectedRowKeys.length === 0} style={{ borderColor: 'red', borderRadius:'50px' }} onClick={cancelShipment} >Cancel Shipment</Button>
         </div>
   }
@@ -737,7 +742,7 @@ console.log(invoiceData);
           <ShipNowModel hasSelected={hasSelected} selectedRowKeys={selectedRowKeys} visible={modalVisibleShipNow} onClose={closeModalShipNow} onShipNow={handleShipNow} />
         </div>
       </div>
-      <Tabs defaultActiveKey='tab1' size='large' className='tabs' onChange={setCurrentTab}>
+      <Tabs defaultActiveKey='tab1' size='large' className='tabs' onChange={handleTabChange}>
         {tabsData.map(tab => (
           <TabPane key={tab.key} tab={tab.tab}>
             {tab.Component ? (
