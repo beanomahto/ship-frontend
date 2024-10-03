@@ -92,10 +92,11 @@ const ShipOrderComponent = ({ rowSelection, dataSource, fetchOrders, loading, ta
       onFilter: (value, record) => record.s_status.indexOf(value) === 0,
       render: (value, record) => (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <a target='_blank' href={`/tracking/shipment/${record.shippingPartner}/${record.awb}`}>
-            <Button type='link'>{record.awb}</Button>
+          {record.shippingPartner && record.awb &&  <a target='_blank' href={`/tracking/shipment/${record.shippingPartner}/${record.awb}`}>
+            <Button type='link'>{record.awb ? record.awb : 'no'}</Button>
           </a>
-          <span>{record?.shippingPartner}</span>
+          }
+          <span>{record?.shippingPartner ? record?.shippingPartner : 'no partner'}</span>
         </div>
       ),
       className: 'centered-row',
