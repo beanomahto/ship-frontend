@@ -583,7 +583,7 @@ console.log(invoiceData);
       <p style="font-size: 10pt; margin: 0; font-weight: 600;"><strong>Invoice No.:</strong> ${invoiceData.invoiceNumber}</p>
       <p style="font-size: 10pt; margin: 0; font-weight: 600;"><strong>Invoice Date:</strong> ${formattedInvoiceDate}</p>
       <p style="font-size: 10pt; margin: 0; font-weight: 600;"><strong>Order Date:</strong> ${formattedOrderDate}</p>
-      <p style="font-size: 10pt; margin: 0; font-weight: 600;"><strong>Order ID:</strong> ${invoiceData.order.orderId}</p>
+      <p style="font-size: 10pt; margin: 0; font-weight: 600;"><strong>Order ID:</strong> ${invoiceData?.order?.orderId}</p>
     </div>
 
     <!-- Itemized Table -->

@@ -16,14 +16,14 @@
     margin-bottom: 1rem;
     border-radius: 5px;
 }.rbtn1 {
-    background-color: #d0e7ff; /* Slightly darker blue background */
-    border: 1px solid #8abfff; /* Darker blue border */
-    color: #003d80; /* Darker blue text color */
-    padding: 10px 20px; /* Add padding */
-    border-radius: 8px; /* Rounded corners */
-    font-size: 16px; /* Larger font size */
-    font-weight: 500; /* Medium font weight */
-    transition: all 0.3s ease; /* Smooth transition */
+    background-color: #d0e7ff;
+    border: 1px solid #8abfff; 
+    color: #003d80; 
+    padding: 10px 20px; 
+    border-radius: 8px; 
+    font-size: 16px; 
+    font-weight: 500; 
+    transition: all 0.3s ease; 
 }
 
 .rbtn2 {
@@ -58,7 +58,6 @@
     border-radius: 8px; /* Rounded corners */
     font-size: 16px; /* Larger font size */
     font-weight: 500; /* Medium font weight */
-    transition: all 0.3s ease; /* Smooth transition */
 }
 
 

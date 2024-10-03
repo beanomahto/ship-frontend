@@ -169,7 +169,7 @@ const CodRemmitance = () => {
           <CustomButton onClick={showModal}>Upload Remittance</CustomButton>
         </div>
       </div>
-      {/* <RemmitanceData remittanceData={filteredData} /> */}
+      <RemmitanceData remittanceData={filteredData} />
       <Table
         className='table'
         scroll={{ x: 1000, y: 350 }}  // Added x for horizontal scroll
