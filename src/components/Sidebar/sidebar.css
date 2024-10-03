@@ -77,7 +77,7 @@
 
 @media (max-width: 768px) {
     .sidebar {
-        display: block;
+        grid-row: auto;
         /* transform: translateX(-100%); Keep it hidden initially */
     }
 
