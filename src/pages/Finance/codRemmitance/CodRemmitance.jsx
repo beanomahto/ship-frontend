@@ -128,63 +128,49 @@ const CodRemmitance = () => {
       dataIndex: 'status',
     },
   ];
-  console.log(remittanceData);
+
   return (
-    <div>
+    <div className="cod-remittance">
       <Helmet>
         <meta charSet='utf-8' />
         <meta name='keyword' content={""} />
         <title>COD Remittance</title>
       </Helmet>
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        gap: '1rem',
-        marginBottom: '1rem'
-      }}>
+      <div className="header-buttons">
         <UploadCodRemittance visible={modalVisible} onClose={closeModal} />
-        {/* <CustomButton onClick={showSearchModal}>Search Seller</CustomButton>
+        {/* Uncomment if needed
+        <CustomButton onClick={showSearchModal}>Search Seller</CustomButton>
         <SearchSellerModal visible={searchModalVisible} remittanceData={remittanceData} onClose={closeSearchModal} /> */}
       </div>  
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '1rem',
-        justifyContent:'space-between',
-        marginBottom: '1rem'
-      }}>
-
-     <div style={{display:'flex', gap:'2rem'}} >
-     <Search
-          placeholder="Search across all fields"
-          onSearch={value => setSearchText(value)}
-          onChange={e => setSearchText(e.target.value)}
-          value={searchText}
-          style={{ width: 300 }}
-        />
-        <Button onClick={() => setSearchText('')} style={{ borderRadius: '34px' }}>
-          X
-        </Button>
-        {filteredData.length > 0 && (
-          <CSVLink
-            data={generateCsvData()}
-            filename={"filtered_remittance_data.csv"}
-            className="ant-btn ant-btn-primary"
-          >
-            <Button style={{ borderRadius: '' }}>Download CSV</Button>
-          </CSVLink>
-        )}
-     </div>
-     <div style={{display:'flex', gap:'2rem'}} >
+      <div className="search-and-actions">
+        <div className="search-actions">
+          <Search
+            placeholder="Search across all fields"
+            onSearch={value => setSearchText(value)}
+            onChange={e => setSearchText(e.target.value)}
+            value={searchText}
+            style={{ width: 300 }}
+          />
+          <Button onClick={() => setSearchText('')} style={{ borderRadius: '34px' }}>X</Button>
+          {filteredData.length > 0 && (
+            <CSVLink
+              data={generateCsvData()}
+              filename={"filtered_remittance_data.csv"}
+              className="ant-btn ant-btn-primary"
+            >
+              <Button style={{ borderRadius: '34px' }}>Download CSV</Button>
+            </CSVLink>
+          )}
+        </div>
+        <div className="right-actions">
           <Button style={{ borderRadius: '34px' }} onClick={showEarlyCodModal}>Early COD</Button>
-        <CustomButton onClick={showModal}>Upload Remittance</CustomButton>
+          <CustomButton onClick={showModal}>Upload Remittance</CustomButton>
         </div>
       </div>
-      <RemmitanceData remittanceData={filteredData} />
+      {/* <RemmitanceData remittanceData={filteredData} /> */}
       <Table
         className='table'
-        scroll={{ y: 350 }}
+        scroll={{ x: 1000, y: 350 }}  // Added x for horizontal scroll
         columns={newOrders}
         dataSource={filteredData}
         rowKey="id"
@@ -193,7 +179,6 @@ const CodRemmitance = () => {
       <EarlyCodPopup visible={earlyCodVisible} onClose={closeEarlyCodModal} />
     </div>
   );
-  
 };
 
 export default CodRemmitance;
