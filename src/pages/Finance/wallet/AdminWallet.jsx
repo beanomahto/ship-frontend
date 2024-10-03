@@ -128,7 +128,7 @@ const AdminWallet = () => {
       </div>
       <Table
         className='table'
-        scroll={{ y: 500 }}
+        scroll={{ x : 1000, y: 500 }}
         dataSource={filteredUsers}
         columns={newOrders}
       />

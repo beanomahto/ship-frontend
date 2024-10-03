@@ -160,7 +160,14 @@ console.log(users);
         <meta name='keyword' content={""} />
         <title>Sellers</title>
       </Helmet>
-      <Table dataSource={users} columns={columns} rowKey="_id" pagination={false} />
+      <Table 
+      className="custom-table" 
+      dataSource={users} 
+      columns={columns} 
+      rowKey="_id" 
+      pagination={false} 
+      scroll={{ x: 1000 }} 
+    />
     </div>
   );
 };
