@@ -513,8 +513,8 @@ const downloadInvoices = async () => {
     format: 'a4',
   });
 
-  const pageWidth = 595.28; // A4 page width in points
-  const pageHeight = 841.89; // A4 page height in points
+  const pageWidth = 595.28;
+  const pageHeight = 841.89;
 
   const promises = selectedRowKeys.map(orderId =>
     fetch(`https://backend.shiphere.in/api/shipping/getinvoice/${orderId}`, {
@@ -629,7 +629,6 @@ console.log(invoiceData);
 
         document.body.appendChild(invoiceDiv);
         
-        // Convert invoice div to canvas
         return html2canvas(invoiceDiv, { scale: 2 }).then(canvas => {
           const imgData = canvas.toDataURL('image/png');
           const imgWidth = pageWidth;
@@ -639,7 +638,7 @@ console.log(invoiceData);
           let position = 0;
 
           if (orderId !== selectedRowKeys[0]) {
-            pdf.addPage(); // Add a new page for each invoice if needed
+            pdf.addPage(); 
           }
 
           while (heightLeft > 0) {

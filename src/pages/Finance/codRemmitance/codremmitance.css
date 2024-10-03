@@ -19,7 +19,6 @@
     overflow-x: hidden;
 }
 
-/* Individual button styles */
 .rbtn1, .rbtn2, .rbtn3, .rbtn4 {
     padding: 10px 20px;
     border-radius: 8px;
@@ -28,7 +27,6 @@
     transition: all 0.3s ease;
 }
 
-/* Color and border styles for each button */
 .rbtn1 {
     background-color: #d0e7ff;
     border: 1px solid #8abfff;
@@ -53,18 +51,15 @@
     color: #d63f77;
 }
 
-/* Typography */
 p {
     font-size: 0.8rem;
     font-weight: 300;
 }
 
-/* Responsive container for remittance */
 .cod-remittance {
     padding: 1rem;
 }
 
-/* Header buttons layout */
 .header-buttons {
     display: flex;
     justify-content: space-between;
@@ -73,7 +68,6 @@ p {
     margin-bottom: 1rem;
 }
 
-/* Layout adjustments for search and actions */
 .search-and-actions {
     display: flex;
     justify-content: space-between;
@@ -91,34 +85,28 @@ p {
     width: 100%;
 }
 
-/* Responsive styles for screens 768px and below */
 @media (max-width: 768px) {
-    /* Make rbtncontainer items stack vertically */
     .rbtncontainer {
         flex-direction: column;
         align-items: flex-start;
-        height: auto; /* Adjust height for smaller screens */
+        height: auto;
     }
 
-    /* Adjust rbtn button sizes */
     .rbtn {
         width: 100%;
         height: auto;
     }
 
-    /* Adjust layout for search actions */
     .search-actions, .right-actions {
         flex-direction: row;
         gap: 1rem;
         margin-bottom: 20px;
     }
 
-    /* Adjust search input width */
     .ant-input-search {
         width: 156px !important;
     }
 
-    /* Make table scrollable on smaller screens */
     .table {
         width: 100%;
         overflow-x: auto;

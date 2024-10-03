@@ -1,7 +1,3 @@
-.admin-wallet {
-    /* Styles for the main container, if needed */
-  }
-  
   .admin-wallet__header {
     display: flex;
     justify-content: space-between;
