@@ -123,7 +123,13 @@ const ActiveWarehouses = () => {
         </Button>
       </div>
       <div style={{ backgroundColor: '#fff', height: '40rem', borderRadius: '1rem' }}>
-        <Table className="table" pagination={false} columns={newOrders} dataSource={dataSourceWithKeys} />
+        <Table
+          className="table"
+          pagination={false}
+          columns={newOrders}
+          dataSource={dataSourceWithKeys}
+          scroll={{ x: 800 }} // Enables horizontal scrolling for smaller screens
+        />
       </div>
     </>
   );

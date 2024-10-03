@@ -367,7 +367,8 @@ console.log(sendWarehouse);
               rowKey="id"
               pagination={{ pageSize: 10 }}
               loading={modalLoading}
-
+              scroll={{ x: 800 }}
+              style={{ overflowX: 'auto' }}
             >
               <Column
                 title="Partner"
@@ -375,11 +376,17 @@ console.log(sendWarehouse);
                 key="deliveryPartner"
                 render={(text, record) => (
                   <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <img
-                      src={partnerImages[record.deliveryPartner]}
-                      alt={record.deliveryPartner}
-                      style={{ width: '40px', height: '40px', borderRadius: '50%', marginRight: '8px', border: '2px solid #ddd' }}
-                    />
+                     <img
+              src={partnerImages[record.deliveryPartner]}
+              alt={record.deliveryPartner}
+              style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '50%',
+                marginRight: '8px',
+                border: '2px solid #ddd',
+              }}
+            />
                     <p style={{ fontWeight: '500', fontSize: '1rem' }}> {record.deliveryPartner}</p>
                   </div>
                 )}
