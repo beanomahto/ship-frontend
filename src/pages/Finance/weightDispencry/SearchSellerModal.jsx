@@ -75,6 +75,7 @@ console.log(filteredData);
       <Table
         style={{ marginTop: '20px' }}
         columns={columns}
+        scroll={{x:1000, y:190}}
         dataSource={filteredData}
         rowKey="id"
       />

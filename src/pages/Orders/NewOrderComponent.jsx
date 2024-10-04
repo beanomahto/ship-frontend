@@ -348,7 +348,7 @@ console.log(sendWarehouse);
             rowSelection={rowSelection}
             columns={columns}
             dataSource={newOrders}
-            scroll={{ y: 430 }}
+            scroll={{ x: 1400,y: 430 }}
             style={{ width: '100%', height: '545px' }}
             rowClassName={(record) => (record._id === selectedOrderId ? 'selected-row' : '')}
             loading={loading}

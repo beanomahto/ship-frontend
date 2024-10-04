@@ -195,7 +195,7 @@ const ShipOrderComponent = ({ rowSelection, dataSource, fetchOrders, loading, ta
             dataSource={shippedOrders}
             className="centered-table"
             rowKey="_id"
-            scroll={{ y: 450 }}
+            scroll={{ x:1050,y: 450 }}
             pagination={false}
             style={{ width: '100%', height: '505px' }}
           />
