@@ -26,4 +26,8 @@
   
   .ndr-container {
   }
-  
+  @media(max-width: 600px) {
+    .reportmaincontainer {
+      flex-direction: column;
+    }
+  }

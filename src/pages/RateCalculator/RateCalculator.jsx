@@ -108,10 +108,10 @@ const RateCalculator = () => {
                 }
               />
             </div>
-            <div style={{ display: "flex" }}>
+            <div className="user_input_cont">
               <div className="user-input-box">
                 <label htmlFor="fullName">Source Courior Partner</label>
-                <div style={{ display: "flex", justifyContent: "center" }}>
+                <div className="dropdown">
                   <Select
                     className="selector"
                     placeholder="Select Courier Partner"
@@ -163,14 +163,6 @@ const RateCalculator = () => {
         </form>
       </div>
       <div
-        style={{
-          width: "38%",
-          padding: "10px 16px",
-          //   border: "2",
-          borderRadius: "1rem",
-          display: "flex",
-          backgroundColor: "white",
-        }}
         className="imgDiv"
       >
         <img src={Img} alt="Shipping" style={{ width: "100%" }} />

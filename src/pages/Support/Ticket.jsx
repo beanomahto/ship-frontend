@@ -197,6 +197,7 @@ const Ticket = () => {
             <Table
                 columns={columns}
                 dataSource={ticket}
+                scroll={{x:1000}}
                 rowKey="_id"
                 size="middle"
                 onRow={(record) => {

@@ -31,7 +31,7 @@ const Invoices = () => {
       ];
   return (
     <div>
-        <Table className='table'  scroll={{ y: 350, }} columns={newOrders} />
+        <Table className='table'  scroll={{ x:1000, y: 350, }} columns={newOrders} />
     </div>
   )
 }

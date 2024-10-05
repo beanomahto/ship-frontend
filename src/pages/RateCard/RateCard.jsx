@@ -165,7 +165,7 @@ const RateCard = () => {
         <meta name='keyword' content={""} />
         <title>Rate Card</title>
       </Helmet>
-      <Table pagination={false} scroll={{ y: 350 }} className='table' dataSource={pricing} columns={columns} />
+      <Table pagination={false} scroll={{ x:1000,y: 350 }} className='table' dataSource={pricing} columns={columns} />
       <Divider />
       <div style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '1rem' }}>
         <Title level={4}>Terms and Conditions</Title>
