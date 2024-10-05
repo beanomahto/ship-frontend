@@ -9,7 +9,29 @@
 .centered-table .ant-table-thead > tr > th {
   text-align: center;
 }
-
+.tab1_managingBtns{
+  display: flex;
+  justify-content: flex-end;
+  gap: 4rem;
+  font-size: 2rem;
+  font-family: 'Poppins';
+}
+.tab2_managingBtns{
+  display: flex;
+  justify-content: space-evenly;
+  gap: 3rem;
+}
+.download_extra{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  gap: 60rem;
+}
+/* style={{minWidth:'9rem',}}
+style={{ display: 'flex', justifyContent: 'space-between',flexDirection:'row', gap: '60rem' }} */
+.downloadBtn{
+  min-width: 9rem;
+}
 .tabs{
     background-color: #fff;
     border: 1px solid #ddd;
@@ -210,6 +232,25 @@ input[type="number"]::-webkit-inner-spin-button {
 
 /* For tablets and medium screens */
 @media (max-width: 768px) {
+  .tab1_managingBtns{
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .download_extra{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    gap: 6rem;
+  }
+  .downloadBtn{
+    max-width: 9rem;
+  }
+  .tab2_managingBtns{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1rem;
+  }
   .formCon {
     padding: 1rem;
   }

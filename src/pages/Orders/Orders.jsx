@@ -675,17 +675,17 @@ console.log(currentTab);
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }} className="addorder">
        {currentTab === 'tab1' &&  <Button type="primary" style={{ alignSelf: 'flex-start', borderRadius:'34px',fontFamily:'Poppins', fontSize:'1rem', fontWeight:'500' }} onClick={start} loading={loading}>Sync</Button>}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '4rem', fontSize:'2rem',fontFamily:'Poppins' }}>
+        <div className='tab1_managingBtns'>
           {currentTab === 'tab1' && <Button style={{borderRadius:'34px'}} disabled={!hasSelected && currentTab === 'tab1'} onClick={showModalShipNow}>Ship Now</Button>}
 
 {
   <div>
-  <div style={{ display: 'flex', justifyContent: 'space-between',flexDirection:'row', gap: '60rem' }}>
-  <Button type="primary" shape="round" onClick={exportToExcel} icon={<DownloadOutlined />} style={{minWidth:'9rem',}} size='middle'>
+  <div className='download_extra'>
+  <Button type="primary" shape="round" onClick={exportToExcel} icon={<DownloadOutlined />} className='downloadBtn' size='middle'>
             Download
           </Button>
   {
-      currentTab === 'tab2' &&   <div style={{display:'flex',justifyContent:'space-evenly', gap:'3rem'}} >
+      currentTab === 'tab2' &&   <div className='tab2_managingBtns'>
         <Button
         disabled={selectedRowKeys.length === 0}
         style={{ borderColor: 'black', borderRadius: '50px' }}
