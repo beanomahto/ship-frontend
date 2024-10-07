@@ -165,8 +165,8 @@ console.log(users);
       dataSource={users} 
       columns={columns} 
       rowKey="_id" 
-      pagination={false} 
-      scroll={{ x: 1000 }} 
+      pagination={true} 
+      scroll={{ x: 1000,y:500 }} 
     />
     </div>
   );
