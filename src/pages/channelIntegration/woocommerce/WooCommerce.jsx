@@ -20,7 +20,7 @@ const WooCommerce = () => {
     token: "tokenioioi",
   });
   
-//   useEffect(() => {
+//  useEffect(() => {
 //     const getChannelInfo = async () => {
 //       try {
 //         const token = localStorage.getItem("token");
@@ -123,13 +123,7 @@ const integrateWooCommerceChannel = async () => {
 
   return (
     <div
-      style={{
-        marginTop: "0rem",
-        display: "flex",
-        background: "white",
-        borderRadius: "2rem",
-        gap: "2rem",
-      }}
+   className="mainIntegrationHeader"
     >
       <div className="steps">
         <h1>WooCommerce</h1>

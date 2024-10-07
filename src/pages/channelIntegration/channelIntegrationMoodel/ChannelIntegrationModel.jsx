@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {Modal, Form, Input, Button, Checkbox } from 'antd';
 
 const ChannelIntegrationModal = ({ visible, channel,  onCancel }) => {
   console.log(channel);
-  
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
+
+  // Listen for screen size changes
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 600);
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
     return (
       <Modal 
         title={`${channel.salesChannel
@@ -15,63 +24,63 @@ const ChannelIntegrationModal = ({ visible, channel,  onCancel }) => {
     <form className="form" >
       <div className="flex">
         <label>
+          <span>Store Name</span>
           <input
-            className="input"
+            className={isMobile ? "Channelinput" : "input"}
             type="text"
             placeholder=""
             required
             value={channel.storeName}
           />
-          <span>Store Name</span>
         </label>
       </div>
       <div className="flex">
         <label>
+          <span>Channel</span>
           <input
-            className="input"
+            className={isMobile ? "Channelinput" : "input"}
             type="text"
             placeholder=""
             required
             value={channel.salesChannel}
           />
-          <span>Channel</span>
         </label>
       </div>
       <div className="flex">
         <label>
+          <span>API Key</span>
           <input
-            className="input"
+            className={isMobile ? "Channelinput" : "input"}
             type="text"
             placeholder=""
             required
             value={channel.apiKey}
           />
-          <span>API Key</span>
         </label>
       </div>
       <div className="flex">
         <label>
+          <span>API Secret</span>
           <input
-            className="input"
+            className={isMobile ? "Channelinput" : "input"}
             type="text"
             placeholder=""
             required
             value={channel.apiSecret}
           />
-          <span>API Secret</span>
         </label>
       </div>
    {
     channel.salesChannel === "shopify" &&    <div className="flex">
     <label>
+      <span>Token</span>
       <input
-        className="input"
+        className={isMobile ? "Channelinput" : "input"}
         type="text"
         placeholder=""
         required
         value={channel.token}
       />
-      <span>Token</span>
     </label>
   </div>
    }
