@@ -413,9 +413,11 @@ console.log(labelData);
           }
         </style>
                 <div class="label-container">
-    <h1 style="text-align: center;">Shipping Label</h1>
-    <p><strong>Order Id:-</strong> ${labelData?.orderId ? labelData?.orderId : ""}</p>
     <div style="${labelData?.logoUrl ? 'display: flex;' : ''}">
+        <div class="labelSection">
+            <img style="width: 7rem;" src=${Logo} alt="Barcode" />
+            <p><strong>Delivered By </strong> ${labelData?.shippingPartner ? labelData?.shippingPartner : ""}</p>
+        </div>
         <div class="labelSection">
             <img style="width: 11rem;" src="data:image/png;base64,${labelData?.barcode ? labelData?.barcode : ""}" alt="Barcode" />
             <p>${labelData?.shippingPartner ? labelData?.shippingPartner : ""}</p>
@@ -429,7 +431,7 @@ console.log(labelData);
     </div>
     <div style="display: flex;">
         <div class="labelSection" style="width: 16rem;">
-            <p><strong>${labelData?.paymentType ? labelData?.paymentType : ""}</strong></p>
+         <p><strong>Order Id:-</strong> ${labelData?.orderId ? labelData?.orderId : ""}</p>
             <p><strong>Product name</strong></p>
             <p>${labelData?.productName ? labelData?.productName : ""}</p>
         </div>
