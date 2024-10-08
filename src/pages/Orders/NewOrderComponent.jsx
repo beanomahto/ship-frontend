@@ -52,7 +52,7 @@ const NewOrderComponent = ({ tab,dataSource, rowSelection, fetchOrders, loading,
 
  
  
-  const { authUser } = useAuthContext();
+  const { authUser,fetchBalance } = useAuthContext();
   const {shipOrder,error} = useCreateShipment()
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -310,6 +310,7 @@ console.log(sendWarehouse);
         if (orderResponse.status === 201) {
           message.success("Shipped successfully");
           fetchOrders();
+          fetchBalance();
           setIsModalVisible(false);
           setSelectedOrderId(null);
           setSelectedPartner(null);

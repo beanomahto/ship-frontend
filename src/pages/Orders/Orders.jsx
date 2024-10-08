@@ -22,6 +22,7 @@ import useCancelShipment from '../../hooks/useCancelShipment';
 const { TabPane } = Tabs;
 import Logo from '../../utils/logo.png'
 import { toWords } from 'number-to-words';
+import { useAuthContext } from '../../context/AuthContext';
 
 const Orders = () => {
   const { shipNowCost } = useShipNowCost();
@@ -29,6 +30,7 @@ const Orders = () => {
   const {cancelOrder} = useCancelShipment()
   const {shipOrder,error} = useCreateShipment()
   const { orders, setOrders, fetchOrders } = useOrderContext();
+  const {fetchBalance} = useAuthContext();
 
   // states
   const [deliveryCosts, setDeliveryCosts] = useState([]);
@@ -197,6 +199,7 @@ console.log(selectedOrderData);
         updatedOrders.push({ ...order, status: 'Shipped' });
       }
       fetchOrders()
+      fetchBalance();
       const newOrdersCopy = orders.orders.filter((order) => !selectedRows.includes(order._id));
       setOrders({
         orders: newOrdersCopy.concat(updatedOrders),
@@ -340,6 +343,7 @@ const inTransitOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 
             }
 
             fetchOrders();
+            fetchBalance();
             setSelectedRowKeys([]);
         } else {
             message.error('Failed to cancel some orders');

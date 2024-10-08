@@ -4,6 +4,7 @@
     width: 100vw;
     height: 100vh;
     display: flex;
+    background-repeat: no-repeat;
     /* animation: moveit 1s ease-in; */
 }
 

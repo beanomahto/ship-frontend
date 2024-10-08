@@ -33,9 +33,6 @@ const Login1 = () => {
       <div className='section'>
         <div className='imgBx'>
         <img src={imgg} alt='Background' />
-        {/* <video style={{height:'100%', width:'100%'}} autoPlay loop src={vid1}>
-          <source src={vid1} type="video/mp4" />
-        </video> */}
         </div>
         <div className='contentBx'>
           <div className="formBx">
