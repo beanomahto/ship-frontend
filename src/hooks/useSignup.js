@@ -5,8 +5,8 @@ const useSignup = () => {
 	const [loading, setLoading] = useState(false);
 	const { setAuthUser } = useAuthContext();
 
-	const signup = async ({ firstName, lastName, email, password, companyName, phoneNumber }) => {
-		const success = handleInputErrors({ firstName, lastName, email, password, companyName, phoneNumber });
+	const signup = async ({ firstName, lastName, email, password, companyName, phoneNumber, otp }) => {
+		const success = handleInputErrors({ firstName, lastName, email, password, companyName, phoneNumber, otp });
 		if (!success) return;
 
 		setLoading(true);
@@ -14,7 +14,7 @@ const useSignup = () => {
 			const res = await fetch("https://backend.shiphere.in/api/auth/signup", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ firstName, lastName, email, password, companyName, phoneNumber }),
+				body: JSON.stringify({ firstName, lastName, email, password, companyName, phoneNumber, otp }),
 				credentials: "include",
 			});
 
@@ -81,8 +81,8 @@ console.log(data);
 };
 export default useSignup;
 
-function handleInputErrors({ firstName, lastName, email, password, companyName, phoneNumber }) {
-	if (!firstName || !lastName || !email || !password || !companyName || !phoneNumber) {
+function handleInputErrors({ firstName, lastName, email, password, companyName, phoneNumber, otp }) {
+	if (!firstName || !lastName || !email || !password || !companyName || !phoneNumber || !otp) {
 		alert("Please fill in all fields");
 		return false;
 	}

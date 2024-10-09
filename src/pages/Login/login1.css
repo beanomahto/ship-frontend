@@ -161,3 +161,32 @@
         font-size: 14px;
     }
 }
+/* Signup1.css */
+.otpSection {
+    display: flex;
+    gap: 1.5rem;
+  }
+  
+  .otpContainer {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  
+  .otpBox {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 1.5rem;
+    border: 1px solid #d9d9d9;
+    outline: none;
+    padding: 5px;
+  }
+  
+  .otpBox:focus {
+    border-color: #1890ff;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+  }
+  
