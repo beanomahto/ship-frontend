@@ -147,8 +147,14 @@
 .ant-modal-content {
   border-radius: 10px;
 }
-/*
 
+@media (max-width: 768px) {
+  .early-cod-popup .cod-options {
+    flex-wrap: wrap;
+  }
+}
+
+/*
 
 .ant-modal-close {
   top: 20px;
