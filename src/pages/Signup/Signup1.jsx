@@ -146,55 +146,55 @@ const Signup1 = () => {
           <form onSubmit={handleSubmit}>
             <div className="inputBx">
               <label htmlFor="firstName">First Name</label>
-             <div classname='inputContainer' style={{display:'flex'}} >
-               <input
-                type='text'
-                id='firstName'
-                placeholder='First Name'
-                value={inputs.firstName}
-                onChange={(e) => handleInputChange('firstName', e.target.value)}
-              />
-              {fieldFilled.firstName &&  <MdCheckCircle size={27} style={{ color: 'green', marginLeft: '8px', marginTop: '5px' }} />}
-            
+              <div classname='inputContainer' style={{ display: 'flex' }} >
+                <input
+                  type='text'
+                  id='firstName'
+                  placeholder='First Name'
+                  value={inputs.firstName}
+                  onChange={(e) => handleInputChange('firstName', e.target.value)}
+                />
+                {fieldFilled.firstName && <MdCheckCircle size={27} style={{ color: 'green', marginLeft: '8px', marginTop: '5px' }} />}
+
               </div></div>
             <div className="inputBx">
               <label htmlFor="lastName">Last Name</label>
-             <div classname='inputContainer' style={{display:'flex'}} >
-               <input
-                type='text'
-                id='lastName'
-                placeholder='Last Name'
-                value={inputs.lastName}
-                onChange={(e) => handleInputChange('lastName', e.target.value)}
-              />
-              {fieldFilled.lastName &&  <MdCheckCircle size={27} style={{ color: 'green', marginLeft: '8px', marginTop: '5px' }} />}
-            
+              <div classname='inputContainer' style={{ display: 'flex' }} >
+                <input
+                  type='text'
+                  id='lastName'
+                  placeholder='Last Name'
+                  value={inputs.lastName}
+                  onChange={(e) => handleInputChange('lastName', e.target.value)}
+                />
+                {fieldFilled.lastName && <MdCheckCircle size={27} style={{ color: 'green', marginLeft: '8px', marginTop: '5px' }} />}
+
               </div></div>
             <div className="inputBx">
               <label htmlFor="companyName">Company Name</label>
-             <div classname='inputContainer' style={{display:'flex'}} >
-               <input
-                type='text'
-                id='companyName'
-                placeholder='Company Name'
-                value={inputs.companyName}
-                onChange={(e) => handleInputChange('companyName', e.target.value)}
-              />
-              {fieldFilled.companyName &&  <MdCheckCircle size={27} style={{ color: 'green', marginLeft: '8px', marginTop: '5px' }} />}
-            
+              <div classname='inputContainer' style={{ display: 'flex' }} >
+                <input
+                  type='text'
+                  id='companyName'
+                  placeholder='Company Name'
+                  value={inputs.companyName}
+                  onChange={(e) => handleInputChange('companyName', e.target.value)}
+                />
+                {fieldFilled.companyName && <MdCheckCircle size={27} style={{ color: 'green', marginLeft: '8px', marginTop: '5px' }} />}
+
               </div></div>
             <div className="inputBx">
               <label htmlFor="email">Email</label>
-             <div classname='inputContainer' style={{display:'flex'}} >
-               <input
-                type='email'
-                id='email'
-                placeholder='Email'
-                value={inputs.email}
-                onChange={(e) => handleInputChange('email', e.target.value)}
-              />
-              {fieldFilled.email &&  <MdCheckCircle size={27} style={{ color: 'green', marginLeft: '8px', marginTop: '5px' }} />}
-            
+              <div classname='inputContainer' style={{ display: 'flex' }} >
+                <input
+                  type='email'
+                  id='email'
+                  placeholder='Email'
+                  value={inputs.email}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
+                />
+                {fieldFilled.email && <MdCheckCircle size={27} style={{ color: 'green', marginLeft: '8px', marginTop: '5px' }} />}
+
               </div></div>
 
             <div className="otpSection">
@@ -207,7 +207,7 @@ const Signup1 = () => {
               </Button>
               <div className="otpContainer">
                 {otpArray.map((digit, index) => (
-                   <Input
+                  <Input
                     key={index}
                     ref={(el) => (otpRefs.current[index] = el)}
                     value={digit}
@@ -215,37 +215,37 @@ const Signup1 = () => {
                     onKeyDown={(e) => handleOTPKeyDown(e, index)}
                     maxLength={1}
                     className="otpBox"
-  />
+                  />
                 ))}
               </div>
             </div>
 
             <div className="inputBx">
               <label htmlFor="phoneNumber">Phone No.</label>
-             <div classname='inputContainer' style={{display:'flex'}} >
-               <input
-                type='text'
-                id='phoneNumber'
-                placeholder='Phone No.'
-                value={inputs.phoneNumber}
-                onChange={handlePhoneNumberChange}
-              />
-              {fieldFilled.phoneNumber && !phoneError && <MdCheckCircle size={27} style={{ color: 'green', marginLeft: '8px', marginTop: '5px' }} />}
-              
+              <div classname='inputContainer' style={{ display: 'flex' }} >
+                <input
+                  type='text'
+                  id='phoneNumber'
+                  placeholder='Phone No.'
+                  value={inputs.phoneNumber}
+                  onChange={handlePhoneNumberChange}
+                />
+                {fieldFilled.phoneNumber && !phoneError && <MdCheckCircle size={27} style={{ color: 'green', marginLeft: '8px', marginTop: '5px' }} />}
+
               </div>{phoneError && <span style={{ color: 'red' }}>{phoneError}</span>}
             </div>
             <div className="inputBx">
               <label htmlFor="password">Password</label>
-             <div classname='inputContainer' style={{display:'flex'}} >
-               <input
-                type='password'
-                id='password'
-                placeholder='Password'
-                value={inputs.password}
-                onChange={(e) => handleInputChange('password', e.target.value)}
-              />
-         {fieldFilled.password && <MdCheckCircle size={27} style={{ color: 'green', marginLeft: '8px', marginTop: '5px' }} />}
-            
+              <div classname='inputContainer' style={{ display: 'flex' }} >
+                <input
+                  type='password'
+                  id='password'
+                  placeholder='Password'
+                  value={inputs.password}
+                  onChange={(e) => handleInputChange('password', e.target.value)}
+                />
+                {fieldFilled.password && <MdCheckCircle size={27} style={{ color: 'green', marginLeft: '8px', marginTop: '5px' }} />}
+
               </div></div>
             <div className='terms'>
               <Checkbox
