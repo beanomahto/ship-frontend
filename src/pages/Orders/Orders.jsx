@@ -30,7 +30,7 @@ const Orders = () => {
   const {cancelOrder} = useCancelShipment()
   const {shipOrder,error} = useCreateShipment()
   const { orders, setOrders, fetchOrders } = useOrderContext();
-  const {fetchBalance} = useAuthContext();
+  const {fetchBalance,balance} = useAuthContext();
 
   // states
   const [deliveryCosts, setDeliveryCosts] = useState([]);
@@ -65,7 +65,7 @@ console.log(selectedOrderData);
     });
       if (response.ok) {
         const result = await response.json();
-        console.log('Sync successful', result);
+        // console.log('Sync successful', result);
         message.success('Sync successful');
       } else {
         console.error('Sync failed', response.statusText);
@@ -80,22 +80,22 @@ console.log(selectedOrderData);
 
 
   const onSelectChange = (newSelectedRowKeys) => {
-    console.log(newSelectedRowKeys);
+    // console.log(newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
     const selectedData = newSelectedRowKeys.map(key => 
       orders.orders.find(order => order._id === key)
     );
     setSelectedOrderData(selectedData);
   };
-  console.log(selectedWarehouseId);
+  // console.log(selectedWarehouseId);
   
   const handleShipNow = async (selectedRowKeys, selectedWarehouse, selectedDeliveryPartner) => {
-    console.log(selectedRowKeys);
-    console.log(selectedWarehouse);
-    console.log(selectedDeliveryPartner);
+    // console.log(selectedRowKeys);
+    // console.log(selectedWarehouse);
+    // console.log(selectedDeliveryPartner);
     setSelectedWarehouseId(selectedWarehouse)
     const selectedRows = selectedOrderData?.map((ordId) => ordId?._id)
-    console.log(selectedRows);
+    // console.log(selectedRows);
     
     if (selectedRows.length === 0) {
       message.warning('Please select at least one order to ship.');
@@ -110,14 +110,14 @@ console.log(selectedOrderData);
       for (const orderId of selectedRowKeys) {
         const order = orders?.orders.find((order) => order._id === orderId);
         if (!order) continue;
-  console.log(orderId);
-  console.log(order);
+  // console.log(orderId);
+  // console.log(order);
   
         let forwardCharge, codCharge;
   
         try {
           const costData = await shipNowCost(orderId, selectedWarehouse?._id);
-          console.log('Cost Data for Order:', costData);
+          // console.log('Cost Data for Order:', costData);
   
           forwardCharge = costData?.cost?.find(
             (cost) => cost.deliveryPartner === selectedDeliveryPartner.name
@@ -134,13 +134,13 @@ console.log(selectedOrderData);
         }
   
         try {
-          console.log('Calling shipOrder with:', { order, selectedWarehouse, selectedDeliveryPartner });
+          // console.log('Calling shipOrder with:', { order, selectedWarehouse, selectedDeliveryPartner });
           await shipOrder(order, selectedWarehouse, selectedDeliveryPartner.name);
   
-          console.log('Order shipped:', orderId);
+          // console.log('Order shipped:', orderId);
           message.success('AWB generated');
         } catch (error) {
-          console.log('Error in shipping with this partner:', error);
+          // console.log('Error in shipping with this partner:', error);
           message.error('Error in shipping with this partner');
           continue;
         }
@@ -184,7 +184,7 @@ console.log(selectedOrderData);
         }
   
         for (const walletRequest of walletRequests) {
-          console.log(walletRequest);
+          // console.log(walletRequest);
   
           await fetch(`https://backend.shiphere.in/api/transactions/decreaseAmount`, {
             method: 'POST',
@@ -238,7 +238,7 @@ const exportToExcel = () => {
     order:order
   })) || [];
 
-  console.log(orders);
+  // console.log(orders);
 
   // const dataSourceShipOrdersWithKeys = orders?.shipOrders?.map((order, index) => ({
   //   ...order,
@@ -250,9 +250,9 @@ const exportToExcel = () => {
     onChange: onSelectChange,
     // onSelect: showModalShipNow,
   };
-console.log(rowSelection);
+// console.log(rowSelection);
 const hasSelected = selectedRowKeys.length > 0;
-console.log(dataSourceWithKeys);
+// console.log(dataSourceWithKeys);
 
 const newOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 'New' || order.status === 'Cancelled');
 const shipOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 'Shipped');
@@ -285,8 +285,8 @@ const inTransitOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 
     },
   ];
 
-  console.log(tabsData);
-  console.log(selectedOrderData);
+  // console.log(tabsData);
+  // console.log(selectedOrderData);
   
   const cancelShipment = async () => {
     if (selectedRowKeys.length === 0) {
@@ -297,57 +297,47 @@ const inTransitOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 
     const token = localStorage.getItem('token');
 
     try {
+        await cancelOrder(selectedOrderData);
 
-      await cancelOrder(selectedOrderData)
+        for (const orderId of selectedRowKeys) {
+            const order = selectedOrderData.find(order => order._id === orderId);
 
-        const cancelRequests = selectedRowKeys.map(orderId =>
-            axios.put(`https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`, {
-                status: 'Cancelled'
-            }, {
-                headers: {
-                    Authorization: `${token}`
-                }
-            })
-        );
+            const cancelResponse = await axios.put(
+                `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
+                { status: 'Cancelled' },
+                { headers: { Authorization: `${token}` } }
+            );
 
-        const cancelResponses = await Promise.all(cancelRequests);
-
-        const allCancelSuccess = cancelResponses.every(response => response.status === 201);
-
-        if (allCancelSuccess) {
-            const walletRequests = selectedOrderData.map(order => {
+            if (cancelResponse.status === 201) {
                 const walletRequestBody = {
                     userId: order.seller._id,
                     credit: order.shippingCost,
                     remark: `Credit charges for order ${order.orderId}`,
                 };
-                console.log(order);
-                
-                console.log(walletRequestBody);
-                
-                return axios.post(`https://backend.shiphere.in/api/transactions/increaseAmount`, walletRequestBody, {
-                    headers: {
-                        Authorization: `${token}`
-                    }
-                });
-            });
 
-            const walletResponses = await Promise.all(walletRequests);
+                const walletResponse = await axios.post(
+                    `https://backend.shiphere.in/api/transactions/increaseAmount`,
+                    walletRequestBody,
+                    { headers: { Authorization: `${token}` } }
+                );
 
-            const walletSuccess = walletResponses.every(response => response.status === 200);
-
-            if (walletSuccess) {
-                message.success('Orders cancelled and amounts updated successfully');
+                if (walletResponse.status === 200) {
+                    console.log(`Wallet updated successfully for order ${order.orderId}`);
+                } else {
+                    console.log(`Failed to update wallet for order ${order.orderId}`);
+                    message.error(`Failed to update wallet for order ${order.orderId}`);
+                }
             } else {
-                message.error('Failed to update some amounts');
+                console.log(`Failed to cancel order ${order.orderId}`);
+                message.error(`Failed to cancel order ${order.orderId}`);
             }
-
-            fetchOrders();
-            fetchBalance();
-            setSelectedRowKeys([]);
-        } else {
-            message.error('Failed to cancel some orders');
         }
+
+        await fetchOrders();
+        await fetchBalance();
+        setSelectedRowKeys([]); 
+        message.success('Orders cancelled and amounts updated successfully');
+        
     } catch (error) {
         console.log('Error:', error.response ? error.response.data : error.message);
         message.error('Failed to cancel orders');
@@ -472,7 +462,6 @@ console.log(labelData);
     </div>
     <p>Powered by <strong>ShipHere</strong></p>
 </div>
-
             `;
 
             labelContainer.innerHTML = labelHtml;
