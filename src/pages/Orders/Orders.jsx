@@ -522,15 +522,15 @@ const inTransitOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 
         <div class="OrderSection">
         <div class="orderDetail">
             <p><strong>Order Date</strong></p>
-            <p>13-10-2024</p>
+            <p>${moment(labelData?.invoiceDate).format('MMMM Do YYYY') || ""}</p>
         </div>
         <div class="orderDetail">
             <p><strong>Dimensions</strong></p>
-            <p><span>20 x 20 x 20</span> CM</p>
+            <p><span>${labelData?.dimension?.length || ""} x ${labelData?.dimension?.breadth || ""} x ${labelData?.dimension?.height || ""}</span> CM</p>
         </div>
         <div class="orderDetail">
             <p><strong>Weight</strong></p>
-            <p><span>50 </span> Kg</p> 
+            <p><span>${labelData?.weight || ""}</span> Kg</p> 
         </div>
         </div>
         <div class="OrderSection">
