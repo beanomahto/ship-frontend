@@ -20,8 +20,14 @@ import html2canvas from "html2canvas";
 import moment from "moment";
 import useCancelShipment from "../../hooks/useCancelShipment";
 const { TabPane } = Tabs;
+<<<<<<< HEAD
 import Logo from "../../utils/logo.png";
 import { toWords } from "number-to-words";
+=======
+import Logo from '../../utils/logo.png'
+import { toWords } from 'number-to-words';
+import { useAuthContext } from '../../context/AuthContext';
+>>>>>>> 6eefec162f4edd2222b163eed28e593548093065
 
 import BD from "../../utils/newlogo/amazonShippinglogo.jpg";
 // import DLVRY from "../../utils/newlogo/delhivery.png";
@@ -49,6 +55,7 @@ const Orders = () => {
   const { cancelOrder } = useCancelShipment();
   const { shipOrder, error } = useCreateShipment();
   const { orders, setOrders, fetchOrders } = useOrderContext();
+  const {fetchBalance,balance} = useAuthContext();
 
   // states
   const [deliveryCosts, setDeliveryCosts] = useState([]);
@@ -86,8 +93,13 @@ const Orders = () => {
       );
       if (response.ok) {
         const result = await response.json();
+<<<<<<< HEAD
         console.log("Sync successful", result);
         message.success("Sync successful");
+=======
+        // console.log('Sync successful', result);
+        message.success('Sync successful');
+>>>>>>> 6eefec162f4edd2222b163eed28e593548093065
       } else {
         console.error("Sync failed", response.statusText);
       }
@@ -100,13 +112,14 @@ const Orders = () => {
   };
 
   const onSelectChange = (newSelectedRowKeys) => {
-    console.log(newSelectedRowKeys);
+    // console.log(newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
     const selectedData = newSelectedRowKeys.map((key) =>
       orders.orders.find((order) => order._id === key)
     );
     setSelectedOrderData(selectedData);
   };
+<<<<<<< HEAD
   console.log(selectedWarehouseId);
 
   const handleShipNow = async (
@@ -121,6 +134,18 @@ const Orders = () => {
     const selectedRows = selectedOrderData?.map((ordId) => ordId?._id);
     console.log(selectedRows);
 
+=======
+  // console.log(selectedWarehouseId);
+  
+  const handleShipNow = async (selectedRowKeys, selectedWarehouse, selectedDeliveryPartner) => {
+    // console.log(selectedRowKeys);
+    // console.log(selectedWarehouse);
+    // console.log(selectedDeliveryPartner);
+    setSelectedWarehouseId(selectedWarehouse)
+    const selectedRows = selectedOrderData?.map((ordId) => ordId?._id)
+    // console.log(selectedRows);
+    
+>>>>>>> 6eefec162f4edd2222b163eed28e593548093065
     if (selectedRows.length === 0) {
       message.warning("Please select at least one order to ship.");
       return;
@@ -138,15 +163,26 @@ const Orders = () => {
       for (const orderId of selectedRowKeys) {
         const order = orders?.orders.find((order) => order._id === orderId);
         if (!order) continue;
+<<<<<<< HEAD
         console.log(orderId);
         console.log(order);
 
+=======
+  // console.log(orderId);
+  // console.log(order);
+  
+>>>>>>> 6eefec162f4edd2222b163eed28e593548093065
         let forwardCharge, codCharge;
 
         try {
           const costData = await shipNowCost(orderId, selectedWarehouse?._id);
+<<<<<<< HEAD
           console.log("Cost Data for Order:", costData);
 
+=======
+          // console.log('Cost Data for Order:', costData);
+  
+>>>>>>> 6eefec162f4edd2222b163eed28e593548093065
           forwardCharge = costData?.cost?.find(
             (cost) => cost.deliveryPartner === selectedDeliveryPartner.name
           )?.forwardCost;
@@ -163,6 +199,7 @@ const Orders = () => {
         }
 
         try {
+<<<<<<< HEAD
           console.log("Calling shipOrder with:", {
             order,
             selectedWarehouse,
@@ -179,6 +216,16 @@ const Orders = () => {
         } catch (error) {
           console.log("Error in shipping with this partner:", error);
           message.error("Error in shipping with this partner");
+=======
+          // console.log('Calling shipOrder with:', { order, selectedWarehouse, selectedDeliveryPartner });
+          await shipOrder(order, selectedWarehouse, selectedDeliveryPartner.name);
+  
+          // console.log('Order shipped:', orderId);
+          message.success('AWB generated');
+        } catch (error) {
+          // console.log('Error in shipping with this partner:', error);
+          message.error('Error in shipping with this partner');
+>>>>>>> 6eefec162f4edd2222b163eed28e593548093065
           continue;
         }
 
@@ -226,6 +273,7 @@ const Orders = () => {
         }
 
         for (const walletRequest of walletRequests) {
+<<<<<<< HEAD
           console.log(walletRequest);
 
           await fetch(
@@ -239,14 +287,32 @@ const Orders = () => {
               body: JSON.stringify(walletRequest),
             }
           );
+=======
+          // console.log(walletRequest);
+  
+          await fetch(`https://backend.shiphere.in/api/transactions/decreaseAmount`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: localStorage.getItem('token'),
+            },
+            body: JSON.stringify(walletRequest),
+          });
+>>>>>>> 6eefec162f4edd2222b163eed28e593548093065
         }
 
         updatedOrders.push({ ...order, status: "Shipped" });
       }
+<<<<<<< HEAD
       fetchOrders();
       const newOrdersCopy = orders.orders.filter(
         (order) => !selectedRows.includes(order._id)
       );
+=======
+      fetchOrders()
+      fetchBalance();
+      const newOrdersCopy = orders.orders.filter((order) => !selectedRows.includes(order._id));
+>>>>>>> 6eefec162f4edd2222b163eed28e593548093065
       setOrders({
         orders: newOrdersCopy.concat(updatedOrders),
       });
@@ -291,7 +357,7 @@ const Orders = () => {
       order: order,
     })) || [];
 
-  console.log(orders);
+  // console.log(orders);
 
   // const dataSourceShipOrdersWithKeys = orders?.shipOrders?.map((order, index) => ({
   //   ...order,
@@ -303,9 +369,15 @@ const Orders = () => {
     onChange: onSelectChange,
     // onSelect: showModalShipNow,
   };
+<<<<<<< HEAD
   console.log(rowSelection);
   const hasSelected = selectedRowKeys.length > 0;
   console.log(dataSourceWithKeys);
+=======
+// console.log(rowSelection);
+const hasSelected = selectedRowKeys.length > 0;
+// console.log(dataSourceWithKeys);
+>>>>>>> 6eefec162f4edd2222b163eed28e593548093065
 
   const newOrdersAmt = dataSourceWithKeys?.filter(
     (order) => order.status === "New" || order.status === "Cancelled"
@@ -344,9 +416,15 @@ const Orders = () => {
     },
   ];
 
+<<<<<<< HEAD
   console.log(tabsData);
   console.log(selectedOrderData);
 
+=======
+  // console.log(tabsData);
+  // console.log(selectedOrderData);
+  
+>>>>>>> 6eefec162f4edd2222b163eed28e593548093065
   const cancelShipment = async () => {
     if (selectedRowKeys.length === 0) {
       message.error("No orders selected");
@@ -356,6 +434,7 @@ const Orders = () => {
     const token = localStorage.getItem("token");
 
     try {
+<<<<<<< HEAD
       await cancelOrder(selectedOrderData);
 
       const cancelRequests = selectedRowKeys.map((orderId) =>
@@ -417,6 +496,49 @@ const Orders = () => {
       } else {
         message.error("Failed to cancel some orders");
       }
+=======
+        await cancelOrder(selectedOrderData);
+
+        for (const orderId of selectedRowKeys) {
+            const order = selectedOrderData.find(order => order._id === orderId);
+
+            const cancelResponse = await axios.put(
+                `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
+                { status: 'Cancelled' },
+                { headers: { Authorization: `${token}` } }
+            );
+
+            if (cancelResponse.status === 201) {
+                const walletRequestBody = {
+                    userId: order.seller._id,
+                    credit: order.shippingCost,
+                    remark: `Credit charges for order ${order.orderId}`,
+                };
+
+                const walletResponse = await axios.post(
+                    `https://backend.shiphere.in/api/transactions/increaseAmount`,
+                    walletRequestBody,
+                    { headers: { Authorization: `${token}` } }
+                );
+
+                if (walletResponse.status === 200) {
+                    console.log(`Wallet updated successfully for order ${order.orderId}`);
+                } else {
+                    console.log(`Failed to update wallet for order ${order.orderId}`);
+                    message.error(`Failed to update wallet for order ${order.orderId}`);
+                }
+            } else {
+                console.log(`Failed to cancel order ${order.orderId}`);
+                message.error(`Failed to cancel order ${order.orderId}`);
+            }
+        }
+
+        await fetchOrders();
+        await fetchBalance();
+        setSelectedRowKeys([]); 
+        message.success('Orders cancelled and amounts updated successfully');
+        
+>>>>>>> 6eefec162f4edd2222b163eed28e593548093065
     } catch (error) {
       console.log(
         "Error:",
@@ -465,6 +587,112 @@ const Orders = () => {
               Authorization: `${token}`,
             },
           }
+<<<<<<< HEAD
+=======
+          .label-section {
+            margin-bottom: 0.5rem;
+          }
+          .label-section img {
+            width: 11rem;
+          }
+          .label-section p {
+            margin: 0;
+          }
+            p{
+             font-weight: 500;
+            }
+          .label-section div {
+            margin-bottom: 0.5rem;
+          }
+        </style>
+                <div class="label-container">
+    <div style="${labelData?.logoUrl ? 'display: flex;' : ''}">
+        <div class="labelSection">
+            <img style="width: 7rem;" src=${Logo} alt="Barcode" />
+            <p><strong>Delivered By </strong> ${labelData?.shippingPartner ? labelData?.shippingPartner : ""}</p>
+        </div>
+        <div class="labelSection">
+            <img style="width: 11rem;" src="data:image/png;base64,${labelData?.barcode ? labelData?.barcode : ""}" alt="Barcode" />
+            <p>${labelData?.shippingPartner ? labelData?.shippingPartner : ""}</p>
+        </div>
+    </div>
+    <div class="labelSection">
+        <p><strong>Ship To:</strong></p>
+        <p><strong>${labelData?.customerName ? labelData?.customerName : ""}</strong></p>
+        <p>${labelData?.address?.address ? labelData?.address?.address : ""} ${labelData?.address?.city ? labelData?.address?.city : ""} ${labelData?.address?.state ? labelData?.address?.state : ""}</p>
+        <p><strong>PIN:</strong> ${labelData?.address?.pincode ? labelData?.address?.pincode : ""}</p>
+    </div>
+    <div style="display: flex;">
+        <div class="labelSection" style="width: 16rem;">
+         <p><strong>Order Id:-</strong> ${labelData?.orderId ? labelData?.orderId : ""}</p>
+            <p><strong>Product name</strong></p>
+            <p>${labelData?.productName ? labelData?.productName : ""}</p>
+        </div>
+        <div class="labelSection" style="width: 10rem;">
+            <p><strong>${labelData?.paymentType ? labelData?.paymentType : ""}</strong></p>
+            <p><strong>INR</strong></p>
+            <p>${labelData?.amount ? labelData?.amount : ""}</p>
+        </div>
+        <div class="labelSection" style="width: 12rem;">
+            <p><strong>Price Total</strong></p>
+            <p>INR ${labelData?.amount ? labelData?.amount : ""}</p>
+            <p>Surface</p>
+        </div>
+    </div>
+    <div style="display: flex;">
+        <div class="labelSection" style="width: 12rem;">
+            <p><strong>Product (QTY)</strong></p>
+        </div>
+        <div class="labelSection" style="width: 12rem;">
+            <p>box (${labelData?.productDetail?.quantity ? labelData?.productDetail?.quantity : ""})</p>
+        </div>
+    </div>
+    <div style="display: flex;">
+        <div class="labelSection" style="width: 12rem;">
+            <p><strong>Total INR</strong></p>
+        </div>
+        <div class="labelSection" style="width: 12rem;">
+            <p>${labelData?.amount ? labelData?.amount : ""}</p>
+        </div>
+    </div>
+    <div class="labelSection">
+        <p><strong>Return Address:</strong></p>
+        <p>${labelData?.pickupAddress?.address ? labelData?.pickupAddress?.address : ""} ${labelData?.pickupAddress?.state ? labelData?.pickupAddress?.state : ""} ${labelData?.pickupAddress?.city ? labelData?.pickupAddress?.city : ""} ${labelData?.pickupAddress?.country ? labelData?.pickupAddress?.country : ""}</p>
+    </div>
+    <p>Powered by <strong>ShipHere</strong></p>
+</div>
+            `;
+
+            labelContainer.innerHTML = labelHtml;
+
+            const canvas = await html2canvas(labelContainer);
+            const imgData = canvas.toDataURL('image/png');
+
+            pdf.addImage(imgData, 'PNG', 0, 0, 4, 6);
+
+            if (orderId !== selectedRowKeys[selectedRowKeys.length - 1]) {
+                pdf.addPage();
+            }
+
+            document.body.removeChild(labelContainer);
+        } catch (error) {
+            console.error('Error generating label:', error.message);
+            alert(`Error generating label for order ID ${orderId}`);
+        }
+    }
+
+    pdf.save('labels.pdf');
+};
+
+const getBase64ImageFromUrl = async (imageUrl) => {
+    try {
+        const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+        const base64 = btoa(
+            new Uint8Array(response.data).reduce(
+                (data, byte) => data + String.fromCharCode(byte),
+                ''
+            )
+>>>>>>> 6eefec162f4edd2222b163eed28e593548093065
         );
 
         const labelData = response.data;
@@ -673,6 +901,7 @@ const Orders = () => {
     pdf.save("labels.pdf");
   };
 
+<<<<<<< HEAD
   const getBase64ImageFromUrl = async (imageUrl) => {
     try {
       const response = await axios.get(imageUrl, {
@@ -697,6 +926,21 @@ const Orders = () => {
       unit: "pt",
       format: "a4",
     });
+=======
+  const pageWidth = 595.28;
+  const pageHeight = 841.89;
+
+  const promises = selectedRowKeys.map(orderId =>
+    fetch(`https://backend.shiphere.in/api/shipping/getinvoice/${orderId}`, {
+      headers: {
+        Authorization: `${localStorage.getItem('token')}`,
+      },
+    })
+      .then(response => response.json())
+      .then(data => {
+        const invoiceData = data.invoiceData;
+console.log(invoiceData);
+>>>>>>> 6eefec162f4edd2222b163eed28e593548093065
 
     const pageWidth = 595.28; // A4 page width in points
     const pageHeight = 841.89; // A4 page height in points
@@ -772,7 +1016,7 @@ const Orders = () => {
       <p style="font-size: 10pt; margin: 0; font-weight: 600;"><strong>Invoice No.:</strong> ${invoiceData.invoiceNumber}</p>
       <p style="font-size: 10pt; margin: 0; font-weight: 600;"><strong>Invoice Date:</strong> ${formattedInvoiceDate}</p>
       <p style="font-size: 10pt; margin: 0; font-weight: 600;"><strong>Order Date:</strong> ${formattedOrderDate}</p>
-      <p style="font-size: 10pt; margin: 0; font-weight: 600;"><strong>Order ID:</strong> ${invoiceData.order.orderId}</p>
+      <p style="font-size: 10pt; margin: 0; font-weight: 600;"><strong>Order ID:</strong> ${invoiceData?.order?.orderId}</p>
     </div>
 
     <!-- Itemized Table -->
@@ -816,7 +1060,16 @@ const Orders = () => {
   </div>
 `;
 
+<<<<<<< HEAD
           document.body.appendChild(invoiceDiv);
+=======
+        document.body.appendChild(invoiceDiv);
+        
+        return html2canvas(invoiceDiv, { scale: 2 }).then(canvas => {
+          const imgData = canvas.toDataURL('image/png');
+          const imgWidth = pageWidth;
+          const imgHeight = (canvas.height * imgWidth) / canvas.width;
+>>>>>>> 6eefec162f4edd2222b163eed28e593548093065
 
           // Convert invoice div to canvas
           return html2canvas(invoiceDiv, { scale: 2 }).then((canvas) => {
@@ -824,8 +1077,14 @@ const Orders = () => {
             const imgWidth = pageWidth;
             const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
+<<<<<<< HEAD
             let heightLeft = imgHeight;
             let position = 0;
+=======
+          if (orderId !== selectedRowKeys[0]) {
+            pdf.addPage(); 
+          }
+>>>>>>> 6eefec162f4edd2222b163eed28e593548093065
 
             if (orderId !== selectedRowKeys[0]) {
               pdf.addPage(); // Add a new page for each invoice if needed
@@ -843,10 +1102,23 @@ const Orders = () => {
               heightLeft -= pageHeight;
               position = heightLeft > 0 ? -pageHeight : 0;
 
+<<<<<<< HEAD
               if (heightLeft > 0) {
                 pdf.addPage();
               }
             }
+=======
+  Promise.all(promises).then(() => {
+    pdf.save('all_invoices.pdf');
+  });
+};
+const handleTabChange = (key) => {
+  setCurrentTab(key);
+  setSelectedRowKeys([]);
+};
+
+console.log(currentTab);
+>>>>>>> 6eefec162f4edd2222b163eed28e593548093065
 
             document.body.removeChild(invoiceDiv);
           });
@@ -862,6 +1134,7 @@ const Orders = () => {
   };
 
   return (
+<<<<<<< HEAD
     <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
       <div
         style={{
@@ -962,6 +1235,39 @@ const Orders = () => {
             </div>
           }
           {currentTab === "tab1" && (
+=======
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }} className="addorder">
+       {currentTab === 'tab1' &&  <Button type="primary" style={{ alignSelf: 'flex-start', borderRadius:'34px',fontFamily:'Poppins', fontSize:'1rem', fontWeight:'500' }} onClick={start} loading={loading}>Sync</Button>}
+        <div className='tab1_managingBtns'>
+          {currentTab === 'tab1' && <Button style={{borderRadius:'34px'}} disabled={!hasSelected && currentTab === 'tab1'} onClick={showModalShipNow}>Ship Now</Button>}
+
+{
+  <div>
+  <div className='download_extra'>
+  <Button type="primary" shape="round" onClick={exportToExcel} icon={<DownloadOutlined />} className='downloadBtn' size='middle'>
+            Download
+          </Button>
+  {
+      currentTab === 'tab2' &&   <div className='tab2_managingBtns'>
+        <Button
+        disabled={selectedRowKeys.length === 0}
+        style={{ borderColor: 'black', borderRadius: '50px' }}
+        onClick={downloadMultipleLabels}
+      >
+        Shipping Label
+      </Button>
+      <Button disabled={selectedRowKeys.length === 0} style={{ borderColor: 'gray', borderRadius: '50px' }} onClick={downloadInvoices}>
+                    Invoice
+                  </Button>
+            <Button disabled={selectedRowKeys.length === 0} style={{ borderColor: 'red', borderRadius:'50px' }} onClick={cancelShipment} >Cancel Shipment</Button>
+        </div>
+  }
+        </div>
+  </div>
+}
+          {(currentTab === 'tab1') && (
+>>>>>>> 6eefec162f4edd2222b163eed28e593548093065
             <>
               <Button
                 style={{
@@ -1024,6 +1330,7 @@ const Orders = () => {
           />
         </div>
       </div>
+<<<<<<< HEAD
       <Tabs
         defaultActiveKey="tab1"
         size="large"
@@ -1031,6 +1338,10 @@ const Orders = () => {
         onChange={setCurrentTab}
       >
         {tabsData.map((tab) => (
+=======
+      <Tabs defaultActiveKey='tab1' size='large' className='tabs' onChange={handleTabChange}>
+        {tabsData.map(tab => (
+>>>>>>> 6eefec162f4edd2222b163eed28e593548093065
           <TabPane key={tab.key} tab={tab.tab}>
             {tab.Component ? (
               <tab.Component

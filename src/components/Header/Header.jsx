@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Input, Popover, Select, Space } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext';
@@ -9,9 +9,10 @@ import { useOrderContext } from '../../context/OrderContext';
 const { Search } = Input;
 
 const Header = ({ darktheme }) => {
-  const { authUser } = useAuthContext();
+  const { authUser, balance } = useAuthContext();
   const { loading, logout } = useLogout();
   const navigate = useNavigate();
+console.log(balance);
 
   const options = [
     {
@@ -25,11 +26,6 @@ const Header = ({ darktheme }) => {
   ];
 
   const {orders} = useOrderContext();
-
-
-  const kookok = orders?.orders?.filter((awb) => awb?.awb === "7D5681702")
-  console.log(kookok);
-  
 const amount = parseFloat(authUser?.amount.toFixed(2))
 const onSearch = (awb) => {
   console.log(awb);
@@ -64,7 +60,7 @@ const onSearch = (awb) => {
         </Space.Compact>
         </div>
         <span className='span'></span>
-        <Button className='money' type="default">&#8377;  {amount}</Button>
+        <Button className='money' type="default">&#8377;  {balance?.toFixed(2)}</Button>
         <span className='span'></span>
         {authUser ? (
           <>

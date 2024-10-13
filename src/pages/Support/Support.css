@@ -160,3 +160,9 @@
     cursor: pointer;
     margin-left: 8px;
 }
+
+@media(max-width: 600px) {
+    .image-container{
+        display: none;
+    }
+}

@@ -87,7 +87,7 @@ console.log(openData);
     <>
       <Table
         className='table'
-        scroll={{ y: 350 }}
+        scroll={{ x:1400,y: 350 }}
         dataSource={openData}
         columns={columns}
         rowKey="id"

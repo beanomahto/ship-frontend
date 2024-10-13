@@ -5,6 +5,7 @@ import { usePaymentUserContext } from '../../../context/PaymentUserContext';
 import moment from 'moment';
 import { Helmet } from 'react-helmet';
 import { CSVLink } from 'react-csv';
+import './wallet.css'
 
 const { Search } = Input;
 
@@ -74,65 +75,57 @@ const AdminWallet = () => {
   };
 
   return (
-    <div>
-      <Helmet>
-        <meta charSet='utf-8' />
-        <meta name='keyword' content={""} />
-        <title>Admin Wallet</title>
-      </Helmet>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          gap: '1rem',
-          marginBottom: '1rem',
-        }}
-      >
-        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-          <Search
-            placeholder="Search across all fields"
-            value={searchText}
-            onChange={e => setSearchText(e.target.value)}
-            style={{ width: 300 }}
-          />
-          <Button onClick={handleClearSearch} style={{ marginLeft: '8px' }}>
-            Clear
-          </Button>
-        </div>
-        <div style={{ display: 'flex', gap: '1rem' }}>
-          <Button
-            type="primary"
-            onClick={showModal}
-            style={{ backgroundColor: '#1890ff', borderColor: '#1890ff' }}
-          >
-            Payment
-          </Button>
-          <PaymentModel visible={modalVisible} onClose={closeModal} />
-          {filteredUsers.length > 0 && (
-            <CSVLink
-              data={generateCsvData()}
-              filename={"filtered_users.csv"}
-              className="ant-btn ant-btn-primary"
-              style={{ textDecoration: 'none' }} // Remove underline
-            >
-              <Button
-                type="default"
-                style={{ borderColor: '#d9d9d9', color: '#1890ff' }}
-              >
-                Download CSV
-              </Button>
-            </CSVLink>
-          )}
-        </div>
-      </div>
-      <Table
-        className='table'
-        scroll={{ y: 500 }}
-        dataSource={filteredUsers}
-        columns={newOrders}
+    <div className="admin-wallet">
+  <Helmet>
+    <meta charSet='utf-8' />
+    <meta name='keyword' content={""} />
+    <title>Admin Wallet</title>
+  </Helmet>
+  <div className="admin-wallet__header">
+    <div className="admin-wallet__search">
+      <Search
+        placeholder="Search across all fields"
+        value={searchText}
+        onChange={e => setSearchText(e.target.value)}
+        className="admin-wallet__search-input"
       />
+      <Button onClick={handleClearSearch} className="admin-wallet__clear-button">
+        Clear
+      </Button>
     </div>
+    <div className="admin-wallet__actions">
+      <Button
+        type="primary"
+        onClick={showModal}
+        className="admin-wallet__payment-button"
+      >
+        Payment
+      </Button>
+      <PaymentModel visible={modalVisible} onClose={closeModal} />
+      {filteredUsers.length > 0 && (
+        <CSVLink
+          data={generateCsvData()}
+          filename={"filtered_users.csv"}
+          className="ant-btn ant-btn-primary"
+        >
+          <Button
+            type="default"
+            className="admin-wallet__download-button"
+          >
+            Download CSV
+          </Button>
+        </CSVLink>
+      )}
+    </div>
+  </div>
+  <Table
+    className='table'
+    scroll={{ x: 1000, y: 500 }}
+    dataSource={filteredUsers}
+    columns={newOrders}
+  />
+</div>
+
   );
 };
 

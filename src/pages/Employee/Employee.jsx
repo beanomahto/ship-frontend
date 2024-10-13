@@ -181,7 +181,7 @@ const columns = [
      <div style={{display:'flex', justifyContent:'flex-end', marginRight:'2rem'}} >
      <CustomButton ><NavLink to={'addEmployee'} >Add Employee</NavLink></CustomButton>
      </div>
-      <Table dataSource={users} columns={columns} rowKey="_id" pagination={false} />
+      <Table dataSource={users} columns={columns} rowKey="_id" pagination={false}   scroll={{ x: 1000 }}  />
     </div>
   );
 };

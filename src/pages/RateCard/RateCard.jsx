@@ -8,9 +8,9 @@ import DLVRY from '../../utils/delhivery.png';
 import AS from '../../utils/amazon-shipping.png';
 import EE from '../../utils/ecom-express.png';
 import XPB from '../../utils/xpressbees.png';
-import Ekart from '../../utils/ekart.jpeg'
-import Dtdc from '../../utils/dtdc.png'
-import SF from '../../utils/shadowFax.png'
+import Ekart from '../../utils/ekart.jpeg';
+import Dtdc from '../../utils/dtdc.png';
+import SF from '../../utils/shadowFax.png';
 
 const { Title, Paragraph } = Typography;
 
@@ -20,8 +20,8 @@ const partnerImages = {
   'Amazon Shipping': AS,
   'Ecom Express': EE,
   'Xpressbees': XPB,
-  'Ekart': Ekart,
   'DTDC': Dtdc,
+  'Ekart': Ekart,
   'Shadowfax':SF
 };
 
@@ -29,7 +29,6 @@ const RateCard = () => {
   const { data } = useShippingRateCard();
   const pricing = data?.pricing;
 
-  // Define your zone titles and descriptions
   const zoneA = (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <h4>Zone A</h4>
@@ -165,7 +164,7 @@ const RateCard = () => {
         <meta name='keyword' content={""} />
         <title>Rate Card</title>
       </Helmet>
-      <Table pagination={false} scroll={{ y: 350 }} className='table' dataSource={pricing} columns={columns} />
+      <Table pagination={false} scroll={{ x:1000,y: 350 }} className='table' dataSource={pricing} columns={columns} />
       <Divider />
       <div style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '1rem' }}>
         <Title level={4}>Terms and Conditions</Title>

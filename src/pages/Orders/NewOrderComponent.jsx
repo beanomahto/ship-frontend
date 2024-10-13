@@ -52,7 +52,7 @@ const NewOrderComponent = ({ tab,dataSource, rowSelection, fetchOrders, loading,
 
  
  
-  const { authUser } = useAuthContext();
+  const { authUser,fetchBalance } = useAuthContext();
   const {shipOrder,error} = useCreateShipment()
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -310,6 +310,7 @@ console.log(sendWarehouse);
         if (orderResponse.status === 201) {
           message.success("Shipped successfully");
           fetchOrders();
+          fetchBalance();
           setIsModalVisible(false);
           setSelectedOrderId(null);
           setSelectedPartner(null);
@@ -348,7 +349,7 @@ console.log(sendWarehouse);
             rowSelection={rowSelection}
             columns={columns}
             dataSource={newOrders}
-            scroll={{ y: 430 }}
+            scroll={{ x: 1400,y: 430 }}
             style={{ width: '100%', height: '545px' }}
             rowClassName={(record) => (record._id === selectedOrderId ? 'selected-row' : '')}
             loading={loading}
@@ -367,7 +368,8 @@ console.log(sendWarehouse);
               rowKey="id"
               pagination={{ pageSize: 10 }}
               loading={modalLoading}
-
+              scroll={{ x: 800 }}
+              style={{ overflowX: 'auto' }}
             >
               <Column
                 title="Partner"
@@ -375,11 +377,17 @@ console.log(sendWarehouse);
                 key="deliveryPartner"
                 render={(text, record) => (
                   <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <img
-                      src={partnerImages[record.deliveryPartner]}
-                      alt={record.deliveryPartner}
-                      style={{ width: '40px', height: '40px', borderRadius: '50%', marginRight: '8px', border: '2px solid #ddd' }}
-                    />
+                     <img
+              src={partnerImages[record.deliveryPartner]}
+              alt={record.deliveryPartner}
+              style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '50%',
+                marginRight: '8px',
+                border: '2px solid #ddd',
+              }}
+            />
                     <p style={{ fontWeight: '500', fontSize: '1rem' }}> {record.deliveryPartner}</p>
                   </div>
                 )}

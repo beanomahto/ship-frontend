@@ -32,3 +32,11 @@
     background-color: #40a9ff;
     border-color: #40a9ff;
 }
+
+@media(max-width: 600px) {
+.update-label-container{
+    padding: 8px;
+    background-color: #f0f2f5;
+    height: 114vh;
+}
+}

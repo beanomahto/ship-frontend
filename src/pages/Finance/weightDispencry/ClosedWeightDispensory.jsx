@@ -51,7 +51,7 @@ const ClosedWeightDispensory = ({ dataSource }) => {
   return (
     <Table
       className='table'
-      scroll={{ y: 350 }}
+      scroll={{x:1200, y: 350 }}
       dataSource={openData}
       columns={columns}
       rowKey="id"

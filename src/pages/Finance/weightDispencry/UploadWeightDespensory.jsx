@@ -4,12 +4,14 @@ import { UploadOutlined } from '@ant-design/icons';
 import * as XLSX from 'xlsx';
 import axios from 'axios';
 import DownloadLink from 'react-download-link';
+import { useAuthContext } from '../../../context/AuthContext';
 
 const UploadWeightDespensory = ({ visible, onClose,fetchWeightDespensory }) => {
     const [file, setFile] = useState(null);
     const [fileData, setFileData] = useState('');
     const [extractedData, setExtractedData] = useState([]);
     const [sellerIds, setSellerIds] = useState('');
+    const {fetchBalance} = useAuthContext()
 
     const handleFileChange = async ({ file }) => {
         setFile(file);
@@ -97,6 +99,7 @@ const UploadWeightDespensory = ({ visible, onClose,fetchWeightDespensory }) => {
                 message.success('File uploaded successfully!');
                 await callDeduceWalletAmount();
                 await callIncreaseWalletAmount();
+                // await fetchBalance();
                 await fetchWeightDespensory()
                 onClose();
             } else {

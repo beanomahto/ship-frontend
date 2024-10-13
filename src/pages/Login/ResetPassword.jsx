@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 // import './login.css';
-import { Link, useNavigate } from 'react-router-dom';
-
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import imgg from '../../utils/new.png'
 const ResetPassword = () => {
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const token = searchParams.get('token');
+    
     const [email, setEmail] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -12,11 +15,6 @@ const ResetPassword = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("clicked");
-        // if (newPassword !== confirmPassword) {
-        //     alert("Passwords do not match");
-        //     return;
-        // }
-
         try {
             const response = await fetch('https://backend.shiphere.in/api/auth/reset-password', {
                 method: 'POST',
@@ -24,6 +22,7 @@ const ResetPassword = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
+                token,
                     email,
                     newPassword,
                     confirmPassword
@@ -49,39 +48,45 @@ const ResetPassword = () => {
 
     return (
         <>
+           <div className='section'>
+        <div className='imgBx'>
+        <img src={imgg} alt='Background' />
+        </div>
+        <div className='contentBx'>
+          <div className="formBx">
+            <h2>Reset Password</h2>
             <form onSubmit={handleSubmit}>
-                <div className="mainConti">
-                    <div className='container'>
-                        <div className='header'>
-                            <div className='text'>Reset Password</div>
-                            <div className='underline'></div>
-                        </div>
-                        <div className='inputs'>
-                            <div className='input'>
-                                <input type="email" placeholder='email'
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                            </div>
-                            <div className='input'>
-                                <input type="password" placeholder='password'
-                                    value={newPassword}
-                                    onChange={(e) => setNewPassword(e.target.value)}
-                                />
-                            </div>
-                            <div className='input'>
-                                <input type="password" placeholder='confirm password'
-                                    value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
-                                />
-                            </div>
-                        </div>
-                        <div className='submit-container'>
-                            <button className="submit">Save</button>
-                        </div>
-                    </div>
-                </div>
+              <div className="inputBx">
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div className="inputBx">
+                <label htmlFor="password">New Password</label>
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+              </div>
+              <div className="inputBx">
+                <label htmlFor="password">Confirm Password</label>
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+              </div>
+              <div className="inputBx">
+                <input type="submit" value='Login' />
+              </div>
             </form>
+          </div>
+        </div>
+      </div>
         </>
     );
 };

@@ -166,7 +166,7 @@ const Pricing = () => {
         <CustomButton onClick={showSModal}>Upload Standard Pricing</CustomButton>
         <UploadStandardPricingModel visible={standardModalVisible} onClose={closeSModal} />
       </div>
-      <Table className='table' scroll={{ y: 350 }} dataSource={pricing} columns={columns} />
+      <Table className='table' scroll={{ x: 1050,y: 350 }} dataSource={pricing} columns={columns} />
     </div>
   );
 };

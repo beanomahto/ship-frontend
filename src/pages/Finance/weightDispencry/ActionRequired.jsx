@@ -139,7 +139,7 @@ const ActionRequired = ({ dataSource, rowSelection, fetchWeightDespensory }) => 
     <>
       <Table
         className="table"
-        scroll={{ y: 300 }}
+        scroll={{ x: 1000,y: 300 }}
         dataSource={actionRequired}
         columns={columns}
         rowKey="_id"

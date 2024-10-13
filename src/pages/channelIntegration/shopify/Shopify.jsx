@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { message } from "antd";
+import './shopify.css'
 import shopifyInt from "../../../utils/shopifyInt.png.jpg";
 
 const Shopify = () => {
@@ -129,12 +130,7 @@ const handleSubmit = async (e) => {
   };
   return (
     <div
-      style={{
-        marginTop: "0rem",
-        display: "flex",
-        background: "white",
-        borderRadius: "2rem",
-      }}
+     className="mainIntegrationHeader"
     >
       <div className="steps">
         <h1>Shopify</h1>
@@ -172,14 +168,6 @@ const handleSubmit = async (e) => {
           </ul>
         </ol>
       </div>
-
-      {/* <img
-        src={shopifyInt}
-        alt="Shopify Integration"
-        style={{}}
-        className="background-image"
-      /> */}
-
       <div className="inte" style={{ marginTop: "0rem" }}>
         <form className="form" onSubmit={handleSubmit}>
           <p className="title">Integrate</p>

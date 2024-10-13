@@ -73,7 +73,7 @@ const WalletHistory = () => {
       </Helmet>
       <Table
         className='table'
-        scroll={{ y: 500 }}
+        scroll={{ x: 1000, y: 500 }}
         columns={newOrders}
         dataSource={transactions}
         loading={loading}
