@@ -530,7 +530,7 @@ const inTransitOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 
         </div>
         <div class="orderDetail">
             <p><strong>Weight</strong></p>
-            <p><span>${labelData?.weight || ""}</span> Kg</p> 
+            <p><span>${labelData?.weight || ""}</span> grm</p> 
         </div>
         </div>
         <div class="OrderSection">
