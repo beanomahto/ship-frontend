@@ -9,13 +9,17 @@ const useCancelShipment = () => {
   const cancelOrder = async (selectedOrderData) => {
     setLoading(true);
     setError(null);
+console.log(selectedOrderData);
 
     try {
       const token = localStorage.getItem('token');
 
-      const allowedPartners = ['Ekart', 'Blue Dart', 'DTDC', 'Shadowfax', 'Xpressbees'];
+      const allowedPartners = ['Ekart', 'Blue Dart', 'DTDC', 'Shadowfax', 'Xpressbees', 'Ecom Express'];
+console.log(allowedPartners);
 
       const filteredOrders = selectedOrderData.filter(order => allowedPartners.includes(order?.shippingPartner));
+      console.log(filteredOrders);
+      
 
       if (filteredOrders.length === 0) {
         message.info('No valid orders selected for cancellation');
@@ -26,11 +30,16 @@ const useCancelShipment = () => {
       const cancelRequests = filteredOrders.map(async (order) => {
         const deliveryPartnerName = order?.shippingPartner;
         const orderAwb = order?.awb;
+console.log(deliveryPartnerName);
 
         let url = '';
         let log = '';
 
         switch (deliveryPartnerName) {
+          case 'Ecom Express':
+            url = 'https://backend.shiphere.in/api/ecomExpress/cancleShipment';
+            log = 'Ecomm hit';
+            break;
           case 'Xpressbees':
             url = 'http://localhost:5000/api/xpressbees/cancel';
             log = 'Xpressbees hit';
@@ -58,7 +67,20 @@ const useCancelShipment = () => {
 
           console.log(log);
           return response.data;
-        } else if (deliveryPartnerName === 'Xpressbees') {
+        } 
+        else if (deliveryPartnerName === 'Ecom Express') {
+          const response = await axios.post(url, {
+            awb: orderAwb,
+          }, {
+            headers: {
+              Authorization: `${token}`,
+            },
+          });
+
+          console.log(log);
+          return response.data;
+        }
+        else if (deliveryPartnerName === 'Xpressbees') {
           const response = await axios.post(url, {
             awb: orderAwb,
           }, {
