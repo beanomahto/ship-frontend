@@ -24,7 +24,7 @@ const Tracking = () => {
         const splitPartners = shippingPartner.replace(/\s+/g, '');
         console.log(splitPartners);
         
-        const fShipPartner = ['Ekart', 'BlueDart', 'DTDC', 'Shadowfax'].includes(splitPartners);
+        const fShipPartner = ['Ekart', 'BlueDart', 'DTDC', 'Shadowfax','Delhivery'].includes(splitPartners);
         console.log(fShipPartner);
         
        if (fShipPartner) {
