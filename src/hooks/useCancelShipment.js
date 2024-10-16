@@ -41,7 +41,7 @@ console.log(deliveryPartnerName);
             log = 'Ecomm hit';
             break;
           case 'Xpressbees':
-            url = 'http://localhost:5000/api/xpressbees/cancel';
+            url = 'https://backend.shiphere.in/api/xpressbees/cancel';
             log = 'Xpressbees hit';
             break;
           case 'Blue Dart':
