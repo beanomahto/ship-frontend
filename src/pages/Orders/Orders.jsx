@@ -88,7 +88,7 @@ console.log(selectedOrderData);
         console.log('Sync successful', result);
         message.success('Sync successful');
       } else {
-        console.error('Sync failed', response.statusText);
+        console.error('Sync failed', response);
       }
     } catch (error) {
       message.error("Sync Failed")
