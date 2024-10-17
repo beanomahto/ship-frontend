@@ -1,11 +1,18 @@
 import React from 'react';
 import { Card, Descriptions, Row, Col, Typography, Steps, Progress } from 'antd';
 import { CheckCircleOutlined, ClockCircleOutlined, SyncOutlined, CloseCircleOutlined, CheckOutlined } from '@ant-design/icons';
+import { useOrderContext } from '../../context/OrderContext';
+import { useParams } from 'react-router-dom';
 
 const { Title } = Typography;
 const { Step } = Steps;
 
 const EcomData = ({ trackingInfo, steps }) => {
+  console.log(trackingInfo);
+  const {orders,fetchOrders} = useOrderContext()
+  const {awb} = useParams()
+  console.log(awb);
+  
   const totalSteps = 5;
   const progressPercentage = ((steps?.length / totalSteps) * 100).toFixed(2);
 
@@ -49,7 +56,13 @@ const EcomData = ({ trackingInfo, steps }) => {
   };
 
   const parsedScans = parseScans(trackingInfo.scans);
-
+  const shippedOrders = orders?.orders?.filter(order => order.status === 'Shipped');
+  console.log(shippedOrders);
+  const currentOrder = shippedOrders?.filter(
+    (order) => order?.awb === trackingInfo?.awb_number
+  );
+  console.log(currentOrder);
+  
   return (
     <div>
       <Row gutter={16}>
@@ -76,7 +89,6 @@ const EcomData = ({ trackingInfo, steps }) => {
             />
           </Card>
 
-          {/* Scrollable Tracking History Card */}
           <Card style={{ borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)', maxHeight: '400px', overflowY: 'auto' }}>
             <Title level={4}>Tracking History</Title>
             <Steps direction="vertical">
@@ -88,7 +100,6 @@ const EcomData = ({ trackingInfo, steps }) => {
                   description={
                     <>
                       <p><strong>Status:</strong> {scan.status}</p>
-                      <p><strong>Name:</strong> {scan.name}</p>
                       <p><strong>City:</strong> {scan.city}</p>
                     </>
                   }

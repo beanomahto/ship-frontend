@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { message } from "antd";
-import shopifyInt from "../../../utils/shopifyInt.png.jpg"; 
 
 const ViewShopify = () => {
 //   const { slug } = useParams(); 
@@ -181,9 +178,6 @@ const slug = "shopify"
               <span>Token</span>
             </label>
           </div>
-          {/* <button className="submit">
-            {data ? "Update" : "Integrate"} Channel
-          </button> */}
         </form>
       </div>
     </div>
