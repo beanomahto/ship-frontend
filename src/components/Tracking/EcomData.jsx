@@ -7,41 +7,25 @@ import { useParams } from 'react-router-dom';
 const { Title } = Typography;
 const { Step } = Steps;
 
-const EcomData = ({ trackingInfo, steps }) => {
-  console.log(trackingInfo);
-  const {orders,fetchOrders} = useOrderContext()
-  const {awb} = useParams()
-  console.log(awb);
-  
-  const totalSteps = 5;
-  const progressPercentage = ((steps?.length / totalSteps) * 100).toFixed(2);
+const EcomData = ({ trackingInfo }) => {
+  const { orders, fetchOrders } = useOrderContext();
 
-  const getStepIcon = (status) => {
-    switch (status?.toLowerCase()) {
-      case 'delivered':
-        return <CheckCircleOutlined style={{ color: '#52c41a' }} />;
-      case 'in transit':
-        return <SyncOutlined style={{ color: '#1890ff' }} spin />;
-      case 'out for delivery':
-        return <ClockCircleOutlined style={{ color: '#faad14' }} />;
-      case 'failed':
-        return <CloseCircleOutlined style={{ color: '#ff4d4f' }} />;
-      case 'shipped':
-        return <CheckOutlined style={{ color: '#1890ff' }} />;
-      default:
-        return <ClockCircleOutlined />;
-    }
+  // Map status to progress percentage
+  const statusToProgress = {
+    'Soft data uploaded': 25,
+    'Pickup Assigned': 50,
+    'Out for Pickup': 75,
+    'Shipment Picked Up': 100,
   };
 
+  // Parse the scans from trackingInfo
   const parseScans = (scans) => {
     const scanEntries = scans?.split(/\d{2}\s\w{3},\s\d{4},\s\d{2}:\d{2}/g).filter(entry => entry.trim() !== "");
     const dateMatches = scans?.match(/\d{2}\s\w{3},\s\d{4},\s\d{2}:\d{2}/g) || [];
 
     return scanEntries.map((entry, index) => {
       const date = dateMatches[index] || 'Unknown Date';
-
       const entryParts = entry.split('-').map(part => part.trim());
-
       const name = entryParts[entryParts.length - 2] + " " + entryParts[entryParts.length - 1];
       const status = entryParts[0];
       const city = entryParts[2];
@@ -56,13 +40,34 @@ const EcomData = ({ trackingInfo, steps }) => {
   };
 
   const parsedScans = parseScans(trackingInfo.scans);
+  
+  // Get the latest status from parsed scans
+  const latestScan = parsedScans?.[0]; // Assuming the latest scan is the first entry
+  const latestStatus = latestScan?.status || trackingInfo?.status;
+  const progressPercentage = statusToProgress[latestStatus] || 0; // Default to 0 if status is unknown
+
+  const getStepIcon = (status) => {
+    switch (status) {
+      case 'Shipment Picked Up':
+        return <CheckCircleOutlined style={{ color: '#52c41a' }} />;
+      case 'Out for Pickup':
+        return <SyncOutlined style={{ color: '#1890ff' }} />;
+      case 'Pickup Assigned':
+        return <ClockCircleOutlined style={{ color: '#faad14' }} />;
+      case 'failed':
+        return <CloseCircleOutlined style={{ color: '#ff4d4f' }} />;
+      case 'Soft data uploaded':
+        return <CheckOutlined style={{ color: '#1890ff' }} />;
+      default:
+        return <ClockCircleOutlined />;
+    }
+  };
+
   const shippedOrders = orders?.orders?.filter(order => order.status === 'Shipped');
-  console.log(shippedOrders);
   const currentOrder = shippedOrders?.filter(
     (order) => order?.awb === trackingInfo?.awb_number
   );
-  console.log(currentOrder);
-  
+
   return (
     <div>
       <Row gutter={16}>
@@ -82,9 +87,9 @@ const EcomData = ({ trackingInfo, steps }) => {
           <Card style={{ borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)', marginBottom: '20px' }}>
             <Title level={4}>Shipment Progress</Title>
             <Progress 
-              percent={parseFloat(progressPercentage)} 
-              status={parseFloat(progressPercentage) === 100 ? 'success' : 'active'} 
-              strokeColor={parseFloat(progressPercentage) === 100 ? '#52c41a' : '#1890ff'} 
+              percent={progressPercentage} 
+              status={progressPercentage === 100 ? 'success' : 'active'} 
+              strokeColor={progressPercentage === 100 ? '#52c41a' : '#1890ff'} 
               showInfo={true}
             />
           </Card>
