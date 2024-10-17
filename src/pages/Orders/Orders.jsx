@@ -78,7 +78,7 @@ console.log(selectedOrderData);
   const start = async () => {
     setLoading(true);
     try {
-      const response = await fetch('https://backeend.shiphere.in/api/integration/syncButton', {
+      const response = await fetch('https://backend.shiphere.in/api/integration/syncButton', {
         headers: {
             Authorization: localStorage.getItem('token'),
         },
