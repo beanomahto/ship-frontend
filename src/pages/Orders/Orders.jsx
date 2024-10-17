@@ -32,6 +32,7 @@ import XPB from "../../utils/newlogo/Xpressbees.jpg";
 import Ekart from "../../utils/newlogo/ekartlogo.png";
 import Dtdc from "../../utils/newlogo/dtdc.png";
 import SF from "../../utils/newlogo/shadowfax.png";
+import InTranitComponent from './InTransitComponent';
 
 const partnerImages = {
   "Blue Dart": BD,
@@ -295,8 +296,8 @@ const inTransitOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 
     {
       key: 'tab3',
       tab: `In Transit (${inTransitOrdersAmt?.length})`,
-      Component: NewOrderComponent,
-      dataSource: [],
+      Component: InTranitComponent,
+      dataSource: dataSourceWithKeys,
     },
     {
       key: 'tab4',

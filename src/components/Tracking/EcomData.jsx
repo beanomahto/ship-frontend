@@ -1,14 +1,15 @@
-import React from 'react';
-import { Card, Descriptions, Row, Col, Typography, Steps, Progress } from 'antd';
+import React, { useEffect } from 'react';
+import { Card, Descriptions, Row, Col, Typography, Steps, Progress, message } from 'antd';
 import { CheckCircleOutlined, ClockCircleOutlined, SyncOutlined, CloseCircleOutlined, CheckOutlined } from '@ant-design/icons';
 import { useOrderContext } from '../../context/OrderContext';
+import axios from 'axios'; // Import Axios
 import { useParams } from 'react-router-dom';
 
 const { Title } = Typography;
 const { Step } = Steps;
 
 const EcomData = ({ trackingInfo }) => {
-  const { orders } = useOrderContext();
+  const { orders, fetchOrders } = useOrderContext();
 
   const statusToProgress = {
     'Soft data uploaded': 25,
@@ -76,6 +77,45 @@ const EcomData = ({ trackingInfo }) => {
     (order) => order?.awb === trackingInfo?.awb_number
   );
   console.log(currentOrder);
+
+  const updateOrderStatus = async (orderId, shippingCost) => {
+    console.log(orderId);
+    console.log(shippingCost);
+    
+    try {
+      const updateBody = {
+        status: 'InTransit',
+        shippingCost: shippingCost,
+      };
+      
+      console.log(updateBody);
+      const response = await axios.put(
+        `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`, 
+        updateBody,
+        {
+          headers: {
+            Authorization: `${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      if (response.status === 201) {
+        message.success("Shipped successfully");
+        fetchOrders();
+      }
+      console.log('Order status updated:', response.data);
+    } catch (error) {
+      console.error('Error updating order status:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (latestStatus === 'Shipment Picked Up' && progressPercentage === 100 && currentOrder?.length > 0) {
+      const orderId = currentOrder[0]?._id; 
+      const shippingCost = currentOrder[0]?.shippingCost;
+      updateOrderStatus(orderId, shippingCost);
+    }
+  }, [latestStatus, progressPercentage, currentOrder]);
 
   return (
     <div>
