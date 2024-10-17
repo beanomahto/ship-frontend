@@ -15,9 +15,8 @@ const ChannelIntegration = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchChannels = async () => {
-      try {
+  const fetchChannels = async () => {
+    try {
         const response = await axios.get('https://backend.shiphere.in/api/integration/getAllApi', {
           headers: {
             Authorization: localStorage.getItem('token')
@@ -31,6 +30,7 @@ const ChannelIntegration = () => {
       }
     };
 
+    useEffect(() => {
     fetchChannels();
   }, []);
 
@@ -110,6 +110,7 @@ const ChannelIntegration = () => {
           channel={selectedChannel}
           onOk={handleOk}
           onCancel={handleCancel}
+          fetchChannels={fetchChannels}
         />
       )}
     </div>
