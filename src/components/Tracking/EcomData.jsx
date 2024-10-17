@@ -8,9 +8,8 @@ const { Title } = Typography;
 const { Step } = Steps;
 
 const EcomData = ({ trackingInfo }) => {
-  const { orders, fetchOrders } = useOrderContext();
+  const { orders } = useOrderContext();
 
-  // Map status to progress percentage
   const statusToProgress = {
     'Soft data uploaded': 25,
     'Pickup Assigned': 50,
@@ -18,7 +17,6 @@ const EcomData = ({ trackingInfo }) => {
     'Shipment Picked Up': 100,
   };
 
-  // Parse the scans from trackingInfo
   const parseScans = (scans) => {
     const scanEntries = scans?.split(/\d{2}\s\w{3},\s\d{4},\s\d{2}:\d{2}/g).filter(entry => entry.trim() !== "");
     const dateMatches = scans?.match(/\d{2}\s\w{3},\s\d{4},\s\d{2}:\d{2}/g) || [];
@@ -40,11 +38,21 @@ const EcomData = ({ trackingInfo }) => {
   };
 
   const parsedScans = parseScans(trackingInfo.scans);
+  console.log(parsedScans);
+
+  const filteredScans = [];
   
-  // Get the latest status from parsed scans
-  const latestScan = parsedScans?.[0]; // Assuming the latest scan is the first entry
+  for (let i = parsedScans.length - 1; i >= 0; i--) {
+    const scan = parsedScans[i];
+    filteredScans.unshift(scan); 
+    if (scan.status === 'Shipment Picked Up') {
+      break;
+    }
+  }
+
+  const latestScan = filteredScans?.[0];
   const latestStatus = latestScan?.status || trackingInfo?.status;
-  const progressPercentage = statusToProgress[latestStatus] || 0; // Default to 0 if status is unknown
+  const progressPercentage = statusToProgress[latestStatus] || 0;
 
   const getStepIcon = (status) => {
     switch (status) {
@@ -67,6 +75,7 @@ const EcomData = ({ trackingInfo }) => {
   const currentOrder = shippedOrders?.filter(
     (order) => order?.awb === trackingInfo?.awb_number
   );
+  console.log(currentOrder);
 
   return (
     <div>
@@ -97,7 +106,7 @@ const EcomData = ({ trackingInfo }) => {
           <Card style={{ borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)', maxHeight: '400px', overflowY: 'auto' }}>
             <Title level={4}>Tracking History</Title>
             <Steps direction="vertical">
-              {parsedScans.map((scan, index) => (
+              {filteredScans.map((scan, index) => (
                 <Step 
                   key={index}
                   icon={getStepIcon(scan.status)}
