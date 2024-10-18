@@ -143,10 +143,10 @@ const EcomData = ({ trackingInfo }) => {
             />
           </Card>
 
-          <Card style={{ borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)', maxHeight: '400px', overflowY: 'auto' }}>
+          <Card style={{ borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)', maxHeight: '600px', overflowY: 'auto' }}>
             <Title level={4}>Tracking History</Title>
             <Steps direction="vertical">
-              {filteredScans.map((scan, index) => (
+              {parsedScans.map((scan, index) => (
                 <Step 
                   key={index}
                   icon={getStepIcon(scan.status)}

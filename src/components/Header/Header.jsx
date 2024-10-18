@@ -26,7 +26,7 @@ console.log(balance);
   ];
 
   const {orders} = useOrderContext();
-const amount = parseFloat(authUser?.amount.toFixed(2))
+const amount = parseFloat(authUser?.amount?.toFixed(2))
 const onSearch = (awb) => {
   console.log(awb);
     
