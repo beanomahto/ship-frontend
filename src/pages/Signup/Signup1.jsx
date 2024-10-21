@@ -1,22 +1,21 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { Checkbox, Button, Input } from 'antd';
-import React, { useState, useRef } from 'react';
-import useSignup from '../../hooks/useSignup';
-import { useOrderContext } from '../../context/OrderContext';
-import imgg from '../../utils/new.png';
-import { MdCheckCircle } from 'react-icons/md';
-
+import { Link, useNavigate } from "react-router-dom";
+import { Checkbox, Button, Input } from "antd";
+import React, { useState, useRef } from "react";
+import useSignup from "../../hooks/useSignup";
+import { useOrderContext } from "../../context/OrderContext";
+import imgg from "../../utils/new.png";
+import { MdCheckCircle } from "react-icons/md";
 
 const Signup1 = () => {
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    companyName: '',
-    phoneNumber: '',
-    password: '',
-    otp: '',
+    firstName: "",
+    lastName: "",
+    email: "",
+    companyName: "",
+    phoneNumber: "",
+    password: "",
+    otp: "",
   });
 
   const [fieldFilled, setFieldFilled] = useState({
@@ -28,11 +27,11 @@ const Signup1 = () => {
     password: false,
   });
 
-  const [otpArray, setOtpArray] = useState(new Array(6).fill(''));
+  const [otpArray, setOtpArray] = useState(new Array(6).fill(""));
   const [agree, setAgree] = useState(false);
   const { loading, signup } = useSignup();
   const { fetchOrders } = useOrderContext();
-  const [phoneError, setPhoneError] = useState('');
+  const [phoneError, setPhoneError] = useState("");
   const [isOtpButtonDisabled, setIsOtpButtonDisabled] = useState(false);
   const [otpTimer, setOtpTimer] = useState(60);
 
@@ -42,16 +41,16 @@ const Signup1 = () => {
 
   const handleInputChange = (field, value) => {
     setInputs({ ...inputs, [field]: value });
-    setFieldFilled((prev) => ({ ...prev, [field]: value.trim() !== '' }));
+    setFieldFilled((prev) => ({ ...prev, [field]: value.trim() !== "" }));
   };
 
   const handlePhoneNumberChange = (e) => {
     const { value } = e.target;
-    handleInputChange('phoneNumber', value);
+    handleInputChange("phoneNumber", value);
     if (!validatePhoneNumber(value)) {
-      setPhoneError('Please enter a valid 10-digit phone number.');
+      setPhoneError("Please enter a valid 10-digit phone number.");
     } else {
-      setPhoneError('');
+      setPhoneError("");
     }
   };
 
@@ -61,7 +60,7 @@ const Signup1 = () => {
       const newOtpArray = [...otpArray];
       newOtpArray[index] = value;
       setOtpArray(newOtpArray);
-      setInputs({ ...inputs, otp: newOtpArray.join('') });
+      setInputs({ ...inputs, otp: newOtpArray.join("") });
 
       if (index < 5 && value) {
         otpRefs.current[index + 1].focus();
@@ -70,14 +69,14 @@ const Signup1 = () => {
   };
 
   const handleOTPKeyDown = (e, index) => {
-    if (e.key === 'Backspace') {
+    if (e.key === "Backspace") {
       const newOtpArray = [...otpArray];
       if (!otpArray[index] && index > 0) {
         otpRefs.current[index - 1].focus();
       }
-      newOtpArray[index] = '';
+      newOtpArray[index] = "";
       setOtpArray(newOtpArray);
-      setInputs({ ...inputs, otp: newOtpArray.join('') });
+      setInputs({ ...inputs, otp: newOtpArray.join("") });
     }
   };
 
@@ -90,31 +89,34 @@ const Signup1 = () => {
     try {
       await signup(inputs);
       fetchOrders();
-      navigate('/');
+      navigate("/");
     } catch (error) {
-      console.error('Signup failed', error);
+      console.error("Signup failed", error);
     }
   };
 
   const handleSendOtp = async () => {
     if (inputs.email) {
       try {
-        const response = await fetch('https://backend.shiphere.in/api/auth/sendOtp', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: inputs.email,
-          }),
-        });
+        const response = await fetch(
+          "https://backend.shiphere.in/api/auth/sendOtp",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: inputs.email,
+            }),
+          }
+        );
 
         if (!response.ok) {
-          throw new Error('Failed to send OTP');
+          throw new Error("Failed to send OTP");
         }
 
         const result = await response.json();
-        console.log('OTP sent successfully:', result);
+        console.log("OTP sent successfully:", result);
 
         setIsOtpButtonDisabled(true);
         let timeLeft = 30;
@@ -130,72 +132,114 @@ const Signup1 = () => {
           }
         }, 1000);
       } catch (error) {
-        console.error('Error sending OTP:', error);
+        console.error("Error sending OTP:", error);
       }
     }
   };
 
   return (
-    <div className='section'>
-      <div className='imgBx'>
-        <img src={imgg} alt='Background' />
+    <div className="section">
+      <div className="imgBx">
+        <img src={imgg} alt="Background" />
       </div>
-      <div className='contentBx'>
+      <div className="contentBx">
         <div className="formBx">
           <h2>Sign Up</h2>
           <form onSubmit={handleSubmit}>
             <div className="inputBx">
               <label htmlFor="firstName">First Name</label>
-              <div classname='inputContainer' style={{ display: 'flex' }} >
+              <div classname="inputContainer" style={{ display: "flex" }}>
                 <input
-                  type='text'
-                  id='firstName'
-                  placeholder='First Name'
+                  type="text"
+                  id="firstName"
+                  placeholder="First Name"
                   value={inputs.firstName}
-                  onChange={(e) => handleInputChange('firstName', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("firstName", e.target.value)
+                  }
                 />
-                {fieldFilled.firstName && <MdCheckCircle size={27} style={{ color: 'green', marginLeft: '8px', marginTop: '5px' }} />}
-
-              </div></div>
+                {fieldFilled.firstName && (
+                  <MdCheckCircle
+                    size={27}
+                    style={{
+                      color: "green",
+                      marginLeft: "8px",
+                      marginTop: "5px",
+                    }}
+                  />
+                )}
+              </div>
+            </div>
             <div className="inputBx">
               <label htmlFor="lastName">Last Name</label>
-              <div classname='inputContainer' style={{ display: 'flex' }} >
+              <div classname="inputContainer" style={{ display: "flex" }}>
                 <input
-                  type='text'
-                  id='lastName'
-                  placeholder='Last Name'
+                  type="text"
+                  id="lastName"
+                  placeholder="Last Name"
                   value={inputs.lastName}
-                  onChange={(e) => handleInputChange('lastName', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("lastName", e.target.value)
+                  }
                 />
-                {fieldFilled.lastName && <MdCheckCircle size={27} style={{ color: 'green', marginLeft: '8px', marginTop: '5px' }} />}
-
-              </div></div>
+                {fieldFilled.lastName && (
+                  <MdCheckCircle
+                    size={27}
+                    style={{
+                      color: "green",
+                      marginLeft: "8px",
+                      marginTop: "5px",
+                    }}
+                  />
+                )}
+              </div>
+            </div>
             <div className="inputBx">
               <label htmlFor="companyName">Company Name</label>
-              <div classname='inputContainer' style={{ display: 'flex' }} >
+              <div classname="inputContainer" style={{ display: "flex" }}>
                 <input
-                  type='text'
-                  id='companyName'
-                  placeholder='Company Name'
+                  type="text"
+                  id="companyName"
+                  placeholder="Company Name"
                   value={inputs.companyName}
-                  onChange={(e) => handleInputChange('companyName', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("companyName", e.target.value)
+                  }
                 />
-                {fieldFilled.companyName && <MdCheckCircle size={27} style={{ color: 'green', marginLeft: '8px', marginTop: '5px' }} />}
-
-              </div></div>
+                {fieldFilled.companyName && (
+                  <MdCheckCircle
+                    size={27}
+                    style={{
+                      color: "green",
+                      marginLeft: "8px",
+                      marginTop: "5px",
+                    }}
+                  />
+                )}
+              </div>
+            </div>
             <div className="inputBx">
               <label htmlFor="email">Email</label>
-              <div classname='inputContainer' style={{ display: 'flex' }} >
+              <div classname="inputContainer" style={{ display: "flex" }}>
                 <input
-                  type='email'
-                  id='email'
-                  placeholder='Email'
+                  type="email"
+                  id="email"
+                  placeholder="Email"
                   value={inputs.email}
-                  onChange={(e) => handleInputChange('email', e.target.value)}
+                  onChange={(e) => handleInputChange("email", e.target.value)}
                 />
-                {fieldFilled.email && <MdCheckCircle size={27} style={{ color: 'green', marginLeft: '8px', marginTop: '5px' }} />}
-
-              </div></div>
+                {fieldFilled.email && (
+                  <MdCheckCircle
+                    size={27}
+                    style={{
+                      color: "green",
+                      marginLeft: "8px",
+                      marginTop: "5px",
+                    }}
+                  />
+                )}
+              </div>
+            </div>
 
             <div className="otpSection">
               <Button
@@ -203,7 +247,9 @@ const Signup1 = () => {
                 disabled={!inputs.email || isOtpButtonDisabled}
                 type="primary"
               >
-                {isOtpButtonDisabled ? `Resend OTP in ${otpTimer}s` : 'Send OTP'}
+                {isOtpButtonDisabled
+                  ? `Resend OTP in ${otpTimer}s`
+                  : "Send OTP"}
               </Button>
               <div className="otpContainer">
                 {otpArray.map((digit, index) => (
@@ -222,46 +268,83 @@ const Signup1 = () => {
 
             <div className="inputBx">
               <label htmlFor="phoneNumber">Phone No.</label>
-              <div classname='inputContainer' style={{ display: 'flex' }} >
+              <div classname="inputContainer" style={{ display: "flex" }}>
                 <input
-                  type='text'
-                  id='phoneNumber'
-                  placeholder='Phone No.'
+                  type="text"
+                  id="phoneNumber"
+                  placeholder="Phone No."
                   value={inputs.phoneNumber}
                   onChange={handlePhoneNumberChange}
                 />
-                {fieldFilled.phoneNumber && !phoneError && <MdCheckCircle size={27} style={{ color: 'green', marginLeft: '8px', marginTop: '5px' }} />}
-
-              </div>{phoneError && <span style={{ color: 'red' }}>{phoneError}</span>}
+                {fieldFilled.phoneNumber && !phoneError && (
+                  <MdCheckCircle
+                    size={27}
+                    style={{
+                      color: "green",
+                      marginLeft: "8px",
+                      marginTop: "5px",
+                    }}
+                  />
+                )}
+              </div>
+              {phoneError && <span style={{ color: "red" }}>{phoneError}</span>}
             </div>
             <div className="inputBx">
               <label htmlFor="password">Password</label>
-              <div classname='inputContainer' style={{ display: 'flex' }} >
+              <div classname="inputContainer" style={{ display: "flex" }}>
                 <input
-                  type='password'
-                  id='password'
-                  placeholder='Password'
+                  type="password"
+                  id="password"
+                  placeholder="Password"
                   value={inputs.password}
-                  onChange={(e) => handleInputChange('password', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("password", e.target.value)
+                  }
                 />
-                {fieldFilled.password && <MdCheckCircle size={27} style={{ color: 'green', marginLeft: '8px', marginTop: '5px' }} />}
-
-              </div></div>
-            <div className='terms'>
+                {fieldFilled.password && (
+                  <MdCheckCircle
+                    size={27}
+                    style={{
+                      color: "green",
+                      marginLeft: "8px",
+                      marginTop: "5px",
+                    }}
+                  />
+                )}
+              </div>
+            </div>
+            <div className="terms">
               <Checkbox
                 checked={agree}
                 onChange={(e) => setAgree(e.target.checked)}
-                style={{ marginTop: '2rem', marginBottom: '1rem', marginLeft: '3rem' }}
+                style={{
+                  marginTop: "2rem",
+                  marginBottom: "1rem",
+                  marginLeft: "3rem",
+                }}
               >
-                I agree to the <Link to='/terms-and-conditions' target='_blank' rel='noopener noreferrer'>Terms and Conditions</Link>
+                I agree to the{" "}
+                <Link
+                  to="/terms-and-conditions"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Terms and Conditions
+                </Link>
               </Checkbox>
             </div>
 
             <div className="inputBx">
-              <input type="submit" value='Signup' disabled={!agree || loading || phoneError} />
+              <input
+                type="submit"
+                value="Signup"
+                disabled={!agree || loading || phoneError}
+              />
             </div>
             <div className="inputBx">
-              <p>Already have an account? <Link to='/login'>Click here!</Link></p>
+              <p>
+                Already have an account? <Link to="/login">Click here!</Link>
+              </p>
             </div>
           </form>
         </div>
