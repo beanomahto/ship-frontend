@@ -1,5 +1,5 @@
-import React from 'react';
-import './ProgressBar.css'; 
+import React from "react";
+import "./ProgressBar.css";
 
 const ProgressBar = ({ data }) => {
   return (
@@ -9,12 +9,14 @@ const ProgressBar = ({ data }) => {
           key={index}
           className="progress-bar-segment"
           style={{
-            width: `${item.percentage}%`,
+            width: `${item.percentage > 0 ? item.percentage : 0}%`, // Ensure percentage is valid
             backgroundColor: item.color,
           }}
-          title={`${item.state}: ${item.percentage}%`}
+          title={`${item.state}: ${item.percentage > 0 ? item.percentage : 0}%`} // Show 0% if there's no data
         >
-          {/* <span className="progress-bar-label">{item.percentage}%</span> */}
+          {item.percentage > 0 && ( // Only show label if percentage > 0
+            <span className="progress-bar-label">{item.percentage}%</span>
+          )}
         </div>
       ))}
     </div>
