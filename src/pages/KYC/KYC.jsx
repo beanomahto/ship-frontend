@@ -29,7 +29,7 @@ const KYC = () => {
     useEffect(() => {
         const fetchKycData = async () => {
             try {
-                const response = await fetch('https://backend.shiphere.in/api/kyc', {
+                const response = await fetch('http://localhost:5000/api/kyc', {
                     headers: {
                         Authorization: localStorage.getItem('token'),
                     },

@@ -32,21 +32,21 @@ const useCreateShipment = () => {
     try {
       let url = '';
       let log = '';
-      const fshipUrl = 'https://backend.shiphere.in/api/fship/createWarehouse';
-      const fshipCreateForwardOrderUrl = 'https://backend.shiphere.in/api/fship/createforwardorder';
-      const fshipCreateShipmentUrl = 'https://backend.shiphere.in/api/fship/shipOrder';
+      const fshipUrl = 'http://localhost:5000/api/fship/createWarehouse';
+      const fshipCreateForwardOrderUrl = 'http://localhost:5000/api/fship/createforwardorder';
+      const fshipCreateShipmentUrl = 'http://localhost:5000/api/fship/shipOrder';
 
       switch (deliveryPartnerName) {
         case 'Ecom Express':
-          url = 'https://backend.shiphere.in/api/ecomExpress/createShipment';
+          url = 'http://localhost:5000/api/ecomExpress/createShipment';
           log = 'ecom hit';
           break;
         case 'Amazon Shipping':
-          url = 'https://backend.shiphere.in/api/amazon-shipping/createShipment';
+          url = 'http://localhost:5000/api/amazon-shipping/createShipment';
           log = 'amazon hit';
           break;
         case 'Xpressbees':
-          url = 'https://backend.shiphere.in/api/xpressbees/createShipment';
+          url = 'http://localhost:5000/api/xpressbees/createShipment';
           log = 'xpress hit';
           break;
         case 'Delhivery':

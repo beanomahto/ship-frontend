@@ -192,7 +192,7 @@ const App = () => {
         <Route path="resetpassword" element={<ResetPassword />} />
         <Route path="*" element={<NotFound />} />
         <Route path="tracking/:selectedOption/:shippingPartner/:awb" element={
-              <ProtectedRoute><Tracking /></ProtectedRoute>
+              <Tracking />
             }/>
       </Routes>
     </BrowserRouter>

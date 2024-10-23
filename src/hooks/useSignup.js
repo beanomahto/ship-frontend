@@ -11,7 +11,7 @@ const useSignup = () => {
 
 		setLoading(true);
 		try {
-			const res = await fetch("https://backend.shiphere.in/api/auth/signup", {
+			const res = await fetch("http://localhost:5000/api/auth/signup", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ firstName, lastName, email, password, companyName, phoneNumber, otp }),
@@ -57,7 +57,7 @@ console.log(data);
 				userId,
 			};
 
-			const res = await fetch("https://backend.shiphere.in/api/shipping/createlabelinfo", {
+			const res = await fetch("http://localhost:5000/api/shipping/createlabelinfo", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

@@ -79,7 +79,7 @@ console.log(selectedOrderData);
   const start = async () => {
     setLoading(true);
     try {
-      const response = await fetch('https://backend.shiphere.in/api/integration/syncButton', {
+      const response = await fetch('http://localhost:5000/api/integration/syncButton', {
         headers: {
             Authorization: localStorage.getItem('token'),
         },
@@ -89,6 +89,7 @@ console.log(selectedOrderData);
         console.log('Sync successful', result);
         message.success('Sync successful');
       } else {
+        message.error("ok")
         console.error('Sync failed', response);
       }
     } catch (error) {
@@ -175,7 +176,7 @@ console.log(selectedOrderData);
         const forwardChargeWithGST = forwardCharge * (1 + gstRate);
         const codChargeWithGST = codCharge * (1 + gstRate);
   
-        await fetch(`https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`, {
+        await fetch(`http://localhost:5000/api/orders/updateOrderStatus/${orderId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -208,7 +209,7 @@ console.log(selectedOrderData);
         for (const walletRequest of walletRequests) {
           // console.log(walletRequest);
   
-          await fetch(`https://backend.shiphere.in/api/transactions/decreaseAmount`, {
+          await fetch(`http://localhost:5000/api/transactions/decreaseAmount`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -325,7 +326,7 @@ const inTransitOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 
             const order = selectedOrderData.find(order => order._id === orderId);
 
             const cancelResponse = await axios.put(
-                `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
+                `http://localhost:5000/api/orders/updateOrderStatus/${orderId}`,
                 { status: 'Cancelled' },
                 { headers: { Authorization: `${token}` } }
             );
@@ -338,7 +339,7 @@ const inTransitOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 
                 };
 
                 const walletResponse = await axios.post(
-                    `https://backend.shiphere.in/api/transactions/increaseAmount`,
+                    `http://localhost:5000/api/transactions/increaseAmount`,
                     walletRequestBody,
                     { headers: { Authorization: `${token}` } }
                 );
@@ -394,7 +395,7 @@ const inTransitOrdersAmt = dataSourceWithKeys?.filter(order => order.status === 
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          `https://backend.shiphere.in/api/shipping/getlabel/${orderId}`,
+          `http://localhost:5000/api/shipping/getlabel/${orderId}`,
           {
             headers: {
               Authorization: `${token}`,
@@ -636,7 +637,7 @@ const downloadInvoices = async () => {
   const pageHeight = 841.89;
 
   const promises = selectedRowKeys.map(orderId =>
-    fetch(`https://backend.shiphere.in/api/shipping/getinvoice/${orderId}`, {
+    fetch(`http://localhost:5000/api/shipping/getinvoice/${orderId}`, {
       headers: {
         Authorization: `${localStorage.getItem('token')}`,
       },

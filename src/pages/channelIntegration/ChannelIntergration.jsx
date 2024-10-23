@@ -17,7 +17,7 @@ const ChannelIntegration = () => {
 
   const fetchChannels = async () => {
     try {
-        const response = await axios.get('https://backend.shiphere.in/api/integration/getAllApi', {
+        const response = await axios.get('http://localhost:5000/api/integration/getAllApi', {
           headers: {
             Authorization: localStorage.getItem('token')
           }

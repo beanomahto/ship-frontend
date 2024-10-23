@@ -261,7 +261,7 @@ console.log(sendWarehouse);
           orderId: selectedOrder._id,
         };
         const codWalletResponse = await axios.post(
-          'https://backend.shiphere.in/api/transactions/decreaseAmount',
+          'http://localhost:5000/api/transactions/decreaseAmount',
           codWalletRequestBody,
           {
             headers: {
@@ -283,7 +283,7 @@ console.log(sendWarehouse);
         orderId: selectedOrder._id,
       };
       const forwardWalletResponse = await axios.post(
-        'https://backend.shiphere.in/api/transactions/decreaseAmount',
+        'http://localhost:5000/api/transactions/decreaseAmount',
         forwardWalletRequestBody,
         {
           headers: {
@@ -298,7 +298,7 @@ console.log(sendWarehouse);
           shippingCost: totalDebit,
         };
         const orderResponse = await axios.put(
-          `https://backend.shiphere.in/api/orders/updateOrderStatus/${selectedOrderId}`,
+          `http://localhost:5000/api/orders/updateOrderStatus/${selectedOrderId}`,
           updateBody,
           {
             headers: {
@@ -329,11 +329,11 @@ console.log(sendWarehouse);
     }
   };
   
-  
-  
   console.log(deliveryCosts);
   
   const newOrders = dataSource?.filter(order => order.status === 'New' || order.status === 'Cancelled');
+  console.log(newOrders);
+  
   return (
     <>
       <Helmet>

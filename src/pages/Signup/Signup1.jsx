@@ -99,7 +99,7 @@ const Signup1 = () => {
   const handleSendOtp = async () => {
     if (inputs.email) {
       try {
-        const response = await fetch('https://backend.shiphere.in/api/auth/sendOtp', {
+        const response = await fetch('http://localhost:5000/api/auth/sendOtp', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

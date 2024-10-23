@@ -14,7 +14,7 @@ const Pricing = () => {
     const fetchPricing = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch('https://backend.shiphere.in/api/shipping/rateCard', {
+        const res = await fetch('http://localhost:5000/api/shipping/rateCard', {
           headers: {
             Authorization: `${token}`,
           },
