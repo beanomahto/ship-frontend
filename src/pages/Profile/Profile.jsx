@@ -3,6 +3,8 @@ import './profile.css';
 import { useAuthContext } from '../../context/AuthContext';
 import { Helmet } from 'react-helmet';
 import pincodeData from '../../utils/zones.json';
+import { Upload, Button, message } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
 
 const Profile = () => {
     const { authUser } = useAuthContext();
@@ -13,7 +15,8 @@ const Profile = () => {
         pincode: '',
         city: '',
         state: '',
-        country: ''
+        country: '',
+        logo: null, // Add logo field here
     });
 
     const title = 'User Profile';
@@ -36,7 +39,8 @@ const Profile = () => {
                     pincode: data.pincode || '',
                     city: data.city || '',
                     state: data.state || '',
-                    country: data.country || ''
+                    country: data.country || '',
+                    logo: data.logo || null // Set the logo if available
                 });
             } catch (error) {
                 console.error('Error fetching user data:', error);
@@ -71,6 +75,17 @@ const Profile = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setInputs({ ...inputs, [name]: value });
+    };
+
+    const handleLogoUpload = ({ file }) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            setInputs({ ...inputs, logo: reader.result });
+        };
+        reader.onerror = (error) => {
+            message.error('Error uploading logo!');
+        };
+        reader.readAsDataURL(file);
     };
 
     const handleSubmit = async (e) => {
@@ -131,12 +146,21 @@ const Profile = () => {
                         </label>
                         <div className='picc'>
                             <label>
-                                <span>Company Logo<span><p>(optional)</p></span></span>
+                                <span>Company Logo <span><p>(optional)</p></span></span>
                                 <img
                                     className='input img'
                                     alt="Company Logo"
+                                    src={inputs.logo} 
+                                    style={{ maxWidth: '100px', maxHeight: '100px' }}
                                 />
                             </label>
+                            <Upload
+                                accept="image/*"
+                                customRequest={handleLogoUpload}
+                                showUploadList={false}
+                            >
+                                <Button icon={<UploadOutlined />}>Upload Logo</Button>
+                            </Upload>
                         </div>
                     </div>
                     <div className="flex">
