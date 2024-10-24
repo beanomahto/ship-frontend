@@ -1,9 +1,25 @@
-import React, { useEffect } from 'react';
-import { Card, Descriptions, Row, Col, Typography, Steps, Progress, message } from 'antd';
-import { CheckCircleOutlined, ClockCircleOutlined, SyncOutlined, CloseCircleOutlined, CheckOutlined } from '@ant-design/icons';
-import { useOrderContext } from '../../context/OrderContext';
-import axios from 'axios'; // Import Axios
-import { useParams } from 'react-router-dom';
+import React, { useEffect } from "react";
+import {
+  Card,
+  Descriptions,
+  Row,
+  Col,
+  Typography,
+  Steps,
+  Progress,
+  message,
+} from "antd";
+import {
+  CheckCircleOutlined,
+  ClockCircleOutlined,
+  SyncOutlined,
+  CloseCircleOutlined,
+  CheckOutlined,
+} from "@ant-design/icons";
+import { useOrderContext } from "../../context/OrderContext";
+import axios from "axios"; // Import Axios
+import { useParams } from "react-router-dom";
+import imgg from "../../utils/trackk.jpg";
 
 const { Title } = Typography;
 const { Step } = Steps;
@@ -12,20 +28,26 @@ const EcomData = ({ trackingInfo }) => {
   const { orders, fetchOrders } = useOrderContext();
 
   const statusToProgress = {
-    'Soft data uploaded': 25,
-    'Pickup Assigned': 50,
-    'Out for Pickup': 75,
-    'Shipment Picked Up': 100,
+    "Soft data uploaded": 25,
+    "Pickup Assigned": 50,
+    "Out for Pickup": 75,
+    "Shipment Picked Up": 100,
   };
 
   const parseScans = (scans) => {
-    const scanEntries = scans?.split(/\d{2}\s\w{3},\s\d{4},\s\d{2}:\d{2}/g).filter(entry => entry.trim() !== "");
-    const dateMatches = scans?.match(/\d{2}\s\w{3},\s\d{4},\s\d{2}:\d{2}/g) || [];
+    const scanEntries = scans
+      ?.split(/\d{2}\s\w{3},\s\d{4},\s\d{2}:\d{2}/g)
+      .filter((entry) => entry.trim() !== "");
+    const dateMatches =
+      scans?.match(/\d{2}\s\w{3},\s\d{4},\s\d{2}:\d{2}/g) || [];
 
     return scanEntries.map((entry, index) => {
-      const date = dateMatches[index] || 'Unknown Date';
-      const entryParts = entry.split('-').map(part => part.trim());
-      const name = entryParts[entryParts.length - 2] + " " + entryParts[entryParts.length - 1];
+      const date = dateMatches[index] || "Unknown Date";
+      const entryParts = entry.split("-").map((part) => part.trim());
+      const name =
+        entryParts[entryParts.length - 2] +
+        " " +
+        entryParts[entryParts.length - 1];
       const status = entryParts[0];
       const city = entryParts[2];
 
@@ -33,7 +55,7 @@ const EcomData = ({ trackingInfo }) => {
         date,
         status,
         name,
-        city
+        city,
       };
     });
   };
@@ -42,11 +64,11 @@ const EcomData = ({ trackingInfo }) => {
   console.log(parsedScans);
 
   const filteredScans = [];
-  
+
   for (let i = parsedScans.length - 1; i >= 0; i--) {
     const scan = parsedScans[i];
-    filteredScans.unshift(scan); 
-    if (scan.status === 'Shipment Picked Up') {
+    filteredScans.unshift(scan);
+    if (scan.status === "Shipment Picked Up") {
       break;
     }
   }
@@ -57,22 +79,24 @@ const EcomData = ({ trackingInfo }) => {
 
   const getStepIcon = (status) => {
     switch (status) {
-      case 'Shipment Picked Up':
-        return <CheckCircleOutlined style={{ color: '#52c41a' }} />;
-      case 'Out for Pickup':
-        return <SyncOutlined style={{ color: '#1890ff' }} />;
-      case 'Pickup Assigned':
-        return <ClockCircleOutlined style={{ color: '#faad14' }} />;
-      case 'failed':
-        return <CloseCircleOutlined style={{ color: '#ff4d4f' }} />;
-      case 'Soft data uploaded':
-        return <CheckOutlined style={{ color: '#1890ff' }} />;
+      case "Shipment Picked Up":
+        return <CheckCircleOutlined style={{ color: "#52c41a" }} />;
+      case "Out for Pickup":
+        return <SyncOutlined style={{ color: "#1890ff" }} />;
+      case "Pickup Assigned":
+        return <ClockCircleOutlined style={{ color: "#faad14" }} />;
+      case "failed":
+        return <CloseCircleOutlined style={{ color: "#ff4d4f" }} />;
+      case "Soft data uploaded":
+        return <CheckOutlined style={{ color: "#1890ff" }} />;
       default:
         return <ClockCircleOutlined />;
     }
   };
 
-  const shippedOrders = orders?.orders?.filter(order => order.status === 'Shipped');
+  const shippedOrders = orders?.orders?.filter(
+    (order) => order.status === "Shipped"
+  );
   const currentOrder = shippedOrders?.filter(
     (order) => order?.awb === trackingInfo?.awb_number
   );
@@ -81,21 +105,21 @@ const EcomData = ({ trackingInfo }) => {
   const updateOrderStatus = async (orderId, shippingCost) => {
     console.log(orderId);
     console.log(shippingCost);
-    
+
     try {
       const updateBody = {
-        status: 'InTransit',
+        status: "InTransit",
         shippingCost: shippingCost,
       };
-      
+
       console.log(updateBody);
       const response = await axios.put(
-        `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`, 
+        `http://localhost:5000/api/orders/updateOrderStatus/${orderId}`,
         updateBody,
         {
           headers: {
-            Authorization: `${localStorage.getItem('token')}`,
-            'Content-Type': 'application/json',
+            Authorization: `${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
           },
         }
       );
@@ -103,15 +127,19 @@ const EcomData = ({ trackingInfo }) => {
         message.success("Shipped successfully");
         fetchOrders();
       }
-      console.log('Order status updated:', response.data);
+      console.log("Order status updated:", response.data);
     } catch (error) {
-      console.error('Error updating order status:', error);
+      console.error("Error updating order status:", error);
     }
   };
 
   useEffect(() => {
-    if (latestStatus === 'Shipment Picked Up' && progressPercentage === 100 && currentOrder?.length > 0) {
-      const orderId = currentOrder[0]?._id; 
+    if (
+      latestStatus === "Shipment Picked Up" &&
+      progressPercentage === 100 &&
+      currentOrder?.length > 0
+    ) {
+      const orderId = currentOrder[0]?._id;
       const shippingCost = currentOrder[0]?.shippingCost;
       updateOrderStatus(orderId, shippingCost);
     }
@@ -121,40 +149,84 @@ const EcomData = ({ trackingInfo }) => {
     <div>
       <Row gutter={16}>
         <Col xs={24} sm={8}>
-          <Card style={{ borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
+          <Card
+            style={{
+              borderRadius: "10px",
+              boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+            }}
+          >
             <Title level={4}>Tracking Information</Title>
-            <Descriptions bordered column={1} labelStyle={{ fontWeight: 'bold' }}>
-              <Descriptions.Item label="AWB Number">{trackingInfo.awb_number}</Descriptions.Item>
-              <Descriptions.Item label="Order ID">{trackingInfo.orderid}</Descriptions.Item>
-              <Descriptions.Item label="Destination">{trackingInfo.destination}</Descriptions.Item>
-              <Descriptions.Item label="Pincode">{trackingInfo.pincode}</Descriptions.Item>
+            <Descriptions
+              bordered
+              column={1}
+              labelStyle={{ fontWeight: "bold" }}
+            >
+              <Descriptions.Item label="AWB Number">
+                {trackingInfo.awb_number}
+              </Descriptions.Item>
+              <Descriptions.Item label="Order ID">
+                {trackingInfo.orderid}
+              </Descriptions.Item>
+              <Descriptions.Item label="Destination">
+                {trackingInfo.destination}
+              </Descriptions.Item>
+              <Descriptions.Item label="Pincode">
+                {trackingInfo.pincode}
+              </Descriptions.Item>
             </Descriptions>
+
+            <img
+              src={imgg}
+              alt="Shipment Image"
+              style={{
+                marginTop: "20px",
+                width: "100%",
+                borderRadius: "10px",
+              }}
+            />
           </Card>
         </Col>
 
         <Col xs={24} sm={16}>
-          <Card style={{ borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)', marginBottom: '20px' }}>
+          <Card
+            style={{
+              borderRadius: "10px",
+              boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+              marginBottom: "20px",
+            }}
+          >
             <Title level={4}>Shipment Progress</Title>
-            <Progress 
-              percent={progressPercentage} 
-              status={progressPercentage === 100 ? 'success' : 'active'} 
-              strokeColor={progressPercentage === 100 ? '#52c41a' : '#1890ff'} 
+            <Progress
+              percent={progressPercentage}
+              status={progressPercentage === 100 ? "success" : "active"}
+              strokeColor={progressPercentage === 100 ? "#52c41a" : "#1890ff"}
               showInfo={true}
             />
           </Card>
 
-          <Card style={{ borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)', maxHeight: '600px', overflowY: 'auto' }}>
+          <Card
+            style={{
+              borderRadius: "10px",
+              boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+              maxHeight: "600px",
+              overflowY: "auto",
+            }}
+          >
             <Title level={4}>Tracking History</Title>
             <Steps direction="vertical">
               {parsedScans.map((scan, index) => (
-                <Step 
+                <Step
                   key={index}
                   icon={getStepIcon(scan.status)}
                   title={scan.date}
                   description={
                     <>
-                      <p><strong>Status:</strong> {scan.status}</p>
-                      <p><strong>City:</strong> {scan.city}</p>
+                      <p>
+                        <strong>Status:</strong> {scan.status}
+                      </p>
+                      <p>
+                        <strong>City:</strong> {scan.city}
+                      </p>
                     </>
                   }
                 />
