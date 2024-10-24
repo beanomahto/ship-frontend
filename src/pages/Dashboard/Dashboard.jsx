@@ -1,13 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { Bar, Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend } from "chart.js";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  ArcElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
-import { FaShoppingCart, FaHourglassHalf, FaTimesCircle, FaCheckCircle } from 'react-icons/fa';
+import {
+  FaShoppingCart,
+  FaHourglassHalf,
+  FaTimesCircle,
+  FaCheckCircle,
+} from "react-icons/fa";
 
 import "./dashboard.css";
 
-import sourceData from '../../components/Chart/SourceData.json';
-import TopDestinationsGraph from './TopDestinationsGraph'; 
+import sourceData from "../../components/Chart/SourceData.json";
+import TopDestinationsGraph from "./TopDestinationsGraph";
 import ShipmentStatusGraph from "./ShipmentStatusGraph";
 import { useOrderContext } from "../../context/OrderContext";
 import { useDeliveryPartner } from "../../context/DeliveryPartners";
@@ -16,7 +30,7 @@ ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
-  ArcElement, 
+  ArcElement,
   Title,
   Tooltip,
   Legend,
@@ -30,12 +44,15 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchRemittance = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:5000/api/remittance/getremittance', {
-          headers: {
-            Authorization: `${token}`,
-          },
-        });
+        const token = localStorage.getItem("token");
+        const res = await fetch(
+          "https://backend.shiphere.in/api/remittance/getremittance",
+          {
+            headers: {
+              Authorization: `${token}`,
+            },
+          }
+        );
         const data = await res.json();
         setRemittanceData(data);
       } catch (error) {
@@ -44,12 +61,16 @@ const Dashboard = () => {
     };
     fetchRemittance();
   }, []);
-const remmitance  = remittanceData.remittances
+  const remmitance = remittanceData.remittances;
   const order = orders?.orders;
-  const cancelOrdersAmt = order?.filter(order => order.status === 'Cancelled');
-  const newOrdersAmt = order?.filter(order => order.status === 'New');
-  const inTransitOrdersAmt = order?.filter(order => order.status === 'InTransit');
-  const ShippedOrdersAmt = order?.filter(order => order.status === 'Shipped');
+  const cancelOrdersAmt = order?.filter(
+    (order) => order.status === "Cancelled"
+  );
+  const newOrdersAmt = order?.filter((order) => order.status === "New");
+  const inTransitOrdersAmt = order?.filter(
+    (order) => order.status === "InTransit"
+  );
+  const ShippedOrdersAmt = order?.filter((order) => order.status === "Shipped");
 
   const shippingPartnerCounts = order?.reduce((acc, curr) => {
     const partnerName = curr.shippingPartner;
@@ -59,36 +80,37 @@ const remmitance  = remittanceData.remittances
     return acc;
   }, {});
 
-const shippingCostSums = order?.reduce((acc, curr) => {
-  const partnerName = curr.shippingPartner;
-  const cost = curr.shippingCost || 0;
-  if (partnerName) {
-    acc[partnerName] = (acc[partnerName] || 0) + cost;
-    acc[partnerName] = parseFloat(acc[partnerName].toFixed(2)); 
-  }
-  return acc;
-}, {});
+  const shippingCostSums = order?.reduce((acc, curr) => {
+    const partnerName = curr.shippingPartner;
+    const cost = curr.shippingCost || 0;
+    if (partnerName) {
+      acc[partnerName] = (acc[partnerName] || 0) + cost;
+      acc[partnerName] = parseFloat(acc[partnerName].toFixed(2));
+    }
+    return acc;
+  }, {});
 
-
-  const allPartnersData = deliveryPartners?.deliveryPartners?.map(partner => ({
-    name: partner.name,
-    count: shippingPartnerCounts?.[partner.name] || 0,
-    shippingCost: shippingCostSums?.[partner.name] || 0,
-  }));
+  const allPartnersData = deliveryPartners?.deliveryPartners?.map(
+    (partner) => ({
+      name: partner.name,
+      count: shippingPartnerCounts?.[partner.name] || 0,
+      shippingCost: shippingCostSums?.[partner.name] || 0,
+    })
+  );
 
   const barChartData = {
-    labels: allPartnersData?.map(partner => partner.name),
+    labels: allPartnersData?.map((partner) => partner.name),
     datasets: [
       {
         label: "Order Count",
-        data: allPartnersData?.map(partner => partner.count),
+        data: allPartnersData?.map((partner) => partner.count),
         backgroundColor: "rgba(43, 63, 229, 0.8)",
         borderColor: "rgba(43, 63, 229, 1)",
         borderWidth: 1,
       },
       {
         label: "Shipping Cost",
-        data: allPartnersData?.map(partner => partner.shippingCost),
+        data: allPartnersData?.map((partner) => partner.shippingCost),
         backgroundColor: "rgba(250, 192, 19, 0.8)",
         borderColor: "rgba(250, 192, 19, 1)",
         borderWidth: 1,
@@ -104,8 +126,8 @@ const shippingCostSums = order?.reduce((acc, curr) => {
         display: true,
         text: "Courier Partner Overview",
         font: {
-          size: 20
-        }
+          size: 20,
+        },
       },
     },
     scales: {
@@ -118,7 +140,7 @@ const shippingCostSums = order?.reduce((acc, curr) => {
   return (
     <div className="mainCharts">
       <div className="dataCard topDestinationsCard">
-        <TopDestinationsGraph /> 
+        <TopDestinationsGraph />
       </div>
 
       <div className="dataCard topDestinationsCard">
@@ -168,53 +190,52 @@ const shippingCostSums = order?.reduce((acc, curr) => {
       </div>
 
       <div className="dataCard categoryCard">
-      <Doughnut
-  data={{
-    labels: ["Shipped Orders", "COD Remmitance", "RTO"],  
-    datasets: [
-      {
-        label: "Order Status Overview",
-        data: [
-          ShippedOrdersAmt?.length || 0,  
-          remmitance?.length || 0, 
-          0, 
-        ],
-        backgroundColor: [
-          "rgba(43, 63, 229, 0.8)",
-          "rgba(250, 192, 19, 0.8)",
-          "rgba(253, 135, 135, 0.8)",
-        ],
-        borderColor: [
-          "rgba(43, 63, 229, 1.8)",
-          "rgba(250, 192, 19, 1.8)",
-          "rgba(253, 135, 135,1.8)",
-        ],
-      },
-    ],
-  }}
-  options={{
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      title: {
-        display: true,
-        text: "Business Overview: Shipped and In Transit Orders",
-        font: {
-          size: 20,
-        },
-      },
-      datalabels: {
-        display: true,
-        color: 'white',
-        font: {
-          weight: 'bold',
-        },
-        formatter: (value) => `${value}`,
-      },
-    },
-  }}
-/>
-
+        <Doughnut
+          data={{
+            labels: ["Shipped Orders", "COD Remmitance", "RTO"],
+            datasets: [
+              {
+                label: "Order Status Overview",
+                data: [
+                  ShippedOrdersAmt?.length || 0,
+                  remmitance?.length || 0,
+                  0,
+                ],
+                backgroundColor: [
+                  "rgba(43, 63, 229, 0.8)",
+                  "rgba(250, 192, 19, 0.8)",
+                  "rgba(253, 135, 135, 0.8)",
+                ],
+                borderColor: [
+                  "rgba(43, 63, 229, 1.8)",
+                  "rgba(250, 192, 19, 1.8)",
+                  "rgba(253, 135, 135,1.8)",
+                ],
+              },
+            ],
+          }}
+          options={{
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              title: {
+                display: true,
+                text: "Business Overview: Shipped and In Transit Orders",
+                font: {
+                  size: 20,
+                },
+              },
+              datalabels: {
+                display: true,
+                color: "white",
+                font: {
+                  weight: "bold",
+                },
+                formatter: (value) => `${value}`,
+              },
+            },
+          }}
+        />
       </div>
 
       <div className="dataCard revenueCard">

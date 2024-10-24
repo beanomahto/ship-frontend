@@ -237,7 +237,7 @@ const NewOrderComponent = ({ tab,dataSource, rowSelection, fetchOrders, loading,
       const gstRate = 0.018; 
       const codCostWithGst = codCost * (1 + gstRate);
       const forwardCostWithGst = forwardCost * (1 + gstRate);
-      const totalDebit = forwardCostWithGst;
+      const totalDebit = forwardCostWithGst + codCostWithGst;
   
       const sendWarehouse = Array.isArray(selectedWarehouseId) && selectedWarehouseId.length === 0
   ? warehouse?.warehouses?.[0]
@@ -261,7 +261,7 @@ console.log(sendWarehouse);
           orderId: selectedOrder._id,
         };
         const codWalletResponse = await axios.post(
-          'http://localhost:5000/api/transactions/decreaseAmount',
+          'https://backend.shiphere.in/api/transactions/decreaseAmount',
           codWalletRequestBody,
           {
             headers: {
@@ -283,7 +283,7 @@ console.log(sendWarehouse);
         orderId: selectedOrder._id,
       };
       const forwardWalletResponse = await axios.post(
-        'http://localhost:5000/api/transactions/decreaseAmount',
+        'https://backend.shiphere.in/api/transactions/decreaseAmount',
         forwardWalletRequestBody,
         {
           headers: {
@@ -298,7 +298,7 @@ console.log(sendWarehouse);
           shippingCost: totalDebit,
         };
         const orderResponse = await axios.put(
-          `http://localhost:5000/api/orders/updateOrderStatus/${selectedOrderId}`,
+          `https://backend.shiphere.in/api/orders/updateOrderStatus/${selectedOrderId}`,
           updateBody,
           {
             headers: {

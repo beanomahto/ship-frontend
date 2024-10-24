@@ -10,7 +10,7 @@ const useRateCalculator = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch("http://localhost:5000/api/orders/rateCalculator", {
+      const res = await fetch("https://backend.shiphere.in/api/orders/rateCalculator", {
         method: "POST",
         body: JSON.stringify({ deliveryPartner, pickupPincode, deliveryPincode, weight, length, breadth, height, paymentMethod }),
         headers: {

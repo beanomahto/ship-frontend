@@ -10,7 +10,7 @@ const useUpdateLabel = () => {
         setLoading(true);
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post(`http://localhost:5000/api/shipping/updateLabelinfo`, updateLebel, {
+            const response = await axios.post(`https://backend.shiphere.in/api/shipping/updateLabelinfo`, updateLebel, {
                 headers: {
                     Authorization: `${token}`,
                 },

@@ -33,7 +33,7 @@ const ActionRequired = ({ dataSource, rowSelection, fetchWeightDespensory }) => 
       try {
         await Promise.all(
           entriesToUpdate.map(async (entry) => {
-            await fetch(`http://localhost:5000/api/weightdiscrepancy/updateStatus/${entry._id}`, {
+            await fetch(`https://backend.shiphere.in/api/weightdiscrepancy/updateStatus/${entry._id}`, {
               method: 'PUT',
               headers: {
                 Authorization: localStorage.getItem('token'),

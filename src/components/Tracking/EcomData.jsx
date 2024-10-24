@@ -88,7 +88,7 @@ const EcomData = ({ trackingInfo }) => {
       
       console.log(updateBody);
       const response = await axios.put(
-        `http://localhost:5000/api/orders/updateOrerStatus/${orderId}`, 
+        `https://backend.shiphere.in/api/orders/updateOrerStatus/${orderId}`, 
         updateBody,
         {
           headers: {

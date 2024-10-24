@@ -21,7 +21,7 @@ const BulkDimensionUploadModal = ({ visible, onClose }) => {
         formData.append('file', file);
 
         try {
-            const response = await fetch('http://localhost:5000/api/orders/updateBulkOrderDimensions', {
+            const response = await fetch('https://backend.shiphere.in/api/orders/updateBulkOrderDimensions', {
                 method: 'POST',
                 body: formData, 
                     headers: {

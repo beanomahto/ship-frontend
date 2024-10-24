@@ -18,7 +18,7 @@ const slug = "shopify"
           try {
             const token = localStorage.getItem("token");
             const res = await fetch(
-              `http://localhost:5000/api/integration/getApi/${slug}`,
+              `https://backend.shiphere.in/api/integration/getApi/${slug}`,
               {
                 headers: {
                   Authorization: `${token}`,
