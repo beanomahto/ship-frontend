@@ -33,6 +33,7 @@ import Ekart from "../../utils/newlogo/ekartlogo.png";
 import Dtdc from "../../utils/newlogo/dtdc.png";
 import SF from "../../utils/newlogo/shadowfax.png";
 import InTranitComponent from "./InTransitComponent";
+import DeliveredComponent from "./DeliveredComponent";
 
 const partnerImages = {
   "Blue Dart": BD,
@@ -318,6 +319,9 @@ const Orders = () => {
   const inTransitOrdersAmt = dataSourceWithKeys?.filter(
     (order) => order.status === "InTransit"
   );
+  const deliveredOrdersAmt = dataSourceWithKeys?.filter(
+    (order) => order.status === "Delivered"
+  );
 
   const tabsData = [
     {
@@ -346,8 +350,8 @@ const Orders = () => {
     },
     {
       key: "tab5",
-      tab: `Delivered (${dataSourceWithKeys?.length})`,
-      Component: AllOrderComponent,
+      tab: `Delivered (${deliveredOrdersAmt?.length})`,
+      Component: DeliveredComponent,
       dataSource: dataSourceWithKeys,
     },
   ];
