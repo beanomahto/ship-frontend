@@ -237,7 +237,7 @@ const NewOrderComponent = ({ tab,dataSource, rowSelection, fetchOrders, loading,
       const gstRate = 0.018; 
       const codCostWithGst = codCost * (1 + gstRate);
       const forwardCostWithGst = forwardCost * (1 + gstRate);
-      const totalDebit = forwardCostWithGst;
+      const totalDebit = forwardCostWithGst + codCostWithGst;
   
       const sendWarehouse = Array.isArray(selectedWarehouseId) && selectedWarehouseId.length === 0
   ? warehouse?.warehouses?.[0]
@@ -329,11 +329,11 @@ console.log(sendWarehouse);
     }
   };
   
-  
-  
   console.log(deliveryCosts);
   
   const newOrders = dataSource?.filter(order => order.status === 'New' || order.status === 'Cancelled');
+  console.log(newOrders);
+  
   return (
     <>
       <Helmet>

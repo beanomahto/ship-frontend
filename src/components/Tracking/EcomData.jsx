@@ -17,10 +17,8 @@ import {
   CheckOutlined,
 } from "@ant-design/icons";
 import { useOrderContext } from "../../context/OrderContext";
-import axios from "axios"; // Import Axios
-import { useParams } from "react-router-dom";
 import imgg from "../../utils/trackk.jpg";
-
+import axios from "axios";
 const { Title } = Typography;
 const { Step } = Steps;
 
@@ -32,6 +30,7 @@ const EcomData = ({ trackingInfo }) => {
     "Pickup Assigned": 50,
     "Out for Pickup": 75,
     "Shipment Picked Up": 100,
+    "Shipment delivered": 100, // Add delivered status
   };
 
   const parseScans = (scans) => {
@@ -95,26 +94,25 @@ const EcomData = ({ trackingInfo }) => {
   };
 
   const shippedOrders = orders?.orders?.filter(
-    (order) => order.status === "Shipped"
+    (order) => order.status === "Shipped" || order.status === "InTransit"
   );
   const currentOrder = shippedOrders?.filter(
     (order) => order?.awb === trackingInfo?.awb_number
   );
   console.log(currentOrder);
 
-  const updateOrderStatus = async (orderId, shippingCost) => {
+  const updateOrderStatus = async (orderId, newStatus, shippingCost) => {
     console.log(orderId);
-    console.log(shippingCost);
 
     try {
       const updateBody = {
-        status: "InTransit",
+        status: newStatus, // Update status dynamically
         shippingCost: shippingCost,
       };
 
       console.log(updateBody);
       const response = await axios.put(
-        `http://localhost:5000/api/orders/updateOrderStatus/${orderId}`,
+        `https://backend.shiphere.in/api/orders/updateOrerStatus/${orderId}`,
         updateBody,
         {
           headers: {
@@ -124,7 +122,7 @@ const EcomData = ({ trackingInfo }) => {
         }
       );
       if (response.status === 201) {
-        message.success("Shipped successfully");
+        message.success(`Order marked as ${newStatus}`);
         fetchOrders();
       }
       console.log("Order status updated:", response.data);
@@ -141,7 +139,16 @@ const EcomData = ({ trackingInfo }) => {
     ) {
       const orderId = currentOrder[0]?._id;
       const shippingCost = currentOrder[0]?.shippingCost;
-      updateOrderStatus(orderId, shippingCost);
+      updateOrderStatus(orderId, "InTransit", shippingCost);
+    }
+
+    if (
+      latestStatus.includes("Shipment delivered") &&
+      currentOrder?.length > 0
+    ) {
+      const orderId = currentOrder[0]?._id;
+      const shippingCost = currentOrder[0]?.shippingCost;
+      updateOrderStatus(orderId, "Delivered", shippingCost);
     }
   }, [latestStatus, progressPercentage, currentOrder]);
 

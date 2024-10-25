@@ -400,14 +400,9 @@ const App = () => {
         <Route path="login" element={<Login1 />} />
         <Route path="resetpassword" element={<ResetPassword />} />
         <Route path="*" element={<NotFound />} />
-        <Route
-          path="tracking/:selectedOption/:shippingPartner/:awb"
-          element={
-            <ProtectedRoute>
+        <Route path="tracking/:selectedOption/:shippingPartner/:awb" element={
               <Tracking />
-            </ProtectedRoute>
-          }
-        />
+            }/>
       </Routes>
     </BrowserRouter>
   );

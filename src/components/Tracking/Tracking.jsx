@@ -49,7 +49,7 @@ const Tracking = () => {
           });
           setTrackingInfo(data);
           console.log(data);
-          
+          console.log(response)
           updateSteps(data);
         } else {
           setTrackingInfo(response.data.trackingInfo);

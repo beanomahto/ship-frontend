@@ -177,6 +177,7 @@ const ShipOrderComponent = ({ rowSelection, dataSource, fetchOrders, loading, ta
   ];
 
   const shippedOrders = dataSource?.filter(order => order?.status === 'Shipped');
+console.log(shippedOrders);
 
   return (
     <>

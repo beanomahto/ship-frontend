@@ -344,6 +344,12 @@ const Orders = () => {
       Component: AllOrderComponent,
       dataSource: dataSourceWithKeys,
     },
+    {
+      key: "tab5",
+      tab: `Delivered (${dataSourceWithKeys?.length})`,
+      Component: AllOrderComponent,
+      dataSource: dataSourceWithKeys,
+    },
   ];
 
   console.log(tabsData);

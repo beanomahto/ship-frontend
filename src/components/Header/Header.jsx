@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Button, Input, Popover, Select, Space } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Button, Input, Modal, Popover, Select, Space } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext';
 import useLogout from '../../hooks/useLogout';
@@ -26,7 +26,7 @@ console.log(balance);
   ];
 
   const {orders} = useOrderContext();
-const amount = parseFloat(authUser?.amount?.toFixed(2))
+// const amount = parseFloat(authUser?.amount?.toFixed(2))
 const onSearch = (awb) => {
   console.log(awb);
     
@@ -48,8 +48,6 @@ const onSearch = (awb) => {
     console.log('No matching order found');
   }
 };
-
-  https://backend.shiphere.in/api/${shippingPartner}/track/${awb}
   return (
     <div className={darktheme ? 'darkHeader' : 'main-header'}>
       <div className="header-container" >
