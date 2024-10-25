@@ -73,7 +73,9 @@ const EcomData = ({ trackingInfo }) => {
   }
 
   const latestScan = filteredScans?.[0];
+  const fullLatestScan = parsedScans?.[0];
   const latestStatus = latestScan?.status || trackingInfo?.status;
+  const fullLatestStatus = fullLatestScan?.status || trackingInfo?.status;
   const progressPercentage = statusToProgress[latestStatus] || 0;
 
   const getStepIcon = (status) => {
@@ -94,7 +96,10 @@ const EcomData = ({ trackingInfo }) => {
   };
 
   const shippedOrders = orders?.orders?.filter(
-    (order) => order.status === "Shipped" || order.status === "InTransit"
+    (order) =>
+      order.status === "Shipped" ||
+      order.status === "InTransit" ||
+      order.status === "Delivered"
   );
   const currentOrder = shippedOrders?.filter(
     (order) => order?.awb === trackingInfo?.awb_number
@@ -112,7 +117,7 @@ const EcomData = ({ trackingInfo }) => {
 
       console.log(updateBody);
       const response = await axios.put(
-        `https://backend.shiphere.in/api/orders/updateOrerStatus/${orderId}`,
+        `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
         updateBody,
         {
           headers: {
@@ -130,27 +135,31 @@ const EcomData = ({ trackingInfo }) => {
       console.error("Error updating order status:", error);
     }
   };
-
   useEffect(() => {
-    if (
-      latestStatus === "Shipment Picked Up" &&
-      progressPercentage === 100 &&
-      currentOrder?.length > 0
-    ) {
+    console.log(fullLatestStatus.includes("Shipment delivered"));
+    console.log(fullLatestStatus);
+    if (currentOrder?.length > 0) {
       const orderId = currentOrder[0]?._id;
       const shippingCost = currentOrder[0]?.shippingCost;
-      updateOrderStatus(orderId, "InTransit", shippingCost);
-    }
 
-    if (
-      latestStatus.includes("Shipment delivered") &&
-      currentOrder?.length > 0
-    ) {
-      const orderId = currentOrder[0]?._id;
-      const shippingCost = currentOrder[0]?.shippingCost;
-      updateOrderStatus(orderId, "Delivered", shippingCost);
+      // Only update to 'InTransit' if status is 'Shipment Picked Up' and progress is 100
+      if (
+        fullLatestStatus === "Shipment Picked Up" &&
+        progressPercentage === 100 &&
+        currentOrder[0]?.status !== "InTransit"
+      ) {
+        updateOrderStatus(orderId, "InTransit", shippingCost);
+      }
+
+      // Only update to 'Delivered' if status includes 'Shipment delivered' and order is not already marked as 'Delivered'
+      if (
+        fullLatestStatus.includes("Shipment delivered") &&
+        currentOrder[0]?.status !== "Delivered"
+      ) {
+        updateOrderStatus(orderId, "Delivered", shippingCost);
+      }
     }
-  }, [latestStatus, progressPercentage, currentOrder]);
+  }, [fullLatestStatus, progressPercentage, currentOrder]);
 
   return (
     <div>
