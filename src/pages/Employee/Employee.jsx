@@ -121,7 +121,7 @@ const Employee = () => {
 
   const showDeleteConfirm = (id) => {
     confirm({
-      title: "Are you sure you want to delete this warehouse?",
+      title: "Are you sure you want to delete this Employee?",
       content: "This action cannot be undone.",
       okText: "Yes",
       okType: "danger",
