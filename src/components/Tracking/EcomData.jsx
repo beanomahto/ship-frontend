@@ -17,7 +17,7 @@ import {
   CheckOutlined,
 } from "@ant-design/icons";
 import { useOrderContext } from "../../context/OrderContext";
-import imgg from "../../utils/trackk.jpg";
+import img1 from "../../utils/trackk.jpg";
 import axios from "axios";
 const { Title } = Typography;
 const { Step } = Steps;
@@ -192,7 +192,7 @@ const EcomData = ({ trackingInfo }) => {
             </Descriptions>
 
             <img
-              src={imgg}
+              src={img1}
               alt="Shipment Image"
               style={{
                 marginTop: "20px",
