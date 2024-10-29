@@ -36,7 +36,7 @@ const ActionRequiredTab = ({ rowSelection, selectedRowKeys, dataSource,selectedO
       };
 console.log(payload);
 
-      await axios.post('http://localhost:5000/api/ecomExpress/createNdr', payload, {
+      await axios.post('https://backend.shiphere.in/api/ecomExpress/createNdr', payload, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
@@ -45,7 +45,7 @@ console.log(payload);
       message.success('Action successfully applied to selected orders.');
     } catch (error) {
       console.error('Error applying action:', error);
-      message.error('Failed to apply action to selected orders.');
+      message.error(error.response.data.error[0].error);
     } finally {
       setLoading(false);
       setIsDatePickerOpen(false);
