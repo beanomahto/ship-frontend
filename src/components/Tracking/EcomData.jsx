@@ -3,7 +3,7 @@ import { Card, Descriptions, Row, Col, Typography, Steps, Progress, message } fr
 import { CheckCircleOutlined, ClockCircleOutlined, SyncOutlined, CloseCircleOutlined, CheckOutlined } from '@ant-design/icons';
 import { useOrderContext } from '../../context/OrderContext';
 import axios from 'axios';
-// import img1
+import img1 from '../../utils/trackk.jpg'
 
 const { Title } = Typography;
 const { Step } = Steps;
@@ -170,7 +170,7 @@ const EcomData = ({ trackingInfo }) => {
               </Descriptions.Item>
             </Descriptions>
 
-            {/* <img
+            <img
               src={img1}
               alt="Shipment Image"
               style={{
@@ -178,7 +178,7 @@ const EcomData = ({ trackingInfo }) => {
                 width: "100%",
                 borderRadius: "10px",
               }}
-            /> */}
+            />
           </Card>
         </Col>
 
