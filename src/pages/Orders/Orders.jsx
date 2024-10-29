@@ -287,8 +287,7 @@ const Orders = () => {
     XLSX.writeFile(workbook, "Orders.xlsx");
   };
 
-  const dataSourceWithKeys =
-    orders?.orders?.map((order) => ({
+  const dataSourceWithKeys = orders?.orders?.map((order) => ({
       ...order,
       key: order._id,
       order: order,

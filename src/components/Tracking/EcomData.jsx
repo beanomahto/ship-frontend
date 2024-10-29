@@ -1,20 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Card, Descriptions, Row, Col, Typography, Steps, Progress, message } from 'antd';
 import { CheckCircleOutlined, ClockCircleOutlined, SyncOutlined, CloseCircleOutlined, CheckOutlined } from '@ant-design/icons';
 import { useOrderContext } from '../../context/OrderContext';
 import axios from 'axios';
+
 const { Title } = Typography;
 const { Step } = Steps;
 
 const EcomData = ({ trackingInfo }) => {
   const { orders, fetchOrders } = useOrderContext();
+  const lastUndeliveredReason = useRef(null);
 
   const statusToProgress = {
     'Soft data uploaded': 25,
     'Pickup Assigned': 50,
     'Out for Pickup': 75,
     'Shipment Picked Up': 100,
-    'Shipment delivered': 100, // Add delivered status
+    'Shipment delivered': 100,
   };
 
   const parseScans = (scans) => {
@@ -38,10 +40,8 @@ const EcomData = ({ trackingInfo }) => {
   };
 
   const parsedScans = parseScans(trackingInfo.scans);
-  console.log(parsedScans);
-
   const filteredScans = [];
-  
+
   for (let i = parsedScans.length - 1; i >= 0; i--) {
     const scan = parsedScans[i];
     filteredScans.unshift(scan); 
@@ -51,7 +51,9 @@ const EcomData = ({ trackingInfo }) => {
   }
 
   const latestScan = filteredScans?.[0];
-  const fullLatestScan = parsedScans?.[0]
+  const fullLatestScan = parsedScans?.[0];
+  const undeliveredScan = parsedScans?.filter((status) => status?.status === 'Shipment un');
+  
   const latestStatus = latestScan?.status || trackingInfo?.status;
   const fullLatestStatus = fullLatestScan?.status || trackingInfo?.status;
   const progressPercentage = statusToProgress[latestStatus] || 0;
@@ -73,24 +75,19 @@ const EcomData = ({ trackingInfo }) => {
     }
   };
 
-  const shippedOrders = orders?.orders?.filter(order => order.status === 'Shipped' || order.status === 'InTransit'|| order.status === 'Delivered');
-  const currentOrder = shippedOrders?.filter(
-    (order) => order?.awb === trackingInfo?.awb_number
-  );
-  console.log(currentOrder);
+  const shippedOrders = orders?.orders?.filter(order => order.status === 'Shipped' || order.status === 'InTransit'|| order.status === 'Delivered' || order.status === 'UnDelivered');
+  const currentOrder = shippedOrders?.filter((order) => order?.awb === trackingInfo?.awb_number);
 
-  const updateOrderStatus = async (orderId, newStatus, shippingCost) => {
-    console.log(orderId);
-    
+  const updateOrderStatus = async (orderId, newStatus, shippingCost, reason = null) => {
     try {
       const updateBody = {
-        status: newStatus, // Update status dynamically
+        status: newStatus,
         shippingCost: shippingCost,
+        ...(newStatus === "UnDelivered" && { reason }), 
       };
-      
-      console.log(updateBody);
+  
       const response = await axios.put(
-        `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`, 
+        `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
         updateBody,
         {
           headers: {
@@ -99,34 +96,42 @@ const EcomData = ({ trackingInfo }) => {
           },
         }
       );
+  
       if (response.status === 201) {
         message.success(`Order marked as ${newStatus}`);
         fetchOrders();
       }
-      console.log('Order status updated:', response.data);
     } catch (error) {
       console.error('Error updating order status:', error);
     }
   };
+
   useEffect(() => {
-    console.log(fullLatestStatus.includes('Shipment delivered'))
-    console.log(fullLatestStatus)
     if (currentOrder?.length > 0) {
-      const orderId = currentOrder[0]?._id; 
+      const orderId = currentOrder[0]?._id;
       const shippingCost = currentOrder[0]?.shippingCost;
-      
-      // Only update to 'InTransit' if status is 'Shipment Picked Up' and progress is 100
+      const reason = undeliveredScan[0]?.city?.split('\n')[0]; 
+  
+      // Update to "InTransit"
       if (fullLatestStatus === 'Shipment Picked Up' && progressPercentage === 100 && currentOrder[0]?.status !== 'InTransit') {
         updateOrderStatus(orderId, 'InTransit', shippingCost);
       }
   
-      // Only update to 'Delivered' if status includes 'Shipment delivered' and order is not already marked as 'Delivered'
+      // Update to "Delivered"
       if (fullLatestStatus.includes('Shipment delivered') && currentOrder[0]?.status !== 'Delivered') {
         updateOrderStatus(orderId, 'Delivered', shippingCost);
       }
+  
+      // Update to "Undelivered" if the reason changes or if the status is not "UnDelivered"
+      if (
+        undeliveredScan?.length !== 0 &&
+        (currentOrder[0]?.status !== 'UnDelivered' || lastUndeliveredReason.current !== reason)
+      ) {
+        updateOrderStatus(orderId, 'UnDelivered', shippingCost, reason);
+        lastUndeliveredReason.current = reason;
+      }
     }
   }, [fullLatestStatus, progressPercentage, currentOrder]);
-  
 
   return (
     <div>

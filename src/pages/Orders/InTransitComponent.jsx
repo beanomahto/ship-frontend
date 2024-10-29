@@ -176,7 +176,7 @@ const InTranitComponent = ({ rowSelection, dataSource, fetchOrders, loading, tab
     }] : []),
   ];
 
-  const shippedOrders = dataSource?.filter(order => order?.status === 'InTransit');
+  const shippedOrders = dataSource?.filter(order => order?.status === 'InTransit' || order?.status === 'UnDelivered');
 
   return (
     <>
