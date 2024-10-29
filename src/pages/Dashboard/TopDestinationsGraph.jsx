@@ -202,13 +202,23 @@ const TopDestinationsGraph = () => {
     scales: {
       x: {
         beginAtZero: true,
+        max: total, // Setting x-axis max value to the total number of orders
+        title: {
+          display: true,
+          text: `Total Orders: ${total}`, // Displaying total orders on the x-axis
+          font: {
+            size: 14,
+            weight: "bold",
+          },
+          color: "#000",
+        },
       },
     },
     plugins: {
       datalabels: {
         formatter: (value, context) => {
           const percentage = total > 0 ? ((value / total) * 100).toFixed(2) : 0;
-          return `${value} (${percentage}%)`;
+          return `${percentage}%`; // Display percentage only on bars
         },
         color: "#000",
         anchor: "end",
@@ -220,12 +230,18 @@ const TopDestinationsGraph = () => {
             const value = context.raw;
             const percentage =
               total > 0 ? ((value / total) * 100).toFixed(2) : 0;
-            return `${context.label}: ${value} (${percentage}%)`;
+            return `${context.label}: ${value} (${percentage}%)`; // Show value and percentage in tooltip
           },
         },
       },
       legend: {
         display: false,
+      },
+    },
+    elements: {
+      bar: {
+        barThickness: 25, // Adjust this value to increase/decrease the bar thickness
+        maxBarThickness: 30, // Maximum thickness for bars
       },
     },
   };

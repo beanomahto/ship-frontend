@@ -189,13 +189,23 @@ const ShipmentStatusGraph = () => {
     scales: {
       x: {
         beginAtZero: true,
+        max: total, // Set x-axis max value to the total number of orders
+        title: {
+          display: true,
+          text: `Total Orders: ${total}`, // Display total orders on the x-axis
+          font: {
+            size: 14,
+            weight: "bold",
+          },
+          color: "#000",
+        },
       },
     },
     plugins: {
       datalabels: {
         formatter: (value, context) => {
           const percentage = total > 0 ? ((value / total) * 100).toFixed(2) : 0;
-          return `${value} (${percentage}%)`;
+          return `${percentage}%`; // Show percentage on the bars
         },
         color: "#000",
         anchor: "end",
@@ -207,12 +217,18 @@ const ShipmentStatusGraph = () => {
             const value = context.raw;
             const percentage =
               total > 0 ? ((value / total) * 100).toFixed(2) : 0;
-            return `${context.label}: ${value} (${percentage}%)`;
+            return `${context.label}: ${value} (${percentage}%)`; // Show count and percentage in tooltip
           },
         },
       },
       legend: {
         display: false,
+      },
+    },
+    elements: {
+      bar: {
+        barThickness: 25, // Adjust bar thickness as needed
+        maxBarThickness: 30,
       },
     },
   };
