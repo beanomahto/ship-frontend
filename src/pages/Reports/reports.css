@@ -25,6 +25,12 @@
   }
   
   .ndr-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4rem;
+    background-color: #ffffff;
+    height: 23rem;
   }
   @media(max-width: 600px) {
     .reportmaincontainer {
