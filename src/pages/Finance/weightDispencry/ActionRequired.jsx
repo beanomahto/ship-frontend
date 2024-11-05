@@ -1,30 +1,96 @@
-import React, { useState, useEffect } from 'react';
-import { Table, Button, notification } from 'antd';
-import UploadDiscrepancyImagesModal from './UploadDiscrepancyImagesModal';
-import { useAuthContext } from '../../../context/AuthContext';
-import moment from 'moment';
+import React, { useState, useEffect } from "react";
+import { Table, Button, notification } from "antd";
+import UploadDiscrepancyImagesModal from "./UploadDiscrepancyImagesModal";
+import { useAuthContext } from "../../../context/AuthContext";
+import moment from "moment";
 
-const ActionRequired = ({ dataSource, rowSelection, fetchWeightDespensory }) => {
+const ActionRequired = ({
+  dataSource,
+  rowSelection,
+  fetchWeightDespensory,
+}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDiscrepancyId, setSelectedDiscrepancyId] = useState(null);
   const [selectedProductName, setSelectedProductName] = useState(null);
   const { authUser } = useAuthContext();
-  const actionRequired = dataSource?.filter((data) => data.status === 'action required');
+  const actionRequired = dataSource?.filter(
+    (data) => data.status === "action required"
+  );
+  // useEffect(() => {
+  //   const updateStatusToClosed = async () => {
+  //     const entriesToUpdate = [];
+
+  //     actionRequired.forEach((newEntry) => {
+  //       const duplicateEntry = actionRequired.find(
+  //         (entry) =>
+  //           entry.awbNumber === newEntry.awbNumber &&
+  //           entry.orderId === newEntry.orderId &&
+  //           entry._id !== newEntry._id &&
+  //           entry.status !== "closed"
+  //       );
+
+  //       if (duplicateEntry) {
+  //         entriesToUpdate.push(duplicateEntry);
+  //       }
+  //     });
+
+  //     if (entriesToUpdate.length === 0) return;
+
+  //     try {
+  //       await Promise.all(
+  //         entriesToUpdate.map(async (entry) => {
+  //           await fetch(
+  //             `https://backend.shiphere.in/api/weightdiscrepancy/updateStatus/${entry._id}`,
+  //             {
+  //               method: "PUT",
+  //               headers: {
+  //                 Authorization: localStorage.getItem("token"),
+  //                 "Content-Type": "application/json",
+  //               },
+  //               body: JSON.stringify({ status: "closed" }),
+  //             }
+  //           );
+  //         })
+  //       );
+
+  //       // Notify success
+  //       notification.success({
+  //         message: "Status Updated",
+  //         description:
+  //           "The status of relevant entries has been updated to Closed.",
+  //       });
+  //     } catch (error) {
+  //       console.error("Error updating status:", error);
+  //       notification.error({
+  //         message: "Update Failed",
+  //         description: "There was an error updating the status.",
+  //       });
+  //     }
+  //   };
+
+  //   updateStatusToClosed();
+  // }, [dataSource]);
+
   useEffect(() => {
     const updateStatusToClosed = async () => {
       const entriesToUpdate = [];
 
-      actionRequired.forEach(newEntry => {
+      actionRequired.forEach((newEntry) => {
         const duplicateEntry = actionRequired.find(
-          entry => 
-            entry.awbNumber === newEntry.awbNumber && 
+          (entry) =>
+            entry.awbNumber === newEntry.awbNumber &&
             entry.orderId === newEntry.orderId &&
-            entry._id !== newEntry._id && 
-            entry.status !== 'closed'
+            entry._id !== newEntry._id &&
+            entry.status !== "closed"
         );
 
-        if (duplicateEntry) {
-          entriesToUpdate.push(duplicateEntry);
+        // Calculate if the entry is older than 7 days
+        const isOlderThan7Days =
+          moment().diff(moment(newEntry.createdAt), "days") > 7;
+
+        // Add the entry to entriesToUpdate if it has a duplicate or is older than 7 days
+        if (duplicateEntry || isOlderThan7Days) {
+          entriesToUpdate.push(newEntry);
         }
       });
 
@@ -33,28 +99,31 @@ const ActionRequired = ({ dataSource, rowSelection, fetchWeightDespensory }) => 
       try {
         await Promise.all(
           entriesToUpdate.map(async (entry) => {
-            await fetch(`https://backend.shiphere.in/api/weightdiscrepancy/updateStatus/${entry._id}`, {
-              method: 'PUT',
-              headers: {
-                Authorization: localStorage.getItem('token'),
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ status: 'closed' }),
-            });
+            await fetch(
+              `https://backend.shiphere.in/api/weightdiscrepancy/updateStatus/${entry._id}`,
+              {
+                method: "PUT",
+                headers: {
+                  Authorization: localStorage.getItem("token"),
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ status: "closed" }),
+              }
+            );
           })
         );
 
         // Notify success
         notification.success({
-          message: 'Status Updated',
-          description: 'The status of relevant entries has been updated to Closed.',
+          message: "Status Updated",
+          description:
+            "The status of relevant entries has been updated to Closed.",
         });
-
       } catch (error) {
-        console.error('Error updating status:', error);
+        console.error("Error updating status:", error);
         notification.error({
-          message: 'Update Failed',
-          description: 'There was an error updating the status.',
+          message: "Update Failed",
+          description: "There was an error updating the status.",
         });
       }
     };
@@ -64,51 +133,51 @@ const ActionRequired = ({ dataSource, rowSelection, fetchWeightDespensory }) => 
 
   const columns = [
     {
-      title: 'Weight Applied Date',
-      dataIndex: 'weightAppliedDate',
-      render: (text, data) => moment(data?.createdAt).format('DD-MM-YYYY'),
+      title: "Weight Applied Date",
+      dataIndex: "weightAppliedDate",
+      render: (text, data) => moment(data?.createdAt).format("DD-MM-YYYY"),
     },
     {
-      title: 'Entered Weight',
-      dataIndex: 'enteredWeight',
+      title: "Entered Weight",
+      dataIndex: "enteredWeight",
     },
     {
-      title: 'Entered Dimension',
-      dataIndex: 'enteredDimension',
+      title: "Entered Dimension",
+      dataIndex: "enteredDimension",
     },
     {
-      title: 'Order Id',
-      dataIndex: 'orderId',
+      title: "Order Id",
+      dataIndex: "orderId",
     },
     {
-      title: 'AWB Number',
-      dataIndex: 'awbNumber',
+      title: "AWB Number",
+      dataIndex: "awbNumber",
     },
     {
-      title: 'Product Name',
-      dataIndex: 'productName',
+      title: "Product Name",
+      dataIndex: "productName",
     },
     {
-      title: 'Applied Weight',
-      dataIndex: 'appliedWeight',
+      title: "Applied Weight",
+      dataIndex: "appliedWeight",
     },
     {
-      title: 'Weight Charges',
-      dataIndex: 'weightCharges',
+      title: "Weight Charges",
+      dataIndex: "weightCharges",
     },
     {
-      title: 'Settled Charges',
-      dataIndex: 'settledCharges',
+      title: "Settled Charges",
+      dataIndex: "settledCharges",
     },
     {
-      title: 'Remarks',
-      dataIndex: 'remarks',
+      title: "Remarks",
+      dataIndex: "remarks",
     },
-    ...(authUser?.role === 'company'
+    ...(authUser?.role === "company"
       ? [
           {
-            title: 'Action',
-            dataIndex: 'adminData',
+            title: "Action",
+            dataIndex: "adminData",
             render: (_, record) => (
               <Button
                 type="primary"
@@ -124,11 +193,11 @@ const ActionRequired = ({ dataSource, rowSelection, fetchWeightDespensory }) => 
           },
         ]
       : []),
-    ...(authUser?.role === 'admin'
+    ...(authUser?.role === "admin"
       ? [
           {
-            title: 'Sellers',
-            dataIndex: 'seller',
+            title: "Sellers",
+            dataIndex: "seller",
             render: (_, record) => <span>{record?.seller?.email}</span>,
           },
         ]
@@ -139,7 +208,7 @@ const ActionRequired = ({ dataSource, rowSelection, fetchWeightDespensory }) => 
     <>
       <Table
         className="table"
-        scroll={{ x: 1000,y: 300 }}
+        scroll={{ x: 1000, y: 300 }}
         dataSource={actionRequired}
         columns={columns}
         rowKey="_id"
