@@ -103,7 +103,7 @@ const LineChart = ({ dataSource }) => {
 
   return (
     <div className="chart">
-      <Line data={data} options={options} />
+      <Line data={data} options={options} height={"300px"} />
     </div>
   );
 };
