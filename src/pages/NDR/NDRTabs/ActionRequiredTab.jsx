@@ -31,7 +31,7 @@ const ActionRequiredTab = ({ rowSelection, selectedRowKeys, dataSource,selectedO
     try {
       const payload = {
         orders: selectedOrderData,
-        comment: action === 'Re-attempt' ? `${selectedDate.format('DD-MM-YYYY')}` : action,
+        comment: action === 'Re-attempt' ? `${selectedDate.format('DD/MM/YYYY')}` : action,
         instruction : action === 'RTO' ? 'RTO' : 'RAD'
       };
 console.log(payload);
@@ -45,7 +45,7 @@ console.log(payload);
       message.success('Action successfully applied to selected orders.');
     } catch (error) {
       console.error('Error applying action:', error);
-      message.error(error.response.data.error[0].error);
+      message.error(error?.response?.data?.error[0]?.error);
     } finally {
       setLoading(false);
       setIsDatePickerOpen(false);

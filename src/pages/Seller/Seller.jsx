@@ -3,12 +3,18 @@ import { Table, Tag, Button, Input, Space } from 'antd';
 import { Link } from 'react-router-dom';
 import { SearchOutlined } from '@ant-design/icons';
 import { Helmet } from 'react-helmet';
+import { AiOutlineInteraction } from "react-icons/ai";
+import TagEmployee from './TagEmployee/TagEmployee';
 
 const Seller = () => {
   const [users, setUsers] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
   console.log(users);
+
+  const showModal = () => setModalVisible(true);
+  const closeModal = () => setModalVisible(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -141,11 +147,16 @@ console.log(users);
     {
       title: 'Early COD',
       dataIndex: 'earlyCod',
-      // render: (_, record) => (
-      //   <Button onClick={() => handleGetKYC(record._id)}>
-      //     <Link to={`/seller/getkyc/${record._id}`}>Get KYC</Link>
-      //   </Button>
-      // ),
+    },
+    {
+      title: "Tag",
+      key: "action",
+      render: (_, record) => (
+        <AiOutlineInteraction
+          onClick={showModal}
+          style={{ cursor: "pointer", fontSize: "24px", color: "#1890ff" }}
+        />
+      ),
     },
   ];
 
@@ -160,6 +171,7 @@ console.log(users);
         <meta name='keyword' content={""} />
         <title>Sellers</title>
       </Helmet>
+      <TagEmployee visible={modalVisible} onClose={closeModal}/>
       <Table 
       className="custom-table" 
       dataSource={users} 

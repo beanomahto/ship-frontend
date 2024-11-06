@@ -50,6 +50,10 @@ const ActiveWarehouses = () => {
       dataIndex: 'warehouseName',
     },
     {
+      title: 'Id ',
+      dataIndex: 'smartshipHubId',
+    },
+    {
       title: 'Contact Details',
       dataIndex: 'contactDetails',
       render: (text, warehouse) => (
