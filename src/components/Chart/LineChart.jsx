@@ -1,5 +1,5 @@
-import React from 'react';
-import { Line } from 'react-chartjs-2';
+import React from "react";
+import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   LineElement,
@@ -8,8 +8,8 @@ import {
   PointElement,
   Tooltip,
   Legend,
-  Title
-} from 'chart.js';
+  Title,
+} from "chart.js";
 
 ChartJS.register(
   LineElement,
@@ -21,21 +21,37 @@ ChartJS.register(
   Title
 );
 
-const LineChart = () => {
+const LineChart = ({ dataSource }) => {
+  // Filter dataSource to get only 'UnDelivered' orders
+  const unDeliveredOrders = dataSource.filter(
+    (order) => order.status === "UnDelivered"
+  );
+
+  // Extract relevant data for the chart and format date
+  const labels = unDeliveredOrders.map((order) =>
+    new Date(order.createdAt).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+    })
+  ); // This will display as "Oct 29", "Nov 1", etc.
+
+  const dataValues = unDeliveredOrders.map((order) => order.productPrice); // Adjust according to your data
 
   const data = {
-    labels: ['May 12', 'May 13', 'May 14', 'May 15', 'May 16', 'May 17'],
-    datasets: [{
-      label: 'Sample Data',
-      data: [8, 7, 6, 5, 4, 3, 2, 1],
-      borderColor: 'blue',
-      backgroundColor: 'rgba(0, 0, 255, 0.1)',
-      fill: true,
-      pointBackgroundColor: 'blue',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'blue',
-    }]
+    labels,
+    datasets: [
+      {
+        label: "Price",
+        data: dataValues,
+        borderColor: "blue",
+        backgroundColor: "rgba(0, 0, 255, 0.1)",
+        fill: true,
+        pointBackgroundColor: "blue",
+        pointBorderColor: "#fff",
+        pointHoverBackgroundColor: "#fff",
+        pointHoverBorderColor: "blue",
+      },
+    ],
   };
 
   const options = {
@@ -44,50 +60,50 @@ const LineChart = () => {
     plugins: {
       title: {
         display: true,
-        text: 'Sample Line Chart',
+        text: "UnDelivered Orders Chart",
         font: {
-          size: 20
-        }
+          size: 20,
+        },
       },
       legend: {
         display: true,
-        position: 'top'
+        position: "top",
       },
       tooltip: {
         enabled: true,
-        mode: 'index',
-        intersect: false
-      }
+        mode: "index",
+        intersect: false,
+      },
     },
     scales: {
       x: {
         title: {
           display: true,
-          text: 'Date'
+          text: "Date",
         },
         grid: {
-          display: false
-        }
+          display: false,
+        },
       },
       y: {
         title: {
           display: true,
-          text: 'Value'
+          text: "Price",
         },
         grid: {
           display: true,
-          color: 'rgba(0, 0, 0, 0.1)'
+          color: "rgba(0, 0, 0, 0.1)",
         },
         ticks: {
-          beginAtZero: true
-        }
-      }
-    }
+          beginAtZero: true,
+        },
+      },
+    },
   };
 
   return (
-    <div className='chart'>
-      <Line data={data} options={options} />
+    <div className="chart">
+      <Line data={data} options={options} height={"300px"} />
     </div>
   );
 };
