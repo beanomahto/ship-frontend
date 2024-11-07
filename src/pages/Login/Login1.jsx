@@ -6,6 +6,7 @@ import { useOrderContext } from "../../context/OrderContext";
 import ForgotPasswordModal from "./ForgotPasswordModal";
 import imgg from "../../utils/new.png";
 import { MdCheckCircle } from "react-icons/md";
+import ShippingSteps from "./loginAnimation/ShippingSteps";
 
 const Login1 = () => {
   const navigate = useNavigate();
@@ -60,7 +61,8 @@ const Login1 = () => {
     <>
       <div className="section">
         <div className="imgBx">
-          <img src={imgg} alt="Background" />
+          <ShippingSteps />
+          {/* <img src={imgg} alt="Background" /> */}
         </div>
         <div className="contentBx">
           <div className="formBx">
