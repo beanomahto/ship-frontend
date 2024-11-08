@@ -48,7 +48,7 @@ const partnerImages = {
 
 const Orders = () => {
   const { shipNowCost } = useShipNowCost();
-  const { warehouse } = useWarehouseContext();
+  const { warehouse, fetchWarehouse } = useWarehouseContext();
   const { cancelOrder } = useCancelShipment();
   const { shipOrder, error } = useCreateShipment();
   const { orders, setOrders, fetchOrders } = useOrderContext();
@@ -1013,6 +1013,7 @@ const Orders = () => {
           <TabPane key={tab.key} tab={tab.tab}>
             {tab.Component ? (
               <tab.Component
+              fetchWarehouse={fetchWarehouse}
                 tab={tab}
                 dataSource={tab.dataSource}
                 // rowSelection={tab.key === 'tab1' ? rowSelection : null}
