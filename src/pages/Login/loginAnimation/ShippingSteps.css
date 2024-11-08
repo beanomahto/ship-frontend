@@ -1,0 +1,127 @@
+.steps-container {
+  text-align: center;
+  margin: 40px auto;
+  width: 100%;
+  max-width: 600px;
+}
+
+.circle-steps {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  width: 300px;
+  border: 2px dashed #ccc;
+  border-radius: 50%;
+}
+
+.rotating-indicator {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-top: 4px solid #9bc8ed;
+  animation: rotate 8s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.step-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+
+}
+.section .imgBx img{
+  width: 75%;
+  border-radius: 50%;
+
+}
+
+.step {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: opacity 0.5s, transform 0.5s;
+}
+
+.step-circle {
+  width: 50px;
+  height: 50px;
+  background-color: #1758b3;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.step.step-1 {
+  top: -25px;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.step.step-2 {
+  top: 50%;
+  right: -25px;
+  transform: translate(0, -50%);
+}
+
+.step.step-3 {
+  bottom: -25px;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.step.step-4 {
+  top: 50%;
+  left: -25px;
+  transform: translate(0, -50%);
+}
+
+.step-label {
+  font-size: 0.9em;
+  color: black;
+}
+
+.step.step-1 .step-label {
+  position: absolute;
+  top: -10px;
+  transform: translateY(-100%);
+}
+
+.step.step-2 .step-label {
+  position: absolute;
+  right: -10px;
+  transform: translateX(100%);
+}
+
+.step.step-3 .step-label {
+  position: absolute;
+  bottom: -10px;
+  transform: translateY(100%);
+}
+
+.step.step-4 .step-label {
+  position: absolute;
+  left: -10px;
+  transform: translateX(-100%);
+}
