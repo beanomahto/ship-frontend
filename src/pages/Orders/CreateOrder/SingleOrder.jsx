@@ -262,9 +262,9 @@ console.log(inputs)
                     </div>
                    <div style={{display:'flex'}} >
                    <button class="submit">Submit</button> 
-                    <button class="submit" onClick={generateSampleData}>
+                    {/* <button class="submit" onClick={generateSampleData}>
                         Generate Sample
-                    </button>
+                    </button> */}
                    </div>
                 </form>
             </div>
