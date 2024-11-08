@@ -21,7 +21,7 @@ const UploadCodRemittance = ({ visible, onClose }) => {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:5000/api/remittance/uploadremittance', {
+            const response = await fetch('https://backend.shiphere.in/api/remittance/uploadremittance', {
                 method: 'POST',
                 body: formData,
                 headers: {

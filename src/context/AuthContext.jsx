@@ -14,7 +14,7 @@
 //   const fetchBalance = async () => {
 //     try {
 //       const response = await fetch(
-//         "http://localhost:5000/api/auth/get-balance",
+//         "https://backend.shiphere.in/api/auth/get-balance",
 //         {
 //           headers: {
 //             Authorization: localStorage.getItem("token"),
@@ -60,7 +60,7 @@ export const AuthContextProvider = ({ children }) => {
   const fetchBalance = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/auth/get-balance",
+        "https://backend.shiphere.in/api/auth/get-balance",
         {
           headers: {
             Authorization: localStorage.getItem("token"),

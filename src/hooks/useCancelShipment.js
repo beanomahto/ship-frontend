@@ -38,18 +38,18 @@ console.log(deliveryPartnerName);
 
         switch (deliveryPartnerName) {
           case 'Ecom Express':
-            url = 'http://localhost:5000/api/ecomExpress/cancleShipment';
+            url = 'https://backend.shiphere.in/api/ecomExpress/cancleShipment';
             log = 'Ecomm hit';
             break;
           case 'Xpressbees':
-            url = 'http://localhost:5000/api/xpressbees/cancel';
+            url = 'https://backend.shiphere.in/api/xpressbees/cancel';
             log = 'Xpressbees hit';
             break;
           case 'Blue Dart':
           case 'Ekart':
           case 'DTDC':
           case 'Shadowfax':
-            url = 'http://localhost:5000/api/smartship/cancelorder';
+            url = 'https://backend.shiphere.in/api/smartship/cancelorder';
             log = 'Shiphere hit';
             break;
           default:

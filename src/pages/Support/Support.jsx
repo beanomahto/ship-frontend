@@ -61,7 +61,7 @@ const Support = () => {
         console.log(data);
 
         try {
-            const response = await fetch('http://localhost:5000/api/complaint/registercomplaint', {
+            const response = await fetch('https://backend.shiphere.in/api/complaint/registercomplaint', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

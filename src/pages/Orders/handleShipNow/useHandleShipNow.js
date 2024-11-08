@@ -72,7 +72,7 @@ const useShipNow = (fetchOrders, setOrders, closeModalShipNow) => {
         const forwardChargeWithGST = forwardCharge * (1 + gstRate);
         const codChargeWithGST = codCharge * (1 + gstRate);
   
-        await fetch(`http://localhost:5000/api/orders/updateOrderStatus/${orderId}`, {
+        await fetch(`https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ const useShipNow = (fetchOrders, setOrders, closeModalShipNow) => {
         for (const walletRequest of walletRequests) {
           console.log(walletRequest);
   
-          await fetch(`http://localhost:5000/api/transactions/decreaseAmount`, {
+          await fetch(`https://backend.shiphere.in/api/transactions/decreaseAmount`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

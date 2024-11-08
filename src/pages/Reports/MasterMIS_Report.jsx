@@ -8,7 +8,7 @@ const MasterMIS_Report = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "http://localhost:5000/api/report/getmisreport",
+        "https://backend.shiphere.in/api/report/getmisreport",
         {
           responseType: "blob",
           headers: {
@@ -33,7 +33,7 @@ const MasterMIS_Report = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "http://localhost:5000/api/report/getndrreport",
+        "https://backend.shiphere.in/api/report/getndrreport",
         {
           responseType: "blob",
           headers: {

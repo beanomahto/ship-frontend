@@ -22,7 +22,7 @@ function EmployeeDash() {
       try {
         const token = localStorage.getItem("employee-token");
         const response = await fetch(
-          "http://localhost:5000/api/employee/getemployeeusers",
+          "https://backend.shiphere.in/api/employee/getemployeeusers",
           {
             headers: {
               Authorization: `${token}`,
@@ -49,7 +49,7 @@ function EmployeeDash() {
     const { email } = record;
     try {
       const response = await fetch(
-        `http://localhost:5000/api/auth/getPassword`,
+        `https://backend.shiphere.in/api/auth/getPassword`,
         {
           method: "POST",
           headers: {

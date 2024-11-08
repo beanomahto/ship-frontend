@@ -22,7 +22,7 @@ const Shopify = () => {
 //       try {
 //         const token = localStorage.getItem("token");
 //         const res = await fetch(
-//           `http://localhost:5000/api/integration/getApi/${slug}`,
+//           `https://backend.shiphere.in/api/integration/getApi/${slug}`,
 //           {
 //             headers: {
 //               Authorization: `${token}`,
@@ -79,7 +79,7 @@ const handleSubmit = async (e) => {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        `http://localhost:5000/api/integration/createApi`,
+        `https://backend.shiphere.in/api/integration/createApi`,
         {
           method: "POST",
           headers: {
@@ -105,7 +105,7 @@ const handleSubmit = async (e) => {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        `http://localhost:5000/api/integration/updateApi/${slug}`,
+        `https://backend.shiphere.in/api/integration/updateApi/${slug}`,
         {
           method: "PUT",
           headers: {
