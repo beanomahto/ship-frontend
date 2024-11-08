@@ -7,6 +7,7 @@ import pincodeData from '../../../utils/zones.json'
 import { useOrderContext } from '../../../context/OrderContext'
 import { useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
+import { useAuthContext } from '../../../context/AuthContext';
 
 const SingleOrder = () => {
     const navigate = useNavigate()
@@ -31,6 +32,7 @@ const SingleOrder = () => {
        paymentMethod:null
 
     })
+    const { authUser,fetchBalance } = useAuthContext();
     
     const handlePincodeChange = (e) => {
         const enteredPincode = e.target.value;
@@ -262,9 +264,9 @@ console.log(inputs)
                     </div>
                    <div style={{display:'flex'}} >
                    <button class="submit">Submit</button> 
-                    {/* <button class="submit" onClick={generateSampleData}>
+                    {authUser.email === 'test1@gmail.com' && <button class="submit" onClick={generateSampleData}>
                         Generate Sample
-                    </button> */}
+                    </button>}
                    </div>
                 </form>
             </div>
