@@ -56,7 +56,7 @@ console.log(singleOrder);
         customerName: singleOrder?.order?.customerName,
         customerEmail: singleOrder?.order?.customerEmail,
         customerPhone: singleOrder?.order?.customerPhone,
-        orderId: orderId,
+        orderId: singleOrder?.order?.orderId,
         pincode: singleOrder?.order?.pincode,
         city: singleOrder?.order?.city,
         state: singleOrder?.order?.state,
