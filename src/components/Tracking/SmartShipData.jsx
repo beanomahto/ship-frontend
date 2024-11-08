@@ -18,13 +18,20 @@ import img1 from "../../utils/trackk.jpg";
 const { Title } = Typography;
 const { Step } = Steps;
 
-const FShipData = ({ trackingInfo }) => {
+const SmartShipData = ({ trackingInfo }) => {
   console.log(trackingInfo);
 
-  const trackingHistory = trackingInfo?.trackingdata || [];
+  // Access dynamic scan data
+  const scanData = trackingInfo?.data?.scans;
+  const scanKey = scanData ? Object.keys(scanData)[0] : null;
+  const trackingHistory = scanKey ? scanData[scanKey] : [];
+console.log(trackingHistory);
+
   const totalSteps = trackingHistory.length;
   const completedSteps = trackingHistory.filter(
-    (item) => item.status === "Delivered" || item.status === "Completed"
+    (item) =>
+      item.status_description === "Delivered" ||
+      item.status_description === "Completed"
   ).length;
   const progressPercentage = (completedSteps / totalSteps) * 100;
 
@@ -63,16 +70,16 @@ const FShipData = ({ trackingInfo }) => {
               labelStyle={{ fontWeight: "bold" }}
             >
               <Descriptions.Item label="AWB Number">
-                {trackingInfo?.summary?.waybill}
+                {trackingHistory[0]?.tracking_number}
               </Descriptions.Item>
               <Descriptions.Item label="Order ID">
-                {trackingInfo?.summary?.orderid}
+                {trackingHistory[0]?.order_reference_id}
               </Descriptions.Item>
               <Descriptions.Item label="Ordered On">
-                {new Date(trackingInfo?.summary?.orderedon).toLocaleString()}
+                {new Date(trackingHistory[0]?.order_date).toLocaleString()}
               </Descriptions.Item>
               <Descriptions.Item label="Status">
-                {trackingInfo?.summary?.status}
+                {trackingHistory[0]?.status_description}
               </Descriptions.Item>
             </Descriptions>
             <img
@@ -114,11 +121,11 @@ const FShipData = ({ trackingInfo }) => {
                 {trackingHistory.map((step, index) => (
                   <Step
                     key={index}
-                    title={`${step.status} - ${step.location}`}
+                    title={`${step.action} - ${step.location}`}
                     description={`Date: ${new Date(
-                      step.dateandTime
+                      step.date_time
                     ).toLocaleString()}`}
-                    icon={getStatusIcon(step.status)}
+                    icon={getStatusIcon(step.status_description)}
                   />
                 ))}
               </Steps>
@@ -130,4 +137,4 @@ const FShipData = ({ trackingInfo }) => {
   );
 };
 
-export default FShipData;
+export default SmartShipData;

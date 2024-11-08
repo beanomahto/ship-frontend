@@ -30,6 +30,7 @@ console.log(allowedPartners);
       const cancelRequests = filteredOrders.map(async (order) => {
         const deliveryPartnerName = order?.shippingPartner;
         const orderAwb = order?.awb;
+        const orderId = order?._id;
 console.log(deliveryPartnerName);
 
         let url = '';
@@ -48,7 +49,7 @@ console.log(deliveryPartnerName);
           case 'Ekart':
           case 'DTDC':
           case 'Shadowfax':
-            url = 'https://backend.shiphere.in/api/fship/cancelOrder';
+            url = 'https://backend.shiphere.in/api/smartship/cancelorder';
             log = 'Shiphere hit';
             break;
           default:
@@ -57,8 +58,9 @@ console.log(deliveryPartnerName);
 
         if (['Ekart', 'Blue Dart', 'DTDC', 'Shadowfax'].includes(deliveryPartnerName)) {
           const response = await axios.post(url, {
-            reason: 'Something Else',
-            waybill: orderAwb,
+            // reason: 'Something Else',
+            // waybill: orderAwb,
+            orderId:orderId,
           }, {
             headers: {
               Authorization: `${token}`,

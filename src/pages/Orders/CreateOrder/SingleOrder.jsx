@@ -64,6 +64,32 @@ console.log(inputs)
         fetchOrders();
         navigate('/orders')
     }
+    const generateUniqueId = () => `ORD-${Date.now()}-${Math.floor(Math.random() * 100)}`;
+    const generatePhoneNumber = () => `9${Math.floor(100000000 + Math.random() * 900000000)}`;
+
+    const generateSampleData = () => {
+        setInputs({
+            customerName: 'John Doe',
+            customerEmail: 'johndoe@example.com',
+            customerPhone: generatePhoneNumber(),
+            orderId: generateUniqueId(),
+            pincode: '110001', 
+            city: 'New Delhi',
+            state: 'Delhi',
+            productPrice: '1500',
+            productName: 'Sample Product',
+            address: '123 Sample Street',
+            landMark: 'Near Sample Park',
+            quantity: '1',
+            sku: `${Math.floor(Math.random() * 10000)}`,
+            weight: '456',
+            length: '10',
+            breadth: '10',
+            height: '10',
+            paymentMethod: 'prepaid',
+        });
+    };
+
 
     return (
         <>
@@ -110,7 +136,7 @@ console.log(inputs)
                     </div>
                     <div class="flex">
 
-
+                  
                         <label>
                             <input class="input" type="text" placeholder="" required
                             value={inputs.address}
@@ -234,7 +260,12 @@ console.log(inputs)
             </Radio.Group>
                         </div>
                     </div>
-                    <button class="submit">Submit</button>
+                   <div style={{display:'flex'}} >
+                   <button class="submit">Submit</button> 
+                    <button class="submit" onClick={generateSampleData}>
+                        Generate Sample
+                    </button>
+                   </div>
                 </form>
             </div>
         </>

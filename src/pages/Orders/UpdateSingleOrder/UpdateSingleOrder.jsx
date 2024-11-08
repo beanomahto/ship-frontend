@@ -39,6 +39,7 @@ const UpdateSingleOrder = () => {
     height: "",
     paymentMethod: null,
   });
+console.log(singleOrder);
 
   useEffect(() => {
     if (id) {
@@ -53,7 +54,7 @@ const UpdateSingleOrder = () => {
         customerName: singleOrder?.order?.customerName,
         customerEmail: singleOrder?.order?.customerEmail,
         customerPhone: singleOrder?.order?.customerPhone,
-        orderId: orderId,
+        orderId: singleOrder?.order?.orderId,
         pincode: singleOrder?.order?.pincode,
         city: singleOrder?.order?.city,
         state: singleOrder?.order?.state,
@@ -277,7 +278,7 @@ const UpdateSingleOrder = () => {
               type="text"
               placeholder=""
               value={inputs.orderId}
-              onChange={(e) =>  tabs === "New" && setInputs({ ...inputs, id: e.target.value })}
+              onChange={(e) =>  tabs === "New" && setInputs({ ...inputs, orderId: e.target.value })}
             />
             <span>Order ID</span>
           </label>

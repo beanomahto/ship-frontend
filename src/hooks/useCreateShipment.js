@@ -1,19 +1,20 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { message } from 'antd';
+import { useWarehouseContext } from '../context/WarehouseContext';
 
 const useCreateShipment = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
+const {fetchWarehouse} = useWarehouseContext()
   const shipOrder = async (orderId, warehouseId, deliveryPartnerName) => {
     setLoading(true);
     setError(null);
     console.log(orderId);
 
     const warehouseIds = warehouseId?._id;
-    const fShipWarehouseId = warehouseId?.fshipWarehouseId;
-    console.log(warehouseIds);
+    const fShipWarehouseId = warehouseId?.smartshipHubId;
+    console.log(warehouseId);
 
     let orderIds = [];
     let orderWeight = [];
@@ -32,24 +33,26 @@ const useCreateShipment = () => {
     try {
       let url = '';
       let log = '';
-      const fshipUrl = 'https://backend.shiphere.in/api/fship/createWarehouse';
-      const fshipCreateForwardOrderUrl = 'https://backend.shiphere.in/api/fship/createforwardorder';
-      const fshipCreateShipmentUrl = 'https://backend.shiphere.in/api/fship/shipOrder';
+      const fshipUrl = 'https://backend.shiphere.in/api/smartship/hubregister';
+      const fshipCreateForwardOrderUrl = 'https://backend.shiphere.in/api/smartship/onesteporderregister';
+      const fshipCreateShipmentUrl = 'https://backend.shiphere.in/api/smartship/createManifest';
 
       switch (deliveryPartnerName) {
         case 'Ecom Express':
           url = 'https://backend.shiphere.in/api/ecomExpress/createShipment';
           log = 'ecom hit';
           break;
-        case 'Amazon Shipping':
-          url = 'https://backend.shiphere.in/api/amazon-shipping/createShipment';
-          log = 'amazon hit';
-          break;
-        case 'Xpressbees':
-          url = 'https://backend.shiphere.in/api/xpressbees/createShipment';
-          log = 'xpress hit';
-          break;
+        // case 'Amazon Shipping':
+        //   url = 'https://backend.shiphere.in/api/amazon-shipping/createShipment';
+        //   log = 'amazon hit';
+        //   break;
+        // case 'Xpressbees':
+        //   url = 'https://backend.shiphere.in/api/xpressbees/createShipment';
+        //   log = 'xpress hit';
+        //   break;
         case 'Delhivery':
+        case 'Amazon Shipping':
+        case 'Xpressbees':
         case 'Blue Dart':
         case 'Ekart':
         case 'DTDC':
@@ -61,7 +64,7 @@ const useCreateShipment = () => {
 
       const token = localStorage.getItem('token');
 
-      if (['Ekart', 'Blue Dart', 'DTDC', 'Shadowfax', 'Delhivery'].includes(deliveryPartnerName)) {
+      if (['Ekart', 'Blue Dart', 'DTDC', 'Shadowfax', 'Delhivery','Xpressbees','Amazon Shipping'].includes(deliveryPartnerName)) {
         if (fShipWarehouseId === 0) {
           const warehouseResponse = await axios.post(fshipUrl, {
             warehouseId: warehouseIds,
@@ -73,25 +76,14 @@ const useCreateShipment = () => {
 
           if (warehouseResponse.status === 200) {
             let courierId;
-            if (deliveryPartnerName === 'Ekart') courierId = 9;
-            else if (deliveryPartnerName === 'Blue Dart') courierId = 14;
-            else if (deliveryPartnerName === 'DTDC') courierId = 17;
-            else if (deliveryPartnerName === 'Shadowfax') courierId = 43;
-            else if (deliveryPartnerName === 'Delhivery') {
-              const weight = orderWeight[0]; 
-              if (weight < 500) {
-                courierId = 24;
-              } else if (weight >= 500 && weight < 5000) {
-                courierId = 25;
-              } else if (weight >= 5000 && weight < 10000) {
-                courierId = 26;
-              } else {
-                throw new Error('Invalid weight range for Delhivery');
-              }
-              console.log(courierId);
-              console.log(weight);
-            }
-
+            if (deliveryPartnerName === 'Ekart') courierId = 338;
+            else if (deliveryPartnerName === 'Blue Dart') courierId = 279;
+            else if (deliveryPartnerName === 'DTDC') courierId = 355;
+            else if (deliveryPartnerName === 'Shadowfax') courierId = 295;
+            else if (deliveryPartnerName === 'Delhivery')  courierId = 3;
+            else if (deliveryPartnerName === 'Amazon Shipping')  courierId = 357;
+            else if (deliveryPartnerName === 'Xpressbees')  courierId = 2;
+            fetchWarehouse()
             const forwardShipBody = {
               orderId: orderIds,
               warehouseId: warehouseIds,
@@ -105,13 +97,13 @@ const useCreateShipment = () => {
               },
             });
 
-            const fhipApiOrderId = forwardOrderResponse.data?.apiorderid;
+            // const fhipApiOrderId = forwardOrderResponse.data?.apiorderid;
             console.log(forwardOrderResponse);
 
-            if (fhipApiOrderId) {
-              const createShipmentResponse = await axios.post(fshipCreateShipmentUrl, {
-                apiorderid: fhipApiOrderId,
-                courierId,
+            const createShipmentResponse = await axios.post(fshipCreateShipmentUrl, {
+              // apiorderid: fhipApiOrderId,
+              //   courierId,
+              orderId: orderIds,
               }, {
                 headers: {
                   'Authorization': `${token}`,
@@ -123,35 +115,26 @@ const useCreateShipment = () => {
               console.log(createShipmentResponse);
 
               return createShipmentResponse.data;
-            } else {
-              message.error('Failed to retrieve fhipApiOrderId');
-              throw new Error('Failed to retrieve fhipApiOrderId');
-            }
+            //   if (fhipApiOrderId) {
+            // } else {
+            //   message.error('Failed to retrieve fhipApiOrderId');
+            //   throw new Error('Failed to retrieve fhipApiOrderId');
+            // }
           } else {
             message.error('Failed to create warehouse');
             throw new Error('Failed to create warehouse');
           }
         } else {
           let courierId;
-          if (deliveryPartnerName === 'Ekart') courierId = 9;
-          else if (deliveryPartnerName === 'Blue Dart') courierId = 14;
-          else if (deliveryPartnerName === 'DTDC') courierId = 17;
-          else if (deliveryPartnerName === 'Shadowfax') courierId = 43;
-          else if (deliveryPartnerName === 'Delhivery') {
-            const weight = orderWeight[0]; 
-            if (weight < 500) {
-              courierId = 24;
-            } else if (weight >= 500 && weight < 5000) {
-              courierId = 25;
-            } else if (weight >= 5000 && weight < 10000) {
-              courierId = 26;
-            } else {
-              throw new Error('Invalid weight range for Delhivery');
-            }
-            console.log(courierId);
-              console.log(weight);
-          }
+          if (deliveryPartnerName === 'Ekart') courierId = 338;
+          else if (deliveryPartnerName === 'Blue Dart') courierId = 279;
+          else if (deliveryPartnerName === 'DTDC') courierId = 355;
+          else if (deliveryPartnerName === 'Shadowfax') courierId = 295;
+          else if (deliveryPartnerName === 'Delhivery')  courierId = 3;
+          else if (deliveryPartnerName === 'Xpressbees')  courierId = 2;
+          else if (deliveryPartnerName === 'Amazon Shipping')  courierId = 357;
 
+          fetchWarehouse()
           const forwardShipBody = {
             orderId: orderIds,
             warehouseId: warehouseIds,
@@ -165,13 +148,13 @@ const useCreateShipment = () => {
             },
           });
 
-          const fhipApiOrderId = forwardOrderResponse.data?.apiorderid;
+          // const fhipApiOrderId = forwardOrderResponse.data?.apiorderid;
           console.log(forwardOrderResponse);
 
-          if (fhipApiOrderId) {
-            const createShipmentResponse = await axios.post(fshipCreateShipmentUrl, {
-              apiorderid: fhipApiOrderId,
-              courierId,
+          const createShipmentResponse = await axios.post(fshipCreateShipmentUrl, {
+            // apiorderid: fhipApiOrderId,
+            //   courierId,
+            orderId: orderIds,
             }, {
               headers: {
                 'Authorization': `${token}`,
@@ -181,12 +164,13 @@ const useCreateShipment = () => {
             message.success("Order shipped successfully with shipment created on warehouse " + warehouseId?.warehouseName);
             console.log('FShip createShipment API hit');
             console.log(createShipmentResponse);
-
+            
             return createShipmentResponse.data;
-          } else {
-            message.error('Failed to retrieve fhipApiOrderId');
-            throw new Error('Failed to retrieve fhipApiOrderId');
-          }
+          //   if (fhipApiOrderId) {
+          // } else {
+          //   message.error('Failed to retrieve fhipApiOrderId');
+          //   throw new Error('Failed to retrieve fhipApiOrderId');
+          // }
         }
       } else {
         const response = await axios.post(url, {

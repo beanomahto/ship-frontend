@@ -8,6 +8,7 @@ import EcomData from './EcomData';
 import Footer from './Footer';
 import FShipData from './FShipData';
 import Xressbees from './Xressbees';
+import SmartShipData from './SmartShipData';
 
 const { Title } = Typography;
 const { Step } = Steps;
@@ -28,8 +29,8 @@ const Tracking = () => {
         console.log(fShipPartner);
         
        if (fShipPartner) {
-        const response = await axios.post(`https://backend.shiphere.in/api/fship/trackingHistory`,{
-          waybill:awb
+        const response = await axios.post(`https://backend.shiphere.in/api/smartship/tracksmartshiporder`,{
+          awb
         });
         setTrackingInfo(response.data);
         console.log(response.data);
@@ -103,7 +104,7 @@ const Tracking = () => {
           shippingPartner && shippingPartner === 'Xpressbees' ? (
             <Xressbees trackingInfo={trackingInfo} />
           ) : (
-            <FShipData trackingInfo={trackingInfo} />
+            <SmartShipData trackingInfo={trackingInfo} />
           )
         )
       }
