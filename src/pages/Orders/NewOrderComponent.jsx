@@ -38,7 +38,7 @@ const channelImages = {
   'Shopify': Shopify,
 };
 
-const NewOrderComponent = ({ tab,dataSource,fetchWarehouse, rowSelection, fetchOrders, loading,setModalLoading,modalLoading,deliveryCosts,setDeliveryCosts,setSelectedOrderId,selectedOrderId,currentDeliveryCost,setCurrentDeliveryCost,warehouse,selectedWarehouse,selectedWarehouseId,selectedOrderData }) => {
+const NewOrderComponent = ({ tab,dataSource, rowSelection, fetchOrders, loading,setModalLoading,modalLoading,deliveryCosts,setDeliveryCosts,setSelectedOrderId,selectedOrderId,currentDeliveryCost,setCurrentDeliveryCost,warehouse,selectedWarehouse,selectedWarehouseId,selectedOrderData }) => {
   console.log(tab);
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
@@ -46,7 +46,7 @@ const NewOrderComponent = ({ tab,dataSource,fetchWarehouse, rowSelection, fetchO
   console.log(warehouse);
   console.log(selectedWarehouseId);
   
-  fetchWarehouse();
+  // fetchWarehouse();
   const [selectedPartner, setSelectedPartner] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -261,7 +261,7 @@ console.log(sendWarehouse);
           orderId: selectedOrder._id,
         };
         const codWalletResponse = await axios.post(
-          'https://backend.shiphere.in/api/transactions/decreaseAmount',
+          'http://localhost:5000/api/transactions/decreaseAmount',
           codWalletRequestBody,
           {
             headers: {
@@ -283,7 +283,7 @@ console.log(sendWarehouse);
         orderId: selectedOrder._id,
       };
       const forwardWalletResponse = await axios.post(
-        'https://backend.shiphere.in/api/transactions/decreaseAmount',
+        'http://localhost:5000/api/transactions/decreaseAmount',
         forwardWalletRequestBody,
         {
           headers: {
@@ -298,7 +298,7 @@ console.log(sendWarehouse);
           shippingCost: totalDebit,
         };
         const orderResponse = await axios.put(
-          `https://backend.shiphere.in/api/orders/updateOrderStatus/${selectedOrderId}`,
+          `http://localhost:5000/api/orders/updateOrderStatus/${selectedOrderId}`,
           updateBody,
           {
             headers: {

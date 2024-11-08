@@ -15,7 +15,7 @@ export const OrderContextProvider = ({ children }) => {
       setLoading(true);
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "https://backend.shiphere.in/api/orders/getAllOrders",
+        "http://localhost:5000/api/orders/getAllOrders",
         {
           headers: {
             Authorization: `${token}`,

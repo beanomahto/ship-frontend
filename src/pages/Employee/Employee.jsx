@@ -17,7 +17,7 @@ const Employee = () => {
 
     try {
       await axios.delete(
-        `https://backend.shiphere.in/api/employee/deleteEmployee/${id}`,
+        `http://localhost:5000/api/employee/deleteEmployee/${id}`,
         {
           headers: {
             Authorization: localStorage.getItem("token"),
@@ -34,7 +34,7 @@ const Employee = () => {
   const fetchUsers = async () => {
     try {
       const response = await fetch(
-        "https://backend.shiphere.in/api/employee/getEmployees",
+        "http://localhost:5000/api/employee/getEmployees",
         {
           headers: {
             Authorization: localStorage.getItem("token"),

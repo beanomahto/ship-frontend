@@ -81,7 +81,7 @@ const Orders = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        "https://backend.shiphere.in/api/integration/syncButton",
+        "http://localhost:5000/api/integration/syncButton",
         {
           headers: {
             Authorization: localStorage.getItem("token"),
@@ -195,7 +195,7 @@ const Orders = () => {
         const codChargeWithGST = codCharge * (1 + gstRate);
 
         await fetch(
-          `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
+          `http://localhost:5000/api/orders/updateOrderStatus/${orderId}`,
           {
             method: "PUT",
             headers: {
@@ -231,7 +231,7 @@ const Orders = () => {
           // console.log(walletRequest);
 
           await fetch(
-            `https://backend.shiphere.in/api/transactions/decreaseAmount`,
+            `http://localhost:5000/api/transactions/decreaseAmount`,
             {
               method: "POST",
               headers: {
@@ -373,7 +373,7 @@ const Orders = () => {
         const order = selectedOrderData.find((order) => order._id === orderId);
 
         const cancelResponse = await axios.put(
-          `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
+          `http://localhost:5000/api/orders/updateOrderStatus/${orderId}`,
           { status: "Cancelled" },
           { headers: { Authorization: `${token}` } }
         );
@@ -386,7 +386,7 @@ const Orders = () => {
           };
 
           const walletResponse = await axios.post(
-            `https://backend.shiphere.in/api/transactions/increaseAmount`,
+            `http://localhost:5000/api/transactions/increaseAmount`,
             walletRequestBody,
             { headers: { Authorization: `${token}` } }
           );
@@ -449,7 +449,7 @@ const Orders = () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          `https://backend.shiphere.in/api/shipping/getlabel/${orderId}`,
+          `http://localhost:5000/api/shipping/getlabel/${orderId}`,
           {
             headers: {
               Authorization: `${token}`,
@@ -698,7 +698,7 @@ const Orders = () => {
     const pageHeight = 841.89;
 
     const promises = selectedRowKeys.map((orderId) =>
-      fetch(`https://backend.shiphere.in/api/shipping/getinvoice/${orderId}`, {
+      fetch(`http://localhost:5000/api/shipping/getinvoice/${orderId}`, {
         headers: {
           Authorization: `${localStorage.getItem("token")}`,
         },
@@ -1013,7 +1013,7 @@ const Orders = () => {
           <TabPane key={tab.key} tab={tab.tab}>
             {tab.Component ? (
               <tab.Component
-              fetchWarehouse={fetchWarehouse}
+              // fetchWarehouse={fetchWarehouse}
                 tab={tab}
                 dataSource={tab.dataSource}
                 // rowSelection={tab.key === 'tab1' ? rowSelection : null}

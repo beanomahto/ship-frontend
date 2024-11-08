@@ -36,7 +36,7 @@ const ActionRequiredTab = ({ rowSelection, selectedRowKeys, dataSource,selectedO
       };
 console.log(payload);
 
-      await axios.post('https://backend.shiphere.in/api/ecomExpress/createNdr', payload, {
+      await axios.post('http://localhost:5000/api/ecomExpress/createNdr', payload, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },

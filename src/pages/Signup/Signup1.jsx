@@ -99,7 +99,7 @@ const Signup1 = () => {
     if (inputs.email) {
       try {
         const response = await fetch(
-          "https://backend.shiphere.in/api/auth/sendOtp",
+          "http://localhost:5000/api/auth/sendOtp",
           {
             method: "POST",
             headers: {

@@ -15,7 +15,7 @@ const PaymentModel = ({ visible, onClose }) => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('https://backend.shiphere.in/api/users/search', {
+      const response = await axios.get('http://localhost:5000/api/users/search', {
         params: { query: value },
         headers: {
           Authorization: `${token}`
@@ -45,7 +45,7 @@ const PaymentModel = ({ visible, onClose }) => {
 
     try {
       const response = await axios.post(
-        'https://backend.shiphere.in/api/recharge/recharge',
+        'http://localhost:5000/api/recharge/recharge',
         {
           userId: hoveredUser._id,
           credit: parseFloat(paymentAmount),

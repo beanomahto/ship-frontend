@@ -16,7 +16,7 @@ const ResetPassword = () => {
         e.preventDefault();
         console.log("clicked");
         try {
-            const response = await fetch('https://backend.shiphere.in/api/auth/reset-password', {
+            const response = await fetch('http://localhost:5000/api/auth/reset-password', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

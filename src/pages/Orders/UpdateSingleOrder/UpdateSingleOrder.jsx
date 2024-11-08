@@ -12,6 +12,8 @@ const UpdateSingleOrder = () => {
   const navigate = useNavigate();
   const { id, orderId, tabs } = useParams();
   const { orders, fetchOrders } = useOrderContext();
+  console.log(id);
+  
   const {
     loading: singleOrderLoading,
     order: singleOrder,
@@ -54,7 +56,7 @@ console.log(singleOrder);
         customerName: singleOrder?.order?.customerName,
         customerEmail: singleOrder?.order?.customerEmail,
         customerPhone: singleOrder?.order?.customerPhone,
-        orderId: singleOrder?.order?.orderId,
+        orderId: orderId,
         pincode: singleOrder?.order?.pincode,
         city: singleOrder?.order?.city,
         state: singleOrder?.order?.state,

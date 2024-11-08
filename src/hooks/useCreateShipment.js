@@ -33,21 +33,21 @@ const {fetchWarehouse} = useWarehouseContext()
     try {
       let url = '';
       let log = '';
-      const fshipUrl = 'https://backend.shiphere.in/api/smartship/hubregister';
-      const fshipCreateForwardOrderUrl = 'https://backend.shiphere.in/api/smartship/onesteporderregister';
-      const fshipCreateShipmentUrl = 'https://backend.shiphere.in/api/smartship/createManifest';
+      const fshipUrl = 'http://localhost:5000/api/smartship/hubregister';
+      const fshipCreateForwardOrderUrl = 'http://localhost:5000/api/smartship/onesteporderregister';
+      const fshipCreateShipmentUrl = 'http://localhost:5000/api/smartship/createManifest';
 
       switch (deliveryPartnerName) {
         case 'Ecom Express':
-          url = 'https://backend.shiphere.in/api/ecomExpress/createShipment';
+          url = 'http://localhost:5000/api/ecomExpress/createShipment';
           log = 'ecom hit';
           break;
         // case 'Amazon Shipping':
-        //   url = 'https://backend.shiphere.in/api/amazon-shipping/createShipment';
+        //   url = 'http://localhost:5000/api/amazon-shipping/createShipment';
         //   log = 'amazon hit';
         //   break;
         // case 'Xpressbees':
-        //   url = 'https://backend.shiphere.in/api/xpressbees/createShipment';
+        //   url = 'http://localhost:5000/api/xpressbees/createShipment';
         //   log = 'xpress hit';
         //   break;
         case 'Delhivery':

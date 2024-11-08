@@ -24,7 +24,7 @@ const Profile = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await fetch('https://backend.shiphere.in/api/users/me', {
+                const response = await fetch('http://localhost:5000/api/users/me', {
                     headers: {
                         Authorization: localStorage.getItem('token'),
                     },
@@ -91,7 +91,7 @@ const Profile = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('https://backend.shiphere.in/api/users/update', {
+            const response = await fetch('http://localhost:5000/api/users/update', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

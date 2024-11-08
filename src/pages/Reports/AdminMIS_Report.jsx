@@ -16,7 +16,7 @@ const AdminMIS_Report = () => {
         };
 
         try {
-            const response = await fetch('https://backend.shiphere.in/api/report/misreport', {
+            const response = await fetch('http://localhost:5000/api/report/misreport', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
