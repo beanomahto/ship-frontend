@@ -41,22 +41,24 @@ console.log(deliveryPartnerName);
             url = 'https://backend.shiphere.in/api/ecomExpress/cancleShipment';
             log = 'Ecomm hit';
             break;
+          // case 'Xpressbees':
+          //   url = 'https://backend.shiphere.in/api/xpressbees/cancel';
+          //   log = 'Xpressbees hit';
+          //   break;
+          case 'Delhivery':
           case 'Xpressbees':
-            url = 'https://backend.shiphere.in/api/xpressbees/cancel';
-            log = 'Xpressbees hit';
-            break;
           case 'Blue Dart':
           case 'Ekart':
           case 'DTDC':
           case 'Shadowfax':
-            url = 'https://backend.shiphere.in/api/smartship/cancelorder';
+            url = 'http://backend.shiphere.in/api/smartship/cancelorder';
             log = 'Shiphere hit';
             break;
           default:
             return;  
         }
 
-        if (['Ekart', 'Blue Dart', 'DTDC', 'Shadowfax'].includes(deliveryPartnerName)) {
+        if (['Ekart', 'Blue Dart', 'DTDC', 'Shadowfax','Delhivery','Xpressbees'].includes(deliveryPartnerName)) {
           const response = await axios.post(url, {
             // reason: 'Something Else',
             // waybill: orderAwb,
@@ -82,18 +84,18 @@ console.log(deliveryPartnerName);
           console.log(log);
           return response.data;
         }
-        else if (deliveryPartnerName === 'Xpressbees') {
-          const response = await axios.post(url, {
-            awb: orderAwb,
-          }, {
-            headers: {
-              Authorization: `${token}`,
-            },
-          });
+        // else if (deliveryPartnerName === 'Xpressbees') {
+        //   const response = await axios.post(url, {
+        //     awb: orderAwb,
+        //   }, {
+        //     headers: {
+        //       Authorization: `${token}`,
+        //     },
+        //   });
 
-          console.log(log);
-          return response.data;
-        }
+        //   console.log(log);
+        //   return response.data;
+        // }
       });
 
       const responses = await Promise.all(cancelRequests);

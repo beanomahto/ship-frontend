@@ -1013,7 +1013,7 @@ const Orders = () => {
           <TabPane key={tab.key} tab={tab.tab}>
             {tab.Component ? (
               <tab.Component
-              // fetchWarehouse={fetchWarehouse}
+              fetchWarehouse={fetchWarehouse}
                 tab={tab}
                 dataSource={tab.dataSource}
                 // rowSelection={tab.key === 'tab1' ? rowSelection : null}

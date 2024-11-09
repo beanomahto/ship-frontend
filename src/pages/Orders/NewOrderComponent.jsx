@@ -38,7 +38,7 @@ const channelImages = {
   'Shopify': Shopify,
 };
 
-const NewOrderComponent = ({ tab,dataSource, rowSelection, fetchOrders, loading,setModalLoading,modalLoading,deliveryCosts,setDeliveryCosts,setSelectedOrderId,selectedOrderId,currentDeliveryCost,setCurrentDeliveryCost,warehouse,selectedWarehouse,selectedWarehouseId,selectedOrderData }) => {
+const NewOrderComponent = ({ tab,dataSource,fetchWarehouse, rowSelection, fetchOrders, loading,setModalLoading,modalLoading,deliveryCosts,setDeliveryCosts,setSelectedOrderId,selectedOrderId,currentDeliveryCost,setCurrentDeliveryCost,warehouse,selectedWarehouse,selectedWarehouseId,selectedOrderData }) => {
   console.log(tab);
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
@@ -46,7 +46,11 @@ const NewOrderComponent = ({ tab,dataSource, rowSelection, fetchOrders, loading,
   console.log(warehouse);
   console.log(selectedWarehouseId);
   
-  // fetchWarehouse();
+  useEffect(() => {
+    fetchWarehouse();
+    console.log("use Efffff");
+    
+  },[])
   const [selectedPartner, setSelectedPartner] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
