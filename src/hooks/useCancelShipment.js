@@ -51,7 +51,7 @@ console.log(deliveryPartnerName);
           case 'Ekart':
           case 'DTDC':
           case 'Shadowfax':
-            url = 'http://backend.shiphere.in/api/smartship/cancelorder';
+            url = 'https://backend.shiphere.in/api/smartship/cancelorder';
             log = 'Shiphere hit';
             break;
           default:
