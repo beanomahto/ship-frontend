@@ -36,6 +36,8 @@ const UpdateLabel = () => {
                     }
                 });
                 const fetchedData = response.data;
+                console.log(fetchedData);
+                
                 setInputs({
                     logoUrl: fetchedData?.logoUrl || '',
                     theme: fetchedData.theme || '',
