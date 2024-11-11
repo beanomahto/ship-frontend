@@ -9,16 +9,16 @@ const useCancelShipment = () => {
   const cancelOrder = async (selectedOrderData) => {
     setLoading(true);
     setError(null);
-console.log(selectedOrderData);
+//console.log(selectedOrderData);
 
     try {
       const token = localStorage.getItem('token');
 
       const allowedPartners = ['Ekart', 'Blue Dart', 'DTDC', 'Shadowfax','Delhivery', 'Xpressbees', 'Ecom Express'];
-console.log(allowedPartners);
+//console.log(allowedPartners);
 
       const filteredOrders = selectedOrderData.filter(order => allowedPartners.includes(order?.shippingPartner));
-      console.log(filteredOrders);
+      //console.log(filteredOrders);
       
 
       if (filteredOrders.length === 0) {
@@ -31,7 +31,7 @@ console.log(allowedPartners);
         const deliveryPartnerName = order?.shippingPartner;
         const orderAwb = order?.awb;
         const orderId = order?._id;
-console.log(deliveryPartnerName);
+//console.log(deliveryPartnerName);
 
         let url = '';
         let log = '';
@@ -69,7 +69,7 @@ console.log(deliveryPartnerName);
             },
           });
 
-          console.log(log);
+          //console.log(log);
           return response.data;
         } 
         else if (deliveryPartnerName === 'Ecom Express') {
@@ -81,7 +81,7 @@ console.log(deliveryPartnerName);
             },
           });
 
-          console.log(log);
+          //console.log(log);
           return response.data;
         }
         // else if (deliveryPartnerName === 'Xpressbees') {
@@ -93,7 +93,7 @@ console.log(deliveryPartnerName);
         //     },
         //   });
 
-        //   console.log(log);
+        //   //console.log(log);
         //   return response.data;
         // }
       });
@@ -103,7 +103,7 @@ console.log(deliveryPartnerName);
       message.success('All selected orders have been processed for cancellation');
       return responses;
     } catch (err) {
-      console.log(err);
+      //console.log(err);
       message.error(err.response?.data?.message || err.message || 'An error occurred while cancelling orders');
       setError(err);
       throw err;

@@ -15,7 +15,7 @@ const Seller = () => {
   //
   const [selectedSeller, setSelectedSeller] = useState(null);
 
-  console.log(users);
+  //console.log(users);
 
   // const showModal = () => setModalVisible(true);
   // const closeModal = () => setModalVisible(false);
@@ -113,7 +113,7 @@ const Seller = () => {
         text
       ),
   });
-  console.log(users);
+  //console.log(users);
 
   const columns = [
     {
@@ -187,7 +187,7 @@ const Seller = () => {
   ];
 
   const handleGetKYC = (id) => {
-    console.log(`Get KYC for user with id: ${id}`);
+    //console.log(`Get KYC for user with id: ${id}`);
   };
 
   return (

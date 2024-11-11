@@ -11,7 +11,7 @@ import logo from '../../utils/logo1.jpg'
 import { useAuthContext } from '../../context/AuthContext';
 
 const AllOrderComponent = ({ dataSource, fetchOrders, loading,tab }) => {
-  console.log(tab);
+  //console.log(tab);
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -71,7 +71,7 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading,tab }) => {
       ),
   });
   const tabs =  tab.tab.split(' ')[0];
-  console.log(tabs);
+  //console.log(tabs);
   const columns = [
     {
       title: 'Order Id',
@@ -180,11 +180,11 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading,tab }) => {
       setSelectedRowKeys(selectedKeys);
     },
   };
-  console.log(dataSource);
+  //console.log(dataSource);
   
   const allOrders = dataSource?.filter(order => order?.status === 'Shipped');
-  // console.log(rowSelection);
-  console.log(allOrders);
+  // //console.log(rowSelection);
+  //console.log(allOrders);
   
   return (
     <>

@@ -58,8 +58,8 @@ const KYC = () => {
 
         fetchKycData();
     }, []);
-console.log(kycData);
-console.log(authUser);
+//console.log(kycData);
+//console.log(authUser);
 
     const handleChange = (e) => {
         const { name, value } = e.target;

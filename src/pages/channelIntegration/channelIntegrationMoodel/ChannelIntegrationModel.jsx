@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {Modal, Form, Input, Button, Checkbox } from 'antd';
 
 const ChannelIntegrationModal = ({ visible, channel,  onCancel }) => {
-  console.log(channel);
+  //console.log(channel);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
 
   // Listen for screen size changes

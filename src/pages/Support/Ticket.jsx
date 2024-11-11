@@ -28,7 +28,7 @@ const Ticket = () => {
             const data = await res.json();
             setTicket(data.complaints || []);
         } catch (error) {
-            console.log(error);
+            //console.log(error);
         }
     };
 

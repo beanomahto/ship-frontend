@@ -23,17 +23,17 @@ const Tracking = () => {
     const fetchTrackingInfo = async () => {
       try {
         const splitPartners = shippingPartner.replace(/\s+/g, '');
-        console.log(splitPartners);
+        //console.log(splitPartners);
         
         const fShipPartner = ['Ekart', 'BlueDart', 'DTDC', 'Shadowfax','Delhivery'].includes(splitPartners);
-        console.log(fShipPartner);
+        //console.log(fShipPartner);
         
        if (fShipPartner) {
         const response = await axios.post(`https://backend.shiphere.in/api/smartship/tracksmartshiporder`,{
           awb
         });
         setTrackingInfo(response.data);
-        console.log(response.data);
+        //console.log(response.data);
         
        } else {
         const response = await axios.get(`https://backend.shiphere.in/api/${shippingPartner.replace(/\s+/g, '')}/track/${awb}`);
@@ -49,8 +49,8 @@ const Tracking = () => {
             data[name] = value;
           });
           setTrackingInfo(data);
-          console.log(data);
-          console.log(response)
+          //console.log(data);
+          //console.log(response)
           updateSteps(data);
         } else {
           setTrackingInfo(response.data.trackingInfo);

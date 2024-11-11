@@ -80,10 +80,10 @@ const InvoiceGenerator = () => {
   const formattedInvoiceDate = moment(invoiceData.invoiceDate).format('MMMM Do YYYY');
   const formattedOrderDate = moment(invoiceData.orderDate).format('MMMM Do YYYY');
 
-console.log(invoiceData);
+//console.log(invoiceData);
 
   const totalAmountInWords = toWords(invoiceData?.totalPrice);
-console.log(totalAmountInWords);
+//console.log(totalAmountInWords);
 
   return (
     <div>

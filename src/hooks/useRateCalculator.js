@@ -24,7 +24,7 @@ const useRateCalculator = () => {
       }
 
       const data = await res.json();
-      console.log(data);
+      //console.log(data);
       setLoading(false);
       return { success: true, cost: data.cost };
     } catch (error) {

@@ -34,10 +34,10 @@ const Login1 = () => {
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
   //   try {
-  //     console.log(email);
-  //     console.log(password);
+  //     //console.log(email);
+  //     //console.log(password);
   //     await login(email, password);
-  //     console.log("ok");
+  //     //console.log("ok");
   //     fetchOrders();
   //     navigate("/");
   //   } catch (error) {
@@ -48,7 +48,7 @@ const Login1 = () => {
     e.preventDefault();
 
     const userData = await login(email, password);
-    console.log("User data received:", userData);
+    //console.log("User data received:", userData);
     if (userData?.role === "employee") {
       // Redirect to employee dashboard if role is 'employee'
       fetchOrders();
@@ -56,6 +56,7 @@ const Login1 = () => {
       navigate("/employeedashboard");
     } else {
       // Default redirection for other users
+      fetchWarehouse();
       fetchOrders();
       navigate("/");
     }

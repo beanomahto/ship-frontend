@@ -7,12 +7,12 @@ const useShipNow = (fetchOrders, setOrders, closeModalShipNow) => {
   const [loading, setLoading] = useState(false);
   const { orders, setOrders, fetchOrders } = useOrderContext();
   const handleShipNow = useCallback(async (selectedRowKeys, selectedWarehouse, selectedDeliveryPartner) => {
-    console.log(selectedRowKeys);
-    console.log(selectedWarehouse);
-    console.log(selectedDeliveryPartner);
+    //console.log(selectedRowKeys);
+    //console.log(selectedWarehouse);
+    //console.log(selectedDeliveryPartner);
 
     const selectedRows = selectedRowKeys.map((ordId) => ordId?._id);
-    console.log(selectedRows);
+    //console.log(selectedRows);
 
     if (selectedRows.length === 0) {
       message.warning('Please select at least one order to ship.');
@@ -29,14 +29,14 @@ const useShipNow = (fetchOrders, setOrders, closeModalShipNow) => {
         const order = orders?.orders.find((order) => order._id === orderId);
         if (!order) continue;
 
-        console.log(orderId);
-        console.log(order);
+        //console.log(orderId);
+        //console.log(order);
   
         let forwardCharge, codCharge;
   
         try {
           const costData = await shipNowCost(orderId, selectedWarehouse?._id);
-          console.log('Cost Data for Order:', costData);
+          //console.log('Cost Data for Order:', costData);
   
           forwardCharge = costData?.cost?.find(
             (cost) => cost.deliveryPartner === selectedDeliveryPartner.name
@@ -53,13 +53,13 @@ const useShipNow = (fetchOrders, setOrders, closeModalShipNow) => {
         }
   
         try {
-          console.log('Calling shipOrder with:', { order, selectedWarehouse, selectedDeliveryPartner });
+          //console.log('Calling shipOrder with:', { order, selectedWarehouse, selectedDeliveryPartner });
           await shipOrder(order, selectedWarehouse, selectedDeliveryPartner.name);
   
-          console.log('Order shipped:', orderId);
+          //console.log('Order shipped:', orderId);
           message.success('AWB generated');
         } catch (error) {
-          console.log('Error in shipping with this partner:', error);
+          //console.log('Error in shipping with this partner:', error);
           message.error('Error in shipping with this partner');
           continue;
         }
@@ -103,7 +103,7 @@ const useShipNow = (fetchOrders, setOrders, closeModalShipNow) => {
         }
   
         for (const walletRequest of walletRequests) {
-          console.log(walletRequest);
+          //console.log(walletRequest);
   
           await fetch(`https://backend.shiphere.in/api/transactions/decreaseAmount`, {
             method: 'POST',

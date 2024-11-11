@@ -27,7 +27,7 @@ const Login = () => {
     // const isHashed = false;
     e.preventDefault();
     const userData = await login(email, password);
-    console.log("User data received:", userData);
+    //console.log("User data received:", userData);
     if (userData?.role === "employee") {
       // Redirect to employee dashboard if role is 'employee'
       //   fetchOrders();

@@ -46,7 +46,7 @@ const AddnewWarehouse = () => {
         };
 
     const { addWarehouse, loading } = useAddWarehouse();
-    console.log(inputs);
+    //console.log(inputs);
 
  const handleOrderSubmit = async(e) => {	
             e.preventDefault();

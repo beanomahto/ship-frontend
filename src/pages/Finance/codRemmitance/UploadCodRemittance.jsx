@@ -28,7 +28,7 @@ const UploadCodRemittance = ({ visible, onClose }) => {
                     Authorization: `${token}`,
                 },
             });
-            console.log(response)
+            //console.log(response)
             if (response.ok) {
                 message.success('File uploaded successfully!');
                 onClose();

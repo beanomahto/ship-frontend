@@ -25,7 +25,7 @@ export const PaymentUserContextProvider = ({ children }) => {
                     throw new Error('Failed to fetch Payment Users');
                 }
                 const data = await response.json();
-                console.log(data);
+                //console.log(data);
                 
                 setPUers(data);
             } catch (error) {

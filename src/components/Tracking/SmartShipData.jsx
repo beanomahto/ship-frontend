@@ -19,13 +19,13 @@ const { Title } = Typography;
 const { Step } = Steps;
 
 const SmartShipData = ({ trackingInfo }) => {
-  console.log(trackingInfo);
+  //console.log(trackingInfo);
 
   // Access dynamic scan data
   const scanData = trackingInfo?.data?.scans;
   const scanKey = scanData ? Object.keys(scanData)[0] : null;
   const trackingHistory = scanKey ? scanData[scanKey] : [];
-console.log(trackingHistory);
+//console.log(trackingHistory);
 
   const totalSteps = trackingHistory.length;
   const completedSteps = trackingHistory.filter(

@@ -4,7 +4,7 @@ const useShipNowCost = () => {
   const [loading, setLoading] = useState(false);
 
   const shipNowCost = async (orderId, wareHouseId) => {
-    console.log(wareHouseId);
+    //console.log(wareHouseId);
     
     const success = handleInputErrors(orderId, wareHouseId);
     if (!success) return { success: false };
@@ -20,14 +20,14 @@ const useShipNowCost = () => {
           Authorization: `${token}`
         },
       });
-      // console.log(await res.json());
+      // //console.log(await res.json());
 
       if (!res.ok) {
         throw new Error("Failed to fetch delivery cost. Please try again.");
       }
 
       const data = await res.json();
-      console.log(data?.result);
+      //console.log(data?.result);
       setLoading(false);
       return { success: true, cost: data.result };
     } catch (error) {

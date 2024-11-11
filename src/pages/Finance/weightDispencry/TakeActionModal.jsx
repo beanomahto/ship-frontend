@@ -5,7 +5,7 @@ import { UploadOutlined } from '@ant-design/icons';
 const TakeActionModal = ({ visible, onClose, discrepancyId, productName }) => {
   const [fileList, setFileList] = useState([]);
   const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
-  console.log(fileList);
+  //console.log(fileList);
   const handleAction = async () => {
     if (!productName) {
       message.error('Missing discrepancy ID or product name');
@@ -19,7 +19,7 @@ const TakeActionModal = ({ visible, onClose, discrepancyId, productName }) => {
     formData.append('productName', productName);
 
     for (let pair of formData.entries()) {
-      console.log(pair[0] + ':', pair[1]);
+      //console.log(pair[0] + ':', pair[1]);
     }
     try {
       const response = await fetch('https://backend.shiphere.in/api/weightdiscrepancy/upload-images', {
@@ -29,7 +29,7 @@ const TakeActionModal = ({ visible, onClose, discrepancyId, productName }) => {
           Authorization: localStorage.getItem('token'),
         },
       });
-      console.log(response);
+      //console.log(response);
       if (!response.ok) {
         throw new Error('Failed to take action');
       }

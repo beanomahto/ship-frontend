@@ -33,7 +33,7 @@ const VerifyKyc = () => {
                     },
                 });
                 const data = await response.json();
-                console.log(data);
+                //console.log(data);
                 
                 setKycData(data);
                 setFormData({

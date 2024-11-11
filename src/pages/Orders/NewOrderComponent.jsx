@@ -39,16 +39,16 @@ const channelImages = {
 };
 
 const NewOrderComponent = ({ tab,dataSource,fetchWarehouse, rowSelection, fetchOrders, loading,setModalLoading,modalLoading,deliveryCosts,setDeliveryCosts,setSelectedOrderId,selectedOrderId,currentDeliveryCost,setCurrentDeliveryCost,warehouse,selectedWarehouse,selectedWarehouseId,selectedOrderData }) => {
-  console.log(tab);
+  //console.log(tab);
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
-  console.log(currentDeliveryCost);
-  console.log(warehouse);
-  console.log(selectedWarehouseId);
+  //console.log(currentDeliveryCost);
+  //console.log(warehouse);
+  //console.log(selectedWarehouseId);
   
   useEffect(() => {
     fetchWarehouse();
-    console.log("use Efffff");
+    //console.log("use Efffff");
     
   },[])
   const [selectedPartner, setSelectedPartner] = useState(null);
@@ -114,7 +114,7 @@ const NewOrderComponent = ({ tab,dataSource,fetchWarehouse, rowSelection, fetchO
       ),
   });
   const tabs =  tab.tab.split(' ')[0];
-  console.log(tabs);
+  //console.log(tabs);
   const columns = [
     {
       title: 'Order Id',
@@ -246,16 +246,9 @@ const NewOrderComponent = ({ tab,dataSource,fetchWarehouse, rowSelection, fetchO
       const sendWarehouse = Array.isArray(selectedWarehouseId) && selectedWarehouseId.length === 0
   ? warehouse?.warehouses?.[0]
   : selectedWarehouseId;
-
-console.log(sendWarehouse);
-
       
       setCurrentDeliveryCost(totalDebit);
-      await shipOrder(
-        selectedOrder, 
-        sendWarehouse, 
-        partner.deliveryPartner
-      );
+     
       if (codCostWithGst > 0) {
         const codWalletRequestBody = {
           debit: codCostWithGst,
@@ -297,6 +290,11 @@ console.log(sendWarehouse);
       );
   
       if (forwardWalletResponse.status === 200) {
+        await shipOrder(
+          selectedOrder, 
+          sendWarehouse, 
+          partner.deliveryPartner
+        );
         const updateBody = {
           status: 'Shipped',
           shippingCost: totalDebit,
@@ -333,10 +331,10 @@ console.log(sendWarehouse);
     }
   };
   
-  console.log(deliveryCosts);
+  //console.log(deliveryCosts);
   
   const newOrders = dataSource?.filter(order => order.status === 'New' || order.status === 'Cancelled');
-  console.log(newOrders);
+  //console.log(newOrders);
   
   return (
     <>

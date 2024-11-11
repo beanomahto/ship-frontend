@@ -39,7 +39,7 @@ const ActiveWarehouses = () => {
         handleDelete(id); 
       },
       onCancel() {
-        console.log('Cancel deletion');
+        //console.log('Cancel deletion');
       },
     });
   };

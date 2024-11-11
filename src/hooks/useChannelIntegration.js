@@ -22,7 +22,7 @@ const useChannelIntegration = () => {
 
 			const data = await res.json();
 			setData(data);
-			console.log(data);
+			//console.log(data);
 			if (data.error) {
 				throw new Error(data.error);
 			}

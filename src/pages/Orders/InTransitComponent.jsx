@@ -10,7 +10,7 @@ import { useAuthContext } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 
 const InTranitComponent = ({ rowSelection, dataSource, fetchOrders, loading, tab }) => {
-  console.log(tab);
+  //console.log(tab);
   const [searchText, setSearchText] = React.useState('');
   const [searchedColumn, setSearchedColumn] = React.useState('');
   const { authUser } = useAuthContext();
@@ -73,7 +73,7 @@ const InTranitComponent = ({ rowSelection, dataSource, fetchOrders, loading, tab
       ),
   });
   const tabs =  tab.tab.split(' ')[0];
-  console.log(tabs);
+  //console.log(tabs);
   const columns = [
     {
       title: 'Order Id',

@@ -10,11 +10,11 @@ const {fetchWarehouse} = useWarehouseContext()
   const shipOrder = async (orderId, warehouseId, deliveryPartnerName) => {
     setLoading(true);
     setError(null);
-    console.log(orderId);
+    //console.log(orderId);
 
     const warehouseIds = warehouseId?._id;
     const fShipWarehouseId = warehouseId?.smartshipHubId;
-    console.log(warehouseId);
+    //console.log(warehouseId);
 
     let orderIds = [];
     let orderWeight = [];
@@ -27,8 +27,8 @@ const {fetchWarehouse} = useWarehouseContext()
       orderWeight = [orderId?.weight];
     }
 
-    console.log(orderIds);
-    console.log(orderWeight);
+    //console.log(orderIds);
+    //console.log(orderWeight);
 
     try {
       let url = '';
@@ -98,7 +98,7 @@ const {fetchWarehouse} = useWarehouseContext()
             });
 
             // const fhipApiOrderId = forwardOrderResponse.data?.apiorderid;
-            console.log(forwardOrderResponse);
+            //console.log(forwardOrderResponse);
 
             const createShipmentResponse = await axios.post(fshipCreateShipmentUrl, {
               // apiorderid: fhipApiOrderId,
@@ -111,8 +111,8 @@ const {fetchWarehouse} = useWarehouseContext()
               });
 
               message.success("Order shipped successfully with shipment created on warehouse " + warehouseId?.warehouseName);
-              console.log('FShip createShipment API hit');
-              console.log(createShipmentResponse);
+              //console.log('FShip createShipment API hit');
+              //console.log(createShipmentResponse);
 
               return createShipmentResponse.data;
             //   if (fhipApiOrderId) {
@@ -149,7 +149,7 @@ const {fetchWarehouse} = useWarehouseContext()
           });
 
           // const fhipApiOrderId = forwardOrderResponse.data?.apiorderid;
-          console.log(forwardOrderResponse);
+          //console.log(forwardOrderResponse);
 
           const createShipmentResponse = await axios.post(fshipCreateShipmentUrl, {
             // apiorderid: fhipApiOrderId,
@@ -162,8 +162,8 @@ const {fetchWarehouse} = useWarehouseContext()
             });
 
             message.success("Order shipped successfully with shipment created on warehouse " + warehouseId?.warehouseName);
-            console.log('FShip createShipment API hit');
-            console.log(createShipmentResponse);
+            //console.log('FShip createShipment API hit');
+            //console.log(createShipmentResponse);
             
             return createShipmentResponse.data;
           //   if (fhipApiOrderId) {
@@ -183,13 +183,13 @@ const {fetchWarehouse} = useWarehouseContext()
         });
 
         message.success("Order shipped successfully on warehouse " + warehouseId?.warehouseName);
-        console.log(log);
-        console.log(response);
+        //console.log(log);
+        //console.log(response);
 
         return response.data;
       }
     } catch (err) {
-      console.log(err);
+      //console.log(err);
       message.error(err.response?.data?.message || err.message || 'An error occurred');
       throw err;
     } finally {

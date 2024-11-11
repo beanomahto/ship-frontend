@@ -12,7 +12,7 @@ const Header = ({ darktheme }) => {
   const { authUser, balance } = useAuthContext();
   const { loading, logout } = useLogout();
   const navigate = useNavigate();
-console.log(balance);
+//console.log(balance);
 
   const options = [
     {
@@ -28,13 +28,13 @@ console.log(balance);
   const {orders} = useOrderContext();
 // const amount = parseFloat(authUser?.amount?.toFixed(2))
 const onSearch = (awb) => {
-  console.log(awb);
+  //console.log(awb);
     
   const selectedOption = document.querySelector('.ant-select-selection-item')?.textContent.toLowerCase();
   
   const filteredOrder = orders?.orders?.filter((order) => order?.awb === awb);
 
-  console.log(filteredOrder);
+  //console.log(filteredOrder);
   
   if (selectedOption && filteredOrder.length > 0) {
     const shippingPartner = filteredOrder[0]?.shippingPartner; 
@@ -42,10 +42,10 @@ const onSearch = (awb) => {
     if (shippingPartner) {
       navigate(`/tracking/${selectedOption}/${shippingPartner}/${awb}`);
     } else {
-      console.log('No shipping partner found for the matching order');
+      //console.log('No shipping partner found for the matching order');
     }
   } else {
-    console.log('No matching order found');
+    //console.log('No matching order found');
   }
 };
   return (

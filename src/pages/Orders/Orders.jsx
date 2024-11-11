@@ -68,8 +68,8 @@ const Orders = () => {
   const [selectedOrderId, setSelectedOrderId] = useState(null);
   const [currentDeliveryCost, setCurrentDeliveryCost] = useState(null);
 
-  console.log(orders);
-  console.log(selectedOrderData);
+  //console.log(orders);
+  //console.log(selectedOrderData);
   // models
   const showModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
@@ -90,7 +90,7 @@ const Orders = () => {
       );
       if (response.ok) {
         const result = await response.json();
-        console.log("Sync successful", result);
+        //console.log("Sync successful", result);
         message.success("Sync successful");
       } else {
         message.error("okokok");
@@ -106,26 +106,26 @@ const Orders = () => {
   };
 
   const onSelectChange = (newSelectedRowKeys) => {
-    // console.log(newSelectedRowKeys);
+    // //console.log(newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
     const selectedData = newSelectedRowKeys.map((key) =>
       orders.orders.find((order) => order._id === key)
     );
     setSelectedOrderData(selectedData);
   };
-  // console.log(selectedWarehouseId);
+  // //console.log(selectedWarehouseId);
 
   const handleShipNow = async (
     selectedRowKeys,
     selectedWarehouse,
     selectedDeliveryPartner
   ) => {
-    // console.log(selectedRowKeys);
-    // console.log(selectedWarehouse);
-    // console.log(selectedDeliveryPartner);
+    // //console.log(selectedRowKeys);
+    // //console.log(selectedWarehouse);
+    // //console.log(selectedDeliveryPartner);
     setSelectedWarehouseId(selectedWarehouse);
     const selectedRows = selectedOrderData?.map((ordId) => ordId?._id);
-    // console.log(selectedRows);
+    // //console.log(selectedRows);
 
     if (selectedRows.length === 0) {
       message.warning("Please select at least one order to ship.");
@@ -144,14 +144,14 @@ const Orders = () => {
       for (const orderId of selectedRowKeys) {
         const order = orders?.orders.find((order) => order._id === orderId);
         if (!order) continue;
-        // console.log(orderId);
-        // console.log(order);
+        // //console.log(orderId);
+        // //console.log(order);
 
         let forwardCharge, codCharge;
 
         try {
           const costData = await shipNowCost(orderId, selectedWarehouse?._id);
-          // console.log('Cost Data for Order:', costData);
+          // //console.log('Cost Data for Order:', costData);
 
           forwardCharge = costData?.cost?.find(
             (cost) => cost.deliveryPartner === selectedDeliveryPartner.name
@@ -169,17 +169,17 @@ const Orders = () => {
         }
 
         try {
-          // console.log('Calling shipOrder with:', { order, selectedWarehouse, selectedDeliveryPartner });
+          // //console.log('Calling shipOrder with:', { order, selectedWarehouse, selectedDeliveryPartner });
           await shipOrder(
             order,
             selectedWarehouse,
             selectedDeliveryPartner.name
           );
 
-          // console.log('Order shipped:', orderId);
+          // //console.log('Order shipped:', orderId);
           message.success("AWB generated");
         } catch (error) {
-          // console.log('Error in shipping with this partner:', error);
+          // //console.log('Error in shipping with this partner:', error);
           message.error("Error in shipping with this partner");
           continue;
         }
@@ -228,7 +228,7 @@ const Orders = () => {
         }
 
         for (const walletRequest of walletRequests) {
-          // console.log(walletRequest);
+          // //console.log(walletRequest);
 
           await fetch(
             `https://backend.shiphere.in/api/transactions/decreaseAmount`,
@@ -293,7 +293,7 @@ const Orders = () => {
       order: order,
     })) || [];
 
-  // console.log(orders);
+  // //console.log(orders);
 
   // const dataSourceShipOrdersWithKeys = orders?.shipOrders?.map((order, index) => ({
   //   ...order,
@@ -305,9 +305,9 @@ const Orders = () => {
     onChange: onSelectChange,
     // onSelect: showModalShipNow,
   };
-  // console.log(rowSelection);
+  // //console.log(rowSelection);
   const hasSelected = selectedRowKeys.length > 0;
-  // console.log(dataSourceWithKeys);
+  // //console.log(dataSourceWithKeys);
 
   const newOrdersAmt = dataSourceWithKeys?.filter(
     (order) => order.status === "New" || order.status === "Cancelled"
@@ -355,8 +355,8 @@ const Orders = () => {
     },
   ];
 
-  console.log(tabsData);
-  console.log(selectedOrderData);
+  //console.log(tabsData);
+  //console.log(selectedOrderData);
 
   const cancelShipment = async () => {
     if (selectedRowKeys.length === 0) {
@@ -392,15 +392,15 @@ const Orders = () => {
           );
 
           if (walletResponse.status === 200) {
-            console.log(
-              `Wallet updated successfully for order ${order.orderId}`
-            );
+            // console.log(
+            //   `Wallet updated successfully for order ${order.orderId}`
+            // );
           } else {
-            console.log(`Failed to update wallet for order ${order.orderId}`);
+            // console.log(`Failed to update wallet for order ${order.orderId}`);
             message.error(`Failed to update wallet for order ${order.orderId}`);
           }
         } else {
-          console.log(`Failed to cancel order ${order.orderId}`);
+          //console.log(`Failed to cancel order ${order.orderId}`);
           message.error(`Failed to cancel order ${order.orderId}`);
         }
       }
@@ -436,7 +436,7 @@ const Orders = () => {
     };
     fetchDeliveryCost();
   }, [selectedOrderId, warehouse]);
-  console.log(selectedRowKeys);
+  //console.log(selectedRowKeys);
 
   const downloadMultipleLabels = async () => {
     const pdf = new jsPDF({
@@ -458,7 +458,7 @@ const Orders = () => {
         );
 
         const labelData = response.data;
-        console.log(labelData);
+        //console.log(labelData);
         const partnerLogo = labelData?.shippingPartner
           ? partnerImages[labelData.shippingPartner] || ""
           : "";
@@ -466,7 +466,7 @@ const Orders = () => {
         labelContainer.style.position = "absolute";
         labelContainer.style.top = "-9999px";
         document.body.appendChild(labelContainer);
-        console.log(labelData);
+        //console.log(labelData);
 
         const logoBase64 = await getBase64ImageFromUrl(labelData.logoUrl);
 
@@ -706,7 +706,7 @@ const Orders = () => {
         .then((response) => response.json())
         .then((data) => {
           const invoiceData = data.invoiceData;
-          console.log(invoiceData);
+          //console.log(invoiceData);
 
           // Create a hidden div to render the invoice
           const invoiceDiv = document.createElement("div");
@@ -726,7 +726,7 @@ const Orders = () => {
             "MMMM Do YYYY"
           );
 
-          console.log(invoiceData);
+          //console.log(invoiceData);
 
           const totalAmountInWords = toWords(invoiceData?.totalPrice);
           invoiceDiv.innerHTML = `
@@ -860,7 +860,7 @@ const Orders = () => {
     setSelectedRowKeys([]);
   };
 
-  console.log(currentTab);
+  //console.log(currentTab);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>

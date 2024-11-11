@@ -16,7 +16,7 @@
 //         body: JSON.stringify({ email, password }),
 //         credentials: "include",
 //       });
-//       console.log(res);
+//       //console.log(res);
 //       const data = await res.json();
 //       if (data.error) {
 //         throw new Error(data.error);
@@ -26,7 +26,7 @@
 //       localStorage.setItem("ship-user", JSON.stringify(data));
 //       setAuthUser(data);
 
-//       console.log(data);
+//       //console.log(data);
 
 //       await createDefaultLabelInfo(data._id);
 //     } catch (error) {
@@ -74,7 +74,7 @@
 //       if (labelInfoData.error) {
 //         console.warn("Labelinfo creation error:", labelInfoData.error);
 //       } else {
-//         console.log("Labelinfo created:", labelInfoData);
+//         //console.log("Labelinfo created:", labelInfoData);
 //       }
 //     } catch (error) {
 //       console.error("Error creating default Label Info:", error);
@@ -132,7 +132,7 @@ const useLogin = () => {
       }
       setAuthUser(data); // Set the user data in AuthContext
 
-      console.log("User logged in:", data);
+      //console.log("User logged in:", data);
 
       // Create default label info after successful login
       await createDefaultLabelInfo(data._id);
@@ -184,7 +184,7 @@ const useLogin = () => {
       if (labelInfoData.error) {
         console.warn("Labelinfo creation error:", labelInfoData.error);
       } else {
-        console.log("Labelinfo created:", labelInfoData);
+        //console.log("Labelinfo created:", labelInfoData);
       }
     } catch (error) {
       console.error("Error creating default Label Info:", error);

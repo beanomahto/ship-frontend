@@ -71,7 +71,7 @@ const useCreateLebel = () => {
             });
 
             const data = await res.json();
-            console.log(data);
+            //console.log(data);
             if (data.error) {
                 throw new Error(data.error);
             }
@@ -87,8 +87,8 @@ const useCreateLebel = () => {
     //         const response = await fetch('https://backend.shiphere.in/api/shipping/getLabelinfo');
     //         const data = await response.json()
     //         setData(data);
-    //         console.log(data);
-    //         console.log(response);
+    //         //console.log(data);
+    //         //console.log(response);
     //     } catch (err) {
     //         setError(err);
     //     } finally {

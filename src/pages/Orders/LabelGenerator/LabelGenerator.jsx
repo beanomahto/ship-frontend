@@ -21,7 +21,7 @@ const LabelGenerator = ({ orderIds }) => {
   const [labelsData, setLabelsData] = useState([]);
   const [base64Logo, setBase64Logo] = useState('');
   const labelRef = useRef(null);
-console.log(orderIds);
+//console.log(orderIds);
 
   const generateLabels = async () => {
     try {

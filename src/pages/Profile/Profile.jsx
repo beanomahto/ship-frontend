@@ -30,7 +30,7 @@ const Profile = () => {
                     },
                 });
                 const data = await response.json();
-                console.log(data);
+                //console.log(data);
                 
                 setInputs({
                     brandName: data.brandName || '',
@@ -99,7 +99,7 @@ const Profile = () => {
                 },
                 body: JSON.stringify(inputs)
             });
-            console.log(response);
+            //console.log(response);
             
             if (response.ok) {
                 alert('Profile updated successfully!');

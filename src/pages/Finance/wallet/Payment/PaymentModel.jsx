@@ -60,7 +60,7 @@ const PaymentModel = ({ visible, onClose }) => {
       );
       
       message.success("Payment Successful")
-      console.log("Payment successful:", response.data);
+      //console.log("Payment successful:", response.data);
     } catch (error) {
       message.error("Payment failed")
       console.error("Error updating user:", error);
