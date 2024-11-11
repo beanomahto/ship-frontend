@@ -256,7 +256,6 @@ console.log(sendWarehouse);
         sendWarehouse, 
         partner.deliveryPartner
       );
-  
       if (codCostWithGst > 0) {
         const codWalletRequestBody = {
           debit: codCostWithGst,
@@ -272,12 +271,13 @@ console.log(sendWarehouse);
               Authorization: localStorage.getItem('token'),
             },
           }
-        );
+        ).catch((err) => console.log(err ));
   
         if (codWalletResponse.status !== 200) {
           message.error("Failed to debit COD cost from wallet");
           return; 
         }
+       
       }
   
       const forwardWalletRequestBody = {
@@ -326,7 +326,7 @@ console.log(sendWarehouse);
       }
     } catch (error) {
       // message.error("Insufficient Balance");
-      message.error(error.message)
+      message.error(error.response.data.error || error.message)
       console.error('Failed to update order status', error);
     } finally {
       setModalLoading(false);

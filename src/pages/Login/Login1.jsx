@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useLogin from "../../hooks/useLogin";
 import { useOrderContext } from "../../context/OrderContext";
 import ForgotPasswordModal from "./ForgotPasswordModal";
+import { useWarehouseContext } from '../../context/WarehouseContext';
 import imgg from "../../utils/new.png";
 import { MdCheckCircle } from "react-icons/md";
 import ShippingSteps from "./loginAnimation/ShippingSteps";
@@ -20,6 +21,7 @@ const Login1 = () => {
 
   const { loading, login } = useLogin();
   const { fetchOrders } = useOrderContext();
+  const {fetchWarehouse} = useWarehouseContext();
 
   const handleInputChange = (field, value) => {
     if (field === "email") setEmail(value);
@@ -50,6 +52,7 @@ const Login1 = () => {
     if (userData?.role === "employee") {
       // Redirect to employee dashboard if role is 'employee'
       fetchOrders();
+      fetchWarehouse();
       navigate("/employeedashboard");
     } else {
       // Default redirection for other users

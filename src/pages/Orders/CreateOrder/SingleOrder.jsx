@@ -264,7 +264,7 @@ console.log(inputs)
                     </div>
                    <div style={{display:'flex'}} >
                    <button class="submit">Submit</button> 
-                    {authUser.email === 'test1@gmail.com' && <button class="submit" onClick={generateSampleData}>
+                    {authUser.email === 'befikan430@operades.com' && <button class="submit" onClick={generateSampleData}>
                         Generate Sample
                     </button>}
                    </div>

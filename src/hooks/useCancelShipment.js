@@ -14,7 +14,7 @@ console.log(selectedOrderData);
     try {
       const token = localStorage.getItem('token');
 
-      const allowedPartners = ['Ekart', 'Blue Dart', 'DTDC', 'Shadowfax', 'Xpressbees', 'Ecom Express'];
+      const allowedPartners = ['Ekart', 'Blue Dart', 'DTDC', 'Shadowfax','Delhivery', 'Xpressbees', 'Ecom Express'];
 console.log(allowedPartners);
 
       const filteredOrders = selectedOrderData.filter(order => allowedPartners.includes(order?.shippingPartner));
