@@ -36,6 +36,8 @@ const useCreateShipment = () => {
       const fshipUrl = "https://backend.shiphere.in/api/smartship/hubregister";
       const fshipCreateForwardOrderUrl =
         "https://backend.shiphere.in/api/smartship/onesteporderregister";
+      const smartshipHupCheck =
+        "https://backend.shiphere.in/api/smartship/checkhubserviceability";
       const fshipCreateShipmentUrl =
         "https://backend.shiphere.in/api/smartship/createManifest";
 
@@ -44,14 +46,6 @@ const useCreateShipment = () => {
           url = "https://backend.shiphere.in/api/ecomExpress/createShipment";
           log = "ecom hit";
           break;
-        // case 'Amazon Shipping':
-        //   url = 'https://backend.shiphere.in/api/amazon-shipping/createShipment';
-        //   log = 'amazon hit';
-        //   break;
-        // case 'Xpressbees':
-        //   url = 'https://backend.shiphere.in/api/xpressbees/createShipment';
-        //   log = 'xpress hit';
-        //   break;
         case "Delhivery":
         case "Amazon Shipping":
         case "Xpressbees":
@@ -65,7 +59,6 @@ const useCreateShipment = () => {
       }
 
       const token = localStorage.getItem("token");
-
       if (
         [
           "Ekart",
@@ -100,6 +93,24 @@ const useCreateShipment = () => {
             else if (deliveryPartnerName === "Amazon Shipping") courierId = 357;
             else if (deliveryPartnerName === "Xpressbees") courierId = 2;
             fetchWarehouse();
+
+            const hubCheckBody = {
+              warehouseId: warehouseIds,
+              orderId: orderIds,
+              courierId,
+              shippingPartner: deliveryPartnerName,
+            };
+
+            const checkHubServiceability = await axios.post(
+              smartshipHupCheck,
+              hubCheckBody,
+              {
+                headers: {
+                  Authorization: `${token}`,
+                },
+              }
+            );
+
             const forwardShipBody = {
               orderId: orderIds,
               warehouseId: warehouseIds,
@@ -117,14 +128,9 @@ const useCreateShipment = () => {
               }
             );
 
-            // const fhipApiOrderId = forwardOrderResponse.data?.apiorderid;
-            //console.log(forwardOrderResponse);
-
             const createShipmentResponse = await axios.post(
               fshipCreateShipmentUrl,
               {
-                // apiorderid: fhipApiOrderId,
-                //   courierId,
                 orderId: orderIds,
               },
               {
@@ -162,13 +168,28 @@ const useCreateShipment = () => {
           else if (deliveryPartnerName === "Amazon Shipping") courierId = 357;
 
           fetchWarehouse();
+       
+      const hubCheckBody = {
+        warehouseId: warehouseIds,
+        orderId: orderIds,
+        courierId,
+        shippingPartner: deliveryPartnerName,
+      };
+          const checkHubServiceability = await axios.post(
+            smartshipHupCheck,
+            hubCheckBody,
+            {
+              headers: {
+                Authorization: `${token}`,
+              },
+            }
+          );
           const forwardShipBody = {
             orderId: orderIds,
             warehouseId: warehouseIds,
             courierId,
             shippingPartner: deliveryPartnerName,
           };
-
           const forwardOrderResponse = await axios.post(
             fshipCreateForwardOrderUrl,
             forwardShipBody,
