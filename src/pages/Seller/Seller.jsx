@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Table, Tag, Button, Input, Space } from "antd";
+import { Table, Tag, Button, Input, Space, Modal, message } from "antd";
 import { Link } from "react-router-dom";
-import { SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Helmet } from "react-helmet";
 import { AiOutlineInteraction } from "react-icons/ai";
 import TagEmployee from "./TagEmployee/TagEmployee";
 import { FaTags } from "react-icons/fa";
+import axios from "axios";
+
+const { confirm } = Modal;
 
 const Seller = () => {
   const [users, setUsers] = useState([]);
@@ -28,23 +31,22 @@ const Seller = () => {
     setSelectedSeller(null); // Reset selected seller when closing the modal
   };
 
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch("https://backend.shiphere.in/api/users", {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      });
+
+      const data = await response.json();
+      const companyUsers = data.filter((user) => user.role === "company");
+      setUsers(companyUsers);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await fetch("https://backend.shiphere.in/api/users", {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        });
-
-        const data = await response.json();
-        const companyUsers = data.filter((user) => user.role === "company");
-        setUsers(companyUsers);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
-
     fetchUsers();
   }, []);
 
@@ -114,7 +116,36 @@ const Seller = () => {
       ),
   });
   //console.log(users);
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/users/deleteUser/${id}`, {
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+      });
+      message.success('User deleted successfully');
+      fetchUsers();
+    } catch (error) {
+      console.error('Error deleting User:', error);
+      message.error('Failed to delete User');
+    }
+  };
 
+  const showDeleteConfirm = (id) => {
+    confirm({
+      title: 'Are you sure you want to delete this User?',
+      content: 'This action cannot be undone.',
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk() {
+        handleDelete(id); 
+      },
+      onCancel() {
+        //console.log('Cancel deletion');
+      },
+    });
+  };
   const columns = [
     {
       title: "Full Name",
@@ -175,13 +206,19 @@ const Seller = () => {
       dataIndex: "earlyCod",
     },
     {
-      title: "Tag",
+      title: "Action",
       key: "action",
       render: (_, record) => (
+        <div style={{display:'flex'}}>
         <FaTags
           onClick={() => showModal(record)}
           style={{ cursor: "pointer", fontSize: "24px", color: "#1890ff" }}
+          />
+        <DeleteOutlined
+        style={{ color: 'red', marginLeft: '20px',fontSize: "18px", cursor: 'pointer' }}
+        onClick={() => showDeleteConfirm(record._id)} 
         />
+        </div>
       ),
     },
   ];
