@@ -157,7 +157,7 @@ const useCreateShipment = () => {
           else if (deliveryPartnerName === "Blue Dart") courierId = 279;
           else if (deliveryPartnerName === "DTDC") courierId = 355;
           else if (deliveryPartnerName === "Shadowfax") courierId = 295;
-          else if (deliveryPartnerName === "Delhivery") courierId = 3;
+          else if (deliveryPartnerName === "Delhivery") courierId = 374;
           else if (deliveryPartnerName === "Xpressbees") courierId = 2;
           else if (deliveryPartnerName === "Amazon Shipping") courierId = 357;
 
