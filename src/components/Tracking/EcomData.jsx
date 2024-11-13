@@ -64,6 +64,8 @@ const EcomData = ({ trackingInfo }) => {
   const latestStatus = latestScan?.status || trackingInfo?.status;
   const fullLatestStatus = fullLatestScan?.status || trackingInfo?.status;
   const progressPercentage = statusToProgress[latestStatus] || 0;
+  console.log(filteredScans);
+  
 
   const getStepIcon = (status) => {
     switch (status) {
@@ -120,9 +122,11 @@ const EcomData = ({ trackingInfo }) => {
       const orderId = currentOrder[0]?._id;
       const shippingCost = currentOrder[0]?.shippingCost;
       const reason = undeliveredScan[0]?.city?.split('\n')[0]; 
+  console.log(latestScan?.status === 'Shipment Picked Up');
+  console.log(latestScan);
   
       // Update to "InTransit"
-      if (fullLatestStatus === 'Shipment Picked Up' && progressPercentage === 100 && currentOrder[0]?.status !== 'InTransit') {
+      if (latestScan?.status === 'Shipment Picked Up' && progressPercentage === 100 && currentOrder[0]?.status !== 'InTransit') {
         updateOrderStatus(orderId, 'InTransit', shippingCost);
       }
   
