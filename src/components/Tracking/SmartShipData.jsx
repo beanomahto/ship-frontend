@@ -40,8 +40,8 @@ const SmartShipData = ({ trackingInfo }) => {
 
   const latestStatus = trackingHistory[0]?.status_description;
   const latestAwb = trackingHistory[0]?.tracking_number;
-  console.log(latestStatus);
-  
+  console.log(trackingHistory.map((ok) => ok.status_description).includes('In Transit'));
+  const isInTransit = trackingHistory.map((ok) => ok.status_description).includes('In Transit')
 
   // Function to update order status in the backend
   const updateOrderStatus = async (orderId, newStatus) => {
@@ -107,7 +107,7 @@ const SmartShipData = ({ trackingInfo }) => {
   
           if (latestStatus === "Delivered" && currentOrder.status !== "Delivered") {
             updateOrderStatus(orderId, "Delivered");
-          } else if (latestStatus === "In Transit" && currentOrder.status !== "InTransit") {
+          } else if (isInTransit && currentOrder.status !== "InTransit" && currentOrder.status !== "Delivered") {
             updateOrderStatus(orderId, "InTransit");
           } else if (latestStatus === "Pending" && currentOrder.status !== "Pending") {
             updateOrderStatus(orderId, "Pending");
