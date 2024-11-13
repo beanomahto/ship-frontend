@@ -84,6 +84,8 @@ const EcomData = ({ trackingInfo }) => {
 
   const shippedOrders = orders?.orders?.filter(order => order.status === 'Shipped' || order.status === 'InTransit'|| order.status === 'Delivered' || order.status === 'UnDelivered');
   const currentOrder = shippedOrders?.filter((order) => order?.awb === trackingInfo?.awb_number);
+  console.log(currentOrder);
+  
 
   const updateOrderStatus = async (orderId, newStatus, shippingCost, reason = null) => {
     try {
