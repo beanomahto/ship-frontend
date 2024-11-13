@@ -33,7 +33,7 @@ const CheckPincode = () => {
           params: { pincode },
         }
       );
-      console.log("Response Data:", response.data);
+      //console.log("Response Data:", response.data);
 
       const { service, pincodeData } = response.data;
 

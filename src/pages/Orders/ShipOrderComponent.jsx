@@ -10,7 +10,7 @@ import { useAuthContext } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 
 const ShipOrderComponent = ({ rowSelection, dataSource, fetchOrders, loading, tab }) => {
-  console.log(tab);
+  //console.log(tab);
   const [searchText, setSearchText] = React.useState('');
   const [searchedColumn, setSearchedColumn] = React.useState('');
   const { authUser } = useAuthContext();
@@ -73,7 +73,7 @@ const ShipOrderComponent = ({ rowSelection, dataSource, fetchOrders, loading, ta
       ),
   });
   const tabs =  tab.tab.split(' ')[0];
-  console.log(tabs);
+  //console.log(tabs);
   const columns = [
     {
       title: 'Order Id',
@@ -177,7 +177,7 @@ const ShipOrderComponent = ({ rowSelection, dataSource, fetchOrders, loading, ta
   ];
 
   const shippedOrders = dataSource?.filter(order => order?.status === 'Shipped');
-console.log(shippedOrders);
+//console.log(shippedOrders);
 
   return (
     <>
@@ -196,8 +196,8 @@ console.log(shippedOrders);
             dataSource={shippedOrders}
             className="centered-table"
             rowKey="_id"
-            scroll={{ x:1050,y: 450 }}
-            pagination={false}
+            scroll={{ x:1050,y: 400 }}
+            // pagination={false}
             style={{ width: '100%', height: '505px' }}
           />
         )

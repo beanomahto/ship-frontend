@@ -1,28 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
 import { Card, Descriptions, Spin, message, Row, Col, Divider, Typography, Steps, Progress } from 'antd';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
-
-import { CheckCircleOutlined, ClockCircleOutlined, SyncOutlined, CloseCircleOutlined, CheckOutlined } from '@ant-design/icons';
-import EcomData from './EcomData';
-import Footer from './Footer';
-import FShipData from './FShipData';
-import Xressbees from './Xressbees';
-import SmartShipData from './SmartShipData';
 
 const { Title } = Typography;
 const { Step } = Steps;
+export const TrackingContext = createContext();
 
-const Tracking = () => {
+export const useTrackingContext = () => {
+  return useContext(TrackingContext);
+};
+
+export const TrackingContextProvider = ({ children }) => {
   const [trackingInfo, setTrackingInfo] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [steps, setSteps] = useState([]);
-  const { shippingPartner, awb } = useParams();
+  const {shippingPartner, awb} = useParams();
+//   console.log(params);
 
-  useEffect(() => {
-    const fetchTrackingInfo = async () => {
+    const fetchTrackingInfo = async (shippingPartner,awb) => {
       try {
-        const splitPartners = shippingPartner.replace(/\s+/g, '');
+        const splitPartners = shippingPartner?.replace(/\s+/g, '');
         //console.log(splitPartners);
         
         const fShipPartner = ['Ekart', 'BlueDart', 'DTDC', 'Shadowfax','Delhivery'].includes(splitPartners);
@@ -36,7 +34,7 @@ const Tracking = () => {
         //console.log(response.data);
         
        } else {
-        const response = await axios.get(`https://backend.shiphere.in/api/${shippingPartner.replace(/\s+/g, '')}/track/${awb}`);
+        const response = await axios.get(`https://backend.shiphere.in/api/${shippingPartner?.replace(/\s+/g, '')}/track/${awb}`);
 
         if (shippingPartner.toLowerCase() === 'ecom express') {
           const parser = new DOMParser();
@@ -51,10 +49,8 @@ const Tracking = () => {
           setTrackingInfo(data);
           //console.log(data);
           //console.log(response)
-          updateSteps(data);
         } else {
           setTrackingInfo(response.data.trackingInfo);
-          updateSteps(response.data.trackingInfo);
         }
        }
       } catch (error) {
@@ -64,20 +60,10 @@ const Tracking = () => {
         setLoading(false);
       }
     };
-
-    const updateSteps = (newTrackingInfo) => {
-      setSteps(prevSteps => [
-        ...prevSteps,
-        {
-          status: newTrackingInfo.status,
-          tracking_status: newTrackingInfo.tracking_status,
-          updated_on: newTrackingInfo.updated_on
-        }
-      ]);
-    };
-
+ 
+  useEffect(() => {
     fetchTrackingInfo();
-  }, [awb, shippingPartner]);
+  }, [shippingPartner,awb]);
 
   if (loading) {
     return (
@@ -89,29 +75,11 @@ const Tracking = () => {
       </div>
     );
   }
-
-  if (!trackingInfo) {
-    return <p>No tracking information available.</p>;
-  }
-
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <div style={{ flexGrow: 1, padding: '20px', backgroundColor: '#ffffff' }}>
-      {
-        shippingPartner && shippingPartner.toLowerCase() === 'ecom express' ? (
-          <EcomData trackingInfo={trackingInfo} steps={steps} />
-        ) : (
-          shippingPartner && shippingPartner === 'Xpressbees' ? (
-            <Xressbees trackingInfo={trackingInfo} />
-          ) : (
-            <SmartShipData trackingInfo={trackingInfo} />
-          )
-        )
-      }
-      </div>
-      <Footer />
-    </div>
+    <TrackingContext.Provider
+      value={{ trackingInfo, setTrackingInfo, fetchTrackingInfo }}
+    >
+      {children}
+    </TrackingContext.Provider>
   );
 };
-
-export default Tracking;

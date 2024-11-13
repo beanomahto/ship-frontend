@@ -34,7 +34,7 @@ const EarlyCodPopup = ({ visible, onClose }) => {
       message.error('Please select an option.');
       return;
     }
-    console.log(earlyCod);
+    //console.log(earlyCod);
     
     const token = localStorage.getItem('token');
     try {
@@ -45,8 +45,8 @@ const EarlyCodPopup = ({ visible, onClose }) => {
           'Authorization': `${token}`,
         }
       });
-console.log(response);
-console.log(selectedCard);
+//console.log(response);
+//console.log(selectedCard);
 
       message.success('Early COD option activated successfully!');
       onClose();

@@ -8,7 +8,7 @@ import { useWarehouseContext } from '../../../context/WarehouseContext';
 const UpdateWarehouse = () => {
     const navigate = useNavigate();
     const { id } = useParams(); 
-    console.log(id);
+    //console.log(id);
     const {warehouse,fetchWarehouse} = useWarehouseContext();
     const [inputs, setInputs] = useState({
         warehouseName:'',
@@ -34,7 +34,7 @@ const UpdateWarehouse = () => {
                     }
                 });
                 const data = await response.json();
-                console.log(data);
+                //console.log(data);
                 
                 setInputs({
                     warehouseName: data?.warehouse?.warehouseName || '',
@@ -92,7 +92,7 @@ const UpdateWarehouse = () => {
                 },
                 body: JSON.stringify(inputs),
             });
-console.log(response);
+//console.log(response);
 
             if (response.ok) {
                 navigate('/warehouse'); 

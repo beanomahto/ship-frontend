@@ -57,7 +57,7 @@ const SearchSellerModal = ({ visible, onClose, remittanceData }) => {
       dataIndex: 'status',
     },
   ];
-console.log(filteredData);
+//console.log(filteredData);
   return (
     <Modal
       title="Search Seller Remittance"

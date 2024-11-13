@@ -58,7 +58,7 @@ const Support = () => {
             awb: awbString,
         };
 
-        console.log(data);
+        //console.log(data);
 
         try {
             const response = await fetch('https://backend.shiphere.in/api/complaint/registercomplaint', {

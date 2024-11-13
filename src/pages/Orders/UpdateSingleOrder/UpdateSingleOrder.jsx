@@ -12,7 +12,7 @@ const UpdateSingleOrder = () => {
   const navigate = useNavigate();
   const { id, orderId, tabs } = useParams();
   const { orders, fetchOrders } = useOrderContext();
-  console.log(id);
+  //console.log(id);
   
   const {
     loading: singleOrderLoading,
@@ -41,7 +41,7 @@ const UpdateSingleOrder = () => {
     height: "",
     paymentMethod: null,
   });
-console.log(singleOrder);
+//console.log(singleOrder);
 
   useEffect(() => {
     if (id) {

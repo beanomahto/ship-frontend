@@ -133,13 +133,13 @@ const TopDestinationsGraph = () => {
   ]; // Added color for "Others"
 
   // Debugging logs to verify the orders data
-  console.log("Orders data:", orders);
-  console.log("Loading state:", loading);
-  console.log("Error state:", error);
+  //console.log("Orders data:", orders);
+  //console.log("Loading state:", loading);
+  //console.log("Error state:", error);
 
   useEffect(() => {
     if (!loading && orders?.success && Array.isArray(orders.orders)) {
-      console.log("Valid orders data found");
+      //console.log("Valid orders data found");
 
       const orderCountByState = Array(labels.length).fill(0);
 
@@ -159,14 +159,14 @@ const TopDestinationsGraph = () => {
         }
       });
 
-      console.log("Order counts by state:", orderCountByState);
+      //console.log("Order counts by state:", orderCountByState);
 
       // Only update state if the new counts differ from the old
       if (JSON.stringify(orderCountByState) !== JSON.stringify(dataValues)) {
         setDataValues(orderCountByState);
       }
     } else {
-      console.log("Loading or invalid orders data");
+      //console.log("Loading or invalid orders data");
     }
   }, [orders, loading]);
 
@@ -174,7 +174,7 @@ const TopDestinationsGraph = () => {
     orders && orders.success && Array.isArray(orders.orders)
       ? orders.orders.length
       : 0; // Check total orders
-  console.log("Total orders:", total);
+  //console.log("Total orders:", total);
 
   const stateData = labels.map((label, index) => ({
     state: label,
@@ -182,7 +182,7 @@ const TopDestinationsGraph = () => {
     color: colors[index],
   }));
 
-  console.log("State data with percentages:", stateData);
+  //console.log("State data with percentages:", stateData);
 
   const data = {
     labels: labels,

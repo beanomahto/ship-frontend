@@ -7,9 +7,9 @@ import woo from "../../../utils/woocomerce.png";
 
 const WooCommerce = () => {
   // const { slug } = useParams();
-  // console.log(slug);
+  // //console.log(slug);
   const slug = "wooCommerce"
-  console.log(slug);
+  //console.log(slug);
   
   const [data, setData] = useState(null);
   const [storeInputs, setStoreInputs] = useState({
@@ -33,7 +33,7 @@ const WooCommerce = () => {
 //           }
 //         );
 //         const result = await res.json();
-//   console.log(result);
+//   //console.log(result);
   
 //         if (result.storeName) {
 //           setData(result);
@@ -54,7 +54,7 @@ const WooCommerce = () => {
   
 //     getChannelInfo();
 //   }, [slug]);
-// console.log(data);
+// //console.log(data);
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -68,7 +68,7 @@ const handleSubmit = async (e) => {
     message.error("An error occurred while integrating the channel");
   }
 };
-console.log(storeInputs);
+//console.log(storeInputs);
 
 const integrateWooCommerceChannel = async () => {
   try {
@@ -84,8 +84,8 @@ const integrateWooCommerceChannel = async () => {
         body: JSON.stringify(storeInputs),
       }
     );
-  console.log(storeInputs);
-  console.log(await res.json());
+  //console.log(storeInputs);
+  //console.log(await res.json());
 
   } catch (error) {
     console.error("Error integrating Shopify channel:", error);

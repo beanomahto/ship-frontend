@@ -9,7 +9,7 @@ import {Link} from 'react-router-dom'
 const Wallet = () => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
-  console.log(transactions);
+  //console.log(transactions);
   
   const newOrders = [
     {
@@ -70,7 +70,7 @@ const Wallet = () => {
 
     fetchTransactions();
   }, []);
-console.log(transactions);
+//console.log(transactions);
 
   return (
     <div>

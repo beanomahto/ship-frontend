@@ -26,7 +26,7 @@ const slug = "shopify"
               }
             );
             const result = await res.json();
-      console.log(result);
+      //console.log(result);
       
             if (result.storeName) {
               setData(result);
@@ -47,7 +47,7 @@ const slug = "shopify"
       
         getChannelInfo();
       }, [slug]);
-    console.log(data);
+    //console.log(data);
   return (
     <div
       style={{

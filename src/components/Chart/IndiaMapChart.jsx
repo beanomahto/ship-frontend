@@ -3,7 +3,7 @@ import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 import indiaTopoJson from './india.topo.json';
 
 const IndiaMapChart = () => {
-  console.log(indiaTopoJson); // Verify the data is loaded correctly
+  //console.log(indiaTopoJson); // Verify the data is loaded correctly
 
   return (
     <div className="indiaMapCard">

@@ -55,10 +55,10 @@ const SingleOrder = () => {
             });
           }
         };
-console.log(inputs)
+//console.log(inputs)
     const { loading, createSingleOrder } = useCreateSingleOrder();
     const { orders, fetchOrders } = useOrderContext();
-    console.log(orders);
+    //console.log(orders);
 
     const handleOrderSubmit = async(e) => {	
         e.preventDefault();
@@ -264,6 +264,8 @@ console.log(inputs)
                     </div>
                    <div style={{display:'flex'}} >
                    <button class="submit">Submit</button> 
+                    {/* {authUser.email === 'poxey43493@operades.com' && <button class="submit" onClick={generateSampleData}> */}
+                    {/* {authUser.email === 'vojisis697@inikale.com' && <button class="submit" onClick={generateSampleData}> */}
                     {authUser.email === 'test1@gmail.com' && <button class="submit" onClick={generateSampleData}>
                         Generate Sample
                     </button>}

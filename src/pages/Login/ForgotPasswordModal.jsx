@@ -14,7 +14,7 @@ const ForgotPasswordModal = ({ visible, onClose }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
       });
-      console.log(email);
+      //console.log(email);
       alert('Password reset email sent! Check email');
       onClose();
     } catch (error) {

@@ -58,8 +58,8 @@ const KYC = () => {
 
         fetchKycData();
     }, []);
-console.log(kycData);
-console.log(authUser);
+//console.log(kycData);
+//console.log(authUser);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -123,7 +123,7 @@ console.log(authUser);
                             >
                                 <Select.Option value="individual">Individual</Select.Option>
                                 <Select.Option value="propertysip">Proprietorship</Select.Option>
-                                <Select.Option value="pvt_lmt">PVT LMT</Select.Option>
+                                <Select.Option value="pvt_lmt">PVT LTD</Select.Option>
                                 <Select.Option value="llp">LLP</Select.Option>
                             </Select>
                         </label>

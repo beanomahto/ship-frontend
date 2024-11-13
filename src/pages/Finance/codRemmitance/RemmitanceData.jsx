@@ -2,9 +2,9 @@ import { Button } from 'antd'
 import React from 'react'
 
 const RemmitanceData = ({remittanceData}) => {
-    console.log(remittanceData);
+    //console.log(remittanceData);
     const totalRemittance = remittanceData?.reduce((acc, curr) => acc + curr.amountPaid, 0);
-    console.log('Total Remittance:', totalRemittance);
+    //console.log('Total Remittance:', totalRemittance);
     
     return (
         <div className='rbtncontainer'>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Input, Button, Space, message, Tag, Skeleton } from 'antd';
+import { Table, Input, Button, Space, message, Tag, Skeleton, Modal } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import axios from 'axios';
@@ -9,9 +9,12 @@ import Shopify from '../../utils/shopify.png';
 import Woo from '../../utils/woocomerce.png'
 import logo from '../../utils/logo1.jpg' 
 import { useAuthContext } from '../../context/AuthContext';
+import { DeleteOutlined } from '@ant-design/icons';
+
+const { confirm } = Modal;
 
 const AllOrderComponent = ({ dataSource, fetchOrders, loading,tab }) => {
-  console.log(tab);
+  //console.log(tab);
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -71,7 +74,36 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading,tab }) => {
       ),
   });
   const tabs =  tab.tab.split(' ')[0];
-  console.log(tabs);
+  //console.log(tabs);
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`https://backend.shiphere.in/api/orders/deleteOrder/${id}`, {
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+      });
+      message.success('Order deleted successfully');
+      fetchOrders();
+    } catch (error) {
+      console.error('Error deleting Order:', error);
+      message.error('Failed to delete Order');
+    }
+  };
+  const showDeleteConfirm = (id) => {
+    confirm({
+      title: 'Are you sure you want to delete this Order?',
+      content: 'This action cannot be undone.',
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk() {
+        handleDelete(id); 
+      },
+      onCancel() {
+        //console.log('Cancel deletion');
+      },
+    });
+  };
   const columns = [
     {
       title: 'Order Id',
@@ -92,12 +124,6 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading,tab }) => {
         <span>{record?.shippingPartner}</span>
         </>
       ),
-      // filters: [
-      //   { text: 'Shipped', value: 'Shipped' },
-      //   { text: 'InTransit', value: 'InTransit' },
-      //   { text: 'Delivered', value: 'Delivered' },
-      //   { text: 'Cancelled', value: 'Cancelled' },
-      // ],
       onFilter: (value, record) => record.s_status.indexOf(value) === 0,
     },
     {
@@ -171,6 +197,16 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading,tab }) => {
       ),
       className: 'centered-row',
     }] : []),
+    ...(authUser?.role === 'admin' ? [{
+      title: 'Action',
+      render: (_, record) => (
+        <DeleteOutlined
+        style={{ color: 'red', marginLeft: '1rem', cursor: 'pointer' }}
+        onClick={() => showDeleteConfirm(record._id)} 
+      />
+      ),
+      className: 'centered-row',
+    }] : []),
   ];
 
 
@@ -180,11 +216,11 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading,tab }) => {
       setSelectedRowKeys(selectedKeys);
     },
   };
-  console.log(dataSource);
+  //console.log(dataSource);
   
   const allOrders = dataSource?.filter(order => order?.status === 'Shipped');
-  // console.log(rowSelection);
-  console.log(allOrders);
+  // //console.log(rowSelection);
+  //console.log(allOrders);
   
   return (
     <>
@@ -204,8 +240,8 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading,tab }) => {
           dataSource={dataSource}
           rowKey="_id"
            className="centered-table"
-          scroll={{ x:1050,y: 450 }}
-          pagination={false}
+          scroll={{ x:1050,y: 440 }}
+          // pagination={false}
           style={{ width: '100%', height: '505px' }}
         />
       }

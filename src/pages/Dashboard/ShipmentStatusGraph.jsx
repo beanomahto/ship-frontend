@@ -131,7 +131,7 @@ const ShipmentStatusGraph = () => {
   // Effect to calculate the shipment statuses from orders dynamically
   useEffect(() => {
     if (!loading && orders?.success && Array.isArray(orders.orders)) {
-      console.log("Valid orders data found");
+      //console.log("Valid orders data found");
 
       const orderCountByState = Array(labels.length).fill(0);
 
@@ -147,23 +147,23 @@ const ShipmentStatusGraph = () => {
           orderCountByState[stateIndex]++;
         } else {
           // If the status doesn't match predefined labels, ignore it
-          console.log("Unknown status found:", normalizedStatus);
+          //console.log("Unknown status found:", normalizedStatus);
         }
       });
 
-      console.log("Order counts by status:", orderCountByState);
+      //console.log("Order counts by status:", orderCountByState);
 
       // Only update state if the new counts differ from the old
       if (JSON.stringify(orderCountByState) !== JSON.stringify(dataValues)) {
         setDataValues(orderCountByState);
       }
     } else {
-      console.log("Loading or invalid orders data");
+      //console.log("Loading or invalid orders data");
     }
   }, [orders, loading]);
 
   const total = dataValues.reduce((acc, value) => acc + value, 0);
-  console.log("Total orders:", total); // Calculate total orders
+  //console.log("Total orders:", total); // Calculate total orders
 
   const stateData = labels.map((label, index) => ({
     state: label,

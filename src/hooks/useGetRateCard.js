@@ -16,7 +16,7 @@ const useShippingRateCard = () => {
                     }
                 });
                 setData(response.data);
-                console.log(response);
+                //console.log(response);
             } catch (err) {
                 setError(err);
             } finally {

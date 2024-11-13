@@ -27,7 +27,7 @@
 //       const data = await response.json();
 //       setBalance(data.amount);
 //     } catch (error) {
-//       console.log(error);
+//       //console.log(error);
 //     }
 //   };
 //   useEffect(() => {
@@ -73,7 +73,7 @@ export const AuthContextProvider = ({ children }) => {
       const data = await response.json();
       setBalance(data.amount);
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
   };
 

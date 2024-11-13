@@ -15,7 +15,7 @@ const Orders = () => {
   const { orders, setOrders } = useOrderContext();
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleShipNow, setModalVisibleShipNow] = useState(false);
-  console.log(orders);
+  //console.log(orders);
 
   const showModal = () => {
       setModalVisible(true);

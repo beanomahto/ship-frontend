@@ -60,7 +60,7 @@ const WeightDispensory = () => {
     key: data._id,
   })) || [];
   
-console.log(dataSourceWithKeys);
+//console.log(dataSourceWithKeys);
 
   const tabsData = [
     {

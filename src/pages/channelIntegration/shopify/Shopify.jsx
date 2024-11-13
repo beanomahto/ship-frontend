@@ -30,7 +30,7 @@ const Shopify = () => {
 //           }
 //         );
 //         const result = await res.json();
-//   console.log(result);
+//   //console.log(result);
   
 //         if (result.storeName) {
 //           setData(result);
@@ -51,7 +51,7 @@ const Shopify = () => {
   
 //     getChannelInfo();
 //   }, [slug]);
-// console.log(data);
+// //console.log(data);
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -73,7 +73,7 @@ const handleSubmit = async (e) => {
   }
 };
 
-  console.log(storeInputs);
+  //console.log(storeInputs);
   
   const integrateShopifyChannel = async () => {
     try {
@@ -89,8 +89,8 @@ const handleSubmit = async (e) => {
           body: JSON.stringify(storeInputs),
         }
       );
-    console.log(storeInputs);
-    console.log(await res.json());
+    //console.log(storeInputs);
+    //console.log(await res.json());
   
       // if (!res.ok) {
       //   throw new Error("Failed to create the channel");

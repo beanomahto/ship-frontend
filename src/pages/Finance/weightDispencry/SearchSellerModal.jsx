@@ -5,7 +5,7 @@ import moment from 'moment';
 const SearchSellerModal = ({ visible, onClose, weightDispensory }) => {
   const [searchValue, setSearchValue] = useState('');
   const [filteredData, setFilteredData] = useState([]);
-console.log(weightDispensory.data);
+//console.log(weightDispensory.data);
   const handleSearch = () => {
     const filtered = weightDispensory?.data?.filter(weight =>
       weight?.seller?.email?.toLowerCase().includes(searchValue.toLowerCase())
@@ -55,7 +55,7 @@ console.log(weightDispensory.data);
       dataIndex: 'remarks',
     },
   ];
-console.log(filteredData);
+//console.log(filteredData);
   return (
     <Modal
       title="Search Seller Remittance"

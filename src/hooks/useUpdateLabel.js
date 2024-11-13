@@ -6,7 +6,7 @@ const useUpdateLabel = () => {
     const [error, setError] = useState(null);
 
     const updateLebel = async (updateLebel) => {
-        console.log(updateLebel);
+        //console.log(updateLebel);
         setLoading(true);
         try {
             const token = localStorage.getItem('token');
@@ -16,10 +16,10 @@ const useUpdateLabel = () => {
                 },
             });
             setLoading(false);
-            console.log('Updated order:', response.data);
+            //console.log('Updated order:', response.data);
         } catch (error) {
             setError(error);
-            console.log(error);
+            //console.log(error);
             setLoading(false);
         }
     };

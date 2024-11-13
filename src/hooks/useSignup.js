@@ -46,7 +46,7 @@ const useSignup = () => {
       if (data.error) {
         throw new Error(data.error);
       }
-      console.log(data);
+      //console.log(data);
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("ship-user", JSON.stringify(data));
@@ -96,7 +96,7 @@ const useSignup = () => {
       if (labelInfoData.error) {
         console.warn("Labelinfo creation error:", labelInfoData.error);
       } else {
-        console.log("Labelinfo created:", labelInfoData);
+        //console.log("Labelinfo created:", labelInfoData);
       }
     } catch (error) {
       console.error("Error creating default Label Info:", error);

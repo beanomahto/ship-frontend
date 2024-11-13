@@ -7,9 +7,9 @@ import moment from 'moment';
 import axios from 'axios';
 
 const ActionRequiredTab = ({ rowSelection, selectedRowKeys, dataSource,selectedOrderData }) => {
-  console.log(dataSource);
-  console.log(selectedRowKeys); 
-  console.log(selectedOrderData); 
+  //console.log(dataSource);
+  //console.log(selectedRowKeys); 
+  //console.log(selectedOrderData); 
   
   const { authUser } = useAuthContext();
   const [loading, setLoading] = useState(false);
@@ -34,7 +34,7 @@ const ActionRequiredTab = ({ rowSelection, selectedRowKeys, dataSource,selectedO
         comment: action === 'Re-attempt' ? `${selectedDate.format('DD/MM/YYYY')}` : action,
         instruction : action === 'RTO' ? 'RTO' : 'RAD'
       };
-console.log(payload);
+//console.log(payload);
 
       await axios.post('https://backend.shiphere.in/api/ecomExpress/createNdr', payload, {
         headers: {

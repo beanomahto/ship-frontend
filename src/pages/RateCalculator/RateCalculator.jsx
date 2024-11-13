@@ -20,7 +20,7 @@ const RateCalculator = () => {
   });
   const [rateResult, setRateResult] = useState(null);
 
-  console.log(inputs);
+  //console.log(inputs);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

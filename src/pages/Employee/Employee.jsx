@@ -11,9 +11,9 @@ const Employee = () => {
   const [users, setUsers] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
-  console.log(users);
+  //console.log(users);
   const handleDelete = async (id) => {
-    console.log(id);
+    //console.log(id);
 
     try {
       await axios.delete(
@@ -51,7 +51,7 @@ const Employee = () => {
   useEffect(() => {
     fetchUsers();
   }, []);
-  console.log(users);
+  //console.log(users);
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -130,7 +130,7 @@ const Employee = () => {
         handleDelete(id);
       },
       onCancel() {
-        console.log("Cancel deletion");
+        //console.log("Cancel deletion");
       },
     });
   };

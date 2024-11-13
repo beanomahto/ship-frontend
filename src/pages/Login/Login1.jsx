@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useLogin from "../../hooks/useLogin";
 import { useOrderContext } from "../../context/OrderContext";
 import ForgotPasswordModal from "./ForgotPasswordModal";
+import { useWarehouseContext } from '../../context/WarehouseContext';
 import imgg from "../../utils/new.png";
 import { MdCheckCircle } from "react-icons/md";
 import ShippingSteps from "./loginAnimation/ShippingSteps";
@@ -20,6 +21,7 @@ const Login1 = () => {
 
   const { loading, login } = useLogin();
   const { fetchOrders } = useOrderContext();
+  const {fetchWarehouse} = useWarehouseContext();
 
   const handleInputChange = (field, value) => {
     if (field === "email") setEmail(value);
@@ -32,10 +34,10 @@ const Login1 = () => {
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
   //   try {
-  //     console.log(email);
-  //     console.log(password);
+  //     //console.log(email);
+  //     //console.log(password);
   //     await login(email, password);
-  //     console.log("ok");
+  //     //console.log("ok");
   //     fetchOrders();
   //     navigate("/");
   //   } catch (error) {
@@ -46,13 +48,15 @@ const Login1 = () => {
     e.preventDefault();
 
     const userData = await login(email, password);
-    console.log("User data received:", userData);
+    //console.log("User data received:", userData);
     if (userData?.role === "employee") {
       // Redirect to employee dashboard if role is 'employee'
       fetchOrders();
+      fetchWarehouse();
       navigate("/employeedashboard");
     } else {
       // Default redirection for other users
+      fetchWarehouse();
       fetchOrders();
       navigate("/");
     }

@@ -14,7 +14,7 @@ const ResetPassword = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("clicked");
+        //console.log("clicked");
         try {
             const response = await fetch('https://backend.shiphere.in/api/auth/reset-password', {
                 method: 'POST',
@@ -28,12 +28,12 @@ const ResetPassword = () => {
                     confirmPassword
                 }),
             });
-            console.log(email);
-            console.log(newPassword);
-            console.log(confirmPassword);
-            console.log(response);
+            //console.log(email);
+            //console.log(newPassword);
+            //console.log(confirmPassword);
+            //console.log(response);
             const data = await response.json();
-            console.log(data);
+            //console.log(data);
             if (response.ok) {
                 alert("Password reset successfully");
                 navigate('/login');

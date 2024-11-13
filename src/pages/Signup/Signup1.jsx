@@ -4,6 +4,7 @@ import React, { useState, useRef } from "react";
 import useSignup from "../../hooks/useSignup";
 import { useOrderContext } from "../../context/OrderContext";
 import imgg from "../../utils/new.png";
+import { useWarehouseContext } from '../../context/WarehouseContext';
 import { MdCheckCircle } from "react-icons/md";
 
 const Signup1 = () => {
@@ -34,7 +35,7 @@ const Signup1 = () => {
   const [phoneError, setPhoneError] = useState("");
   const [isOtpButtonDisabled, setIsOtpButtonDisabled] = useState(false);
   const [otpTimer, setOtpTimer] = useState(60);
-
+  const {fetchWarehouse} = useWarehouseContext();
   const otpRefs = useRef(new Array(6).fill(null));
 
   const validatePhoneNumber = (phoneNumber) => /^[0-9]{10}$/.test(phoneNumber);
@@ -89,6 +90,7 @@ const Signup1 = () => {
     try {
       await signup(inputs);
       fetchOrders();
+      fetchWarehouse()
       navigate("/");
     } catch (error) {
       console.error("Signup failed", error);
@@ -116,7 +118,7 @@ const Signup1 = () => {
         }
 
         const result = await response.json();
-        console.log("OTP sent successfully:", result);
+        //console.log("OTP sent successfully:", result);
 
         setIsOtpButtonDisabled(true);
         let timeLeft = 30;

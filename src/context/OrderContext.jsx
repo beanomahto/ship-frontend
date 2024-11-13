@@ -26,7 +26,7 @@ export const OrderContextProvider = ({ children }) => {
         throw new Error("Failed to fetch orders");
       }
       const data = await response.json();
-      console.log("okok", data);
+      //console.log("okok", data);
       setOrders(data);
     } catch (error) {
       setError(error.message);

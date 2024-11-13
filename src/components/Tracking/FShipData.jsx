@@ -19,7 +19,7 @@ const { Title } = Typography;
 const { Step } = Steps;
 
 const FShipData = ({ trackingInfo }) => {
-  console.log(trackingInfo);
+  //console.log(trackingInfo);
 
   const trackingHistory = trackingInfo?.trackingdata || [];
   const totalSteps = trackingHistory.length;

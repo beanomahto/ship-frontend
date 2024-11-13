@@ -7,7 +7,7 @@ const UploadDiscrepancyImagesModal = ({ visible, onClose, discrepancyId, product
   const token = localStorage.getItem('token');
 
   const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
-  console.log(fileList);
+  //console.log(fileList);
   const handleUpload = async () => {
     if (!productName) {
       message.error('No product name provided');
@@ -21,7 +21,7 @@ const UploadDiscrepancyImagesModal = ({ visible, onClose, discrepancyId, product
     formData.append('productName', productName);
   
     for (let pair of formData.entries()) {
-      console.log(pair[0] + ':', pair[1]);
+      //console.log(pair[0] + ':', pair[1]);
     }
   
     try {
@@ -34,12 +34,12 @@ const UploadDiscrepancyImagesModal = ({ visible, onClose, discrepancyId, product
       });
 
       const uploadResult = await uploadResponse.json();
-      console.log(uploadResponse.json());
+      //console.log(uploadResponse.json());
       
       fetchWeightDespensory()
       message.success("images uploaded");
   
-      console.log('Upload Result:', uploadResult);
+      //console.log('Upload Result:', uploadResult);
   
       const updateResponse = await fetch(`https://backend.shiphere.in/api/weightdiscrepancy/updateStatus/${discrepancyId}`, {
         method: 'PUT',
@@ -57,7 +57,7 @@ const UploadDiscrepancyImagesModal = ({ visible, onClose, discrepancyId, product
       const updateResult = await updateResponse.json();
       message.success('Status updated to Open');
   
-      console.log('Update Result:', updateResult);
+      //console.log('Update Result:', updateResult);
   
       onClose();
     } catch (error) {
