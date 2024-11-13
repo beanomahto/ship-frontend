@@ -23,7 +23,7 @@ const { TabPane } = Tabs;
 import Logo from "../../utils/logo.png";
 import { toWords } from "number-to-words";
 import { useAuthContext } from "../../context/AuthContext";
-import BD from "../../utils/newlogo/amazonShippinglogo.jpg";
+import BD from "../../utils/newlogo/bluedartlogo.png";
 // import DLVRY from "../../utils/newlogo/delhivery.png";
 import DLVRY from "../../utils/newlogo/delhivery.png";
 import AS from "../../utils/newlogo/amazonShippinglogo.jpg";
@@ -287,7 +287,8 @@ const Orders = () => {
     XLSX.writeFile(workbook, "Orders.xlsx");
   };
 
-  const dataSourceWithKeys = orders?.orders?.map((order) => ({
+  const dataSourceWithKeys =
+    orders?.orders?.map((order) => ({
       ...order,
       key: order._id,
       order: order,
@@ -1013,7 +1014,7 @@ const Orders = () => {
           <TabPane key={tab.key} tab={tab.tab}>
             {tab.Component ? (
               <tab.Component
-              fetchWarehouse={fetchWarehouse}
+                fetchWarehouse={fetchWarehouse}
                 tab={tab}
                 dataSource={tab.dataSource}
                 // rowSelection={tab.key === 'tab1' ? rowSelection : null}
