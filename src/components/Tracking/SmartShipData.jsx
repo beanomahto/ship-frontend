@@ -39,9 +39,18 @@ const SmartShipData = ({ trackingInfo }) => {
   const currentStepIndex = totalSteps - 1;
 
   const latestStatus = trackingHistory[0]?.status_description;
-  const latestAwb = trackingHistory[0]?.tracking_number;
   console.log(trackingHistory.map((ok) => ok.status_description).includes('In Transit'));
-  const isInTransit = trackingHistory.map((ok) => ok.status_description).includes('In Transit')
+  const isInTransit =  trackingHistory.some((ok) =>
+    ['In Transit', 'Shipped'].includes(ok.status_description)
+  )
+  console.log(
+    trackingHistory.some((ok) =>
+      ['In Transit', 'Shipped'].includes(ok.status_description)
+    )
+  );
+  
+  
+console.log(trackingHistory.map((ok) => ok.status_description));
 
   // Function to update order status in the backend
   const updateOrderStatus = async (orderId, newStatus) => {
