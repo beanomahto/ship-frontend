@@ -1,0 +1,37 @@
+.orderSummaryContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: 40px;
+    /* padding: 30px; */
+    padding-top: 20px;
+  }
+  
+  .orderSummaryCard {
+    display: flex;
+    max-width: 350px;
+    height: 100px;
+    justify-content:space-between;
+    align-items: center;
+    padding: 30px 40px;
+    border-radius: 10px;
+    background-color: #fbfcf8;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .orderSummary h3 {
+    margin: 0;
+    font-size: 24px;
+  }
+  
+  .orderSummary p {
+    margin: 0;
+    font-size: 14px;
+    color: #777;
+  }
+  
+  .orderIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
