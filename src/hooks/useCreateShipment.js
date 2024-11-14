@@ -38,6 +38,8 @@ const useCreateShipment = () => {
         "https://backend.shiphere.in/api/smartship/onesteporderregister";
       const smartshipHupCheck =
         "https://backend.shiphere.in/api/smartship/checkhubserviceability";
+      const smartshipCarrierCheck =
+        "https://backend.shiphere.in/api/smartship/getrate";
       const fshipCreateShipmentUrl =
         "https://backend.shiphere.in/api/smartship/createManifest";
 
@@ -110,6 +112,20 @@ const useCreateShipment = () => {
                 },
               }
             );
+            const carrierCheckBody = {
+              warehouseId: warehouseIds,
+              orderId: orderIds,
+              currier_id:courierId,
+            };
+            const checkCarrierServiceability = await axios.post(
+              smartshipHupCheck,
+              carrierCheckBody,
+              {
+                headers: {
+                  Authorization: `${token}`,
+                },
+              }
+            );
 
             const forwardShipBody = {
               orderId: orderIds,
@@ -175,9 +191,25 @@ const useCreateShipment = () => {
         courierId,
         shippingPartner: deliveryPartnerName,
       };
+      // console.log(hubCheckBody);
+      
           const checkHubServiceability = await axios.post(
             smartshipHupCheck,
             hubCheckBody,
+            {
+              headers: {
+                Authorization: `${token}`,
+              },
+            }
+          );
+          const carrierCheckBody = {
+            warehouseId: warehouseIds,
+            orderId: orderIds,
+            currier_id:courierId,
+          };
+          const checkCarrierServiceability = await axios.post(
+            smartshipCarrierCheck,
+            carrierCheckBody,
             {
               headers: {
                 Authorization: `${token}`,
