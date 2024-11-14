@@ -46,6 +46,10 @@ const ActiveWarehouses = () => {
 
   const newOrders = [
     {
+      title: 'Id',
+      dataIndex: '_id',
+    },
+    {
       title: 'Warehouse Name',
       dataIndex: 'warehouseName',
     },

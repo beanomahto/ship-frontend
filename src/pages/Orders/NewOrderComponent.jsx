@@ -334,7 +334,7 @@ const NewOrderComponent = ({ tab,dataSource,fetchWarehouse, rowSelection, fetchO
   //console.log(deliveryCosts);
   
   const newOrders = dataSource?.filter(order => order.status === 'New' || order.status === 'Cancelled');
-  //console.log(newOrders);
+  console.log(newOrders);
   
   return (
     <>

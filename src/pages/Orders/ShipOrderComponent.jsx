@@ -74,6 +74,7 @@ const ShipOrderComponent = ({ rowSelection, dataSource, fetchOrders, loading, ta
   });
   const tabs =  tab.tab.split(' ')[0];
   //console.log(tabs);
+  // manifest , intrasnit
   const columns = [
     {
       title: 'Order Id',

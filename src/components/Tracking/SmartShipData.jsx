@@ -43,16 +43,15 @@ const SmartShipData = ({ trackingInfo }) => {
   const isInTransit =  trackingHistory.some((ok) =>
     ['In Transit', 'Shipped'].includes(ok.status_description)
   )
-  console.log(
+  console.log( 
     trackingHistory.some((ok) =>
       ['In Transit', 'Shipped'].includes(ok.status_description)
     )
   );
+  console.log(trackingHistory);
   
-  
-console.log(trackingHistory.map((ok) => ok.status_description));
+  console.log(trackingHistory.map((ok) => ok.status_description));
 
-  // Function to update order status in the backend
   const updateOrderStatus = async (orderId, newStatus) => {
     console.log(orderId);
     console.log(newStatus);
@@ -96,7 +95,6 @@ console.log(trackingHistory.map((ok) => ok.status_description));
           order.status === "Delivered"
       );
       
-      // Ensure tracking number is available
       const trackingNumber = trackingHistory[0]?.tracking_number;
       const currentOrder = shippedOrders?.find(
         (order) => order?.awb === trackingNumber?.toString()
@@ -111,15 +109,15 @@ console.log(trackingHistory.map((ok) => ok.status_description));
         console.log("Current order ID:", orderId);
   
         if (orderId) {
-          console.log("Order ID found. Checking status...");
+          // console.log("Order ID found. Checking status...");
   console.log(currentOrder);
   
           if (latestStatus === "Delivered" && currentOrder.status !== "Delivered") {
             updateOrderStatus(orderId, "Delivered");
           } else if (isInTransit && currentOrder.status !== "InTransit" && currentOrder.status !== "Delivered") {
             updateOrderStatus(orderId, "InTransit");
-          } else if (latestStatus === "Pending" && currentOrder.status !== "Pending") {
-            updateOrderStatus(orderId, "Pending");
+          } else if (latestStatus === "Pending" && currentOrder.status !== "UnDelivered") {
+            updateOrderStatus(orderId, "UnDelivered");
           } else if (latestStatus === "Failed" && currentOrder.status !== "Failed") {
             updateOrderStatus(orderId, "Failed");
           }
@@ -214,23 +212,16 @@ console.log(trackingHistory.map((ok) => ok.status_description));
           >
             <Title level={4}>Tracking History</Title>
             <Steps direction="vertical">
-              {trackingHistory.map((scan, index) => (
-                <Step
-                  key={index}
-                  icon={getStatusIcon(scan.status_description)}
-                  title={scan.date}
-                  description={
-                    <>
-                      <p>
-                        <strong>Status:</strong> {scan.status_description}
-                      </p>
-                      <p>
-                        <strong>Location:</strong> {scan.location}
-                      </p>
-                    </>
-                  }
-                />
-              ))}
+            {trackingHistory.map((step, index) => (
+                  <Step
+                    key={index}
+                    title={`${step.action} - ${step.location}`}
+                    description={`Date: ${new Date(
+                      step.date_time
+                    ).toLocaleString()}`}
+                    icon={getStatusIcon(step.status_description)}
+                  />
+                ))}
             </Steps>
           </Card>
         </Col>
