@@ -28,17 +28,43 @@ const SmartShipData = ({ trackingInfo }) => {
   const trackingHistory = scanKey ? scanData[scanKey] : [];
   const { orders, fetchOrders } = useOrderContext();
 
-  const totalSteps = trackingHistory.length;
-  const completedSteps = trackingHistory.filter(
-    (item) =>
-      item.status_description === "Delivered" ||
-      item.status_description === "Completed"
-  ).length;
+  // const totalSteps = trackingHistory.length;
+  // const completedSteps = trackingHistory.filter(
+  //   (item) =>
+  //     item.status_description === "Delivered" ||
+  //     item.status_description === "Completed"
+  // ).length;
 
-  const progressPercentage = (completedSteps / totalSteps) * 100;
-  const currentStepIndex = totalSteps - 1;
+  // const progressPercentage = (completedSteps / totalSteps) * 100;
+  // const currentStepIndex = totalSteps - 1;
+
+  const progressSteps = [
+    "Shipping Label Generated",
+    "Manifested",
+    "Shipped",
+    "In Transit",
+    "Out For Delivery",
+    "Delivered",
+  ];
 
   const latestStatus = trackingHistory[0]?.status_description;
+
+  // Map the latest status to the step index in progressSteps
+  const statusToStepIndex = {
+    "Shipping Label Generated": 0,
+    Manifested: 1,
+    Shipped: 2,
+    "In Transit": 3,
+    "Out For Delivery": 4,
+    Delivered: 5,
+  };
+
+  // Get the current step based on latestStatus
+  const currentStepIndex = statusToStepIndex[latestStatus] ?? 0;
+  const progressPercentage =
+    ((currentStepIndex + 1) / progressSteps.length) * 100;
+
+  // const latestStatus = trackingHistory[0]?.status_description;
   const isInTransit = trackingHistory.some((ok) =>
     ["In Transit", "Shipped"].includes(ok.status_description)
   );
@@ -46,12 +72,10 @@ const SmartShipData = ({ trackingInfo }) => {
   const statusCodesToCheck = ["12", "13", "14", "15"];
   const matchedStatus = trackingHistory.find((item) =>
     statusCodesToCheck.includes(item.status_code)
-);
-console.log(matchedStatus);
+  );
+  console.log(matchedStatus);
   const reason = matchedStatus ? matchedStatus.status_description : null;
   console.log(reason);
-  
-  
 
   const updateOrderStatus = async (orderId, newStatus, reason = null) => {
     try {
@@ -90,35 +114,32 @@ console.log(matchedStatus);
           order.status === "Delivered" ||
           order.status === "UnDelivered"
       );
-  
+
       const trackingNumber = trackingHistory[0]?.tracking_number;
       const currentOrder = shippedOrders?.find(
         (order) => order?.awb === trackingNumber?.toString()
       );
-  
+
       if (currentOrder) {
         const orderId = currentOrder?._id;
-  
+
         if (
           latestStatus === "Delivered" &&
           currentOrder.status !== "Delivered"
         ) {
           updateOrderStatus(orderId, "Delivered");
-  
         } else if (
           reason &&
           currentOrder.status !== "UnDelivered" &&
           currentOrder.status !== "Delivered"
         ) {
           updateOrderStatus(orderId, "UnDelivered", reason);
-  
         } else if (
           isInTransit &&
           currentOrder.status !== "InTransit" &&
           currentOrder.status !== "Delivered"
         ) {
           updateOrderStatus(orderId, "InTransit");
-  
         } else if (
           latestStatus === "Failed" &&
           currentOrder.status !== "Failed"
@@ -128,7 +149,6 @@ console.log(matchedStatus);
       }
     }
   }, [latestStatus, trackingHistory, orders]);
-  
 
   const getStatusIcon = (status) => {
     switch (status) {
@@ -157,7 +177,11 @@ console.log(matchedStatus);
             }}
           >
             <Title level={4}>Tracking Information</Title>
-            <Descriptions bordered column={1} labelStyle={{ fontWeight: "bold" }}>
+            <Descriptions
+              bordered
+              column={1}
+              labelStyle={{ fontWeight: "bold" }}
+            >
               <Descriptions.Item label="AWB Number">
                 {trackingHistory[0]?.tracking_number}
               </Descriptions.Item>
@@ -197,8 +221,14 @@ console.log(matchedStatus);
             <Title level={4}>Shipment Progress</Title>
             <Progress
               percent={progressPercentage}
-              status={completedSteps === totalSteps ? "success" : "active"}
-              strokeColor={completedSteps === totalSteps ? "green" : "blue"}
+              status={
+                currentStepIndex === progressSteps.length - 1
+                  ? "success"
+                  : "active"
+              }
+              strokeColor={
+                currentStepIndex === progressSteps.length - 1 ? "green" : "blue"
+              }
               showInfo={true}
             />
           </Card>
