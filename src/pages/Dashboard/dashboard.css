@@ -46,14 +46,16 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, auto);
-  gap: 78px;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
 }
 
 .orderSummaryCard {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 36px;
+  padding: 26px;
   border-radius: 10px;
   background-color: #fbfcf8;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

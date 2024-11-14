@@ -19,6 +19,7 @@ import {
 } from "react-icons/fa";
 
 import "./dashboard.css";
+import { FcShipped } from "react-icons/fc";
 
 import sourceData from "../../components/Chart/SourceData.json";
 import TopDestinationsGraph from "./TopDestinationsGraph";
@@ -66,9 +67,9 @@ const Dashboard = () => {
   const cancelOrdersAmt = order?.filter(
     (order) => order.status === "Cancelled"
   );
-  const newOrdersAmt = order?.filter((order) => order.status === "New");
+  const newOrdersAmt = order?.filter((order) => order.status === "InTransit");
   const inTransitOrdersAmt = order?.filter(
-    (order) => order.status === "InTransit"
+    (order) => order.status === "Delivered"
   );
   const ShippedOrdersAmt = order?.filter((order) => order.status === "Shipped");
 
@@ -175,6 +176,15 @@ const Dashboard = () => {
           </div>
           <div className="orderIcon">
             <FaTimesCircle size={40} color="#FD8787" />
+          </div>
+        </div>
+        <div className="orderSummaryCard">
+          <div className="orderSummary">
+            <h3>{ShippedOrdersAmt?.length}</h3>
+            <p>Shipped Orders</p>
+          </div>
+          <div className="orderIcon">
+            <FcShipped size={40} color="#FD8787" />
           </div>
         </div>
 
