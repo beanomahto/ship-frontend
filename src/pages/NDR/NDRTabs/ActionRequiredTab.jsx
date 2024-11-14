@@ -29,18 +29,31 @@ const ActionRequiredTab = ({ rowSelection, selectedRowKeys, dataSource,selectedO
 
     setLoading(true);
     try {
-      const payload = {
+      const ecomPayload = {
         orders: selectedOrderData,
         comment: action === 'Re-attempt' ? `${selectedDate.format('DD/MM/YYYY')}` : action,
         instruction : action === 'RTO' ? 'RTO' : 'RAD'
       };
-//console.log(payload);
+      const otherPayload = {
+        orders: selectedOrderData[0]?._id,
+        comment: '',
+        date: action === 'Re-attempt' ? `${selectedDate.format('DD/MM/YYYY')}` : '',
+        action: action === 'Re-attempt' ? `1` : '2',
+      };
 
-      await axios.post('https://backend.shiphere.in/api/ecomExpress/createNdr', payload, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      });
+      if(selectedOrderData[0].shippingPartner === 'Ecom Express') {
+        await axios.post('https://backend.shiphere.in/api/ecomExpress/createNdr', ecomPayload, {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        });
+      } else{
+        await axios.post('https://backend.shiphere.in/api/smartship/orderReattempt', otherPayload, {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        });
+      }
 
       message.success('Action successfully applied to selected orders.');
     } catch (error) {

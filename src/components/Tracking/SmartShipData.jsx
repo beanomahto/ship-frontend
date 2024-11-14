@@ -39,27 +39,25 @@ const SmartShipData = ({ trackingInfo }) => {
   const currentStepIndex = totalSteps - 1;
 
   const latestStatus = trackingHistory[0]?.status_description;
-  console.log(trackingHistory.map((ok) => ok.status_description).includes('In Transit'));
-  const isInTransit =  trackingHistory.some((ok) =>
-    ['In Transit', 'Shipped'].includes(ok.status_description)
-  )
-  console.log( 
-    trackingHistory.some((ok) =>
-      ['In Transit', 'Shipped'].includes(ok.status_description)
-    )
+  const isInTransit = trackingHistory.some((ok) =>
+    ["In Transit", "Shipped"].includes(ok.status_description)
   );
-  console.log(trackingHistory);
-  
-  console.log(trackingHistory.map((ok) => ok.status_description));
 
-  const updateOrderStatus = async (orderId, newStatus) => {
-    console.log(orderId);
-    console.log(newStatus);
-    
-    
+  const statusCodesToCheck = ["12", "13", "14", "15"];
+  const matchedStatus = trackingHistory.find((item) =>
+    statusCodesToCheck.includes(item.status_code)
+);
+console.log(matchedStatus);
+  const reason = matchedStatus ? matchedStatus.status_description : null;
+  console.log(reason);
+  
+  
+
+  const updateOrderStatus = async (orderId, newStatus, reason = null) => {
     try {
       const updateBody = {
         status: newStatus,
+        reason,
       };
 
       const response = await axios.put(
@@ -84,45 +82,48 @@ const SmartShipData = ({ trackingInfo }) => {
   };
 
   useEffect(() => {
-    console.log("Checking order and status...");
     if (latestStatus) {
-      console.log("Tracking info available");
-  
       const shippedOrders = orders?.orders?.filter(
         (order) =>
           order.status === "Shipped" ||
           order.status === "InTransit" ||
-          order.status === "Delivered"
+          order.status === "Delivered" ||
+          order.status === "UnDelivered"
       );
-      
+  
       const trackingNumber = trackingHistory[0]?.tracking_number;
       const currentOrder = shippedOrders?.find(
         (order) => order?.awb === trackingNumber?.toString()
       );
-      
-      if (trackingNumber) {
-        console.log("Current tracking number:", trackingNumber);
-      }
   
       if (currentOrder) {
         const orderId = currentOrder?._id;
-        console.log("Current order ID:", orderId);
   
-        if (orderId) {
-          // console.log("Order ID found. Checking status...");
-  console.log(currentOrder);
+        if (
+          latestStatus === "Delivered" &&
+          currentOrder.status !== "Delivered"
+        ) {
+          updateOrderStatus(orderId, "Delivered");
   
-          if (latestStatus === "Delivered" && currentOrder.status !== "Delivered") {
-            updateOrderStatus(orderId, "Delivered");
-          } else if (isInTransit && currentOrder.status !== "InTransit" && currentOrder.status !== "Delivered") {
-            updateOrderStatus(orderId, "InTransit");
-          } else if (latestStatus === "Pending" && currentOrder.status !== "UnDelivered") {
-            updateOrderStatus(orderId, "UnDelivered");
-          } else if (latestStatus === "Failed" && currentOrder.status !== "Failed") {
-            updateOrderStatus(orderId, "Failed");
-          }
-        } else {
-          console.log("No current order found for the tracking number.");
+        } else if (
+          reason &&
+          currentOrder.status !== "UnDelivered" &&
+          currentOrder.status !== "Delivered"
+        ) {
+          updateOrderStatus(orderId, "UnDelivered", reason);
+  
+        } else if (
+          isInTransit &&
+          currentOrder.status !== "InTransit" &&
+          currentOrder.status !== "Delivered"
+        ) {
+          updateOrderStatus(orderId, "InTransit");
+  
+        } else if (
+          latestStatus === "Failed" &&
+          currentOrder.status !== "Failed"
+        ) {
+          updateOrderStatus(orderId, "Failed");
         }
       }
     }
@@ -212,16 +213,16 @@ const SmartShipData = ({ trackingInfo }) => {
           >
             <Title level={4}>Tracking History</Title>
             <Steps direction="vertical">
-            {trackingHistory.map((step, index) => (
-                  <Step
-                    key={index}
-                    title={`${step.action} - ${step.location}`}
-                    description={`Date: ${new Date(
-                      step.date_time
-                    ).toLocaleString()}`}
-                    icon={getStatusIcon(step.status_description)}
-                  />
-                ))}
+              {trackingHistory.map((step, index) => (
+                <Step
+                  key={index}
+                  title={`${step.action} - ${step.location}`}
+                  description={`Date: ${new Date(
+                    step.date_time
+                  ).toLocaleString()}`}
+                  icon={getStatusIcon(step.status_description)}
+                />
+              ))}
             </Steps>
           </Card>
         </Col>
