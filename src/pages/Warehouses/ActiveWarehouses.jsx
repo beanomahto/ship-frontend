@@ -45,10 +45,14 @@ const ActiveWarehouses = () => {
   };
 
   const newOrders = [
-    {
-      title: 'Id',
-      dataIndex: '_id',
-    },
+    ...(authUser?.email === 'test1@gmail.com'
+      ? [
+          {
+            title: 'Id',
+            dataIndex: '_id',
+          },
+        ]
+      : []),
     {
       title: 'Warehouse Name',
       dataIndex: 'warehouseName',
