@@ -17,7 +17,7 @@ import {
   FaTimesCircle,
   FaCheckCircle,
 } from "react-icons/fa";
-
+import { MdAutorenew } from "react-icons/md";
 import "./dashboard.css";
 import { FcShipped } from "react-icons/fc";
 
@@ -64,6 +64,7 @@ const Dashboard = () => {
   }, []);
   const remmitance = remittanceData.remittances;
   const order = orders?.orders;
+  console.log(order);
   const cancelOrdersAmt = order?.filter(
     (order) => order.status === "Cancelled"
   );
@@ -71,6 +72,8 @@ const Dashboard = () => {
   const inTransitOrdersAmt = order?.filter(
     (order) => order.status === "Delivered"
   );
+  const totalnewOrdersAmt = order?.filter((order) => order.status === "New");
+  console.log(totalnewOrdersAmt);
   const ShippedOrdersAmt = order?.filter((order) => order.status === "Shipped");
 
   const shippingPartnerCounts = order?.reduce((acc, curr) => {
@@ -151,11 +154,21 @@ const Dashboard = () => {
       <div className="orderSummaryContainer">
         <div className="orderSummaryCard">
           <div className="orderSummary">
-            <h3>{order?.length}</h3>
-            <p>Total Orders</p>
+            <h3>{totalnewOrdersAmt?.length}</h3>
+            <p>New Orders</p>
           </div>
           <div className="orderIcon">
-            <FaShoppingCart size={40} color="#2B3FE5" />
+            <MdAutorenew size={40} color="#2B3FE5" />
+          </div>
+        </div>
+
+        <div className="orderSummaryCard">
+          <div className="orderSummary">
+            <h3>{ShippedOrdersAmt?.length}</h3>
+            <p>Shipped Orders</p>
+          </div>
+          <div className="orderIcon">
+            <FcShipped size={40} color="#FD8787" />
           </div>
         </div>
 
@@ -171,6 +184,16 @@ const Dashboard = () => {
 
         <div className="orderSummaryCard">
           <div className="orderSummary">
+            <h3>{inTransitOrdersAmt?.length}</h3>
+            <p>Completed Orders</p>
+          </div>
+          <div className="orderIcon">
+            <FaCheckCircle size={40} color="#34A853" />
+          </div>
+        </div>
+
+        <div className="orderSummaryCard">
+          <div className="orderSummary">
             <h3>{cancelOrdersAmt?.length}</h3>
             <p>Cancelled Orders</p>
           </div>
@@ -178,23 +201,14 @@ const Dashboard = () => {
             <FaTimesCircle size={40} color="#FD8787" />
           </div>
         </div>
-        <div className="orderSummaryCard">
-          <div className="orderSummary">
-            <h3>{ShippedOrdersAmt?.length}</h3>
-            <p>Shipped Orders</p>
-          </div>
-          <div className="orderIcon">
-            <FcShipped size={40} color="#FD8787" />
-          </div>
-        </div>
 
         <div className="orderSummaryCard">
           <div className="orderSummary">
-            <h3>{inTransitOrdersAmt?.length}</h3>
-            <p>Completed Orders</p>
+            <h3>{order?.length}</h3>
+            <p>Total Orders</p>
           </div>
           <div className="orderIcon">
-            <FaCheckCircle size={40} color="#34A853" />
+            <FaShoppingCart size={40} color="#2B3FE5" />
           </div>
         </div>
       </div>
