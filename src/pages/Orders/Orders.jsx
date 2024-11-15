@@ -361,7 +361,7 @@ const Orders = () => {
  useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/smartship/getcurrentstatus', {
+        const res = await fetch('https://backend.shiphere.in/api/smartship/getcurrentstatus', {
           headers: {
             Authorization: localStorage.getItem('token')
           }
@@ -381,7 +381,7 @@ const Orders = () => {
           if (status === '27') return 'In Transit';
           if (status === '11') return 'Delivered';
           if (status === '340') return 'Cancelled';
-          if (status === '185') return 'New';
+          if (status === '4000') return 'New';
           return null;
         };
 
@@ -422,7 +422,7 @@ const Orders = () => {
           console.log(updateBody);
 
           return axios.put(
-            `http://localhost:5000/api/orders/updateOrderStatus/${order.client_order_reference_id}`,
+            `https://backend.shiphere.in/api/orders/updateOrderStatus/${order.orderId}`,
             updateBody,
             {
               headers: {
@@ -438,18 +438,17 @@ const Orders = () => {
         const failureCount = results.filter((result) => result.status === 'rejected').length;
 
         // Show a summary message
-        if (successCount > 0) message.success(`orders updated successfully.`);
-        if (failureCount > 0) message.error(`orders failed to update.`);
+        // if (successCount > 0) message.success(`orders updated successfully.`);
+        // if (failureCount > 0) message.error(`orders failed to update.`);
       } catch (error) {
         console.error('Error updating orders:', error);
-        message.error('Batch update failed.');
+        // message.error('Batch update failed.');
       }
     };
 
     // Initial fetch
     fetchData();
 
-    // Set interval to fetch data every 5 minutes (300,000 milliseconds)
     const intervalId = setInterval(fetchData, 300000); // 5 minutes
 
     // Clean up the interval on component unmount
