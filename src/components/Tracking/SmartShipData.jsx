@@ -9,12 +9,15 @@ import {
   Progress,
   message,
 } from "antd";
+
 import {
   CheckCircleOutlined,
   CloseCircleOutlined,
   SyncOutlined,
   ClockCircleOutlined,
+  CheckOutlined,
 } from "@ant-design/icons";
+import { MdOutlineDownloadDone } from "react-icons/md";
 import img1 from "../../utils/trackk.jpg";
 import { useOrderContext } from "../../context/OrderContext";
 import axios from "axios";
@@ -27,16 +30,6 @@ const SmartShipData = ({ trackingInfo }) => {
   const scanKey = scanData ? Object.keys(scanData)[0] : null;
   const trackingHistory = scanKey ? scanData[scanKey] : [];
   const { orders, fetchOrders } = useOrderContext();
-
-  // const totalSteps = trackingHistory.length;
-  // const completedSteps = trackingHistory.filter(
-  //   (item) =>
-  //     item.status_description === "Delivered" ||
-  //     item.status_description === "Completed"
-  // ).length;
-
-  // const progressPercentage = (completedSteps / totalSteps) * 100;
-  // const currentStepIndex = totalSteps - 1;
 
   const progressSteps = [
     "Shipping Label Generated",
@@ -158,11 +151,18 @@ console.log(trackingHistory.map((ok) => ok.status_description + " and " + ok.sta
       case "Completed":
         return <CheckCircleOutlined style={{ color: "green" }} />;
       case "In Transit":
-        return <SyncOutlined spin style={{ color: "blue" }} />;
+        return <ClockCircleOutlined style={{ color: "grey" }} />;
       case "Pending":
         return <ClockCircleOutlined style={{ color: "orange" }} />;
-      case "Failed":
-        return <CloseCircleOutlined style={{ color: "red" }} />;
+      case "Shipped":
+        return <MdOutlineDownloadDone style={{ color: "green" }} />;
+      case "Out For Delivery":
+        return <SyncOutlined style={{ color: "blue" }} />;
+      case "Manifested":
+        return <ClockCircleOutlined style={{ color: "#faad14" }} />;
+      case "Shipping Label Generated":
+        return <CheckOutlined style={{ color: "#1890ff" }} />;
+
       default:
         return <SyncOutlined />;
     }
