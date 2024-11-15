@@ -41,6 +41,7 @@ const NDR = () => {
     { key: 'tab3', tab: 'Action Taken', Component: ActionTakenTab, dataSource: dataSourceWithKeys },
     { key: 'tab4', tab: 'Delivered', Component: ActionTakenTab, dataSource: dataSourceWithKeys },
     { key: 'tab5', tab: 'RTO', Component: ActionTakenTab, dataSource: dataSourceWithKeys },
+    { key: 'tab6', tab: 'All Orders', Component: ActionRequiredTab, dataSource: dataSourceWithKeys },
   ];
 
   return (
