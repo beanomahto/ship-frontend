@@ -114,6 +114,8 @@ const SmartShipData = ({ trackingInfo }) => {
           order.status === "Delivered" ||
           order.status === "UnDelivered"
       );
+// console.log(shippedOrders);
+console.log(trackingHistory.map((ok) => ok.status_description + " and " + ok.status_code));
 
       const trackingNumber = trackingHistory[0]?.tracking_number;
       const currentOrder = shippedOrders?.find(
@@ -247,9 +249,8 @@ const SmartShipData = ({ trackingInfo }) => {
                 <Step
                   key={index}
                   title={`${step.action} - ${step.location}`}
-                  description={`Date: ${new Date(
-                    step.date_time
-                  ).toLocaleString()}`}
+                  description={`Date: ${
+                    step?.date_time.toLocaleString()}`}
                   icon={getStatusIcon(step.status_description)}
                 />
               ))}

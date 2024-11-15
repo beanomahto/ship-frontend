@@ -358,7 +358,94 @@ const Orders = () => {
 
   //console.log(tabsData);
   //console.log(selectedOrderData);
-
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const res = await fetch('http://localhost:5000/api/smartship/getcurrentstatus', {
+  //         headers: {
+  //           Authorization: localStorage.getItem('token')
+  //         }
+  //       });
+  
+  //       const jsonObj = await res.json();
+  //       const data = jsonObj.data.shipmentDetails;
+  
+  //       console.log(data);
+  
+  //       // Map the statusCode to order_status
+  //       const mapStatusCodeToOrderStatus = (status) => {
+  //         console.log(status);
+          
+  //         if (status === '27') return 'In Transit';
+  //         if (status === '11') return 'Delivered';
+  //         if (status === '340') return 'Cancelled';
+  //         if (status === '185') return 'New';
+  //         return null;
+  //       };
+  
+  //       const updatedOrders = data
+  //         .map((order) => {
+  //           console.log(order.status);
+            
+  //           const order_status = mapStatusCodeToOrderStatus(order.status);
+  //           console.log(order_status);
+  
+  //           if (order_status) {
+  //             return { ...order, order_status };
+  //           }
+  //           return null;
+  //         })
+  //         .filter((order) => order !== null);
+  
+  //       if (updatedOrders?.length > 0) {
+  //         await updateMultipleOrders(updatedOrders);
+  //         console.log(updatedOrders);
+  //       } else {
+  //         console.log('No orders to update: all statusCodes were invalid.');
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };
+  
+  //   const updateMultipleOrders = async (orders) => {
+  //     try {
+  //       const updatePromises = orders.map((order) => {
+  //         const updateBody = {
+  //           status: order.order_status, 
+  //           reason: null,
+  //         };
+  //         console.log(updateBody);
+          
+  //         return axios.put(
+  //           `http://localhost:5000/api/orders/updateOrderStatus/${order.client_order_reference_id}`,
+  //           updateBody,
+  //           {
+  //             headers: {
+  //               Authorization: localStorage.getItem('token'),
+  //             },
+  //           }
+  //         );
+  //       });
+  
+  //       const results = await Promise.allSettled(updatePromises);
+  
+  //       const successCount = results.filter((result) => result.status === 'fulfilled').length;
+  //       const failureCount = results.filter((result) => result.status === 'rejected').length;
+  
+  //       // Show a summary message
+  //       if (successCount > 0) message.success(`orders updated successfully.`);
+  //       if (failureCount > 0) message.error(`orders failed to update.`);
+  //     } catch (error) {
+  //       console.error('Error updating orders:', error);
+  //       message.error('Batch update failed.');
+  //     }
+  //   };
+  
+  //   fetchData();
+  // }, []);
+  
+  
   const cancelShipment = async () => {
     if (selectedRowKeys.length === 0) {
       message.error("No orders selected");
