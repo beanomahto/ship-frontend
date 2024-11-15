@@ -381,7 +381,7 @@ const Orders = () => {
           if (status === '27') return 'In Transit';
           if (status === '11') return 'Delivered';
           if (status === '340') return 'Cancelled';
-          if (status === '4000') return 'New';
+          if (status === '12' || '13' ||'14' || '15' || '16' || '17' ) return 'UnDelivered';
           return null;
         };
 
@@ -432,10 +432,10 @@ const Orders = () => {
           );
         });
 
-        const results = await Promise.allSettled(updatePromises);
+        // const results = await Promise.allSettled(updatePromises);
 
-        const successCount = results.filter((result) => result.status === 'fulfilled').length;
-        const failureCount = results.filter((result) => result.status === 'rejected').length;
+        // const successCount = results.filter((result) => result.status === 'fulfilled').length;
+        // const failureCount = results.filter((result) => result.status === 'rejected').length;
 
         // Show a summary message
         // if (successCount > 0) message.success(`orders updated successfully.`);
