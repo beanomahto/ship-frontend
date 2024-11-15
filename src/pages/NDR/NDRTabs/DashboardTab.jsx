@@ -152,15 +152,6 @@ const DashboardTab = ({ dataSource }) => {
           </div>
         </div>
 
-        <div className="orderSummaryCard">
-          <div className="orderSummary">
-            <h3>{undelivered?.length}</h3>
-            <p>All Orders</p>
-          </div>
-          <div className="orderIcon">
-            <MdAutorenew size={40} color="#FAC013" />
-          </div>
-        </div>
       </div>
     </div>
   );
