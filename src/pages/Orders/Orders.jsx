@@ -448,7 +448,7 @@ const Orders = () => {
 
     // Initial fetch
     fetchData();
-
+fetchOrders();
     const intervalId = setInterval(fetchData, 300000); // 5 minutes
 
     // Clean up the interval on component unmount
