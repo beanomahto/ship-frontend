@@ -242,7 +242,7 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading,tab }) => {
            className="centered-table"
           scroll={{ x:1050,y: 440 }}
           // pagination={false}
-          style={{ width: '100%', height: '505px' }}
+          style={{ width: '100%', height: '550px' }}
         />
       }
     </>

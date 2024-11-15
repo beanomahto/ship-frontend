@@ -370,7 +370,7 @@ const Orders = () => {
         const jsonObj = await res.json();
         console.log(jsonObj);
 
-        const data = jsonObj.data.shipmentDetails;
+        const data = jsonObj?.data?.shipmentDetails;
 
         console.log(data);
 
@@ -446,7 +446,6 @@ const Orders = () => {
       }
     };
 
-    // Initial fetch
     fetchData();
 fetchOrders();
     const intervalId = setInterval(fetchData, 300000); // 5 minutes
