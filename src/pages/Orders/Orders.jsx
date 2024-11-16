@@ -373,7 +373,8 @@ const Orders = () => {
         const mapStatusCodeToOrderStatus = (status) => {
           console.log(status);
 
-          if (status === '27') return 'In Transit';
+          if (status === '27') return 'InTransit';
+          if (status === '10') return 'InTransit';
           if (status === '4') return 'Shipped';
           if (status === '11') return 'Delivered';
           if (status === '340') return 'Cancelled';
