@@ -244,11 +244,12 @@ const NewOrderComponent = ({ tab,dataSource,fetchWarehouse, rowSelection, fetchO
       const totalDebit = forwardCostWithGst + codCostWithGst;
   
       const sendWarehouse = Array.isArray(selectedWarehouseId) && selectedWarehouseId.length === 0
-  ? warehouse?.warehouses?.[0]
-  : selectedWarehouseId;
-      
-      setCurrentDeliveryCost(totalDebit);
-     
+        ? warehouse?.warehouses?.[0]
+        : selectedWarehouseId;
+  
+      console.log(sendWarehouse);
+  
+      // Deduct amounts
       if (codCostWithGst > 0) {
         const codWalletRequestBody = {
           debit: codCostWithGst,
@@ -256,6 +257,7 @@ const NewOrderComponent = ({ tab,dataSource,fetchWarehouse, rowSelection, fetchO
           remark: `COD charge for order ${selectedOrder.orderId}`,
           orderId: selectedOrder._id,
         };
+  
         const codWalletResponse = await axios.post(
           'https://backend.shiphere.in/api/transactions/decreaseAmount',
           codWalletRequestBody,
@@ -264,13 +266,12 @@ const NewOrderComponent = ({ tab,dataSource,fetchWarehouse, rowSelection, fetchO
               Authorization: localStorage.getItem('token'),
             },
           }
-        ).catch((err) => console.log(err ));
+        );
   
         if (codWalletResponse.status !== 200) {
           message.error("Failed to debit COD cost from wallet");
           return; 
         }
-       
       }
   
       const forwardWalletRequestBody = {
@@ -279,6 +280,7 @@ const NewOrderComponent = ({ tab,dataSource,fetchWarehouse, rowSelection, fetchO
         remark: `Forward charge for order ${selectedOrder.orderId}`,
         orderId: selectedOrder._id,
       };
+  
       const forwardWalletResponse = await axios.post(
         'https://backend.shiphere.in/api/transactions/decreaseAmount',
         forwardWalletRequestBody,
@@ -289,16 +291,27 @@ const NewOrderComponent = ({ tab,dataSource,fetchWarehouse, rowSelection, fetchO
         }
       );
   
-      if (forwardWalletResponse.status === 200) {
+      if (forwardWalletResponse.status !== 200) {
+        message.error("Failed to debit forward cost from wallet");
+        return;
+      }
+  
+      try {
+        // Proceed with shipping
+        setCurrentDeliveryCost(totalDebit);
+  
         await shipOrder(
           selectedOrder, 
           sendWarehouse, 
           partner.deliveryPartner
         );
+  
+        // Update order status
         const updateBody = {
           status: 'Shipped',
           shippingCost: totalDebit,
         };
+  
         const orderResponse = await axios.put(
           `https://backend.shiphere.in/api/orders/updateOrderStatus/${selectedOrderId}`,
           updateBody,
@@ -308,7 +321,7 @@ const NewOrderComponent = ({ tab,dataSource,fetchWarehouse, rowSelection, fetchO
             },
           }
         );
-        
+  
         if (orderResponse.status === 201) {
           message.success("Shipped successfully");
           fetchOrders();
@@ -317,15 +330,47 @@ const NewOrderComponent = ({ tab,dataSource,fetchWarehouse, rowSelection, fetchO
           setSelectedOrderId(null);
           setSelectedPartner(null);
         } else {
-          message.error("Failed to update order status");
+          throw new Error("Failed to update order status");
         }
-      } else {
-        message.error("Failed to debit forward cost from wallet");
+      } catch (shippingError) {
+        // Rollback wallet deductions if shipping fails
+        if (codCostWithGst > 0) {
+          await axios.post(
+            'https://backend.shiphere.in/api/transactions/increaseAmount',
+            {
+              credit: codCostWithGst,
+              userId: selectedOrder.seller._id,
+              remark: `Refund COD charge for failed shipment ${selectedOrder.orderId}`,
+              orderId: selectedOrder._id,
+            },
+            {
+              headers: {
+                Authorization: localStorage.getItem('token'),
+              },
+            }
+          );
+        }
+  
+        await axios.post(
+          'https://backend.shiphere.in/api/transactions/increaseAmount',
+          {
+            credit: forwardCostWithGst,
+            userId: selectedOrder.seller._id,
+            remark: `Refund forward charge for failed shipment ${selectedOrder.orderId}`,
+            orderId: selectedOrder._id,
+          },
+          {
+            headers: {
+              Authorization: localStorage.getItem('token'),
+            },
+          }
+        );
+  
+        throw shippingError; // Re-throw to handle it in the outer `catch`
       }
     } catch (error) {
-      // message.error("Insufficient Balance");
-      message.error(error.response.data.error || error.message)
-      console.error('Failed to update order status', error);
+      message.error(error.response?.data?.error || error.message);
+      console.error('Failed to process order assignment:', error);
     } finally {
       setModalLoading(false);
     }

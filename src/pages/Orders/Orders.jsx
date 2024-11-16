@@ -115,11 +115,7 @@ const Orders = () => {
   };
   // //console.log(selectedWarehouseId);
 
-  const handleShipNow = async (
-    selectedRowKeys,
-    selectedWarehouse,
-    selectedDeliveryPartner
-  ) => {
+  const handleShipNow = async (selectedRowKeys,selectedWarehouse,selectedDeliveryPartner) => {
     // //console.log(selectedRowKeys);
     // //console.log(selectedWarehouse);
     // //console.log(selectedDeliveryPartner);
