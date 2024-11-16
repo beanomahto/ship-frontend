@@ -93,7 +93,7 @@ const useCreateShipment = () => {
             else if (deliveryPartnerName === "Shadowfax") courierId = 295;
             else if (deliveryPartnerName === "Delhivery") courierId = 374;
             else if (deliveryPartnerName === "Amazon Shipping") courierId = 357;
-            else if (deliveryPartnerName === "Xpressbees") courierId = 2;
+            else if (deliveryPartnerName === "Xpressbees") courierId = 368;
             fetchWarehouse();
 
             const hubCheckBody = {
@@ -115,7 +115,7 @@ const useCreateShipment = () => {
             const carrierCheckBody = {
               warehouseId: warehouseIds,
               orderId: orderIds,
-              currier_id:courierId,
+              currier_id: courierId,
             };
             const checkCarrierServiceability = await axios.post(
               smartshipHupCheck,
@@ -180,19 +180,19 @@ const useCreateShipment = () => {
           else if (deliveryPartnerName === "DTDC") courierId = 355;
           else if (deliveryPartnerName === "Shadowfax") courierId = 295;
           else if (deliveryPartnerName === "Delhivery") courierId = 374;
-          else if (deliveryPartnerName === "Xpressbees") courierId = 2;
+          else if (deliveryPartnerName === "Xpressbees") courierId = 368;
           else if (deliveryPartnerName === "Amazon Shipping") courierId = 357;
 
           fetchWarehouse();
-       
-      const hubCheckBody = {
-        warehouseId: warehouseIds,
-        orderId: orderIds,
-        courierId,
-        shippingPartner: deliveryPartnerName,
-      };
-      // console.log(hubCheckBody);
-      
+
+          const hubCheckBody = {
+            warehouseId: warehouseIds,
+            orderId: orderIds,
+            courierId,
+            shippingPartner: deliveryPartnerName,
+          };
+          // console.log(hubCheckBody);
+
           const checkHubServiceability = await axios.post(
             smartshipHupCheck,
             hubCheckBody,
@@ -205,7 +205,7 @@ const useCreateShipment = () => {
           const carrierCheckBody = {
             warehouseId: warehouseIds,
             orderId: orderIds,
-            currier_id:courierId,
+            currier_id: courierId,
           };
           const checkCarrierServiceability = await axios.post(
             smartshipCarrierCheck,
