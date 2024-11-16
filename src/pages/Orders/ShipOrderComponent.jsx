@@ -102,6 +102,11 @@ const ShipOrderComponent = ({ rowSelection, dataSource, fetchOrders, loading, ta
       ),
       className: 'centered-row',
     },
+    // {
+    //   title: 'Status',
+    //   dataIndex: 'status',
+    //   className: 'centered-row',
+    // },
     {
       title: 'Customer Info',
       dataIndex: 'customerName',

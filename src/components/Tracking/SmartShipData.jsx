@@ -248,7 +248,7 @@ console.log(trackingHistory.map((ok) => ok.status_description + " and " + ok.sta
               {trackingHistory.map((step, index) => (
                 <Step
                   key={index}
-                  title={`${step.action} - ${step.location}`}
+                  title={`${step.action} - ${step.location} - ${step.status_code} `}
                   description={`Date: ${
                     step?.date_time.toLocaleString()}`}
                   icon={getStatusIcon(step.status_description)}

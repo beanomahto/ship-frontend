@@ -107,6 +107,7 @@ const DeliveredComponent = ({ rowSelection, dataSource, fetchOrders, loading, ta
       ...getColumnSearchProps('customerName'),
       render: (text, order) => (
         <div>
+          {/* <div>{order.status}</div> */}
           <div>{order.customerName}</div>
           <div>{order.customerPhone}</div>
         </div>

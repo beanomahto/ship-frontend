@@ -374,14 +374,14 @@ const Orders = () => {
 
         console.log(data);
 
-        // Map the statusCode to order_status
         const mapStatusCodeToOrderStatus = (status) => {
           console.log(status);
 
           if (status === '27') return 'In Transit';
+          if (status === '4') return 'Shipped';
           if (status === '11') return 'Delivered';
           if (status === '340') return 'Cancelled';
-          if (status === '12' || '13' ||'14' || '15' || '16' || '17' ) return 'UnDelivered';
+          // if (status === '12' || '13' ||'14' || '15' || '16' || '17' ) return 'UnDelivered';
           return null;
         };
 

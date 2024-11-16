@@ -107,6 +107,7 @@ const InTranitComponent = ({ rowSelection, dataSource, fetchOrders, loading, tab
       ...getColumnSearchProps('customerName'),
       render: (text, order) => (
         <div>
+          {/* <div>{order.status}</div> */}
           <div>{order.customerName}</div>
           <div>{order.customerPhone}</div>
         </div>
