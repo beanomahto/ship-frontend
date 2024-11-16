@@ -4,10 +4,8 @@ import axios from "axios";
 
 const CheckPincode = () => {
   const [pincode, setPincode] = useState("");
-  const [serviceable, setServiceable] = useState(null);
-  const [city, setCity] = useState("");
   const [error, setError] = useState("");
-  const [data, setData] = useState([]); // Initialize the data as an empty array
+  const [data, setData] = useState([]);
 
   const handlePincodeChange = (e) => {
     setPincode(e.target.value);
@@ -28,27 +26,30 @@ const CheckPincode = () => {
     try {
       setError("");
       const response = await axios.get(
-        `https://backend.shiphere.in/api/pincode/checkService`,
+        `http://localhost:5000/api/delivery-partners`,
         {
           params: { pincode },
         }
       );
-      //console.log("Response Data:", response.data);
+      console.log("Response Data:", response.data);
 
-      const { service, pincodeData } = response.data;
+      const { pincode: fetchedPincode, deliveryPartners } = response.data;
 
-      setServiceable(service);
-      setCity(pincodeData ? pincodeData.city : "Unknown");
+      if (!deliveryPartners || deliveryPartners.length === 0) {
+        setData([]);
+        message.warning("No delivery partners found for this pincode.");
+        return;
+      }
 
-      // Update the data state with the new data
-      setData([
-        {
-          key: 1,
-          pincode,
-          serviceable: service,
-          city: pincodeData ? pincodeData.city : "Unknown",
-        },
-      ]);
+      const formattedData = deliveryPartners.map((partner, index) => ({
+        key: index + 1,
+        name: partner.name,
+        city: partner.city ? partner.city :  partner.route_code,
+        country: partner.route_code,
+        pincode: fetchedPincode,
+      }));
+
+      setData(formattedData);
     } catch (err) {
       console.error("Error checking pincode:", err);
       setError("Error checking pincode.");
@@ -60,23 +61,21 @@ const CheckPincode = () => {
     {
       title: "Pincode",
       dataIndex: "pincode",
-      key: "pincode",
+      key: "name",
     },
     {
-      title: "Serviceable",
-      dataIndex: "serviceable",
-      key: "serviceable",
-      render: (text) => (text ? "Yes" : "No"),
+      title: "Partner Name",
+      dataIndex: "name",
+      key: "name",
     },
     {
       title: "City",
       dataIndex: "city",
-      key: "city",
     },
   ];
 
   return (
-    <div style={{marginLeft:'4rem'}} >
+    <div style={{ marginLeft: "4rem" }}>
       <h2 className="pincode-title">Check Pincode Serviceability</h2>
       <Input
         type="text"
@@ -91,9 +90,9 @@ const CheckPincode = () => {
       </Button>
       <Table
         columns={columns}
-        dataSource={data} 
+        dataSource={data}
         pagination={false}
-        style={{ marginTop: '4rem', marginLeft:'-2rem' }}
+        style={{ marginTop: "4rem", marginLeft: "-2rem" }}
       />
       {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
