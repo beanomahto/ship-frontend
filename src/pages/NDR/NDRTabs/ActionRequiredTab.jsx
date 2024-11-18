@@ -56,12 +56,13 @@ const ActionRequiredTab = ({
         instruction: action === "RTO" ? "RTO" : "RAD",
       };
       const otherPayload = {
-        orders: selectedOrderData[0]?._id,
+        orderIds: selectedOrderData.map(order => order._id), 
         comment: "",
         date:
           action === "Re-attempt" ? `${selectedDate.format("DD/MM/YYYY")}` : "",
         action: action === "Re-attempt" ? `1` : "2",
       };
+      
 
       if (selectedOrderData[0].shippingPartner === "Ecom Express") {
         await axios.post(
@@ -75,7 +76,7 @@ const ActionRequiredTab = ({
         );
       } else {
         await axios.post(
-          "https://backend.shiphere.in/api/smartship/orderReattempt",
+          "http://backend.shiphere.in/api/smartship/orderReattempt",
           otherPayload,
           {
             headers: {

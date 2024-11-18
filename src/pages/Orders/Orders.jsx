@@ -92,6 +92,7 @@ const Orders = () => {
         const result = await response.json();
         console.log("Sync successful", result);
         message.success("Sync successful");
+        fetchOrders()
       } else {
         message.error("okokok");
         console.error("Sync failed", response);
