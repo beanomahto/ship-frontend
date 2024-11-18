@@ -81,7 +81,7 @@ const Orders = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        "https://backend.shiphere.in/api/integration/syncButton",
+        "http://localhost:5000/api/integration/syncButton",
         {
           headers: {
             Authorization: localStorage.getItem("token"),
@@ -90,7 +90,7 @@ const Orders = () => {
       );
       if (response.ok) {
         const result = await response.json();
-        //console.log("Sync successful", result);
+        console.log("Sync successful", result);
         message.success("Sync successful");
       } else {
         message.error("okokok");

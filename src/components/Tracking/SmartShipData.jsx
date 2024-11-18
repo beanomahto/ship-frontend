@@ -26,6 +26,8 @@ const { Title } = Typography;
 const { Step } = Steps;
 
 const SmartShipData = ({ trackingInfo }) => {
+  console.log("oko");
+  
   const scanData = trackingInfo?.data?.scans;
   const scanKey = scanData ? Object.keys(scanData)[0] : null;
   const trackingHistory = scanKey ? scanData[scanKey] : [];
@@ -41,6 +43,7 @@ const SmartShipData = ({ trackingInfo }) => {
   ];
 
   const latestStatus = trackingHistory[0]?.status_description;
+console.log(latestStatus);
 
   // Map the latest status to the step index in progressSteps
   const statusToStepIndex = {

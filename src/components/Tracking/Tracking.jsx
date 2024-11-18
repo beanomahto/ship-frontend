@@ -25,15 +25,15 @@ const Tracking = () => {
         const splitPartners = shippingPartner.replace(/\s+/g, '');
         //console.log(splitPartners);
         
-        const fShipPartner = ['Ekart', 'BlueDart', 'DTDC', 'Shadowfax','Delhivery'].includes(splitPartners);
-        //console.log(fShipPartner);
+        const fShipPartner = ['Ekart', 'BlueDart', 'DTDC', 'Shadowfax','Delhivery','Xpressbees'].includes(splitPartners);
+        console.log(fShipPartner);
         
        if (fShipPartner) {
         const response = await axios.post(`https://backend.shiphere.in/api/smartship/tracksmartshiporder`,{
           awb
         });
         setTrackingInfo(response.data);
-        //console.log(response.data);
+        console.log(response.data);
         
        } else {
         const response = await axios.get(`https://backend.shiphere.in/api/${shippingPartner.replace(/\s+/g, '')}/track/${awb}`);
@@ -101,12 +101,9 @@ const Tracking = () => {
         shippingPartner && shippingPartner.toLowerCase() === 'ecom express' ? (
           <EcomData trackingInfo={trackingInfo} steps={steps} />
         ) : (
-          shippingPartner && shippingPartner === 'Xpressbees' ? (
-            <Xressbees trackingInfo={trackingInfo} />
-          ) : (
             <SmartShipData trackingInfo={trackingInfo} />
           )
-        )
+        
       }
       </div>
       <Footer />
