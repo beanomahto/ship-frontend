@@ -81,7 +81,7 @@ const Orders = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        "http://localhost:5000/api/integration/syncButton",
+        "https://backend.shiphere.in/api/integration/syncButton",
         {
           headers: {
             Authorization: localStorage.getItem("token"),
@@ -368,7 +368,7 @@ const Orders = () => {
 
         const data = jsonObj?.data?.shipmentDetails;
 
-        console.log(data);
+        console.log(data.map((ok) => ok.status +"-----"+ ok.client_order_reference_id));
 
         const mapStatusCodeToOrderStatus = (status) => {
           console.log(status);
@@ -378,7 +378,12 @@ const Orders = () => {
           if (status === '4') return 'Shipped';
           if (status === '11') return 'Delivered';
           if (status === '340') return 'Cancelled';
-          // if (status === '12' || '13' ||'14' || '15' || '16' || '17' ) return 'UnDelivered';
+          if (status === '12') return 'UnDelivered'
+          if (status === '13') return 'UnDelivered'
+          if (status === '14') return 'UnDelivered'
+          if (status === '15') return 'UnDelivered'
+          if (status === '16') return 'UnDelivered'
+          if (status === '17') return 'UnDelivered'
           return null;
         };
 

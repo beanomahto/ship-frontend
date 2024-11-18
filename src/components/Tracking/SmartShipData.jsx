@@ -55,7 +55,6 @@ console.log(latestStatus);
     Delivered: 5,
   };
 
-  // Get the current step based on latestStatus
   const currentStepIndex = statusToStepIndex[latestStatus] ?? 0;
   const progressPercentage =
     ((currentStepIndex + 1) / progressSteps.length) * 100;
@@ -120,6 +119,9 @@ console.log(trackingHistory.map((ok) => ok.status_description + " and " + ok.sta
 
       if (currentOrder) {
         const orderId = currentOrder?._id;
+// console.log(reason);
+// console.log(currentOrder?.status);
+
 
         if (
           latestStatus === "Delivered" &&
@@ -135,7 +137,8 @@ console.log(trackingHistory.map((ok) => ok.status_description + " and " + ok.sta
         } else if (
           isInTransit &&
           currentOrder.status !== "InTransit" &&
-          currentOrder.status !== "Delivered"
+          currentOrder.status !== "Delivered" &&
+          currentOrder.status !== "UnDelivered"
         ) {
           updateOrderStatus(orderId, "InTransit");
         } else if (
