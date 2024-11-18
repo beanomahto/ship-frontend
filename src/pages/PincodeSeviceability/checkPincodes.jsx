@@ -26,7 +26,7 @@ const CheckPincode = () => {
     try {
       setError("");
       const response = await axios.get(
-        `http://localhost:5000/api/delivery-partners`,
+        `https://backend.shiphere.in/api/delivery-partners/${pincode}`,
         {
           params: { pincode },
         }
