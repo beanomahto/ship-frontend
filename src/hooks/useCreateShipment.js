@@ -37,7 +37,7 @@ const useCreateShipment = () => {
       const fshipCreateForwardOrderUrl =
         "https://backend.shiphere.in/api/smartship/onesteporderregister";
       const smartshipHupCheck =
-        "http://localhost:5000/api/smartship/checkhubserviceability";
+        "https://backend.shipment.in/api/smartship/checkhubserviceability";
       const smartshipCarrierCheck =
         "https://backend.shiphere.in/api/smartship/getrate";
       const fshipCreateShipmentUrl =
