@@ -84,25 +84,26 @@ const KYC = () => {
         try {
             const data = await submitKYCForm(formData);
             setKycData(data);
-            setFormData({
-                name: '',
-                ifscCode: '',
-                bankName: '',
-                companyType: '',
-                documentType: '',
-                gstUrl: null,
-                accountNumber: '',
-                passbookUrl: null,
-                gstin: '',
-                pancard: '',
-                pancardUrl: null,
-                aadharNumber: ''
-            });
+            // setFormData({
+            //     name: '',
+            //     ifscCode: '',
+            //     bankName: '',
+            //     companyType: '',
+            //     documentType: '',
+            //     gstUrl: null,
+            //     accountNumber: '',
+            //     passbookUrl: null,
+            //     gstin: '',
+            //     pancard: '',
+            //     pancardUrl: null,
+            //     aadharNumber: ''
+            // });
+            message.success('KYC form submitted successfully');
         } catch (error) {
             message.error("Failed to save KYC information")
         }
     };
-
+    const isDisabled = kycData && !kycData.error;
     return (
         <div className='formCon'>
             <Helmet>
@@ -120,6 +121,7 @@ const KYC = () => {
                                 style={{padding:'0'}}
                                 value={formData.companyType}
                                 onChange={(value) => setFormData({ ...formData, companyType: value })}
+                                disabled={isDisabled}
                             >
                                 <Select.Option value="individual">Individual</Select.Option>
                                 <Select.Option value="propertysip">Proprietorship</Select.Option>
@@ -134,6 +136,7 @@ const KYC = () => {
                                 style={{padding:'0'}}
                                 value={formData.documentType}
                                 onChange={handleDocumentTypeChange} 
+                                disabled={isDisabled}
                             >
                                 <Select.Option value="adharcard">Aadhar Card</Select.Option>
                                 <Select.Option value="gst_certificate">GST Certificate</Select.Option>
@@ -156,6 +159,7 @@ const KYC = () => {
                                        }, 0);
                                    }}
                                    listType="picture-card"
+                                   disabled={isDisabled}
                                >
                                    <button
                                        style={{ border: 0, background: 'none' }}
@@ -184,6 +188,7 @@ const KYC = () => {
                                     name="aadharNumber"
                                     value={formData.aadharNumber}
                                     onChange={handleChange}
+                                    disabled={isDisabled}
                                 />
                             </label>
                         )}
@@ -200,6 +205,7 @@ const KYC = () => {
                                 name="name"
                                 value={formData.name}
                                 onChange={handleChange}
+                                disabled={isDisabled}
                             />
                         </label>
                         <label>
@@ -211,6 +217,7 @@ const KYC = () => {
                                 name="accountNumber"
                                 value={formData.accountNumber}
                                 onChange={handleChange}
+                                disabled={isDisabled}
                             />
                         </label>
 
@@ -232,6 +239,7 @@ const KYC = () => {
                                     }, 0);
                                 }}
                                 listType="picture-card"
+                                disabled={isDisabled}
                             >
                                 <button
                                     style={{ border: 0, background: 'none' }}
@@ -255,6 +263,7 @@ const KYC = () => {
                                 name="ifscCode"
                                 value={formData.ifscCode}
                                 onChange={handleChange}
+                                disabled={isDisabled}
                             />
                         </label>
                         <label>
@@ -266,6 +275,7 @@ const KYC = () => {
                                 name="bankName"
                                 value={formData.bankName}
                                 onChange={handleChange}
+                                disabled={isDisabled}
                             />
                         </label>
                     </div>
@@ -281,6 +291,7 @@ const KYC = () => {
                                 name="pancard"
                                 value={formData.pancard}
                                 onChange={handleChange}
+                                disabled={isDisabled}
                             />
                         </label>
                         <label>
@@ -292,6 +303,7 @@ const KYC = () => {
                                 name="gstin"
                                 value={formData.gstin}
                                 onChange={handleChange}
+                                disabled={isDisabled}
                             />
                         </label>
                         <div className='picc'>
@@ -312,6 +324,7 @@ const KYC = () => {
                                     }, 0);
                                 }}
                                 listType="picture-card"
+                                disabled={isDisabled}
                             >
                                 <button
                                     style={{ border: 0, background: 'none' }}

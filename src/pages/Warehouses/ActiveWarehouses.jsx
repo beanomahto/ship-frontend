@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Table, Tag, message, Modal } from 'antd';
 import { Link, NavLink } from 'react-router-dom';
 import { useWarehouseContext } from '../../context/WarehouseContext';
@@ -43,7 +43,9 @@ const ActiveWarehouses = () => {
       },
     });
   };
-
+useEffect(() => {
+  fetchWarehouse();
+},[])
   const newOrders = [
     ...(authUser?.email === 'test1@gmail.com'
       ? [
