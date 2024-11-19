@@ -63,13 +63,12 @@ const ActionRequiredTab = ({
         instruction: action === "RTO" ? "RTO" : "RAD",
       };
       const otherPayload = {
-        orderIds: selectedOrderData.map(order => order._id), 
+        orderIds: selectedOrderData.map((order) => order._id),
         comment: "",
         date:
           action === "Re-attempt" ? `${selectedDate.format("DD/MM/YYYY")}` : "",
         action: action === "Re-attempt" ? `1` : "2",
       };
-      
 
       if (selectedOrderData[0].shippingPartner === "Ecom Express") {
         await axios.post(
