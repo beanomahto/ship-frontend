@@ -355,53 +355,48 @@ const Orders = () => {
 
   //console.log(tabsData);
   //console.log(selectedOrderData);
- useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await fetch('https://backend.shiphere.in/api/smartship/getcurrentstatus', {
           headers: {
-            Authorization: localStorage.getItem('token')
-          }
+            Authorization: localStorage.getItem('token'),
+          },
         });
-
+  
         const jsonObj = await res.json();
         console.log(jsonObj);
-
+  
         const data = jsonObj?.data?.shipmentDetails;
-
-        console.log(data.map((ok) => ok.status +"-----"+ ok.client_order_reference_id));
-
+  
+        console.log(data.map((ok) => ok.status + "-----" + ok.client_order_reference_id));
+  
         const mapStatusCodeToOrderStatus = (status) => {
           console.log(status);
-
+  
           if (status === '27') return 'InTransit';
           if (status === '10') return 'InTransit';
           if (status === '4') return 'Shipped';
           if (status === '11') return 'Delivered';
           if (status === '340') return 'Cancelled';
-          if (status === '12') return 'UnDelivered'
-          if (status === '13') return 'UnDelivered'
-          if (status === '14') return 'UnDelivered'
-          if (status === '15') return 'UnDelivered'
-          if (status === '16') return 'UnDelivered'
-          if (status === '17') return 'UnDelivered'
+          if (['12', '13', '14', '15', '16', '17'].includes(status)) return 'UnDelivered';
           return null;
         };
-
+  
         const updatedOrders = data
           .map((order) => {
             console.log(order.status);
-
+  
             const order_status = mapStatusCodeToOrderStatus(order.status);
             console.log(order_status);
-
+  
             if (order_status) {
-              return { ...order, order_status };
+              return { ...order, order_status, reason: order.reason };
             }
             return null;
           })
           .filter((order) => order !== null);
-
+  
         if (updatedOrders?.length > 0) {
           await updateMultipleOrders(updatedOrders);
           console.log(updatedOrders);
@@ -412,18 +407,21 @@ const Orders = () => {
         console.error('Error fetching data:', error);
       }
     };
-
+  
     const updateMultipleOrders = async (orders) => {
       console.log(orders);
-
+  
       try {
         const updatePromises = orders.map((order) => {
+          console.log(order);
+          
           const updateBody = {
             status: order.order_status,
-            reason: null,
+            reason: order.order_status === 'UnDelivered' ? order.status_description : null, 
+            ndrstatus: order.order_status === 'UnDelivered' ? 'Required' : null
           };
           console.log(updateBody);
-
+  
           return axios.put(
             `https://backend.shiphere.in/api/orders/updateOrderStatus/${order.orderId}`,
             updateBody,
@@ -434,28 +432,22 @@ const Orders = () => {
             }
           );
         });
-
-        // const results = await Promise.allSettled(updatePromises);
-
-        // const successCount = results.filter((result) => result.status === 'fulfilled').length;
-        // const failureCount = results.filter((result) => result.status === 'rejected').length;
-
-        // Show a summary message
-        // if (successCount > 0) message.success(`orders updated successfully.`);
-        // if (failureCount > 0) message.error(`orders failed to update.`);
+  
+        await Promise.all(updatePromises);
+  
       } catch (error) {
         console.error('Error updating orders:', error);
         // message.error('Batch update failed.');
       }
     };
-
+  
     fetchData();
-fetchOrders();
+    fetchOrders();
     const intervalId = setInterval(fetchData, 300000); // 5 minutes
-
+  
     return () => clearInterval(intervalId);
-
   }, []);
+  
   
   const cancelShipment = async () => {
     if (selectedRowKeys.length === 0) {

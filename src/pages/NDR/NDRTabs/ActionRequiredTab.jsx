@@ -8,10 +8,6 @@ import {
   Space,
   Table,
   Tag,
-  Radio,
-  Modal,
-  Calendar,
-  Typography,
 } from "antd";
 import {
   MenuFoldOutlined,
@@ -22,14 +18,13 @@ import { useAuthContext } from "../../../context/AuthContext";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import axios from "axios";
-const { TextArea } = Input;
-const { Text } = Typography;
 
 const ActionRequiredTab = ({
   rowSelection,
   selectedRowKeys,
   dataSource,
   selectedOrderData,
+  fetchOrders
 }) => {
   //console.log(dataSource);
   //console.log(selectedRowKeys);
@@ -37,21 +32,20 @@ const ActionRequiredTab = ({
 
   const { authUser } = useAuthContext();
   const [loading, setLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedOption, setSelectedOption] = useState("None");
-  const [comment, setComment] = useState("");
+
   const handleAction = async (action) => {
     if (selectedOrderData.length === 0) {
       message.warning("Please select at least one order.");
       return;
     }
-
+  
     if (action === "Re-attempt" && !selectedDate) {
       message.warning("Please select a date for the re-attempt.");
       return;
     }
-
+  
     setLoading(true);
     try {
       const ecomPayload = {
@@ -62,14 +56,15 @@ const ActionRequiredTab = ({
             : action,
         instruction: action === "RTO" ? "RTO" : "RAD",
       };
+  
       const otherPayload = {
-        orderIds: selectedOrderData.map((order) => order._id),
-        comment: "",
+        orderIds: selectedOrderData.map(order => order._id),
+        comment: selectedOrderData[0].shipmentDetails.comments ? selectedOrderData[0].shipmentDetails.comments : "",
         date:
           action === "Re-attempt" ? `${selectedDate.format("DD/MM/YYYY")}` : "",
         action: action === "Re-attempt" ? `1` : "2",
       };
-
+  
       if (selectedOrderData[0].shippingPartner === "Ecom Express") {
         await axios.post(
           "https://backend.shiphere.in/api/ecomExpress/createNdr",
@@ -91,7 +86,27 @@ const ActionRequiredTab = ({
           }
         );
       }
-
+  
+      const updateStatusPromises = selectedOrderData.map(async (order) => {
+        console.log(order);
+        
+        const updatedStatus = {
+          ndrstatus:'Taken',
+          reattemptcount:'1'
+        }
+        await axios.put(
+          `https://backend.shiphere.in/api/orders/updateOrderStatus/${order._id}`,
+          updatedStatus,
+          {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
+        );
+      });
+  
+      await Promise.all(updateStatusPromises);
+  fetchOrders()
       message.success("Action successfully applied to selected orders.");
     } catch (error) {
       console.error("Error applying action:", error);
@@ -102,6 +117,7 @@ const ActionRequiredTab = ({
       setSelectedDate(null);
     }
   };
+  
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -116,19 +132,6 @@ const ActionRequiredTab = ({
   const handleReset = (clearFilters) => {
     clearFilters();
     setSearchText("");
-  };
-
-  const openModal = () => {
-    if (selectedOrderData.length === 0) {
-      message.warning("Please select at least one order.");
-      return;
-    }
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedDate(null); // Reset date selection on modal close
   };
 
   const getColumnSearchProps = (dataIndex) => ({
@@ -172,7 +175,6 @@ const ActionRequiredTab = ({
       <SearchOutlined style={{ color: filtered ? "#1890ff" : "black" }} />
     ),
     onFilter: (value, record) => {
-      // Split the dataIndex in case it represents a nested field
       const keys = dataIndex.split(".");
       let data = record;
       keys.forEach((key) => {
@@ -345,21 +347,8 @@ const ActionRequiredTab = ({
 
   const ndrOrders = dataSource?.filter(
     (order) => order?.status === "UnDelivered"
+     && order?.ndrstatus === 'Required'
   );
-  const handleConfirm = () => {
-    if (!selectedDate) {
-      message.warning("Please select a date for the re-attempt.");
-      return;
-    }
-
-    // Proceed with saving the action (you can add API calls here)
-    console.log("Selected Option:", selectedOption);
-    console.log("Comment:", comment);
-    console.log("Selected Date:", selectedDate);
-
-    // Close modal and reset states
-    closeModal();
-  };
   return (
     <div>
       <div
@@ -377,7 +366,12 @@ const ActionRequiredTab = ({
             <div
               style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
             >
-              <Button onClick={openModal} loading={loading}>
+              <Button
+                onClick={() => {
+                  setIsDatePickerOpen(true);
+                }}
+                loading={loading}
+              >
                 Re-attempt
               </Button>
               <Button onClick={() => handleAction("RTO")} loading={loading}>
@@ -394,12 +388,7 @@ const ActionRequiredTab = ({
         >
           <Button
             type="primary"
-            style={{
-              marginRight: "3rem",
-              // padding: "15px",
-              fontSize: "17px",
-              marginTop: "-7rem",
-            }}
+            style={{ marginRight: "20px", padding: "15px", fontSize: "17px" }}
             icon={<MenuFoldOutlined />}
           >
             Action
@@ -407,7 +396,21 @@ const ActionRequiredTab = ({
         </Popover>
       </div>
 
-      <span style={{ marginBottom: 0, display: "block" }}>
+      {isDatePickerOpen && (
+        <div style={{ marginTop: "-50px" }}>
+          <DatePicker onChange={handleDateChange} />
+          <Button
+            type="primary"
+            style={{ marginLeft: 8 }}
+            onClick={() => handleAction("Re-attempt")}
+            disabled={!selectedDate}
+          >
+            Confirm Date
+          </Button>
+        </div>
+      )}
+
+      <span style={{ marginBottom: 16, display: "block" }}>
         {selectedRowKeys?.length > 0
           ? `Selected ${selectedRowKeys?.length} items`
           : ""}
@@ -419,90 +422,6 @@ const ActionRequiredTab = ({
         dataSource={ndrOrders}
         scroll={{ y: 350 }}
       />
-
-      {/* Modal for DatePicker */}
-      <Modal
-        title="Arrange Re-attempt Delivery"
-        open={isModalOpen}
-        onCancel={closeModal}
-        footer={null}
-        width={700}
-      >
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-          {/* Radio Buttons */}
-          <Radio.Group
-            onChange={(e) => setSelectedOption(e.target.value)}
-            value={selectedOption}
-            style={{ marginBottom: "12px" }}
-          >
-            <Radio value="Enter Alternate Number" style={{ fontSize: "16px" }}>
-              Enter Alternate Number
-            </Radio>
-            <Radio value="Enter Alternate Address" style={{ fontSize: "16px" }}>
-              Enter Alternate Address
-            </Radio>
-            <Radio value="None" style={{ fontSize: "16px" }}>
-              Other
-            </Radio>
-          </Radio.Group>
-
-          {/* Comment Box and DatePicker */}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-            }}
-          >
-            {/* Comment Box */}
-            <div
-              style={{
-                flex: 2,
-                marginRight: "12px",
-                position: "relative",
-                width: "50%",
-              }}
-            >
-              <TextArea
-                rows={6}
-                placeholder="Comment"
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-              />
-              <Text
-                type="danger"
-                style={{ marginTop: "8px", display: "block" }}
-              >
-                *Note: This comment will be stored for re-attempt/RTO of all
-                selected orders.
-              </Text>
-            </div>
-
-            {/*  */}
-            <div style={{ flex: 1, position: "relative", width: "50%" }}>
-              <Calendar
-                fullscreen={false}
-                onSelect={(date) => setSelectedDate(date)}
-                style={{
-                  width: "250px", // Reduced width
-                  height: "300px", // Added height to control the calendar's vertical size
-                  border: "1px solid #d9d9d9",
-                  borderRadius: 8,
-                }}
-              />
-            </div>
-          </div>
-
-          {/* Confirm and Save Button */}
-          <Button
-            type="primary"
-            style={{ marginTop: "16px", width: "100%" }}
-            onClick={handleConfirm}
-          >
-            Confirm & Save
-          </Button>
-        </div>
-      </Modal>
     </div>
   );
 };
