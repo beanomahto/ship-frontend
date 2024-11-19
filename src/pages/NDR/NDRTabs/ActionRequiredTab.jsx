@@ -389,7 +389,7 @@ const ActionRequiredTab = ({
         >
           <Button
             type="primary"
-            style={{ marginRight: "20px", padding: "15px", fontSize: "17px" }}
+            style={{ marginTop: "-7rem", padding: "15px", fontSize: "17px" }}
             icon={<MenuFoldOutlined />}
           >
             Action
