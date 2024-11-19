@@ -24,7 +24,7 @@ const ActionRequiredTab = ({
   selectedRowKeys,
   dataSource,
   selectedOrderData,
-  fetchOrders
+  fetchOrders,
 }) => {
   //console.log(dataSource);
   //console.log(selectedRowKeys);
@@ -40,12 +40,12 @@ const ActionRequiredTab = ({
       message.warning("Please select at least one order.");
       return;
     }
-  
+
     if (action === "Re-attempt" && !selectedDate) {
       message.warning("Please select a date for the re-attempt.");
       return;
     }
-  
+
     setLoading(true);
     try {
       const ecomPayload = {
@@ -56,15 +56,17 @@ const ActionRequiredTab = ({
             : action,
         instruction: action === "RTO" ? "RTO" : "RAD",
       };
-  
+
       const otherPayload = {
-        orderIds: selectedOrderData.map(order => order._id),
-        comment: selectedOrderData[0].shipmentDetails.comments ? selectedOrderData[0].shipmentDetails.comments : "",
+        orderIds: selectedOrderData.map((order) => order._id),
+        comment: selectedOrderData[0].shipmentDetails.comments
+          ? selectedOrderData[0].shipmentDetails.comments
+          : "",
         date:
           action === "Re-attempt" ? `${selectedDate.format("DD/MM/YYYY")}` : "",
         action: action === "Re-attempt" ? `1` : "2",
       };
-  
+
       if (selectedOrderData[0].shippingPartner === "Ecom Express") {
         await axios.post(
           "https://backend.shiphere.in/api/ecomExpress/createNdr",
@@ -86,14 +88,14 @@ const ActionRequiredTab = ({
           }
         );
       }
-  
+
       const updateStatusPromises = selectedOrderData.map(async (order) => {
         console.log(order);
-        
+
         const updatedStatus = {
-          ndrstatus:'Taken',
-          reattemptcount:'1'
-        }
+          ndrstatus: "Taken",
+          reattemptcount: "1",
+        };
         await axios.put(
           `https://backend.shiphere.in/api/orders/updateOrderStatus/${order._id}`,
           updatedStatus,
@@ -104,9 +106,9 @@ const ActionRequiredTab = ({
           }
         );
       });
-  
+
       await Promise.all(updateStatusPromises);
-  fetchOrders()
+      fetchOrders();
       message.success("Action successfully applied to selected orders.");
     } catch (error) {
       console.error("Error applying action:", error);
@@ -117,7 +119,6 @@ const ActionRequiredTab = ({
       setSelectedDate(null);
     }
   };
-  
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -346,8 +347,8 @@ const ActionRequiredTab = ({
   ];
 
   const ndrOrders = dataSource?.filter(
-    (order) => order?.status === "UnDelivered"
-     && order?.ndrstatus === 'Required'
+    (order) =>
+      order?.status === "UnDelivered" && order?.ndrstatus === "Required"
   );
   return (
     <div>
@@ -410,7 +411,7 @@ const ActionRequiredTab = ({
         </div>
       )}
 
-      <span style={{ marginBottom: 16, display: "block" }}>
+      <span style={{ marginTop: "-15px", display: "block" }}>
         {selectedRowKeys?.length > 0
           ? `Selected ${selectedRowKeys?.length} items`
           : ""}
