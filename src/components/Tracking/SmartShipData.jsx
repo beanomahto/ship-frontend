@@ -119,8 +119,8 @@ console.log(trackingHistory.map((ok) => ok.status_description + " and " + ok.sta
 
       if (currentOrder) {
         const orderId = currentOrder?._id;
-// console.log(reason);
-// console.log(currentOrder?.status);
+console.log(reason);
+console.log(currentOrder?.status);
 
 
         if (
