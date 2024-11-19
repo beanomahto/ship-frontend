@@ -37,7 +37,7 @@ const useCreateShipment = () => {
       const fshipCreateForwardOrderUrl =
         "https://backend.shiphere.in/api/smartship/onesteporderregister";
       const smartshipHupCheck =
-        "https://backend.shipment.in/api/smartship/checkhubserviceability";
+        "https://backend.shiphere.in/api/smartship/checkhubserviceability";
       const smartshipCarrierCheck =
         "https://backend.shiphere.in/api/smartship/getrate";
       const fshipCreateShipmentUrl =
@@ -112,6 +112,8 @@ const useCreateShipment = () => {
                 },
               }
             );
+         
+            
             const carrierCheckBody = {
               warehouseId: warehouseIds,
               orderId: orderIds,
@@ -191,7 +193,7 @@ const useCreateShipment = () => {
             courierId,
             shippingPartner: deliveryPartnerName,
           };
-          // console.log(hubCheckBody);
+          console.log(hubCheckBody);
 
           const checkHubServiceability = await axios.post(
             smartshipHupCheck,
@@ -202,6 +204,7 @@ const useCreateShipment = () => {
               },
             }
           );
+          console.log(checkHubServiceability);
           const carrierCheckBody = {
             warehouseId: warehouseIds,
             orderId: orderIds,
@@ -287,7 +290,7 @@ const useCreateShipment = () => {
         return response.data;
       }
     } catch (err) {
-      //console.log(err);
+      console.log(err);
       message.error(
         err.response?.data?.message || err.message || "An error occurred"
       );

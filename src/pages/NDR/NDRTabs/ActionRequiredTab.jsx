@@ -76,7 +76,7 @@ const ActionRequiredTab = ({
         );
       } else {
         await axios.post(
-          "http://backend.shiphere.in/api/smartship/orderReattempt",
+          "https://backend.shiphere.in/api/smartship/orderReattempt",
           otherPayload,
           {
             headers: {

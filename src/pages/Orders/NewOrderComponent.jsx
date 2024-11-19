@@ -300,11 +300,16 @@ const NewOrderComponent = ({ tab,dataSource,fetchWarehouse, rowSelection, fetchO
         // Proceed with shipping
         setCurrentDeliveryCost(totalDebit);
   
+        console.log("okokko");
+        
         await shipOrder(
           selectedOrder, 
           sendWarehouse, 
           partner.deliveryPartner
         );
+
+        console.log("okokokok");
+        
   
         // Update order status
         const updateBody = {
@@ -366,7 +371,7 @@ const NewOrderComponent = ({ tab,dataSource,fetchWarehouse, rowSelection, fetchO
           }
         );
   
-        throw shippingError; // Re-throw to handle it in the outer `catch`
+        throw shippingError; 
       }
     } catch (error) {
       message.error(error.response?.data?.error || error.message);

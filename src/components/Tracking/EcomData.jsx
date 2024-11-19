@@ -65,7 +65,14 @@ const EcomData = ({ trackingInfo }) => {
   const fullLatestStatus = fullLatestScan?.status || trackingInfo?.status;
   const progressPercentage = statusToProgress[latestStatus] || 0;
   console.log(filteredScans);
-  
+  console.log(fullLatestStatus);
+  console.log(fullLatestStatus.status);
+//   {
+//     "date": "18 Nov, 2024, 12:56",
+//     "status": "Shipment Picked Up",
+//     "name": "AGR\nGajendar . 75870",
+//     "city": "AGR\nService Center\nAGRA"
+// }
 
   const getStepIcon = (status) => {
     switch (status) {
@@ -126,7 +133,7 @@ const EcomData = ({ trackingInfo }) => {
   console.log(latestScan);
   
       // Update to "InTransit"
-      if (fullLatestStatus === 'Shipment Picked Up' && progressPercentage === 100 && currentOrder[0]?.status !== 'InTransit') {
+      if (latestScan.status === 'Shipment Picked Up' && progressPercentage === 100 && currentOrder[0]?.status !== 'InTransit') {
         updateOrderStatus(orderId, 'InTransit', shippingCost);
       }
   
