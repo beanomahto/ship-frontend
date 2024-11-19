@@ -104,6 +104,23 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading,tab }) => {
       },
     });
   };
+  const handleBulkDelete = () => {
+    confirm({
+      title: 'Are you sure you want to delete the selected orders?',
+      content: 'This action cannot be undone.',
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk: async () => {
+        const promises = selectedRowKeys.map((id) => handleDelete(id));
+        await Promise.all(promises);
+        setSelectedRowKeys([]);
+        fetchOrders();
+        message.success('Selected orders deleted successfully');
+      },
+    });
+  };
+
   const columns = [
     {
       title: 'Order Id',
@@ -219,32 +236,41 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading,tab }) => {
   //console.log(dataSource);
   
   const allOrders = dataSource?.filter(order => order?.status === 'Shipped');
-  // //console.log(rowSelection);
+  console.log(selectedRowKeys);
   //console.log(allOrders);
   
   return (
     <>
-      <Helmet>
-                <meta charSet='utf-8' />
-                <meta name='keyword' content={""} />
-                <title>Orders </title>
-            </Helmet>
-      {
-        loading ? (
-          <Skeleton active title={false}
-            paragraph={{ rows: 10 }} style={{ height: '100%', width: '100%' }}
-          />
-        ) : <Table
+     <Helmet>
+        <title>Orders</title>
+      </Helmet>
+      <div style={{ marginBottom: 16 }}>
+        {selectedRowKeys.length > 0 && (
+          <Button
+            type="danger"
+            onClick={handleBulkDelete}
+            disabled={selectedRowKeys.length === 0}
+          >
+            Delete Selected
+          </Button>
+        )}
+      </div>
+      {loading ? (
+        <Skeleton
+          active
+          title={false}
+          paragraph={{ rows: 10 }}
+          style={{ height: '100%', width: '100%' }}
+        />
+      ) : (
+        <Table
           rowSelection={rowSelection}
           columns={columns}
           dataSource={dataSource}
           rowKey="_id"
-           className="centered-table"
-          scroll={{ x:1050,y: 440 }}
-          // pagination={false}
-          style={{ width: '100%', height: '550px' }}
+          scroll={{ x: 1050, y: 440 }}
         />
-      }
+      )}
     </>
   );
 };
