@@ -73,7 +73,7 @@ const VerifyKyc = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:5000/api/users/updateVerify/${id}`,
+        `http://localhost:5000/api/kyc/verify/${id}`,
         {
           method: "POST",
           headers: {
@@ -95,20 +95,35 @@ const VerifyKyc = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [remark, setRemark] = useState("");
 
-  // Function to handle the click on the Reset button
   const handleResetClick = () => {
-    setIsModalVisible(true); // Show the modal
+    setIsModalVisible(true); 
   };
 
-  // Function to handle the modal's OK button
-  const handleOk = () => {
-    console.log("Remark:", remark); // You can process the remark here
-    setIsModalVisible(false); // Close the modal
-  };
+  const handleOk = async () => {
+    console.log("Remark:", remark); 
+    try {
+        const response = await fetch(`http://localhost:5000/api/kyc/remove/${id}` , {
+            method: 'POST',
+            headers: {
+                Authorization: localStorage.getItem('token'),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ remark})
+        });
 
-  // Function to handle the modal's Cancel button
+        if (response.ok) {
+            message.success("Remark added successfully");
+        } 
+    } catch (error) {
+        message.error("An error occurred while adding the remark");
+        console.error(error);
+    } finally {
+        setIsModalVisible(false); 
+    }
+};
+
   const handleCancel = () => {
-    setIsModalVisible(false); // Close the modal
+    setIsModalVisible(false);
   };
 
   return (
@@ -375,19 +390,19 @@ const VerifyKyc = () => {
           >
             Submit
           </Button>
-          <Button
+          {/* <Button
             htmlType="button"
             className="btn"
             style={{
               background: "linear-gradient(135deg, #007bff, #035a86)",
               color: "white",
-              width: "100px",
+              width: "100px", 
               padding: "20px",
               fontSize: "18px",
             }}
           >
             Edit
-          </Button>
+          </Button> */}
           <Button
             htmlType="button"
             className="btn"
