@@ -383,76 +383,74 @@ const ActionRequiredTab = ({
   );
   return (
     <div>
-    <div
-      style={{
-        marginBottom: 16,
-        display: "flex",
-        justifyContent: "flex-end",
-        alignItems: "center",
-        padding: "10px 20px",
-      }}
-    >
-      <Popover
-        placement="leftTop"
-        title={
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
-          >
-            <Button onClick={showModal} loading={loading}>
-              Re-attempt
-            </Button>
-            <Button onClick={() => handleAction("RTO")} loading={loading}>
-              RTO
-            </Button>
-            <Button
-              onClick={() => handleAction("Reschedule")}
-              loading={loading}
-            >
-              Reschedule
-            </Button>
-          </div>
-        }
+      <div
+        style={{
+          marginBottom: 16,
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          padding: "10px 20px",
+        }}
       >
-        <Button
-          type="primary"
-          style={{ marginTop: "-7rem", padding: "15px", fontSize: "17px" }}
-          icon={<MenuFoldOutlined />}
+        <Popover
+          placement="leftTop"
+          title={
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+            >
+              <Button onClick={showModal} loading={loading}>
+                Re-attempt
+              </Button>
+              <Button onClick={() => handleAction("RTO")} loading={loading}>
+                RTO
+              </Button>
+              <Button
+                onClick={() => handleAction("Reschedule")}
+                loading={loading}
+              >
+                Reschedule
+              </Button>
+            </div>
+          }
         >
-          Action
-        </Button>
-      </Popover>
-    </div>
+          <Button
+            type="primary"
+            style={{ marginTop: "-7rem", padding: "15px", fontSize: "17px" }}
+            icon={<MenuFoldOutlined />}
+          >
+            Action
+          </Button>
+        </Popover>
+      </div>
 
-    <Modal
-      title="Select Re-attempt Date"
-      visible={isModalOpen}
-      onOk={() => handleAction("Re-attempt")}
-      onCancel={handleModalCancel}
-      okText="Confirm"
-      cancelText="Cancel"
-      confirmLoading={loading}
-      okButtonProps={{ disabled: !selectedDate }}
-      width={300}
-    >
-      <DatePicker
-        onChange={handleDateChange}
-        style={{ width: "100%" }}
+      <Modal
+        title="Select Re-attempt Date"
+        visible={isModalOpen}
+        onOk={() => handleAction("Re-attempt")}
+        onCancel={handleModalCancel}
+        okText="Confirm"
+        cancelText="Cancel"
+        confirmLoading={loading}
+        okButtonProps={{ disabled: !selectedDate }}
+        width={300}
+      >
+        <DatePicker onChange={handleDateChange} style={{ width: "100%" }} />
+      </Modal>
+
+      {/* <span style={{ marginTop: "-40px", display: "block" }}>
+        {selectedRowKeys?.length > 0
+          ? `Selected ${selectedRowKeys?.length} items`
+          : ""}
+      </span> */}
+
+      <Table
+        rowSelection={rowSelection}
+        columns={columns}
+        dataSource={ndrOrders}
+        scroll={{ y: 350 }}
+        style={{ marginTop: "-25px" }}
       />
-    </Modal>
-
-    <span style={{ marginTop: "-40px", display: "block" }}>
-      {selectedRowKeys?.length > 0
-        ? `Selected ${selectedRowKeys?.length} items`
-        : ""}
-    </span>
-
-    <Table
-      rowSelection={rowSelection}
-      columns={columns}
-      dataSource={ndrOrders}
-      scroll={{ y: 350 }}
-    />
-  </div>
+    </div>
   );
 };
 
