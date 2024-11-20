@@ -91,7 +91,7 @@ const CheckPincode = () => {
 
   const columns = [
     {
-      title: "Logo",
+      title: "Partner",
       dataIndex: "logo",
       key: "logo",
       render: (text, record) =>
@@ -105,11 +105,11 @@ const CheckPincode = () => {
           "N/A"
         ),
     },
-    {
-      title: "Partner Name",
-      dataIndex: "name",
-      key: "name",
-    },
+    // {
+    //   title: "Partner Name",
+    //   dataIndex: "name",
+    //   key: "name",
+    // },
     {
       title: "Pincode",
       dataIndex: "pincode",

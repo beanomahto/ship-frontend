@@ -24,7 +24,7 @@ const ActionTakenTab = ({
   selectedRowKeys,
   dataSource,
   selectedOrderData,
-  fetchOrders
+  fetchOrders,
 }) => {
   //console.log(dataSource);
   //console.log(selectedRowKeys);
@@ -257,8 +257,7 @@ const ActionTakenTab = ({
   ];
 
   const takenOrders = dataSource?.filter(
-    (order) => order?.status === "UnDelivered"
-     && order?.ndrstatus === 'Taken'
+    (order) => order?.status === "UnDelivered" && order?.ndrstatus === "Taken"
   );
   return (
     <div>
@@ -270,20 +269,20 @@ const ActionTakenTab = ({
           alignItems: "center",
           padding: "10px 20px",
         }}
-      >
-      </div>
-
+      ></div>
+      {/* 
       <span style={{ marginBottom: 16, display: "block" }}>
         {selectedRowKeys?.length > 0
           ? `Selected ${selectedRowKeys?.length} items`
           : ""}
-      </span>
+      </span> */}
 
       <Table
         rowSelection={rowSelection}
         columns={columns}
         dataSource={takenOrders}
         scroll={{ y: 350 }}
+        style={{ marginTop: "-25px" }}
       />
     </div>
   );

@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 function DeliveredTab() {
-  return (
-    <div>DeliveredTab</div>
-  )
+  return <div style={{ marginTop: "-25px" }}>DeliveredTab</div>;
 }
 
-export default DeliveredTab
+export default DeliveredTab;
