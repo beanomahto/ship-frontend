@@ -207,14 +207,12 @@ const KYC = () => {
     ) : (
         <div>
             {formData?.gstUrl?.type?.startsWith("image/") ? (
-                // Preview image if the file is an image
                 <Image
                     src={URL.createObjectURL(formData.gstUrl)}
                     alt="GST Certificate"
                     style={{ width: "100%", maxWidth: "200px" }}
                 />
             ) : (
-                // Provide download link for non-image files
                 <a
                     href={URL.createObjectURL(formData.gstUrl)}
                     download={formData.gstUrl.name}
@@ -387,14 +385,12 @@ const KYC = () => {
     {formData.pancardUrl ? (
         <div>
             {formData.pancardUrl.type.startsWith("image/") ? (
-                // Preview image if the file is an image
                 <Image
                     src={URL.createObjectURL(formData.pancardUrl)}
                     alt="PanCard"
                     style={{ width: "100%", maxWidth: "200px" }}
                 />
             ) : (
-                // Provide download link for non-image files
                 <a
                     href={URL.createObjectURL(formData.pancardUrl)}
                     download={formData.pancardUrl.name}
