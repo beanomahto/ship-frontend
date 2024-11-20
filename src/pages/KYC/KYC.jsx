@@ -185,7 +185,8 @@ const KYC = () => {
                     customRequest={({ file, onSuccess, onError }) => {
                       setTimeout(() => {
                         try {
-                          setFormData({ ...formData, gstUrl: file });
+                          const url = URL.createObjectURL(file);
+                          setFormData({ ...formData, gstUrl: url });
                           onSuccess(null, file);
                         } catch (error) {
                           onError(error);
@@ -271,7 +272,8 @@ const KYC = () => {
                     customRequest={({ file, onSuccess, onError }) => {
                       setTimeout(() => {
                         try {
-                          setFormData({ ...formData, passbookUrl: file });
+                          const url = URL.createObjectURL(file);
+                          setFormData({ ...formData, passbookUrl: url });
                           onSuccess(null, file);
                         } catch (error) {
                           onError(error);
@@ -360,7 +362,8 @@ const KYC = () => {
                     customRequest={({ file, onSuccess, onError }) => {
                       setTimeout(() => {
                         try {
-                          setFormData({ ...formData, pancardUrl: file });
+                          const url = URL.createObjectURL(file);
+                          setFormData({ ...formData, pancardUrl: url });
                           onSuccess(null, file);
                         } catch (error) {
                           onError(error);

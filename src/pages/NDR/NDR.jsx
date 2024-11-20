@@ -62,11 +62,11 @@ const NDR = () => {
         });
   
         const jsonObj = await res.json();
-        console.log(jsonObj);
+        // console.log(jsonObj);
   
         const data = jsonObj?.data?.shipmentDetails
   
-        console.log(data.map((ok) => ok.status + "-----" + ok.client_order_reference_id));
+        // console.log(data.map((ok) => ok.status + "-----" + ok.client_order_reference_id));
   
         const mapStatusCodeToOrderStatus = (status) => {
           // console.log(status);
@@ -81,7 +81,7 @@ const NDR = () => {
   
         const updatedOrders = data
           .map((order) => {
-            console.log(order);
+            // console.log(order);
   
             const order_status = mapStatusCodeToOrderStatus(order.status);
             // console.log(order_status);
@@ -95,7 +95,7 @@ const NDR = () => {
   
         if (updatedOrders?.length > 0) {
           await updateMultipleOrders(updatedOrders);
-          console.log(updatedOrders);
+          // console.log(updatedOrders);
         } else {
           console.log('No orders to update: all statusCodes were invalid.');
         }
@@ -115,7 +115,7 @@ const NDR = () => {
             status: order.order_status,
             reason: order.order_status === 'UnDelivered' ? order.status_description : null, // Include reason for UnDelivered
           };
-          console.log(updateBody);
+          // console.log(updateBody);
   
           return axios.put(
             `https://backend.shiphere.in/api/orders/updateOrderStatus/${order.orderId}`,

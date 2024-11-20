@@ -365,14 +365,14 @@ const Orders = () => {
         });
   
         const jsonObj = await res.json();
-        console.log(jsonObj);
+        // console.log(jsonObj);
   
         const data = jsonObj?.data?.shipmentDetails;
   
-        console.log(data.map((ok) => ok.status + "-----" + ok.client_order_reference_id));
+        // console.log(data.map((ok) => ok.status + "-----" + ok.client_order_reference_id));
   
         const mapStatusCodeToOrderStatus = (status) => {
-          console.log(status);
+          // console.log(status);
   
           if (status === '27') return 'InTransit';
           if (status === '10') return 'InTransit';
@@ -385,10 +385,10 @@ const Orders = () => {
   
         const updatedOrders = data
           .map((order) => {
-            console.log(order.status);
+            // console.log(order.status);
   
             const order_status = mapStatusCodeToOrderStatus(order.status);
-            console.log(order_status);
+            // console.log(order_status);
   
             if (order_status) {
               return { ...order, order_status, reason: order.reason };
@@ -399,7 +399,7 @@ const Orders = () => {
   
         if (updatedOrders?.length > 0) {
           await updateMultipleOrders(updatedOrders);
-          console.log(updatedOrders);
+          // console.log(updatedOrders);
         } else {
           console.log('No orders to update: all statusCodes were invalid.');
         }
@@ -409,18 +409,18 @@ const Orders = () => {
     };
   
     const updateMultipleOrders = async (orders) => {
-      console.log(orders);
+      // console.log(orders);
   
       try {
         const updatePromises = orders.map((order) => {
-          console.log(order);
+          // console.log(order);
           
           const updateBody = {
             status: order.order_status,
             reason: order.order_status === 'UnDelivered' ? order.status_description : null, 
             ndrstatus: order.order_status === 'UnDelivered' ? 'Required' : null
           };
-          console.log(updateBody);
+          // console.log(updateBody);
   
           return axios.put(
             `https://backend.shiphere.in/api/orders/updateOrderStatus/${order.orderId}`,

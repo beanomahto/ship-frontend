@@ -254,13 +254,9 @@ const ActionTakenTab = ({
   ];
 
   const takenOrders = dataSource?.filter(
-<<<<<<< HEAD
     (order) => 
       // order?.status === "UnDelivered" || order.status === 'InTranit'
      order?.ndrstatus === 'Taken' && order.status !== 'Delivered'
-=======
-    (order) => order?.status === "UnDelivered" && order?.ndrstatus === "Taken"
->>>>>>> e8b1b44ee578f09d7a058bf669a3c60f8485f385
   );
   return (
     <div>
