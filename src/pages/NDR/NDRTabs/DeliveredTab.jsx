@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState } from "react";
 import {
   Button,
@@ -275,12 +274,3 @@ const DeliveredTab = ({
 };
 
 export default DeliveredTab;
-=======
-import React from "react";
-
-function DeliveredTab() {
-  return <div style={{ marginTop: "-25px" }}>DeliveredTab</div>;
-}
-
-export default DeliveredTab;
->>>>>>> e8b1b44ee578f09d7a058bf669a3c60f8485f385
