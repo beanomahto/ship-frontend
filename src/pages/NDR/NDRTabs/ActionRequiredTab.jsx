@@ -24,6 +24,8 @@ const ActionRequiredTab = ({
   rowSelection,
   selectedRowKeys,
   dataSource,
+  setSelectedRowKeys,
+  handleReattemptSuccess,
   selectedOrderData,
   fetchOrders,
 }) => {
@@ -64,7 +66,7 @@ const ActionRequiredTab = ({
           ? selectedOrderData[0].shipmentDetails.comments
           : "",
         date:
-          action === "Re-attempt" ? `${selectedDate.format("DD/MM/YYYY")}` : "",
+          action === "Re-attempt" ? `${selectedDate.format("DD/MM/YYYY")}` : action === 'RTO' ? 'RTO' : '',
         action: action === "Re-attempt" ? `1` : "2",
       };
 
@@ -91,9 +93,10 @@ const ActionRequiredTab = ({
       }
 
       const updateStatusPromises = selectedOrderData.map(async (order) => {
+        if(order.reattemptcount >= 3){
         const updatedStatus = {
-          ndrstatus: "Taken",
-          reattemptcount: "1",
+          ndrstatus: action === 'Re-attempt' ? 'Taken' : 'RTO',
+          ...(action === 'Re-attempt' && {reattemptcount:order.reattemptcount + 1})
         };
         await axios.put(
           `https://backend.shiphere.in/api/orders/updateOrderStatus/${order._id}`,
@@ -104,10 +107,26 @@ const ActionRequiredTab = ({
             },
           }
         );
+      } else {
+        const updatedStatus = {
+          ndrstatus: "RTO",
+          ...(action === 'Re-attempt' && {reattemptcount:order.reattemptcount + 1})
+        };
+        await axios.put(
+          `https://backend.shiphere.in/api/orders/updateOrderStatus/${order._id}`,
+          updatedStatus,
+          {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
+        );
+      }
       });
 
       await Promise.all(updateStatusPromises);
       fetchOrders();
+      // setSelectedRowKeys([])
       message.success("Action successfully applied to selected orders.");
     } catch (error) {
       console.error("Error applying action:", error);

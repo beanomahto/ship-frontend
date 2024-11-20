@@ -7,6 +7,7 @@ import DeliveredTab from './NDRTabs/DeliveredTab.jsx';
 import RTOTab from './NDRTabs/RTOTab.jsx';
 import { useOrderContext } from '../../context/OrderContext.jsx';
 import axios from 'axios';
+import AllOrderTab from './NDRTabs/All0rderTab.jsx';
 
 const { TabPane } = Tabs;
 
@@ -28,6 +29,7 @@ const NDR = () => {
     );
     setSelectedOrderData(selectedData);
   };
+// console.log(dataSourceWithKeys);
 
   const rowSelection = {
     selectedRowKeys,
@@ -36,13 +38,19 @@ const NDR = () => {
 
   const hasSelected = selectedRowKeys.length > 0;
 
+  const actionRequired = dataSourceWithKeys?.filter((status) => status.ndrstatus === 'Required')
+  const actionTaken = dataSourceWithKeys?.filter((status) => status.ndrstatus === 'Taken' && status.status !== 'Delivered')
+  const rtoOrder = dataSourceWithKeys?.filter((status) => status.ndrstatus === 'RTO')
+  const ndrDeliveredOrder = dataSourceWithKeys?.filter((status) => status.status === 'Delivered' && (status.ndrstatus === 'Taken' || status.ndrstatus === 'Required') )
+  const allNdrOrders = [...actionRequired,...actionTaken,...rtoOrder,...ndrDeliveredOrder]
+
   const tabsData = [
-    { key: 'tab1', tab: 'Dashboard', Component: DashboardTab, dataSource: dataSourceWithKeys },
-    { key: 'tab2', tab: 'Action Required', Component: ActionRequiredTab, dataSource: dataSourceWithKeys },
-    { key: 'tab3', tab: 'Action Taken', Component: ActionTakenTab, dataSource: dataSourceWithKeys },
-    { key: 'tab4', tab: 'Delivered', Component: ActionTakenTab, dataSource: dataSourceWithKeys },
-    { key: 'tab5', tab: 'RTO', Component: ActionTakenTab, dataSource: dataSourceWithKeys },
-    { key: 'tab6', tab: 'All Orders', Component: ActionRequiredTab, dataSource: dataSourceWithKeys },
+    { key: 'tab1', tab: `Dashboard`, Component: DashboardTab, dataSource: dataSourceWithKeys },
+    { key: 'tab2', tab: `Action Required (${actionRequired?.length})`, Component: ActionRequiredTab, dataSource: dataSourceWithKeys },
+    { key: 'tab3', tab: `Action Taken (${actionTaken?.length})`, Component: ActionTakenTab, dataSource: dataSourceWithKeys },
+    { key: 'tab4', tab: `Delivered (${ndrDeliveredOrder?.length})`, Component: DeliveredTab, dataSource: dataSourceWithKeys },
+    { key: 'tab5', tab: `RTO (${rtoOrder?.length})`, Component: RTOTab, dataSource: dataSourceWithKeys },
+    { key: 'tab6', tab: `All Orders (${allNdrOrders?.length})`, Component: AllOrderTab, dataSource: dataSourceWithKeys },
   ];
   useEffect(() => {
     const fetchData = async () => {
@@ -56,16 +64,14 @@ const NDR = () => {
         const jsonObj = await res.json();
         console.log(jsonObj);
   
-        const data = jsonObj?.data?.shipmentDetails.filter((status) => status.status === '12' ||  status.status === '13' ||  status.status === '14' ||  status.status === '15' ||  status.status === '16' ||  status.status === '17');
+        const data = jsonObj?.data?.shipmentDetails
   
         console.log(data.map((ok) => ok.status + "-----" + ok.client_order_reference_id));
   
         const mapStatusCodeToOrderStatus = (status) => {
           // console.log(status);
   
-          if (status === '27') return 'InTransit';
-          if (status === '10') return 'InTransit';
-          if (status === '30') return 'InTransit';
+          if (['27','30','10'].includes(status)) return 'InTransit';
           if (status === '4') return 'Shipped';
           if (status === '11') return 'Delivered';
           if (status === '340') return 'Cancelled';
@@ -75,7 +81,7 @@ const NDR = () => {
   
         const updatedOrders = data
           .map((order) => {
-            console.log(order.status);
+            console.log(order);
   
             const order_status = mapStatusCodeToOrderStatus(order.status);
             // console.log(order_status);

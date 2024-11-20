@@ -31,9 +31,6 @@ const ActionTakenTab = ({
   //console.log(selectedOrderData);
 
   const { authUser } = useAuthContext();
-  const [loading, setLoading] = useState(false);
-  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -144,7 +141,7 @@ const ActionTakenTab = ({
               maxWidth: "max-content",
               marginLeft: "3rem",
             }}
-            color={order.status === "New" ? "green" : "volcano"}
+            color={order.status === "InTransit" ? "blue" : order.status === 'UnDelivered' ? 'red' : 'green'}
           >
             {order.status}
           </Tag>
@@ -257,8 +254,9 @@ const ActionTakenTab = ({
   ];
 
   const takenOrders = dataSource?.filter(
-    (order) => order?.status === "UnDelivered"
-     && order?.ndrstatus === 'Taken'
+    (order) => 
+      // order?.status === "UnDelivered" || order.status === 'InTranit'
+     order?.ndrstatus === 'Taken' && order.status !== 'Delivered'
   );
   return (
     <div>

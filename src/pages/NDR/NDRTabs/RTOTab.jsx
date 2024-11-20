@@ -1,9 +1,275 @@
-import React from 'react'
+import React, { useState } from "react";
+import {
+  Button,
+  DatePicker,
+  Input,
+  message,
+  Popover,
+  Space,
+  Table,
+  Tag,
+} from "antd";
+import {
+  MenuFoldOutlined,
+  SearchOutlined,
+  ThunderboltOutlined,
+} from "@ant-design/icons";
+import { useAuthContext } from "../../../context/AuthContext";
+import { Link } from "react-router-dom";
+import moment from "moment";
+import axios from "axios";
 
-function RTOTab() {
+const ActionTakenTab = ({
+  rowSelection,
+  selectedRowKeys,
+  dataSource,
+  selectedOrderData,
+  fetchOrders
+}) => {
+  //console.log(dataSource);
+  //console.log(selectedRowKeys);
+  //console.log(selectedOrderData);
+
+  const { authUser } = useAuthContext();
+  const [loading, setLoading] = useState(false);
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText("");
+  };
+
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{ marginBottom: 8, display: "block" }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => handleReset(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Reset
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : "black" }} />
+    ),
+    onFilter: (value, record) => {
+      const keys = dataIndex.split(".");
+      let data = record;
+      keys.forEach((key) => {
+        data = data ? data[key] : null;
+      });
+      return data
+        ? data.toString().toLowerCase().includes(value.toLowerCase())
+        : "";
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <span style={{ backgroundColor: "#ffc069", padding: 0 }}>{text}</span>
+      ) : (
+        text
+      ),
+  });
+  const columns = [
+    {
+      title: "Order Id",
+      dataIndex: "orderId",
+      ...getColumnSearchProps("orderId"),
+      render: (text, order) => (
+        <Link
+          style={{
+            color: "black",
+            fontWeight: "400",
+            fontFamily: "Poppins",
+            textAlign: "center",
+          }}
+          to={`/orders/In/updateorder/${order?._id}/${order?.orderId}`}
+        >
+          {order.orderId}
+        </Link>
+      ),
+      className: "centered-row",
+    },
+    {
+      title: "Order Status",
+      dataIndex: "o_status",
+      render: (text, order) => (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <span style={{ marginRight: "6rem" }}>
+            {order.shippingPartner && order.awb && (
+              <a
+                target="_blank"
+                href={`/tracking/shipment/${order.shippingPartner}/${order.awb}`}
+              >
+                <Button type="link">{order.awb ? order.awb : "no"}</Button>
+              </a>
+            )}
+          </span>
+          <Tag
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              maxWidth: "max-content",
+              marginLeft: "3rem",
+            }}
+            color={order.status === "Delivered" ? "green" : "volcano"}
+          >
+            {order.status}
+          </Tag>
+        </div>
+      ),
+      className: "centered-row",
+    },
+    {
+      title: "Customer Info",
+      dataIndex: "customerName",
+      ...getColumnSearchProps("customerName"),
+      render: (text, order) => (
+        <div
+          style={{
+            fontFamily: "Poppins",
+            fontSize: ".9rem",
+            fontWeight: "500",
+            textAlign: "center",
+          }}
+        >
+          <div>{order.customerName}</div>
+          <div>{order.customerPhone}</div>
+        </div>
+      ),
+      className: "centered-row",
+    },
+    {
+      title: "Payment Details",
+      dataIndex: "paymentMethod",
+      filters: [
+        { text: "COD", value: "COD" },
+        { text: "Prepaid", value: "prepaid" },
+      ],
+      onFilter: (value, record) => record.paymentMethod === value,
+      render: (text, order) => (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            maxWidth: "4.5rem",
+            marginLeft: "1rem",
+            fontFamily: "Poppins",
+            fontSize: ".9rem",
+            fontWeight: "500",
+          }}
+        >
+          <div>&#8377; {order.productPrice}</div>
+          <Tag
+            color={
+              order.paymentMethod === "COD"
+                ? "green-inverse"
+                : "geekblue-inverse"
+            }
+          >
+            {order.paymentMethod}
+          </Tag>
+        </div>
+      ),
+      className: "centered-row",
+    },
+    {
+      title: "Order Date",
+      dataIndex: "createdAt",
+      ...getColumnSearchProps("createdAt"),
+      sorter: (a, b) => moment(a.createdAt).unix() - moment(b.createdAt).unix(),
+      render: (text, order) => (
+        <>
+          <div>
+            {moment(order?.createdAt).format("DD-MM-YYYY")}
+            <span style={{ marginLeft: "10px", fontStyle: "italic" }}>
+              {moment(order?.createdAt).format("HH:mm")}
+            </span>
+          </div>
+        </>
+      ),
+      className: "centered-row",
+    },
+    ...(authUser?.role === "admin"
+      ? [
+          {
+            title: "Seller Email",
+            dataIndex: "seller.email",
+            ...getColumnSearchProps("seller.email"),
+            render: (_, record) => (
+              <span style={{ textAlign: "center" }}>
+                {record?.seller?.email}
+              </span>
+            ),
+            className: "centered-row",
+          },
+        ]
+      : []),
+  ];
+
+  const takenOrders = dataSource?.filter(
+    (order) => order?.ndrstatus === 'RTO'
+  );
   return (
-    <div>RTOTab</div>
-  )
-}
+    <div>
+      <div
+        style={{
+          marginBottom: 16,
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          padding: "10px 20px",
+        }}
+      >
+      </div>
 
-export default RTOTab
+      <span style={{ marginBottom: 16, display: "block" }}>
+        {selectedRowKeys?.length > 0
+          ? `Selected ${selectedRowKeys?.length} items`
+          : ""}
+      </span>
+
+      <Table
+        rowSelection={rowSelection}
+        columns={columns}
+        dataSource={takenOrders}
+        scroll={{ y: 350 }}
+      />
+    </div>
+  );
+};
+
+export default ActionTakenTab;
