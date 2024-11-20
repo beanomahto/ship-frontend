@@ -113,7 +113,7 @@ const NDR = () => {
           
           const updateBody = {
             status: order.order_status,
-            reason: order.order_status === 'UnDelivered' ? order.status_description : null, // Include reason for UnDelivered
+            reason: order.order_status === 'UnDelivered' ? order.status_description : null, 
           };
           // console.log(updateBody);
   

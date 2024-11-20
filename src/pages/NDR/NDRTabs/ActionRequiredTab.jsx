@@ -93,7 +93,8 @@ const ActionRequiredTab = ({
       }
 
       const updateStatusPromises = selectedOrderData.map(async (order) => {
-        if(order.reattemptcount >= 3){
+        if(order.reattemptcount <= 3){
+          // 2>=3
         const updatedStatus = {
           ndrstatus: action === 'Re-attempt' ? 'Taken' : 'RTO',
           ...(action === 'Re-attempt' && {reattemptcount:order.reattemptcount + 1})
