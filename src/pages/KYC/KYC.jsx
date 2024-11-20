@@ -178,40 +178,57 @@ const KYC = () => {
               </Select>
             </label>
             <div className="picc">
-              <label>
-                <span>Upload</span>
-                {!formData?.gstUrl ? (
-                  <Upload
-                    customRequest={({ file, onSuccess, onError }) => {
-                      setTimeout(() => {
-                        try {
-                          const url = URL.createObjectURL(file);
-                          setFormData({ ...formData, gstUrl: url });
-                          onSuccess(null, file);
-                        } catch (error) {
-                          onError(error);
-                        }
-                      }, 0);
-                    }}
-                    listType="picture-card"
-                    disabled={isDisabled}
-                  >
-                    <button
-                      style={{ border: 0, background: "none" }}
-                      type="button"
-                    >
-                      <PlusOutlined />
-                      <div style={{ marginTop: 8 }}>Upload</div>
-                    </button>
-                  </Upload>
-                ) : (
-                  <Image
-                    src={formData.gstUrl}
+            <label>
+    <span>Upload</span>
+    {!formData?.gstUrl ? (
+        <Upload
+            customRequest={({ file, onSuccess, onError }) => {
+                setTimeout(() => {
+                    try {
+                        setFormData({ ...formData, gstUrl: file });
+                        onSuccess(null, file);
+                    } catch (error) {
+                        onError(error);
+                    }
+                }, 0);
+            }}
+            listType="picture-card"
+            accept=".png,.jpg,.jpeg,.pdf,.csv"
+            disabled={isDisabled}
+        >
+            <button
+                style={{ border: 0, background: "none" }}
+                type="button"
+            >
+                <PlusOutlined />
+                <div style={{ marginTop: 8 }}>Upload</div>
+            </button>
+        </Upload>
+    ) : (
+        <div>
+            {formData?.gstUrl?.type?.startsWith("image/") ? (
+                // Preview image if the file is an image
+                <Image
+                    src={URL.createObjectURL(formData.gstUrl)}
                     alt="GST Certificate"
                     style={{ width: "100%", maxWidth: "200px" }}
-                  />
-                )}
-              </label>
+                />
+            ) : (
+                // Provide download link for non-image files
+                <a
+                    href={URL.createObjectURL(formData.gstUrl)}
+                    download={formData.gstUrl.name}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: "blue", textDecoration: "underline" }}
+                >
+                    Download {formData.gstUrl.name}
+                </a>
+            )}
+        </div>
+    )}
+</label>
+
             </div>
           </div>
           <div className="flex">
@@ -259,40 +276,56 @@ const KYC = () => {
             </label>
 
             <div className="picc">
-              <label>
-                <span>Passbook</span>
-                {formData.passbookUrl ? (
-                  <Image
-                    src={formData.passbookUrl}
-                    alt="Passbook"
+            <label>
+    <span>Passbook</span>
+    {formData.passbookUrl ? (
+        <div>
+            {formData.passbookUrl.type.startsWith("image/") ? (
+                <Image
+                    src={URL.createObjectURL(formData.passbookUrl)}
+                    alt="Passbook Preview"
                     style={{ width: "100%", maxWidth: "200px" }}
-                  />
-                ) : (
-                  <Upload
-                    customRequest={({ file, onSuccess, onError }) => {
-                      setTimeout(() => {
-                        try {
-                          const url = URL.createObjectURL(file);
-                          setFormData({ ...formData, passbookUrl: url });
-                          onSuccess(null, file);
-                        } catch (error) {
-                          onError(error);
-                        }
-                      }, 0);
-                    }}
-                    listType="picture-card"
-                    disabled={isDisabled}
-                  >
-                    <button
-                      style={{ border: 0, background: "none" }}
-                      type="button"
-                    >
-                      <PlusOutlined />
-                      <div style={{ marginTop: 8 }}>Upload</div>
-                    </button>
-                  </Upload>
-                )}
-              </label>
+                />
+            ) : (
+                <a
+                    href={URL.createObjectURL(formData.passbookUrl)}
+                    download={formData.passbookUrl.name}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: "blue", textDecoration: "underline" }}
+                >
+                    {formData.passbookUrl.name}
+                </a>
+            )}
+        </div>
+    ) : (
+        <Upload
+            customRequest={({ file, onSuccess, onError }) => {
+                setTimeout(() => {
+                    try {
+                        setFormData({ ...formData, passbookUrl: file });
+                        onSuccess(null, file);
+                    } catch (error) {
+                        onError(error);
+                    }
+                }, 0);
+            }}
+            listType="picture-card"
+            accept=".png,.jpg,.jpeg,.pdf,.csv"
+            disabled={isDisabled}
+        >
+            <button
+                style={{ border: 0, background: "none" }}
+                type="button"
+            >
+                <PlusOutlined />
+                <div style={{ marginTop: 8 }}>Upload</div>
+            </button>
+        </Upload>
+    )}
+</label>
+
+
             </div>
           </div>
           <div className="flex">
@@ -349,40 +382,57 @@ const KYC = () => {
               />
             </label>
             <div className="picc">
-              <label>
-                <span>PanCard Image</span>
-                {formData.pancardUrl ? (
-                  <Image
-                    src={formData.pancardUrl}
-                    alt="pancard"
+            <label>
+    <span>PanCard Image</span>
+    {formData.pancardUrl ? (
+        <div>
+            {formData.pancardUrl.type.startsWith("image/") ? (
+                // Preview image if the file is an image
+                <Image
+                    src={URL.createObjectURL(formData.pancardUrl)}
+                    alt="PanCard"
                     style={{ width: "100%", maxWidth: "200px" }}
-                  />
-                ) : (
-                  <Upload
-                    customRequest={({ file, onSuccess, onError }) => {
-                      setTimeout(() => {
-                        try {
-                          const url = URL.createObjectURL(file);
-                          setFormData({ ...formData, pancardUrl: url });
-                          onSuccess(null, file);
-                        } catch (error) {
-                          onError(error);
-                        }
-                      }, 0);
-                    }}
-                    listType="picture-card"
-                    disabled={isDisabled}
-                  >
-                    <button
-                      style={{ border: 0, background: "none" }}
-                      type="button"
-                    >
-                      <PlusOutlined />
-                      <div style={{ marginTop: 8 }}>Upload</div>
-                    </button>
-                  </Upload>
-                )}
-              </label>
+                />
+            ) : (
+                // Provide download link for non-image files
+                <a
+                    href={URL.createObjectURL(formData.pancardUrl)}
+                    download={formData.pancardUrl.name}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: "blue", textDecoration: "underline" }}
+                >
+                    Download {formData.pancardUrl.name}
+                </a>
+            )}
+        </div>
+    ) : (
+        <Upload
+            customRequest={({ file, onSuccess, onError }) => {
+                setTimeout(() => {
+                    try {
+                        setFormData({ ...formData, pancardUrl: file });
+                        onSuccess(null, file);
+                    } catch (error) {
+                        onError(error);
+                    }
+                }, 0);
+            }}
+            listType="picture-card"
+            accept=".png,.jpg,.jpeg,.pdf,.csv"
+            disabled={isDisabled}
+        >
+            <button
+                style={{ border: 0, background: "none" }}
+                type="button"
+            >
+                <PlusOutlined />
+                <div style={{ marginTop: 8 }}>Upload</div>
+            </button>
+        </Upload>
+    )}
+</label>
+
             </div>
           </div>
         </div>

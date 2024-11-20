@@ -19,13 +19,13 @@ const useKYC = () => {
             formDataToSubmit.append('aadharNumber', formData.aadharNumber);
 
             if (formData.gstUrl) {
-                formDataToSubmit.append('image', formData.gstUrl, 'gst_certificate.jpg');
+                formDataToSubmit.append('files', formData.gstUrl, formData.gstUrl.name);
             }
             if (formData.passbookUrl) {
-                formDataToSubmit.append('image', formData.passbookUrl, 'passbook.jpg');
+                formDataToSubmit.append('files', formData.passbookUrl, formData.passbookUrl.name);
             }
             if (formData.pancardUrl) {
-                formDataToSubmit.append('image', formData.pancardUrl, 'pancard.jpg');
+                formDataToSubmit.append('files', formData.pancardUrl, formData.pancardUrl.name);
             }
 
             const response = await fetch('https://backend.shiphere.in/api/kyc/create', {
@@ -55,3 +55,4 @@ const useKYC = () => {
 };
 
 export default useKYC;
+
