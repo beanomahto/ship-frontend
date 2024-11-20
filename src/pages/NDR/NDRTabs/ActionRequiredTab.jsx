@@ -7,6 +7,7 @@ import {
   Popover,
   Space,
   Table,
+  Modal,
   Tag,
 } from "antd";
 import {
@@ -32,7 +33,7 @@ const ActionRequiredTab = ({
 
   const { authUser } = useAuthContext();
   const [loading, setLoading] = useState(false);
-  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
 
   const handleAction = async (action) => {
@@ -90,8 +91,6 @@ const ActionRequiredTab = ({
       }
 
       const updateStatusPromises = selectedOrderData.map(async (order) => {
-        console.log(order);
-
         const updatedStatus = {
           ndrstatus: "Taken",
           reattemptcount: "1",
@@ -115,13 +114,26 @@ const ActionRequiredTab = ({
       message.error(error?.response?.data?.error[0]?.error);
     } finally {
       setLoading(false);
-      setIsDatePickerOpen(false);
+      setIsModalOpen(false);
       setSelectedDate(null);
     }
   };
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
+  };
+
+  const showModal = () => {
+    if (selectedOrderData.length === 0) {
+      message.warning("Please select at least one order.");
+      return;
+    }
+    setIsModalOpen(true);
+  };
+
+  const handleModalCancel = () => {
+    setIsModalOpen(false);
+    setSelectedDate(null);
   };
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -314,15 +326,15 @@ const ActionRequiredTab = ({
     },
     {
       title: "Order Date",
-      dataIndex: "createdAt",
-      ...getColumnSearchProps("createdAt"),
-      sorter: (a, b) => moment(a.createdAt).unix() - moment(b.createdAt).unix(),
+      dataIndex: "updatedAt",
+      ...getColumnSearchProps("updatedAt"),
+      sorter: (a, b) => moment(a.updatedAt).unix() - moment(b.updatedAt).unix(),
       render: (text, order) => (
         <>
           <div>
-            {moment(order?.createdAt).format("DD-MM-YYYY")}
+            {moment(order?.updatedAt).format("DD-MM-YYYY")}
             <span style={{ marginLeft: "10px", fontStyle: "italic" }}>
-              {moment(order?.createdAt).format("HH:mm")}
+              {moment(order?.updatedAt).format("HH:mm")}
             </span>
           </div>
         </>
@@ -352,78 +364,76 @@ const ActionRequiredTab = ({
   );
   return (
     <div>
-      <div
-        style={{
-          marginBottom: 16,
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "center",
-          padding: "10px 20px",
-        }}
-      >
-        <Popover
-          placement="leftTop"
-          title={
-            <div
-              style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+    <div
+      style={{
+        marginBottom: 16,
+        display: "flex",
+        justifyContent: "flex-end",
+        alignItems: "center",
+        padding: "10px 20px",
+      }}
+    >
+      <Popover
+        placement="leftTop"
+        title={
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+          >
+            <Button onClick={showModal} loading={loading}>
+              Re-attempt
+            </Button>
+            <Button onClick={() => handleAction("RTO")} loading={loading}>
+              RTO
+            </Button>
+            <Button
+              onClick={() => handleAction("Reschedule")}
+              loading={loading}
             >
-              <Button
-                onClick={() => {
-                  setIsDatePickerOpen(true);
-                }}
-                loading={loading}
-              >
-                Re-attempt
-              </Button>
-              <Button onClick={() => handleAction("RTO")} loading={loading}>
-                RTO
-              </Button>
-              <Button
-                onClick={() => handleAction("Reschedule")}
-                loading={loading}
-              >
-                Reschedule
-              </Button>
-            </div>
-          }
+              Reschedule
+            </Button>
+          </div>
+        }
+      >
+        <Button
+          type="primary"
+          style={{ marginTop: "-7rem", padding: "15px", fontSize: "17px" }}
+          icon={<MenuFoldOutlined />}
         >
-          <Button
-            type="primary"
-            style={{ marginTop: "-7rem", padding: "15px", fontSize: "17px" }}
-            icon={<MenuFoldOutlined />}
-          >
-            Action
-          </Button>
-        </Popover>
-      </div>
-
-      {isDatePickerOpen && (
-        <div style={{ marginTop: "-50px" }}>
-          <DatePicker onChange={handleDateChange} />
-          <Button
-            type="primary"
-            style={{ marginLeft: 8 }}
-            onClick={() => handleAction("Re-attempt")}
-            disabled={!selectedDate}
-          >
-            Confirm Date
-          </Button>
-        </div>
-      )}
-
-      <span style={{ marginTop: "-40px", display: "block" }}>
-        {selectedRowKeys?.length > 0
-          ? `Selected ${selectedRowKeys?.length} items`
-          : ""}
-      </span>
-
-      <Table
-        rowSelection={rowSelection}
-        columns={columns}
-        dataSource={ndrOrders}
-        scroll={{ y: 350 }}
-      />
+          Action
+        </Button>
+      </Popover>
     </div>
+
+    <Modal
+      title="Select Re-attempt Date"
+      visible={isModalOpen}
+      onOk={() => handleAction("Re-attempt")}
+      onCancel={handleModalCancel}
+      okText="Confirm"
+      cancelText="Cancel"
+      confirmLoading={loading}
+      okButtonProps={{ disabled: !selectedDate }}
+      width={300}
+    >
+      <DatePicker
+        onChange={handleDateChange}
+        style={{ width: "100%" }}
+      />
+    </Modal>
+
+    <span style={{ marginTop: "-40px", display: "block" }}>
+      {selectedRowKeys?.length > 0
+        ? `Selected ${selectedRowKeys?.length} items`
+        : ""}
+    </span>
+
+    <Table
+      rowSelection={rowSelection}
+      columns={columns}
+      dataSource={ndrOrders}
+      scroll={{ y: 350 }}
+    />
+  </div>
   );
 };
 
