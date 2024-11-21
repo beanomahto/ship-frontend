@@ -141,9 +141,9 @@ const ActionTakenTab = ({
               maxWidth: "max-content",
               marginLeft: "3rem",
             }}
-            color={order.status === "InTransit" ? "blue" : order.status === 'UnDelivered' ? 'red' : 'green'}
+            // color={order.status === "InTransit" ? "blue" : order.status === 'UnDelivered' ? 'red' : 'green'}
           >
-            {order.status}
+            reattempt {order.reattemptcount}
           </Tag>
         </div>
       ),
@@ -221,15 +221,15 @@ const ActionTakenTab = ({
     },
     {
       title: "Order Date",
-      dataIndex: "createdAt",
-      ...getColumnSearchProps("createdAt"),
-      sorter: (a, b) => moment(a.createdAt).unix() - moment(b.createdAt).unix(),
+      dataIndex: "updatedAt",
+      ...getColumnSearchProps("updatedAt"),
+      sorter: (a, b) => moment(a.updatedAt).unix() - moment(b.updatedAt).unix(),
       render: (text, order) => (
         <>
           <div>
-            {moment(order?.createdAt).format("DD-MM-YYYY")}
+            {moment(order?.updatedAt).format("DD-MM-YYYY")}
             <span style={{ marginLeft: "10px", fontStyle: "italic" }}>
-              {moment(order?.createdAt).format("HH:mm")}
+              {moment(order?.updatedAt).format("HH:mm")}
             </span>
           </div>
         </>
