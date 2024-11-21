@@ -196,8 +196,8 @@ const InTranitComponent = ({ rowSelection, dataSource, fetchOrders, loading, tab
             dataSource={shippedOrders}
             className="centered-table"
             rowKey="_id"
-            scroll={{ x:1050,y: 450 }}
-            pagination={false}
+            scroll={{ x:1050,y: 410 }}
+            // pagination={false}
             style={{ width: '100%', height: '505px' }}
           />
         )
