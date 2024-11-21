@@ -75,6 +75,7 @@ const NDR = () => {
           if (status === '4') return 'Shipped';
           if (status === '11') return 'Delivered';
           if (status === '340') return 'Cancelled';
+          if (['28', '19','118','198','199','201','212'].includes(status)) return 'RTO';
           if (['12', '13', '14', '15', '16', '17'].includes(status)) return 'UnDelivered';
           return null;
         };
@@ -112,8 +113,10 @@ const NDR = () => {
           // console.log(order);
           
           const updateBody = {
-            status: order.order_status,
-            reason: order.order_status === 'UnDelivered' ? order.status_description : null, 
+            ...(order.order_status === "RTO"
+              ? { ndrStatus: order.order_status } 
+              : { status: order.order_status }),  
+            reason: order.order_status === "UnDelivered" ? order.status_description : null,
           };
           // console.log(updateBody);
   
