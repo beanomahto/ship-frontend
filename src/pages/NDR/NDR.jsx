@@ -40,8 +40,8 @@ const NDR = () => {
 
   const actionRequired = dataSourceWithKeys?.filter((status) => status.ndrstatus === 'Required')
   const actionTaken = dataSourceWithKeys?.filter((status) => status.ndrstatus === 'Taken' && status.status !== 'Delivered')
-  const rtoOrder = dataSourceWithKeys?.filter((status) => status.ndrstatus === 'RTO')
-  const ndrDeliveredOrder = dataSourceWithKeys?.filter((status) => status.status === 'Delivered' && (status.ndrstatus === 'Taken' || status.ndrstatus === 'Required') )
+  const rtoOrder = dataSourceWithKeys?.filter((status) => status.ndrstatus === 'RTO' && status.status !== 'Delivered')
+  const ndrDeliveredOrder = dataSourceWithKeys?.filter((status) => status.status === 'Delivered' && (status.ndrstatus === 'Taken' || status.ndrstatus === 'Required' || status.ndrstatus === 'RTO') )
   const allNdrOrders = [...actionRequired,...actionTaken,...rtoOrder,...ndrDeliveredOrder]
 
   const tabsData = [

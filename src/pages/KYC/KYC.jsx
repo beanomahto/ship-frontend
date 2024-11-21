@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Button, Select, Input, Modal, Upload, message, Image } from "antd";
+import "./kyc.css";
+import {
+  Checkbox,
+  Select,
+  Upload,
+  Modal,
+  Button,
+  Input,
+  message,
+  Image,
+} from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { useParams } from "react-router-dom";
+import { Helmet } from "react-helmet";
+import useKYC from "./useKYC";
+import { useAuthContext } from "../../context/AuthContext";
 const { TextArea } = Input;
-const VerifyKyc = () => {
-  const { id } = useParams();
-
+const KYC = () => {
+  const { authUser } = useAuthContext();
   const [kycData, setKycData] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
@@ -15,27 +26,27 @@ const VerifyKyc = () => {
     documentType: "",
     gstUrl: null,
     accountNumber: "",
-    passbookNumber: "",
     passbookUrl: null,
     gstin: "",
     pancard: "",
     pancardUrl: null,
     aadharNumber: "",
   });
+  const { submitKYCForm, loading } = useKYC();
+  const [showAadharInput, setShowAadharInput] = useState(false);
 
   useEffect(() => {
     const fetchKycData = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const response = await fetch(`https://backend.shiphere.in/api/kyc/${id}`, {
+        const response = await fetch("https://backend.shiphere.in/api/kyc", {
           headers: {
-            Authorization: `${token}`,
+            Authorization: localStorage.getItem("token"),
           },
         });
         const data = await response.json();
-        //console.log(data);
-
         setKycData(data);
+        console.log(data);
+        
         setFormData({
           ...formData,
           companyType: data.companyType || "",
@@ -45,7 +56,6 @@ const VerifyKyc = () => {
           documentType: data.documentType || "",
           gstUrl: data.gstUrl || null,
           accountNumber: data.accountNumber || "",
-          passbookNumber: data.passbookNumber || "",
           passbookUrl: data.passbookUrl || null,
           gstin: data.gstin || "",
           pancard: data.pancard || "",
@@ -58,7 +68,9 @@ const VerifyKyc = () => {
     };
 
     fetchKycData();
-  }, [id]);
+  }, []);
+  //console.log(kycData);
+  //console.log(authUser);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,30 +80,28 @@ const VerifyKyc = () => {
     });
   };
 
+  const handleDocumentTypeChange = (value) => {
+    setFormData({ ...formData, documentType: value });
+
+    if (value === "adharcard") {
+      setShowAadharInput(true);
+    } else {
+      setShowAadharInput(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(
-        `https://backend.shiphere.in/api/users/updateVerify/${id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `${token}`,
-          },
-          body: JSON.stringify(formData),
-        }
-      );
-      if (response.ok) {
-        message.success("KYC verified successfully");
-      } else {
-        message.error("Failed to verify KYC");
-      }
+      const data = await submitKYCForm(formData);
+      setKycData(data);
+      message.success("KYC form submitted successfully");
     } catch (error) {
-      message.error("An error occurred while verifying KYC");
+      message.error("Failed to save KYC information");
     }
   };
+  const isDisabled = kycData && !kycData.error;
+
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [remark, setRemark] = useState("");
 
@@ -110,21 +120,26 @@ const VerifyKyc = () => {
   const handleCancel = () => {
     setIsModalVisible(false); // Close the modal
   };
-
   return (
     <div className="formCon">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Your KYC</title>
+      </Helmet>
       <form className="form" onSubmit={handleSubmit}>
         <p className="title">KYC</p>
         <div className="flex1">
           <div className="flex">
-            <label className="ipt" style={{ padding: "0px" }}>
+            <label className="ipt">
               <span>Company Type</span>
               <Select
                 className="input ipt"
+                style={{ padding: "0" }}
                 value={formData.companyType}
                 onChange={(value) =>
                   setFormData({ ...formData, companyType: value })
                 }
+                disabled={isDisabled}
               >
                 <Select.Option value="individual">Individual</Select.Option>
                 <Select.Option value="propertysip">
@@ -138,69 +153,93 @@ const VerifyKyc = () => {
               <span>Document Type</span>
               <Select
                 className="input ipt"
+                style={{ padding: "0" }}
                 value={formData.documentType}
-                onChange={(value) =>
-                  setFormData({ ...formData, documentType: value })
-                }
+                onChange={handleDocumentTypeChange}
+                disabled={isDisabled}
               >
-                <Select.Option value="msme">MSME</Select.Option>
                 <Select.Option value="adharcard">Aadhar Card</Select.Option>
                 <Select.Option value="gst_certificate">
                   GST Certificate
                 </Select.Option>
+                <Select.Option value="msme">MSME</Select.Option>
               </Select>
             </label>
-            <div
-              className="picc"
-              style={{ display: "flex", flexDirection: "col" }}
+            <div className="picc">
+            <label>
+    <span>Upload</span>
+    {!formData?.gstUrl ? (
+        <Upload
+            customRequest={({ file, onSuccess, onError }) => {
+                setTimeout(() => {
+                    try {
+                        if (file instanceof File || file instanceof Blob) {
+                            setFormData({ ...formData, gstUrl: file });
+                            onSuccess(null, file);
+                        } else {
+                            throw new Error("Invalid file format");
+                        }
+                    } catch (error) {
+                        onError(error);
+                    }
+                }, 0);
+            }}
+            listType="picture-card"
+            accept=".png,.jpg,.jpeg,.pdf,.csv" // Acceptable file types
+            disabled={isDisabled}
+        >
+            <button
+                style={{ border: 0, background: "none" }}
+                type="button"
             >
-              <label>
-                <span>GST Document</span>
-                {formData.gstUrl ? (
-                  <a
-                    href={formData.gstUrl}
+                <PlusOutlined />
+                <div style={{ marginTop: 8 }}>Upload</div>
+            </button>
+        </Upload>
+    ) : (
+        <div>
+            {formData?.gstUrl instanceof File && formData?.gstUrl?.type?.startsWith("image/") ? (
+                // Image preview if it's an image
+                <Image
+                    src={URL.createObjectURL(formData.gstUrl)}
+                    alt="GST Certificate"
+                    style={{ width: "100%", maxWidth: "200px" }}
+                />
+            ) : (
+                // Download link if it's a non-image (e.g., PDF, CSV)
+                <a
+                    href={formData?.gstUrl instanceof File 
+                        ? URL.createObjectURL(formData.gstUrl)  // For file-based URL
+                        : formData?.gstUrl}  // In case the url is directly available
+                    download={formData.gstUrl?.name}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{
-                      display: "flex",
-                      flexDirection: "col",
-                      marginLeft: "3rem",
-                      marginTop: "1rem",
-                      color: "#1890ff",
-                    }}
-                  >
-                    View
-                  </a>
-                ) : (
-                  <Upload
-                    customRequest={({ file, onSuccess, onError }) => {
-                      setTimeout(() => {
-                        try {
-                          setFormData({
-                            ...formData,
-                            gstUrl: URL.createObjectURL(file),
-                          });
-                          onSuccess(null, file);
-                        } catch (error) {
-                          onError(error);
-                        }
-                      }, 0);
-                    }}
-                    accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" // Allow specific file types
-                    maxCount={1}
-                    listType="picture-card"
-                  >
-                    <button
-                      style={{ border: 0, background: "none" }}
-                      type="button"
-                    >
-                      <PlusOutlined />
-                      <div style={{ marginTop: 8 }}>Upload</div>
-                    </button>
-                  </Upload>
-                )}
-              </label>
+                    style={{ color: "blue", textDecoration: "underline" }}
+                >
+                    Download {formData.gstUrl?.name || "File"}
+                </a>
+            )}
+        </div>
+    )}
+</label>
+
             </div>
+          </div>
+          <div className="flex">
+            {showAadharInput && (
+              <label>
+                <span>Aadhar Number</span>
+                <input
+                  className="input"
+                  style={{ padding: "0" }}
+                  type="text"
+                  name="aadharNumber"
+                  value={formData.aadharNumber}
+                  onChange={handleChange}
+                  disabled={isDisabled}
+                />
+              </label>
+            )}
           </div>
         </div>
         <div className="flex1">
@@ -209,58 +248,85 @@ const VerifyKyc = () => {
               <span>Name of seller</span>
               <input
                 className="input"
+                style={{ padding: "0" }}
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
+                disabled={isDisabled}
               />
             </label>
             <label>
               <span>Account No.</span>
               <input
                 className="input"
+                style={{ padding: "0" }}
                 type="text"
                 name="accountNumber"
                 value={formData.accountNumber}
                 onChange={handleChange}
+                disabled={isDisabled}
               />
             </label>
+
             <div className="picc">
-              <label>
-                <span>Passbook</span>
-                {formData.passbookUrl ? (
-                  <Image
-                    src={formData.passbookUrl}
-                    alt="Passbook"
+            <label>
+    <span>Passbook</span>
+    {formData.passbookUrl ? (
+        <div>
+            {formData.passbookUrl instanceof File && formData.passbookUrl.type?.startsWith("image/") ? (
+                <Image
+                    src={URL.createObjectURL(formData.passbookUrl)}
+                    alt="Passbook Preview"
                     style={{ width: "100%", maxWidth: "200px" }}
-                  />
-                ) : (
-                  <Upload
-                    customRequest={({ file, onSuccess, onError }) => {
-                      setTimeout(() => {
-                        try {
-                          setFormData({
-                            ...formData,
-                            passbookUrl: URL.createObjectURL(file),
-                          });
-                          onSuccess(null, file);
-                        } catch (error) {
-                          onError(error);
+                />
+            ) : (
+                <a
+                    href={formData.passbookUrl instanceof File 
+                        ? URL.createObjectURL(formData.passbookUrl) 
+                        : formData.passbookUrl}  // For URL-based files
+                    download={formData.passbookUrl?.name}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: "blue", textDecoration: "underline" }}
+                >
+                    {formData.passbookUrl?.name || "File"}
+                </a>
+            )}
+        </div>
+    ) : (
+        <Upload
+            customRequest={({ file, onSuccess, onError }) => {
+                setTimeout(() => {
+                    try {
+                        if (file instanceof File || file instanceof Blob) {
+                            setFormData({ ...formData, passbookUrl: file });
+                            onSuccess(null, file);
+                        } else {
+                            throw new Error("Invalid file format");
                         }
-                      }, 0);
-                    }}
-                    listType="picture-card"
-                  >
-                    <button
-                      style={{ border: 0, background: "none" }}
-                      type="button"
-                    >
-                      <PlusOutlined />
-                      <div style={{ marginTop: 8 }}>Upload</div>
-                    </button>
-                  </Upload>
-                )}
-              </label>
+                    } catch (error) {
+                        onError(error);
+                    }
+                }, 0);
+            }}
+            listType="picture-card"
+            accept=".png,.jpg,.jpeg,.pdf,.csv" 
+            disabled={isDisabled}
+        >
+            <button
+                style={{ border: 0, background: "none" }}
+                type="button"
+            >
+                <PlusOutlined />
+                <div style={{ marginTop: 8 }}>Upload</div>
+            </button>
+        </Upload>
+    )}
+</label>
+
+
+
             </div>
           </div>
           <div className="flex">
@@ -268,20 +334,24 @@ const VerifyKyc = () => {
               <span>IFSC Code</span>
               <input
                 className="input"
+                style={{ padding: "0" }}
                 type="text"
                 name="ifscCode"
                 value={formData.ifscCode}
                 onChange={handleChange}
+                disabled={isDisabled}
               />
             </label>
             <label>
-              <span>Bank</span>
+              <span>Bank Name</span>
               <input
                 className="input"
+                style={{ padding: "0" }}
                 type="text"
                 name="bankName"
                 value={formData.bankName}
                 onChange={handleChange}
+                disabled={isDisabled}
               />
             </label>
           </div>
@@ -289,119 +359,134 @@ const VerifyKyc = () => {
         <div className="flex1">
           <div className="flex">
             <label>
-              <span>GSTIN</span>
+              <span>PanCard</span>
               <input
                 className="input"
-                type="text"
-                name="gstin"
-                value={formData.gstin}
-                onChange={handleChange}
-              />
-            </label>
-            <label>
-              <span>PAN Card Number</span>
-              <input
-                className="input"
+                style={{ padding: "0" }}
                 type="text"
                 name="pancard"
                 value={formData.pancard}
                 onChange={handleChange}
+                disabled={isDisabled}
+              />
+            </label>
+            <label>
+              <span>GSTIN</span>
+              <input
+                className="input"
+                style={{ padding: "0" }}
+                type="text"
+                name="gstin"
+                value={formData.gstin}
+                onChange={handleChange}
+                disabled={isDisabled}
               />
             </label>
             <div className="picc">
-              <label>
-                <span>PAN Card</span>
-                {formData.pancardUrl ? (
-                  <Image
-                    src={formData.pancardUrl}
-                    alt="PAN Card"
+            <label>
+    <span>PanCard Image</span>
+    {formData.pancardUrl ? (
+        <div>
+            {formData.pancardUrl instanceof File && formData.pancardUrl.type?.startsWith("image/") ? (
+                <Image
+                    src={URL.createObjectURL(formData.pancardUrl)}
+                    alt="Passbook Preview"
                     style={{ width: "100%", maxWidth: "200px" }}
-                  />
-                ) : (
-                  <Upload
-                    customRequest={({ file, onSuccess, onError }) => {
-                      setTimeout(() => {
-                        try {
-                          setFormData({
-                            ...formData,
-                            pancardUrl: URL.createObjectURL(file),
-                          });
-                          onSuccess(null, file);
-                        } catch (error) {
-                          onError(error);
+                />
+            ) : (
+                <a
+                    href={formData.pancardUrl instanceof File 
+                        ? URL.createObjectURL(formData.pancardUrl) 
+                        : formData.pancardUrl}  // For URL-based files
+                    download={formData.pancardUrl?.name}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: "blue", textDecoration: "underline" }}
+                >
+                    {formData.pancardUrl?.name || "File"}
+                </a>
+            )}
+        </div>
+    ) : (
+        <Upload
+            customRequest={({ file, onSuccess, onError }) => {
+                setTimeout(() => {
+                    try {
+                        if (file instanceof File || file instanceof Blob) {
+                            setFormData({ ...formData, pancardUrl: file });
+                            onSuccess(null, file);
+                        } else {
+                            throw new Error("Invalid file format");
                         }
-                      }, 0);
-                    }}
-                    listType="picture-card"
-                  >
-                    <button
-                      style={{ border: 0, background: "none" }}
-                      type="button"
-                    >
-                      <PlusOutlined />
-                      <div style={{ marginTop: 8 }}>Upload</div>
-                    </button>
-                  </Upload>
-                )}
-              </label>
+                    } catch (error) {
+                        onError(error);
+                    }
+                }, 0);
+            }}
+            listType="picture-card"
+            accept=".png,.jpg,.jpeg,.pdf,.csv" 
+            disabled={isDisabled}
+        >
+            <button
+                style={{ border: 0, background: "none" }}
+                type="button"
+            >
+                <PlusOutlined />
+                <div style={{ marginTop: 8 }}>Upload</div>
+            </button>
+        </Upload>
+    )}
+</label>
+
+
             </div>
           </div>
-          <div className="flex">
-            <label>
-              <span>Aadhar Number</span>
-              <input
-                className="input"
-                type="text"
-                name="aadharNumber"
-                value={formData.aadharNumber}
-                onChange={handleChange}
-              />
-            </label>
-          </div>
         </div>
-        <div style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
-          <Button
-            className="input-submit"
-            type="primary"
-            htmlType="submit"
-            onClick={handleSubmit}
-            style={{
-              background: "linear-gradient(135deg, #007bff, #035a86)",
-              color: "white",
-              width: "100px",
-              padding: "20px",
-              fontSize: "18px",
-            }}
-          >
-            Submit
-          </Button>
-          <Button
-            htmlType="button"
-            className="btn"
-            style={{
-              background: "linear-gradient(135deg, #007bff, #035a86)",
-              color: "white",
-              width: "100px",
-              padding: "20px",
-              fontSize: "18px",
-            }}
-          >
-            Edit
-          </Button>
-          <Button
-            htmlType="button"
-            className="btn"
-            style={{
-              background: "linear-gradient(135deg, #007bff, #035a86)",
-              color: "white",
-              padding: "20px",
-              width: "100px",
-              fontSize: "18px",
-            }}
-            onClick={handleResetClick}
-          >
-            Reject
-          </Button>
+        <div className="flex" style={{ paddingTop: "10px" }}>
+          <Checkbox>
+            I have read the <a href="">Terms and Condition</a> agreement
+          </Checkbox>
+        </div>
+        <div className="btncont">
+          {!kycData?.error ? (
+            authUser?.isVerified ? (
+              <Button
+                htmlType="submit"
+                className="btn11"
+                style={{ backgroundColor: "green", color: "white" }}
+              >
+                Verified
+              </Button>
+            ) : (
+              <Button
+                htmlType="submit"
+                className="btn"
+                disabled
+                style={{
+                  background: "linear-gradient(135deg, #007bff, #035a86)",
+                  color: "white",
+                  padding: "20px",
+                  fontSize: "18px",
+                }}
+              >
+                Pending
+              </Button>
+            )
+          ) : (
+            <Button
+              htmlType="submit"
+              className="btn"
+              loading={loading}
+              style={{
+                background: "linear-gradient(135deg, #007bff, #035a86)",
+                color: "white",
+                padding: "20px",
+                fontSize: "18px",
+              }}
+            >
+              Save
+            </Button>
+          )}{" "}
         </div>
       </form>
       <Modal
@@ -424,4 +509,4 @@ const VerifyKyc = () => {
   );
 };
 
-export default VerifyKyc;
+export default KYC;

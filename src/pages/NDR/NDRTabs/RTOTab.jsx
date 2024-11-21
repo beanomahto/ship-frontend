@@ -241,7 +241,8 @@ const ActionTakenTab = ({
   ];
 
   const takenOrders = dataSource?.filter(
-    (order) => order?.ndrstatus === 'RTO'
+    (order) => order?.ndrstatus === 'RTO' 
+     && order?.status !== 'Delivered'
   );
   return (
     <div>
