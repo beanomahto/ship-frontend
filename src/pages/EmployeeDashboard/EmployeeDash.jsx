@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { IoSearch } from "react-icons/io5";
-import { Table, Tag, Button } from "antd";
+import { Table, Tag, Button, Space, Radio } from "antd";
 // import useLogout from "../../hooks/useLogout";
 import { AiOutlineInteraction } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
@@ -138,10 +138,56 @@ function EmployeeDash() {
     {
       title: "Verified",
       dataIndex: "isVerified",
+      key: "isVerified",
       render: (text) => (
         <Tag color={text ? "green" : "geekblue"}>
           {text ? "Verified" : "Not verified"}
         </Tag>
+      ),
+      // Update filter logic for Verified status using Radio buttons
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => (
+        <div style={{ padding: 8, display: "flex", flexDirection: "column" }}>
+          <Radio.Group
+            value={selectedKeys[0]}
+            onChange={(e) => setSelectedKeys([e.target.value])}
+            style={{ marginBottom: 8 }}
+          >
+            <Radio value="true">Verified</Radio>
+            <Radio value="false">Not Verified</Radio>
+          </Radio.Group>
+          <Space>
+            <Button
+              type="primary"
+              onClick={() => confirm()}
+              size="small"
+              style={{ width: 90 }}
+            >
+              Filter
+            </Button>
+            <Button
+              onClick={() => {
+                clearFilters();
+                setSelectedKeys([]);
+              }}
+              size="small"
+              style={{ width: 90 }}
+            >
+              Reset
+            </Button>
+          </Space>
+        </div>
+      ),
+      onFilter: (value, record) => {
+        const isVerified = value === "true" ? true : false;
+        return record.isVerified === isVerified;
+      },
+      filterIcon: (filtered) => (
+        <FaTags style={{ color: filtered ? "#1890ff" : undefined }} />
       ),
     },
     {
