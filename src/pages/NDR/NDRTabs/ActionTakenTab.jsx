@@ -14,6 +14,8 @@ import {
   SearchOutlined,
   ThunderboltOutlined,
 } from "@ant-design/icons";
+import { CalendarOutlined } from "@ant-design/icons";
+
 import { useAuthContext } from "../../../context/AuthContext";
 import { Link } from "react-router-dom";
 import moment from "moment";
@@ -122,6 +124,7 @@ const ActionTakenTab = ({
     {
       title: "Order Status",
       dataIndex: "o_status",
+      ...getColumnSearchProps("awb"),
       render: (text, order) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <span style={{ marginRight: "2rem" }}>
@@ -141,8 +144,15 @@ const ActionTakenTab = ({
               maxWidth: "max-content",
               marginLeft: "3rem",
             }}
-            // color={order.status === "InTransit" ? "blue" : order.status === 'UnDelivered' ? 'red' : 'green'}
+            // color={
+            //   order.status === "InTransit"
+            //     ? "blue"
+            //     : order.status === "UnDelivered"
+            //     ? "red"
+            //     : "green"
+            // }
           >
+            {order.status}
             reattempt {order.reattemptcount}
           </Tag>
         </div>
@@ -222,17 +232,77 @@ const ActionTakenTab = ({
     {
       title: "Order Date",
       dataIndex: "updatedAt",
-      ...getColumnSearchProps("updatedAt"),
       sorter: (a, b) => moment(a.updatedAt).unix() - moment(b.updatedAt).unix(),
-      render: (text, order) => (
-        <>
-          <div>
-            {moment(order?.updatedAt).format("DD-MM-YYYY")}
-            <span style={{ marginLeft: "10px", fontStyle: "italic" }}>
-              {moment(order?.updatedAt).format("HH:mm")}
-            </span>
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => {
+        const [rangePickerValue, setRangePickerValue] = React.useState(
+          selectedKeys[0]
+            ? [moment(selectedKeys[0][0]), moment(selectedKeys[0][1])]
+            : null
+        );
+
+        return (
+          <div style={{ padding: 8 }}>
+            {/* Range Picker for Date Selection */}
+            <DatePicker.RangePicker
+              value={rangePickerValue}
+              style={{ marginBottom: 8, display: "block" }}
+              onChange={(dates) => {
+                if (dates) {
+                  const startDate = dates[0].startOf("day").toISOString();
+                  const endDate = dates[1].endOf("day").toISOString();
+                  setSelectedKeys([[startDate, endDate]]);
+                  setRangePickerValue(dates);
+                } else {
+                  setSelectedKeys([]);
+                  setRangePickerValue(null);
+                }
+              }}
+            />
+            <Space>
+              {/* Filter Button */}
+              <Button
+                type="primary"
+                onClick={() => confirm()}
+                size="small"
+                style={{ width: 90 }}
+              >
+                Filter
+              </Button>
+              {/* Reset Button */}
+              <Button
+                onClick={() => {
+                  clearFilters();
+                  setRangePickerValue(null); // Clear the RangePicker value
+                }}
+                size="small"
+                style={{ width: 90 }}
+              >
+                Reset
+              </Button>
+            </Space>
           </div>
-        </>
+        );
+      },
+      filterIcon: (filtered) => (
+        <CalendarOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+      ),
+      onFilter: (value, record) => {
+        const [startDate, endDate] = value;
+        const orderDate = moment(record.updatedAt).toISOString();
+        return orderDate >= startDate && orderDate <= endDate;
+      },
+      render: (text, order) => (
+        <div>
+          {moment(order?.updatedAt).format("DD-MM-YYYY")}
+          <span style={{ marginLeft: "10px", fontStyle: "italic" }}>
+            {moment(order?.updatedAt).format("HH:mm")}
+          </span>
+        </div>
       ),
       className: "centered-row",
     },
@@ -254,9 +324,9 @@ const ActionTakenTab = ({
   ];
 
   const takenOrders = dataSource?.filter(
-    (order) => 
+    (order) =>
       // order?.status === "UnDelivered" || order.status === 'InTranit'
-     order?.ndrstatus === 'Taken' && order.status !== 'Delivered'
+      order?.ndrstatus === "Taken" && order.status !== "Delivered"
   );
   return (
     <div>
@@ -281,7 +351,6 @@ const ActionTakenTab = ({
         columns={columns}
         dataSource={takenOrders}
         scroll={{ y: 350 }}
-        style={{ marginTop: "-25px" }}
       />
     </div>
   );

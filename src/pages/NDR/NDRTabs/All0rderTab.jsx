@@ -18,13 +18,14 @@ import { useAuthContext } from "../../../context/AuthContext";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import axios from "axios";
+import { CalendarOutlined } from "@ant-design/icons";
 
 const AllOrderTab = ({
   rowSelection,
   selectedRowKeys,
   dataSource,
   selectedOrderData,
-  fetchOrders
+  fetchOrders,
 }) => {
   //console.log(dataSource);
   //console.log(selectedRowKeys);
@@ -125,6 +126,7 @@ const AllOrderTab = ({
     {
       title: "Order Status",
       dataIndex: "o_status",
+      ...getColumnSearchProps("awb"),
       render: (text, order) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <span style={{ marginRight: "6rem" }}>
@@ -144,7 +146,13 @@ const AllOrderTab = ({
               maxWidth: "max-content",
               marginLeft: "3rem",
             }}
-            color={order.status === "InTransit" ? "blue" : order.status === 'UnDelivered' ? 'red' : 'green'}
+            color={
+              order.status === "InTransit"
+                ? "blue"
+                : order.status === "UnDelivered"
+                ? "red"
+                : "green"
+            }
           >
             {order.status}
           </Tag>
@@ -208,15 +216,72 @@ const AllOrderTab = ({
     },
     {
       title: "Order Date",
-      dataIndex: "createdAt",
-      ...getColumnSearchProps("createdAt"),
-      sorter: (a, b) => moment(a.createdAt).unix() - moment(b.createdAt).unix(),
+      dataIndex: "updatedAt",
+      ...getColumnSearchProps("updatedAt"),
+      sorter: (a, b) => moment(a.updatedAt).unix() - moment(b.updatedAt).unix(),
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => {
+        const [rangePickerValue, setRangePickerValue] = React.useState(null);
+
+        return (
+          <div style={{ padding: 8 }}>
+            {/* DateRange Picker for filtering */}
+            <DatePicker.RangePicker
+              value={rangePickerValue}
+              onChange={(dates) => {
+                if (dates) {
+                  const startDate = dates[0].startOf("day").toISOString();
+                  const endDate = dates[1].endOf("day").toISOString();
+                  setSelectedKeys([[startDate, endDate]]);
+                  setRangePickerValue(dates);
+                } else {
+                  setSelectedKeys([]);
+                  setRangePickerValue(null);
+                }
+              }}
+              style={{ marginBottom: 8, display: "block" }}
+            />
+            <Space>
+              <Button
+                type="primary"
+                onClick={() => confirm()}
+                size="small"
+                style={{ width: 90 }}
+              >
+                Filter
+              </Button>
+              <Button
+                onClick={() => {
+                  clearFilters();
+                  setRangePickerValue(null); // Reset the RangePicker value
+                }}
+                size="small"
+                style={{ width: 90 }}
+              >
+                Reset
+              </Button>
+            </Space>
+          </div>
+        );
+      },
+      filterIcon: (filtered) => (
+        <CalendarOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+      ),
+      onFilter: (value, record) => {
+        const [startDate, endDate] = value;
+        const orderDate = moment(record.updatedAt).toISOString();
+        return orderDate >= startDate && orderDate <= endDate;
+      },
       render: (text, order) => (
         <>
           <div>
-            {moment(order?.createdAt).format("DD-MM-YYYY")}
+            {moment(order?.updatedAt).format("DD-MM-YYYY")}
             <span style={{ marginLeft: "10px", fontStyle: "italic" }}>
-              {moment(order?.createdAt).format("HH:mm")}
+              {moment(order?.updatedAt).format("HH:mm")}
             </span>
           </div>
         </>
@@ -241,10 +306,13 @@ const AllOrderTab = ({
   ];
 
   const takenOrders = dataSource?.filter(
-    (order) => order?.ndrstatus === "RTO" || order?.ndrstatus === 'Taken' || order?.ndrstatus === 'Required'
+    (order) =>
+      order?.ndrstatus === "RTO" ||
+      order?.ndrstatus === "Taken" ||
+      order?.ndrstatus === "Required"
   );
 
-console.log(takenOrders);
+  console.log(takenOrders);
 
   return (
     <div>
@@ -256,8 +324,7 @@ console.log(takenOrders);
           alignItems: "center",
           padding: "10px 20px",
         }}
-      >
-      </div>
+      ></div>
 
       <span style={{ marginBottom: 16, display: "block" }}>
         {selectedRowKeys?.length > 0

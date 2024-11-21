@@ -66,7 +66,11 @@ const ActionRequiredTab = ({
           ? selectedOrderData[0].shipmentDetails.comments
           : "",
         date:
-          action === "Re-attempt" ? `${selectedDate.format("DD/MM/YYYY")}` : action === 'RTO' ? 'RTO' : '',
+          action === "Re-attempt"
+            ? `${selectedDate.format("DD/MM/YYYY")}`
+            : action === "RTO"
+            ? "RTO"
+            : "",
         action: action === "Re-attempt" ? `1` : "2",
       };
 
@@ -93,36 +97,40 @@ const ActionRequiredTab = ({
       }
 
       const updateStatusPromises = selectedOrderData.map(async (order) => {
-        if(order.reattemptcount <= 3){
+        if (order.reattemptcount <= 3) {
           // 2<=3
-        const updatedStatus = {
-          ndrstatus: action === 'Re-attempt' ? 'Taken' : 'RTO',
-          ...(action === 'Re-attempt' && {reattemptcount:order.reattemptcount + 1})
-        };
-        await axios.put(
-          `https://backend.shiphere.in/api/orders/updateOrderStatus/${order._id}`,
-          updatedStatus,
-          {
-            headers: {
-              Authorization: localStorage.getItem("token"),
-            },
-          }
-        );
-      } else {
-        const updatedStatus = {
-          ndrstatus: "RTO",
-          ...(action === 'Re-attempt' && {reattemptcount:order.reattemptcount + 1})
-        };
-        await axios.put(
-          `https://backend.shiphere.in/api/orders/updateOrderStatus/${order._id}`,
-          updatedStatus,
-          {
-            headers: {
-              Authorization: localStorage.getItem("token"),
-            },
-          }
-        );
-      }
+          const updatedStatus = {
+            ndrstatus: action === "Re-attempt" ? "Taken" : "RTO",
+            ...(action === "Re-attempt" && {
+              reattemptcount: order.reattemptcount + 1,
+            }),
+          };
+          await axios.put(
+            `https://backend.shiphere.in/api/orders/updateOrderStatus/${order._id}`,
+            updatedStatus,
+            {
+              headers: {
+                Authorization: localStorage.getItem("token"),
+              },
+            }
+          );
+        } else {
+          const updatedStatus = {
+            ndrstatus: "RTO",
+            ...(action === "Re-attempt" && {
+              reattemptcount: order.reattemptcount + 1,
+            }),
+          };
+          await axios.put(
+            `https://backend.shiphere.in/api/orders/updateOrderStatus/${order._id}`,
+            updatedStatus,
+            {
+              headers: {
+                Authorization: localStorage.getItem("token"),
+              },
+            }
+          );
+        }
       });
 
       await Promise.all(updateStatusPromises);
@@ -247,8 +255,10 @@ const ActionRequiredTab = ({
     {
       title: "Order Status",
       dataIndex: "o_status",
+      ...getColumnSearchProps("awb"), // Reusing getColumnSearchProps for consistency
       render: (text, order) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
+          {/* Display AWB as a clickable link */}
           <span style={{ marginRight: "2rem" }}>
             {order.shippingPartner && order.awb && (
               <a
@@ -259,6 +269,7 @@ const ActionRequiredTab = ({
               </a>
             )}
           </span>
+          {/* Display the order status with appropriate color */}
           <Tag
             style={{
               display: "flex",
@@ -344,11 +355,65 @@ const ActionRequiredTab = ({
       ),
       className: "centered-row",
     },
+
     {
       title: "Order Date",
       dataIndex: "updatedAt",
       ...getColumnSearchProps("updatedAt"),
       sorter: (a, b) => moment(a.updatedAt).unix() - moment(b.updatedAt).unix(),
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => {
+        const [rangePickerValue, setRangePickerValue] = React.useState(null);
+
+        return (
+          <div style={{ padding: 8 }}>
+            <DatePicker.RangePicker
+              value={rangePickerValue}
+              style={{ marginBottom: 8, display: "block" }}
+              onChange={(dates) => {
+                if (dates) {
+                  const startDate = dates[0].startOf("day").toISOString();
+                  const endDate = dates[1].endOf("day").toISOString();
+                  setSelectedKeys([[startDate, endDate]]);
+                  setRangePickerValue(dates);
+                } else {
+                  setSelectedKeys([]);
+                  setRangePickerValue(null);
+                }
+              }}
+            />
+            <Space>
+              <Button
+                type="primary"
+                onClick={() => confirm()}
+                size="small"
+                style={{ width: 90 }}
+              >
+                Filter
+              </Button>
+              <Button
+                onClick={() => {
+                  clearFilters();
+                  setRangePickerValue(null); // Reset the RangePicker value
+                }}
+                size="small"
+                style={{ width: 90 }}
+              >
+                Reset
+              </Button>
+            </Space>
+          </div>
+        );
+      },
+      onFilter: (value, record) => {
+        const [startDate, endDate] = value;
+        const orderDate = moment(record.updatedAt).toISOString();
+        return orderDate >= startDate && orderDate <= endDate;
+      },
       render: (text, order) => (
         <>
           <div>
@@ -416,7 +481,7 @@ const ActionRequiredTab = ({
         >
           <Button
             type="primary"
-            style={{ marginTop: "-7rem", padding: "15px", fontSize: "17px" }}
+            style={{ marginTop: "-4rem", padding: "15px", fontSize: "17px" }}
             icon={<MenuFoldOutlined />}
           >
             Action
@@ -449,7 +514,6 @@ const ActionRequiredTab = ({
         columns={columns}
         dataSource={ndrOrders}
         scroll={{ y: 350 }}
-        style={{ marginTop: "-25px" }}
       />
     </div>
   );

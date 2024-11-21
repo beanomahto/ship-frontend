@@ -18,13 +18,14 @@ import { useAuthContext } from "../../../context/AuthContext";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import axios from "axios";
+import { CalendarOutlined } from "@ant-design/icons";
 
 const DeliveredTab = ({
   rowSelection,
   selectedRowKeys,
   dataSource,
   selectedOrderData,
-  fetchOrders
+  fetchOrders,
 }) => {
   //console.log(dataSource);
   //console.log(selectedRowKeys);
@@ -125,6 +126,7 @@ const DeliveredTab = ({
     {
       title: "Order Status",
       dataIndex: "o_status",
+      ...getColumnSearchProps("awb"),
       render: (text, order) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <span style={{ marginRight: "6rem" }}>
@@ -208,18 +210,71 @@ const DeliveredTab = ({
     },
     {
       title: "Order Date",
-      dataIndex: "createdAt",
-      ...getColumnSearchProps("createdAt"),
-      sorter: (a, b) => moment(a.createdAt).unix() - moment(b.createdAt).unix(),
-      render: (text, order) => (
-        <>
-          <div>
-            {moment(order?.createdAt).format("DD-MM-YYYY")}
-            <span style={{ marginLeft: "10px", fontStyle: "italic" }}>
-              {moment(order?.createdAt).format("HH:mm")}
-            </span>
+      dataIndex: "updatedAt",
+      sorter: (a, b) => moment(a.updatedAt).unix() - moment(b.updatedAt).unix(),
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => {
+        const [rangePickerValue, setRangePickerValue] = React.useState(null);
+
+        return (
+          <div style={{ padding: 8 }}>
+            <DatePicker.RangePicker
+              value={rangePickerValue}
+              onChange={(dates) => {
+                if (dates) {
+                  const startDate = dates[0].startOf("day").toISOString();
+                  const endDate = dates[1].endOf("day").toISOString();
+                  setSelectedKeys([[startDate, endDate]]);
+                  setRangePickerValue(dates);
+                } else {
+                  setSelectedKeys([]);
+                  setRangePickerValue(null);
+                }
+              }}
+              style={{ marginBottom: 8, display: "block" }}
+            />
+            <Space>
+              <Button
+                type="primary"
+                onClick={() => confirm()}
+                size="small"
+                style={{ width: 90 }}
+              >
+                Filter
+              </Button>
+              <Button
+                onClick={() => {
+                  clearFilters();
+                  setRangePickerValue(null); // Reset RangePicker
+                }}
+                size="small"
+                style={{ width: 90 }}
+              >
+                Reset
+              </Button>
+            </Space>
           </div>
-        </>
+        );
+      },
+      filterIcon: (filtered) => (
+        <CalendarOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+      ),
+      onFilter: (value, record) => {
+        const [startDate, endDate] = value;
+        const orderDate = moment(record.updatedAt).toISOString();
+        return orderDate >= startDate && orderDate <= endDate;
+      },
+      render: (text, order) => (
+        <div>
+          {moment(order.updatedAt).format("DD-MM-YYYY")}
+          <span style={{ marginLeft: "10px", fontStyle: "italic" }}>
+            {moment(order.updatedAt).format("HH:mm")}
+          </span>
+        </div>
       ),
       className: "centered-row",
     },
@@ -241,8 +296,9 @@ const DeliveredTab = ({
   ];
 
   const takenOrders = dataSource?.filter(
-    (order) => order?.status === "Delivered"
-     && (order?.ndrstatus === 'Taken' || order?.ndrstatus === 'RTO')
+    (order) =>
+      order?.status === "Delivered" &&
+      (order?.ndrstatus === "Taken" || order?.ndrstatus === "RTO")
   );
   return (
     <div>
@@ -254,8 +310,7 @@ const DeliveredTab = ({
           alignItems: "center",
           padding: "10px 20px",
         }}
-      >
-      </div>
+      ></div>
 
       <span style={{ marginBottom: 16, display: "block" }}>
         {selectedRowKeys?.length > 0
