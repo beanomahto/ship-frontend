@@ -489,22 +489,6 @@ const KYC = () => {
           )}{" "}
         </div>
       </form>
-      <Modal
-        title="Enter Remark"
-        visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        okText="Submit"
-        cancelText="Close"
-      >
-        <TextArea
-          rows={6}
-          placeholder="Enter your remark"
-          value={remark}
-          onChange={(e) => setRemark(e.target.value)}
-          style={{ fontSize: "17px" }}
-        />
-      </Modal>
     </div>
   );
 };

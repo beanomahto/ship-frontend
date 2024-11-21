@@ -7,6 +7,7 @@ const VerifyKyc = () => {
   const { id } = useParams();
 
   const [kycData, setKycData] = useState(null);
+  const [isEditable, setIsEditable] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     ifscCode: "",
@@ -35,11 +36,11 @@ const VerifyKyc = () => {
         setKycData(data);
         setFormData({
           ...formData,
-          ...data, // Automatically populate all matching fields
+          ...data, 
         });
       } catch (error) {
         message.error("Failed to fetch KYC data");
-        console.error(error); // Add detailed error logging
+        console.error(error); 
       }
     };
   
@@ -79,6 +80,38 @@ const VerifyKyc = () => {
       message.error("An error occurred while verifying KYC");
     }
   };
+
+  const handleUpdateKyc = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `https://backend.shiphere.in/api/kyc/update/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+      
+      if (response.ok) {
+        console.log(formData);
+        message.success("KYC updated successfully");
+        setIsEditable(false); 
+      } else {
+        console.log(formData);
+        message.error("Failed to update KYC");
+      }
+    } catch (error) {
+      console.log(formData);
+      message.error("An error occurred while updating KYC");
+      console.error(error);
+    }
+  };
+
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [remark, setRemark] = useState("");
 
@@ -108,6 +141,7 @@ const VerifyKyc = () => {
         setIsModalVisible(false); 
     }
 };
+console.log(isEditable);
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -115,7 +149,7 @@ const VerifyKyc = () => {
 
   return (
     <div className="formCon">
-      <form className="form" onSubmit={handleSubmit}>
+      <form className="form" onSubmit={isEditable ? handleUpdateKyc : handleSubmit}>
         <p className="title">KYC</p>
         <div className="flex1">
           <div className="flex">
@@ -124,9 +158,11 @@ const VerifyKyc = () => {
               <Select
                 className="input ipt"
                 value={formData.companyType}
+                 disabled={!isEditable}
                 onChange={(value) =>
                   setFormData({ ...formData, companyType: value })
                 }
+              
               >
                 <Select.Option value="individual">Individual</Select.Option>
                 <Select.Option value="propertysip">
@@ -141,9 +177,11 @@ const VerifyKyc = () => {
               <Select
                 className="input ipt"
                 value={formData.documentType}
+               
                 onChange={(value) =>
                   setFormData({ ...formData, documentType: value })
                 }
+                disabled={!isEditable}
               >
                 <Select.Option value="msme">MSME</Select.Option>
                 <Select.Option value="adharcard">Aadhar Card</Select.Option>
@@ -223,6 +261,7 @@ const VerifyKyc = () => {
                 type="text"
                 name="name"
                 value={formData.name}
+                 disabled={!isEditable}
                 onChange={handleChange}
               />
             </label>
@@ -233,6 +272,7 @@ const VerifyKyc = () => {
                 type="text"
                 name="accountNumber"
                 value={formData.accountNumber}
+                 disabled={!isEditable}
                 onChange={handleChange}
               />
             </label>
@@ -302,6 +342,7 @@ const VerifyKyc = () => {
                 type="text"
                 name="ifscCode"
                 value={formData.ifscCode}
+                 disabled={!isEditable}
                 onChange={handleChange}
               />
             </label>
@@ -312,6 +353,7 @@ const VerifyKyc = () => {
                 type="text"
                 name="bankName"
                 value={formData.bankName}
+                 disabled={!isEditable}
                 onChange={handleChange}
               />
             </label>
@@ -326,6 +368,7 @@ const VerifyKyc = () => {
                 type="text"
                 name="gstin"
                 value={formData.gstin}
+                 disabled={!isEditable}
                 onChange={handleChange}
               />
             </label>
@@ -336,6 +379,7 @@ const VerifyKyc = () => {
                 type="text"
                 name="pancard"
                 value={formData.pancard}
+                 disabled={!isEditable}
                 onChange={handleChange}
               />
             </label>
@@ -405,6 +449,7 @@ const VerifyKyc = () => {
                 type="text"
                 name="aadharNumber"
                 value={formData.aadharNumber}
+                 disabled={!isEditable}
                 onChange={handleChange}
               />
             </label>
@@ -415,7 +460,7 @@ const VerifyKyc = () => {
             className="input-submit"
             type="primary"
             htmlType="submit"
-            onClick={handleSubmit}
+            // onClick={handleSubmit}
             style={{
               background: "linear-gradient(135deg, #007bff, #035a86)",
               color: "white",
@@ -424,21 +469,21 @@ const VerifyKyc = () => {
               fontSize: "18px",
             }}
           >
-            Submit
+              {isEditable ? "Save" : "Submit"}
           </Button>
-          {/* <Button
+          <Button
             htmlType="button"
             className="btn"
             style={{
               background: "linear-gradient(135deg, #007bff, #035a86)",
               color: "white",
-              width: "100px", 
               padding: "20px",
               fontSize: "18px",
             }}
+            onClick={() => setIsEditable(!isEditable)}
           >
-            Edit
-          </Button> */}
+            {isEditable ? "Cancel Edit" : "Edit"}
+          </Button>
           <Button
             htmlType="button"
             className="btn"
