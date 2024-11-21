@@ -27,7 +27,7 @@ const VerifyKyc = () => {
     const fetchKycData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch(`https://backend.shiphere.in/api/kyc/${id}`, {
+        const response = await fetch(`http://localhost:5000/api/kyc/${id}`, {
           headers: {
             Authorization: `${token}`,
           },
@@ -91,24 +91,6 @@ const VerifyKyc = () => {
     } catch (error) {
       message.error("An error occurred while verifying KYC");
     }
-  };
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [remark, setRemark] = useState("");
-
-  // Function to handle the click on the Reset button
-  const handleResetClick = () => {
-    setIsModalVisible(true); // Show the modal
-  };
-
-  // Function to handle the modal's OK button
-  const handleOk = () => {
-    console.log("Remark:", remark); // You can process the remark here
-    setIsModalVisible(false); // Close the modal
-  };
-
-  // Function to handle the modal's Cancel button
-  const handleCancel = () => {
-    setIsModalVisible(false); // Close the modal
   };
 
   return (
@@ -375,53 +357,10 @@ const VerifyKyc = () => {
           >
             Submit
           </Button>
-          <Button
-            htmlType="button"
-            className="btn"
-            style={{
-              background: "linear-gradient(135deg, #007bff, #035a86)",
-              color: "white",
-              width: "100px",
-              padding: "20px",
-              fontSize: "18px",
-            }}
-          >
-            Edit
-          </Button>
-          <Button
-            htmlType="button"
-            className="btn"
-            style={{
-              background: "linear-gradient(135deg, #007bff, #035a86)",
-              color: "white",
-              padding: "20px",
-              width: "100px",
-              fontSize: "18px",
-            }}
-            onClick={handleResetClick}
-          >
-            Reject
-          </Button>
         </div>
       </form>
-      <Modal
-        title="Enter Remark"
-        visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        okText="Submit"
-        cancelText="Close"
-      >
-        <TextArea
-          rows={6}
-          placeholder="Enter your remark"
-          value={remark}
-          onChange={(e) => setRemark(e.target.value)}
-          style={{ fontSize: "17px" }}
-        />
-      </Modal>
     </div>
   );
 };
 
-export default VerifyKyc;
+export default VerifyKyc;
