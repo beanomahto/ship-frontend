@@ -34,6 +34,7 @@ import Dtdc from "../../utils/newlogo/dtdc.png";
 import SF from "../../utils/newlogo/shadowfax.png";
 import InTranitComponent from "./InTransitComponent";
 import DeliveredComponent from "./DeliveredComponent";
+import BulkUploadComponent from "./BulkUploadComponent";
 
 const partnerImages = {
   "Blue Dart": BD,
@@ -351,6 +352,12 @@ const Orders = () => {
       Component: DeliveredComponent,
       dataSource: dataSourceWithKeys,
     },
+    // {
+    //   key: "tab6",
+    //   tab: `Delivered (${deliveredOrdersAmt?.length})`,
+    //   Component: DeliveredComponent,
+    //   dataSource: dataSourceWithKeys,
+    // },
   ];
 
   //console.log(tabsData);

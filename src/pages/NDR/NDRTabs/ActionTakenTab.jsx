@@ -152,8 +152,7 @@ const ActionTakenTab = ({
             //     : "green"
             // }
           >
-            {order.status}
-            reattempt {order.reattemptcount}
+            Reattempt {order.reattemptcount}
           </Tag>
         </div>
       ),

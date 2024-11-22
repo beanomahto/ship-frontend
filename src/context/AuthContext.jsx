@@ -57,6 +57,21 @@ export const AuthContextProvider = ({ children }) => {
   );
   const [balance, setBalance] = useState(null);
 
+  const setExpiryTimer = () => {
+    const expiryTime = Date.now() + 3 * 60 * 60 * 1000; // Current time + 3 hours
+    localStorage.setItem("expiry-time", expiryTime.toString());
+  };
+
+  const checkExpiry = () => {
+    const expiryTime = localStorage.getItem("expiry-time");
+    if (expiryTime && Date.now() > parseInt(expiryTime, 10)) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("ship-user");
+      localStorage.removeItem("expiry-time");
+      setAuthUser(null);
+    }
+  };
+
   const fetchBalance = async () => {
     try {
       const response = await fetch(
@@ -78,8 +93,15 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    if (authUser) {
+      setExpiryTimer(); 
+      const intervalId = setInterval(checkExpiry, 60 * 1000);
+      return () => clearInterval(intervalId); 
+    }
+  }, [authUser]);
+
+  useEffect(() => {
     if (authUser && authUser.role !== "employee") {
-      // Fetch balance only if the user is not an employee
       fetchBalance();
     }
   }, [authUser]);
