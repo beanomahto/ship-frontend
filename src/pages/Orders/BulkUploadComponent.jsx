@@ -29,8 +29,81 @@ const BulkUploadComponent = ({ dataSource, fetchOrders, loading,tab }) => {
     clearFilters();
     setSearchText('');
   };
-
-
+  const [packageDetails, setPackageDetails] = useState({
+    length: '',
+    breadth: '',
+    height: '',
+    weight: '',
+  });
+  
+  const handlePackageDetailChange = (e) => {
+    setPackageDetails({
+      ...packageDetails,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const handleUpload = async () => {
+    if (selectedRowKeys.length === 0) {
+      message.error('Please select orders to upload');
+      return;
+    }
+  
+    try {
+      // Iterate over each selected order
+      for (const orderId of selectedRowKeys) {
+        // Fetch the current order details first
+        const orderResponse = await axios.get(`https://backend.shiphere.in/api/orders/${orderId}`,{
+            headers: {
+                'Authorization': localStorage.getItem('token')
+                }
+        });
+        
+        if (orderResponse.status !== 200) {
+          message.error(`Failed to fetch order details for order ${orderId}`);
+          continue;
+        }
+  
+        const orderData = orderResponse.data.order;
+  console.log(orderData);
+  
+        // Prepare the payload with updated package details, including the rest of the order data
+        const updatedOrderData = {
+          ...orderData,  // Include all original order data
+            length: packageDetails.length,
+            breadth: packageDetails.breadth,
+            height: packageDetails.height,
+            weight: packageDetails.weight,
+    
+        };
+        // console.log(packageDetails);
+        
+  console.log(updatedOrderData);
+  
+        // Send the update request with the complete order data
+        const updateResponse = await axios.put(
+          `https://backend.shiphere.in/api/orders/updateOrder/${orderId}`,
+          updatedOrderData,{
+            headers: {
+                'Authorization': localStorage.getItem('token'),
+                },
+          }
+        );
+  
+        if (updateResponse.status === 201) {
+          message.success(`Order ${orderData.productName} updated successfully`);
+        } 
+      }
+  
+      // Re-fetch the orders after update
+      fetchOrders();
+  
+    } catch (error) {
+      message.error('Error updating orders');
+      console.error(error);
+    }
+  };
+  
+  
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div style={{ padding: 8 }}>
@@ -75,51 +148,6 @@ const BulkUploadComponent = ({ dataSource, fetchOrders, loading,tab }) => {
   });
   const tabs =  tab.tab.split(' ')[0];
   //console.log(tabs);
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`https://backend.shiphere.in/api/orders/deleteOrder/${id}`, {
-        headers: {
-          Authorization: localStorage.getItem('token'),
-        },
-      });
-      message.success('Order deleted successfully');
-      fetchOrders();
-    } catch (error) {
-      console.error('Error deleting Order:', error);
-      message.error('Failed to delete Order');
-    }
-  };
-  const showDeleteConfirm = (id) => {
-    confirm({
-      title: 'Are you sure you want to delete this Order?',
-      content: 'This action cannot be undone.',
-      okText: 'Yes',
-      okType: 'danger',
-      cancelText: 'No',
-      onOk() {
-        handleDelete(id); 
-      },
-      onCancel() {
-        //console.log('Cancel deletion');
-      },
-    });
-  };
-  const handleBulkDelete = () => {
-    confirm({
-      title: 'Are you sure you want to delete the selected orders?',
-      content: 'This action cannot be undone.',
-      okText: 'Yes',
-      okType: 'danger',
-      cancelText: 'No',
-      onOk: async () => {
-        const promises = selectedRowKeys.map((id) => handleDelete(id));
-        await Promise.all(promises);
-        setSelectedRowKeys([]);
-        fetchOrders();
-        message.success('Selected orders deleted successfully');
-      },
-    });
-  };
 
   const columns = [
     {
@@ -135,39 +163,10 @@ const BulkUploadComponent = ({ dataSource, fetchOrders, loading,tab }) => {
     {
       title: 'Shipping Status',
       dataIndex: 'awb',
+      ...getColumnSearchProps('productName'),
       render:(value, record) => (
         <>
-        <a target='_blank' href={`/tracking/shipment/${record.shippingPartner}/${record.awb}`}><Button type='link'><div>{record.awb}</div></Button></a>
-        <span>{record?.shippingPartner}</span>
-        </>
-      ),
-      onFilter: (value, record) => record.s_status.indexOf(value) === 0,
-    },
-    {
-      title: 'Customer Info',
-      dataIndex: 'customerName',
-      ...getColumnSearchProps('customerName'),
-      render: (text, order) => (
-        <>
-          <div>{order.customerName}</div>
-          <div>{order.customerPhone}</div>
-        </>
-      ),
-    },
-    {
-      title: 'Payment Details',
-      dataIndex: 'paymentMethod',
-      filters: [
-        { text: 'COD', value: 'COD' },
-        { text: 'Prepaid', value: 'Prepaid' },
-      ],
-      onFilter: (value, record) => record.paymentMethod === value,
-      render: (text, order) => (
-        <>
-          <div>&#8377; {order.productPrice}</div>
-          <Tag color={order.paymentMethod === 'COD' ? 'green-inverse' : 'geekblue-inverse'} >
-            {order.paymentMethod}
-          </Tag>
+        {record.productName}
         </>
       ),
     },
@@ -183,25 +182,14 @@ const BulkUploadComponent = ({ dataSource, fetchOrders, loading,tab }) => {
       ),
     },
     {
-      title: 'Channel',
-      dataIndex: 'channel',
-      render: (text) => (
-        <div style={{display:'flex', justifyContent:'center'}}>
-          <img
-           src={text === 'shopify' ? Shopify : (text === 'Mannual' ? logo : Woo)}
-            alt={text}
-            style={{ width: 'max-content', height: '40px', borderRadius: '50%' }}
-          />
-        </div>
+      title: 'Package Details',
+      render: (text, order) => (
+        <>
+          <div>
+            {order.productName}
+          </div>
+        </>
       ),
-    },
-    {
-      title: 'Order Date',
-      dataIndex: 'createdAt',
-      sorter: (a, b) => moment(a.createdAt).unix() - moment(b.createdAt).unix(),
-      render: (text, order) => <>
-      <div>{moment(order?.createdAt).format('DD-MM-YYYY')}<span style={{marginLeft:'10px', fontStyle:'italic'}}>{moment(order?.createdAt).format('HH:mm')}</span></div>
-      </>,
     },
     ...(authUser?.role === 'admin' ? [{
       title: 'Seller Email',
@@ -211,16 +199,6 @@ const BulkUploadComponent = ({ dataSource, fetchOrders, loading,tab }) => {
         <span style={{ textAlign: 'center' }}>
           {record?.seller?.email}
         </span>
-      ),
-      className: 'centered-row',
-    }] : []),
-    ...(authUser?.role === 'admin' ? [{
-      title: 'Action',
-      render: (_, record) => (
-        <DeleteOutlined
-        style={{ color: 'red', marginLeft: '1rem', cursor: 'pointer' }}
-        onClick={() => showDeleteConfirm(record._id)} 
-      />
       ),
       className: 'centered-row',
     }] : []),
@@ -241,18 +219,50 @@ const BulkUploadComponent = ({ dataSource, fetchOrders, loading,tab }) => {
   
   return (
     <>
-     <Helmet>
+      <Helmet>
         <title>Orders</title>
       </Helmet>
       <div style={{ marginBottom: 16 }}>
         {selectedRowKeys.length > 0 && (
-          <Button
-            type="danger"
-            onClick={handleBulkDelete}
-            disabled={selectedRowKeys.length === 0}
-          >
-            Delete Selected
-          </Button>
+          <>
+            <Button
+              type="danger"
+              disabled={selectedRowKeys.length === 0}
+              onClick={handleUpload}
+            >
+              Upload
+            </Button>
+            <div style={{ marginTop: 10 }}>
+              <Input
+                placeholder="Length"
+                name="length"
+                value={packageDetails.length}
+                onChange={handlePackageDetailChange}
+                style={{ width: 120, marginRight: 10 }}
+              />
+              <Input
+                placeholder="Breadth"
+                name="breadth"
+                value={packageDetails.breadth}
+                onChange={handlePackageDetailChange}
+                style={{ width: 120, marginRight: 10 }}
+              />
+              <Input
+                placeholder="Height"
+                name="height"
+                value={packageDetails.height}
+                onChange={handlePackageDetailChange}
+                style={{ width: 120, marginRight: 10 }}
+              />
+              <Input
+                placeholder="Weight (gm)"
+                name="weight"
+                value={packageDetails.weight}
+                onChange={handlePackageDetailChange}
+                style={{ width: 120 }}
+              />
+            </div>
+          </>
         )}
       </div>
       {loading ? (
@@ -273,6 +283,7 @@ const BulkUploadComponent = ({ dataSource, fetchOrders, loading,tab }) => {
       )}
     </>
   );
+  
 };
 
 export default BulkUploadComponent;

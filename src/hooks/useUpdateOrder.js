@@ -6,7 +6,7 @@ const useUpdateOrder = () => {
     const [error, setError] = useState(null);
 
     const updateOrder = async (updatedOrderData) => {
-        //console.log("lolo" + updatedOrderData?._id);
+        console.log(updatedOrderData);
         setLoading(true);
         try {
             const token = localStorage.getItem('token');
@@ -15,6 +15,8 @@ const useUpdateOrder = () => {
                     Authorization: `${token}`,
                 },
             });
+            console.log(response.data);
+            
             setLoading(false);
             return response.data;
         } catch (error) {
