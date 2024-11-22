@@ -513,6 +513,8 @@ const ActionRequiredTab = ({
         rowSelection={rowSelection}
         columns={columns}
         dataSource={ndrOrders}
+        rowKey="_id"
+        className="centered-table"
         scroll={{ y: 350 }}
       />
     </div>

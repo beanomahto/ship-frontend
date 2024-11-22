@@ -350,6 +350,8 @@ const ActionTakenTab = ({
         rowSelection={rowSelection}
         columns={columns}
         dataSource={takenOrders}
+        rowKey="_id"
+        className="centered-table"
         scroll={{ y: 350 }}
       />
     </div>

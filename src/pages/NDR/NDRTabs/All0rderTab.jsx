@@ -337,6 +337,7 @@ const AllOrderTab = ({
         columns={columns}
         dataSource={takenOrders}
         scroll={{ y: 350 }}
+        className="centered-table"
       />
     </div>
   );
