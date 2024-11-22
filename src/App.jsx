@@ -15,6 +15,7 @@ import PinCodeServicecability from "./pages/PincodeSeviceability/PinCodeServicea
 import Finance from "./pages/Finance/Finance";
 import Wallet from "./pages/Finance/wallet/Wallet";
 import WeightDispensory from "./pages/Finance/weightDispencry/WeightDispensory";
+import LostDamage from "./pages/Finance/lostDamage/LostDamage";
 import Invoices from "./pages/Finance/invoice/Invoices";
 import BulkOrderUpload from "./pages/Orders/BulkOrder/BulkOrder";
 import Profile from "./pages/Profile/Profile";
@@ -238,10 +239,18 @@ const App = () => {
               }
             />
             <Route
-              path="pricing"
+              path="history"
               element={
                 <ProtectedRoute>
-                  <Pricing />
+                  <WalletHistory />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="lost_damage"
+              element={
+                <ProtectedRoute>
+                  <LostDamage />
                 </ProtectedRoute>
               }
             />

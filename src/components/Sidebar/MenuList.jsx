@@ -49,7 +49,7 @@ const MenuList = ({darktheme, closeDrawer }) => {
                 <Menu.Item key='cod_remittance'  ><Link to='finance/codremmitance' ><span style={{fontWeight:500}} >COD Remittance</span></Link></Menu.Item>
                 <Menu.Item key='wallet'  ><Link to='finance/wallet' ><span style={{fontWeight:500}} >Wallet</span></Link></Menu.Item>
                 {/* <Menu.Item key='walletAdmin'  ><Link to='finance/walletadmin' >Wallet Admin</Link></Menu.Item> */}
-                {/* <Menu.Item key='rateShipping'  >Rate Shipping</Menu.Item> */}
+                <Menu.Item key='lost_damage'  ><Link to='finance/lost_damage' ><span style={{fontWeight:500}} >Lost/Damage Claim</span></Link></Menu.Item>
              {
                 authUser?.role === 'admin'  &&  <Menu.Item key='pricing'  ><Link to='finance/pricing' ><span style={{fontWeight:500}} >Pricing</span></Link></Menu.Item>
              }

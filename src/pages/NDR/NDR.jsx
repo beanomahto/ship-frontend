@@ -126,8 +126,7 @@ const NDR = () => {
           if (status === "4") return "Shipped";
           if (status === "11") return "Delivered";
           if (status === "340") return "Cancelled";
-          if (["28", "19", "118", "198", "199", "201", "212"].includes(status))
-            return "RTO";
+          if (["28", "19", "118", "199", "201"].includes(status)) return "RTO";
           if (["12", "13", "14", "15", "16", "17"].includes(status))
             return "UnDelivered";
           return null;

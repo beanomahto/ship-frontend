@@ -379,6 +379,7 @@ const Orders = () => {
           if (status === '4') return 'Shipped';
           if (status === '11') return 'Delivered';
           if (status === '340') return 'Cancelled';
+          if (["189", "212", "214"].includes(status)) return "Lost";
           if (['12', '13', '14', '15', '16', '17'].includes(status)) return 'UnDelivered';
           return null;
         };
@@ -418,7 +419,7 @@ const Orders = () => {
           const updateBody = {
             status: order.order_status,
             reason: order.order_status === 'UnDelivered' ? order.status_description : null, 
-            ndrstatus: order.order_status === 'UnDelivered' ? 'Required' : null
+            ndrstatus: order.order_status === 'UnDelivered' ? 'Required' : order.order_status === 'Lost' ? 'Lost' : null
           };
           // console.log(updateBody);
   
