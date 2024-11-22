@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Table, Tag, Button, Input, Space, Modal, message } from "antd";
+import {
+  Table,
+  Tag,
+  Button,
+  Input,
+  Space,
+  DatePicker,
+  Modal,
+  message,
+} from "antd";
 import { Link } from "react-router-dom";
 import { SearchOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Helmet } from "react-helmet";
@@ -7,6 +16,7 @@ import { AiOutlineInteraction } from "react-icons/ai";
 import TagEmployee from "./TagEmployee/TagEmployee";
 import { FaTags } from "react-icons/fa";
 import axios from "axios";
+import moment from "moment";
 
 const { confirm } = Modal;
 
@@ -42,6 +52,7 @@ const Seller = () => {
       const data = await response.json();
       const companyUsers = data.filter((user) => user.role === "company");
       setUsers(companyUsers);
+      console.log(companyUsers);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
@@ -118,28 +129,31 @@ const Seller = () => {
   //console.log(users);
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://backend.shiphere.in/api/users/deleteUser/${id}`, {
-        headers: {
-          Authorization: localStorage.getItem('token'),
-        },
-      });
-      message.success('User deleted successfully');
+      await axios.delete(
+        `https://backend.shiphere.in/api/users/deleteUser/${id}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
+      message.success("User deleted successfully");
       fetchUsers();
     } catch (error) {
-      console.error('Error deleting User:', error);
-      message.error('Failed to delete User');
+      console.error("Error deleting User:", error);
+      message.error("Failed to delete User");
     }
   };
 
   const showDeleteConfirm = (id) => {
     confirm({
-      title: 'Are you sure you want to delete this User?',
-      content: 'This action cannot be undone.',
-      okText: 'Yes',
-      okType: 'danger',
-      cancelText: 'No',
+      title: "Are you sure you want to delete this User?",
+      content: "This action cannot be undone.",
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
       onOk() {
-        handleDelete(id); 
+        handleDelete(id);
       },
       onCancel() {
         //console.log('Cancel deletion');
@@ -178,10 +192,80 @@ const Seller = () => {
       dataIndex: "amount",
       ...getColumnSearchProps("amount"),
     },
+    // {
+    //   title: "Created At",
+    //   dataIndex: "createdAt",
+    //   render: (text) => new Date(text).toLocaleString(),
+    // },
     {
       title: "Created At",
       dataIndex: "createdAt",
-      render: (text) => new Date(text).toLocaleString(),
+      ...getColumnSearchProps("createdAt"),
+      sorter: (a, b) => moment(a.createdAt).unix() - moment(b.createdAt).unix(),
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => {
+        const [rangePickerValue, setRangePickerValue] = React.useState(null);
+
+        return (
+          <div style={{ padding: 8 }}>
+            <DatePicker.RangePicker
+              value={rangePickerValue}
+              style={{ marginBottom: 8, display: "block" }}
+              onChange={(dates) => {
+                if (dates) {
+                  const startDate = dates[0].startOf("day").toISOString();
+                  const endDate = dates[1].endOf("day").toISOString();
+                  setSelectedKeys([[startDate, endDate]]);
+                  setRangePickerValue(dates);
+                } else {
+                  setSelectedKeys([]);
+                  setRangePickerValue(null);
+                }
+              }}
+            />
+            <Space>
+              <Button
+                type="primary"
+                onClick={() => confirm()}
+                size="small"
+                style={{ width: 90 }}
+              >
+                Filter
+              </Button>
+              <Button
+                onClick={() => {
+                  clearFilters();
+                  setRangePickerValue(null); // Reset the RangePicker value
+                }}
+                size="small"
+                style={{ width: 90 }}
+              >
+                Reset
+              </Button>
+            </Space>
+          </div>
+        );
+      },
+      onFilter: (value, record) => {
+        const [startDate, endDate] = value;
+        const orderDate = moment(record.createdAt).toISOString();
+        return orderDate >= startDate && orderDate <= endDate;
+      },
+      render: (text, order) => (
+        <>
+          <div>
+            {moment(order?.createdAt).format("DD-MM-YYYY")}
+            <span style={{ marginLeft: "10px", fontStyle: "italic" }}>
+              {moment(order?.createdAt).format("HH:mm")}
+            </span>
+          </div>
+        </>
+      ),
+      className: "centered-row",
     },
     {
       title: "Verified",
@@ -209,15 +293,20 @@ const Seller = () => {
       title: "Action",
       key: "action",
       render: (_, record) => (
-        <div style={{display:'flex'}}>
-        <FaTags
-          onClick={() => showModal(record)}
-          style={{ cursor: "pointer", fontSize: "24px", color: "#1890ff" }}
+        <div style={{ display: "flex" }}>
+          <FaTags
+            onClick={() => showModal(record)}
+            style={{ cursor: "pointer", fontSize: "24px", color: "#1890ff" }}
           />
-        <DeleteOutlined
-        style={{ color: 'red', marginLeft: '20px',fontSize: "18px", cursor: 'pointer' }}
-        onClick={() => showDeleteConfirm(record._id)} 
-        />
+          <DeleteOutlined
+            style={{
+              color: "red",
+              marginLeft: "20px",
+              fontSize: "18px",
+              cursor: "pointer",
+            }}
+            onClick={() => showDeleteConfirm(record._id)}
+          />
         </div>
       ),
     },
