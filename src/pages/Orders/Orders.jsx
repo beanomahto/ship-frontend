@@ -352,12 +352,12 @@ const Orders = () => {
       Component: DeliveredComponent,
       dataSource: dataSourceWithKeys,
     },
-    {
-      key: "tab6",
-      tab: `Bulk Upload (${dataSourceWithKeys?.length})`,
-      Component: BulkUploadComponent,
-      dataSource: dataSourceWithKeys,
-    },
+    // {
+    //   key: "tab6",
+    //   tab: `Bulk Upload (${dataSourceWithKeys?.length})`,
+    //   Component: BulkUploadComponent,
+    //   dataSource: dataSourceWithKeys,
+    // },
   ];
 
   //console.log(tabsData);
