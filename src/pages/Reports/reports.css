@@ -89,7 +89,7 @@
 
 /* Input Fields */
 .form-input {
-  width: 100%;
+  width: 95%;
   padding: 0.8rem 1rem;
   font-size: 1rem;
   border: 1px solid #ddd;
@@ -117,7 +117,6 @@
 /* Submit Button */
 .form-button {
   width: 35%;
-
   background: linear-gradient(135deg, #007bff, #035a86);
   color: #ffffff;
   font-size: 1rem;

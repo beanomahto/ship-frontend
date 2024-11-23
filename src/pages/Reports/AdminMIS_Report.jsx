@@ -10,7 +10,7 @@ const AdminMIS_Report = () => {
   const [ndrDates, setNdrDates] = useState([null, null]);
   const [outForDeliveryDates, setOutForDeliveryDates] = useState([null, null]);
   const [inTransitDates, setInTransitDates] = useState([null, null]);
-
+  const [walletDates, setwalletDates] = useState([null, null]);
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -338,7 +338,7 @@ const AdminMIS_Report = () => {
       {/* In Transit Report Box */}
       <div className="report-box">
         <form className="report-form" onSubmit={handleInTransitSubmit}>
-          <h2 className="report-title">Download In Transit Report</h2>
+          <h2 className="report-title">Download Current Status Report</h2>
           <div className="form-group">
             <label className="form-label">
               Email Address
@@ -358,6 +358,46 @@ const AdminMIS_Report = () => {
               <DatePicker.RangePicker
                 value={inTransitDates}
                 onChange={setInTransitDates}
+                format="YYYY-MM-DD"
+                className="date-picker"
+                allowClear
+                required
+              />
+            </label>
+          </div>
+          <div className="btn111">
+            <button className="form-button" type="submit">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div className="report-box">
+        <form
+          className="report-form"
+          // onSubmit={handleOutForDeliverySubmit}
+        >
+          <h2 className="report-title">Download Wallet Report</h2>
+          <div className="form-group">
+            <label className="form-label">
+              Email Address
+              <input
+                className="form-input"
+                type="email"
+                value={email}
+                onChange={handleEmailChange}
+                placeholder="Enter your email"
+                required
+              />
+            </label>
+          </div>
+          <div className="form-group">
+            <label className="form-label">
+              Select Date Range
+              <DatePicker.RangePicker
+                value={walletDates}
+                onChange={setwalletDates}
                 format="YYYY-MM-DD"
                 className="date-picker"
                 allowClear

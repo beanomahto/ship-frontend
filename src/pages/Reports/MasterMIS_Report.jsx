@@ -1,83 +1,3 @@
-// import React from "react";
-// import { Button } from "antd";
-// import axios from "axios";
-// import { Helmet } from "react-helmet";
-
-// const MasterMIS_Report = () => {
-//   const handleDownload = async () => {
-//     try {
-//       const token = localStorage.getItem("token");
-//       const response = await axios.get(
-//         "https://backend.shiphere.in/api/report/getmisreport",
-//         {
-//           responseType: "blob",
-//           headers: {
-//             Authorization: `${token}`,
-//           },
-//         }
-//       );
-
-//       const url = window.URL.createObjectURL(new Blob([response.data]));
-//       const link = document.createElement("a");
-//       link.href = url;
-//       link.setAttribute("download", "orders_report.xlsx");
-//       document.body.appendChild(link);
-//       link.click();
-//       link.remove();
-//     } catch (error) {
-//       console.error("Error downloading the MIS report:", error);
-//     }
-//   };
-
-//   const handleDownloadNDR = async () => {
-//     try {
-//       const token = localStorage.getItem("token");
-//       const response = await axios.get(
-//         "https://backend.shiphere.in/api/report/getndrreport",
-//         {
-//           responseType: "blob",
-//           headers: {
-//             Authorization: `${token}`,
-//           },
-//         }
-//       );
-
-//       const url = window.URL.createObjectURL(new Blob([response.data]));
-//       const link = document.createElement("a");
-//       link.href = url;
-//       link.setAttribute("download", "ndr_report.xlsx");
-//       document.body.appendChild(link);
-//       link.click();
-//       link.remove();
-//     } catch (error) {
-//       console.error("Error downloading the NDR report:", error);
-//     }
-//   };
-//   return (
-//     <div className="reportmaincontainer">
-//       <Helmet>
-//         <meta charSet="utf-8" />
-//         <meta name="keyword" content={""} />
-//         <title>MIS Report</title>
-//       </Helmet>
-//       <div className="reports-container">
-//         <h1>Reports</h1>
-//         <Button type="primary" onClick={handleDownload}>
-//           Download MIS Report
-//         </Button>
-//       </div>
-//       <div className="ndr-container">
-//         <h1>NDR Reports</h1>
-//         <Button type="primary" onClick={handleDownloadNDR}>
-//           Download NDR Report
-//         </Button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default MasterMIS_Report;
-
 import React, { useState } from "react";
 import { Button, message, DatePicker } from "antd";
 import { Helmet } from "react-helmet";
@@ -97,6 +17,9 @@ const AdminMIS_Report = () => {
 
   const [inTransitStartDate, setInTransitStartDate] = useState(null);
   const [inTransitEndDate, setInTransitEndDate] = useState(null);
+
+  const [walletStartDate, setwalletStartDate] = useState(null);
+  const [walletEndDate, setwalletEndDate] = useState(null);
 
   const handleDownload = async () => {
     const data = { startDate: misStartDate, endDate: misEndDate };
@@ -357,7 +280,7 @@ const AdminMIS_Report = () => {
 
       {/* In Transit Report */}
       <div className="report-box">
-        <h2 className="report-title">Download In Transit Report</h2>
+        <h2 className="report-title">Download Current Status Report</h2>
         <div className="form-group">
           <label className="form-label">
             Start Date
@@ -385,6 +308,40 @@ const AdminMIS_Report = () => {
             className="form-button"
             type="button"
             onClick={handleDownloadInTransit}
+          >
+            Submit
+          </button>
+        </div>
+      </div>
+      <div className="report-box">
+        <h2 className="report-title">Download Wallet Report</h2>
+        <div className="form-group">
+          <label className="form-label">
+            Start Date
+            <DatePicker
+              className="form-input date-picker"
+              format="YYYY-MM-DD"
+              value={walletStartDate}
+              onChange={setwalletStartDate}
+              placeholder="Start Date"
+            />
+          </label>
+          <label className="form-label">
+            End Date
+            <DatePicker
+              className="form-input date-picker"
+              format="YYYY-MM-DD"
+              value={walletEndDate}
+              onChange={setwalletEndDate}
+              placeholder="End Date"
+            />
+          </label>
+        </div>
+        <div className="btn111">
+          <button
+            className="form-button"
+            type="button"
+            // onClick={handleDownloadInTransit}
           >
             Submit
           </button>
