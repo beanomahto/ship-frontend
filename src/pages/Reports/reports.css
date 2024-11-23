@@ -37,3 +37,97 @@
       flex-direction: column;
     }
   }
+  /* General Container */
+.report-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); /* Creates a responsive grid */
+  gap: 2.5rem;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 1200px; /* Adjust as needed for larger screens */
+  margin: 2rem auto;
+}
+/* Report Box */
+.report-box {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.report-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Form Title */
+.report-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #0073e6;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-family: "Arial", sans-serif;
+}
+
+/* Form Group */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+/* Label */
+.form-label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+/* Input Fields */
+.form-input {
+  width: 95%;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.form-input:focus {
+  border-color: #0073e6;
+}
+
+/* Date Picker */
+.date-picker {
+  width: 100%;
+}
+.btn111{
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Submit Button */
+.form-button {
+  width: 35%;
+  background: linear-gradient(135deg, #007bff, #035a86);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0.8rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form-button:hover {
+  background-color: #005bb5;
+}

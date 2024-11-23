@@ -1,22 +1,33 @@
 import React, { useState } from "react";
 import { message, DatePicker, Button } from "antd";
+import "./reports.css";
 
 const AdminMIS_Report = () => {
   const [email, setEmail] = useState("");
-  const [dates, setDates] = useState([null, null]); // state to hold the selected date range
 
+  // Separate state for each report's date range
+  const [misDates, setMisDates] = useState([null, null]);
+  const [ndrDates, setNdrDates] = useState([null, null]);
+  const [outForDeliveryDates, setOutForDeliveryDates] = useState([null, null]);
+  const [inTransitDates, setInTransitDates] = useState([null, null]);
+  const [walletDates, setwalletDates] = useState([null, null]);
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
 
-  const handleDateChange = (value) => {
-    setDates(value); // Directly update the state with selected moment objects
-  };
   const handleMisSubmit = async (e) => {
     e.preventDefault();
 
+    // Check if dates are selected
+    if (!misDates || !misDates[0] || !misDates[1]) {
+      message.error("Please select both start and end dates for MIS report.");
+      return;
+    }
+
     const data = {
       email,
+      startDate: misDates[0].format("YYYY-MM-DD"),
+      endDate: misDates[1].format("YYYY-MM-DD"),
     };
 
     try {
@@ -44,6 +55,7 @@ const AdminMIS_Report = () => {
         window.URL.revokeObjectURL(url);
         message.success("MIS Download successfully");
         setEmail("");
+        setMisDates([null, null]);
       } else {
         message.error("Failed to download MIS");
       }
@@ -55,23 +67,17 @@ const AdminMIS_Report = () => {
   const handleNdrSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate and format dates
-    if (!dates || !dates[0] || !dates[1]) {
-      message.error("Please select both start and end dates.");
+    if (!ndrDates || !ndrDates[0] || !ndrDates[1]) {
+      message.error("Please select both start and end dates for NDR report.");
       return;
     }
 
-    const startDate = dates[0].format("YYYY-MM-DD"); // Correctly format the start date
-    const endDate = dates[1].format("YYYY-MM-DD"); // Correctly format the end date
-
     const data = {
       email,
-      startDate,
-      endDate,
+      startDate: ndrDates[0].format("YYYY-MM-DD"),
+      endDate: ndrDates[1].format("YYYY-MM-DD"),
     };
-
-    console.log("Data to send:", data); // Debug the data being sent
-
+    console.log("ndr", data);
     try {
       const response = await fetch(
         "https://backend.shiphere.in/api/report/generatendr",
@@ -96,8 +102,8 @@ const AdminMIS_Report = () => {
         link.remove();
         window.URL.revokeObjectURL(url);
         message.success("NDR Report Downloaded successfully");
+        setNdrDates([null, null]);
         setEmail("");
-        setDates([null, null]); // Reset dates after submission
       } else {
         message.error("Failed to download NDR report.");
       }
@@ -106,68 +112,304 @@ const AdminMIS_Report = () => {
     }
   };
 
+  const handleOutForDeliverySubmit = async (e) => {
+    e.preventDefault();
+
+    if (
+      !outForDeliveryDates ||
+      !outForDeliveryDates[0] ||
+      !outForDeliveryDates[1]
+    ) {
+      message.error(
+        "Please select both start and end dates for Out For Delivery report."
+      );
+      return;
+    }
+
+    const data = {
+      email,
+      startDate: outForDeliveryDates[0].format("YYYY-MM-DD"),
+      endDate: outForDeliveryDates[1].format("YYYY-MM-DD"),
+    };
+    console.log("out", data);
+    try {
+      const response = await fetch(
+        "https://backend.shiphere.in/api/report/outfordelivery",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "out_for_delivery_report.xlsx");
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.URL.revokeObjectURL(url);
+        message.success("Out For Delivery Report Downloaded successfully");
+        setOutForDeliveryDates([null, null]);
+        setEmail("");
+      } else {
+        message.error("Failed to download Out For Delivery report.");
+      }
+    } catch (error) {
+      message.error(
+        "An error occurred while downloading Out For Delivery report."
+      );
+    }
+  };
+
+  // Handle In Transit Report submission
+  const handleInTransitSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!inTransitDates || !inTransitDates[0] || !inTransitDates[1]) {
+      message.error(
+        "Please select both start and end dates for In Transit report."
+      );
+      return;
+    }
+
+    const data = {
+      email,
+      startDate: inTransitDates[0].format("YYYY-MM-DD"),
+      endDate: inTransitDates[1].format("YYYY-MM-DD"),
+    };
+    console.log("transit", data);
+    try {
+      const response = await fetch(
+        "https://backend.shiphere.in/api/report/getintransit",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "in_transit_report.xlsx");
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.URL.revokeObjectURL(url);
+        message.success("In Transit Report Downloaded successfully");
+        setInTransitDates([null, null]);
+        setEmail("");
+      } else {
+        message.error("Failed to download In Transit report.");
+      }
+    } catch (error) {
+      message.error("An error occurred while downloading In Transit report.");
+    }
+  };
+
   return (
-    <div>
-      <div className="formConsprt">
-        <form className="formsprt" onSubmit={handleMisSubmit}>
-          <p className="titlesprt">Download MIS Report</p>
-          <div className="flex2sprt">
-            <div className="flexsprt">
-              <label className="iptsprt">
-                <span>Email</span>
-                <input
-                  className="inputsprt"
-                  type="email"
-                  value={email}
-                  onChange={handleEmailChange}
-                  required
-                />
-              </label>
-            </div>
+    <div className="report-container">
+      {/* MIS Report Box */}
+      <div className="report-box">
+        <form className="report-form" onSubmit={handleMisSubmit}>
+          <h2 className="report-title">Download MIS Report</h2>
+          <div className="form-group">
+            <label className="form-label">
+              Email Address
+              <input
+                className="form-input"
+                type="email"
+                value={email}
+                onChange={handleEmailChange}
+                placeholder="Enter your email"
+                required
+              />
+            </label>
           </div>
-          <button className="submitsprt" type="submit">
-            Submit
-          </button>
+          <div className="form-group">
+            <label className="form-label">
+              Select Date Range
+              <DatePicker.RangePicker
+                value={misDates}
+                onChange={setMisDates}
+                format="YYYY-MM-DD"
+                className="date-picker"
+                allowClear
+                required
+              />
+            </label>
+          </div>
+          <div className="btn111">
+            <button className="form-button" type="submit">
+              Submit
+            </button>
+          </div>
         </form>
       </div>
 
-      <div className="formConsprt">
-        <form className="formsprt" onSubmit={handleNdrSubmit}>
-          <p className="titlesprt">Download NDR Report</p>
-          <div className="flex2sprt">
-            <div className="flexsprt">
-              <label className="iptsprt">
-                <span>Email</span>
-                <input
-                  className="inputsprt"
-                  type="email"
-                  value={email}
-                  onChange={handleEmailChange}
-                  required
-                />
-              </label>
-            </div>
+      {/* NDR Report Box */}
+      <div className="report-box">
+        <form className="report-form" onSubmit={handleNdrSubmit}>
+          <h2 className="report-title">Download NDR Report</h2>
+          <div className="form-group">
+            <label className="form-label">
+              Email Address
+              <input
+                className="form-input"
+                type="email"
+                value={email}
+                onChange={handleEmailChange}
+                placeholder="Enter your email"
+                required
+              />
+            </label>
           </div>
-
-          {/* Date Range Picker */}
-          <div className="flex2sprt">
-            <div className="flexsprt">
-              <label className="iptsprt">
-                <span>Select Date Range</span>
-                <DatePicker.RangePicker
-                  value={dates}
-                  onChange={handleDateChange}
-                  format="YYYY-MM-DD"
-                  allowClear
-                  required
-                />
-              </label>
-            </div>
+          <div className="form-group">
+            <label className="form-label">
+              Select Date Range
+              <DatePicker.RangePicker
+                value={ndrDates}
+                onChange={setNdrDates}
+                format="YYYY-MM-DD"
+                className="date-picker"
+                allowClear
+                required
+              />
+            </label>
           </div>
+          <div className="btn111">
+            <button className="form-button" type="submit">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
 
-          <button className="submitsprt" type="submit">
-            Submit
-          </button>
+      {/* Out For Delivery Report Box */}
+      <div className="report-box">
+        <form className="report-form" onSubmit={handleOutForDeliverySubmit}>
+          <h2 className="report-title">Download Out For Delivery Report</h2>
+          <div className="form-group">
+            <label className="form-label">
+              Email Address
+              <input
+                className="form-input"
+                type="email"
+                value={email}
+                onChange={handleEmailChange}
+                placeholder="Enter your email"
+                required
+              />
+            </label>
+          </div>
+          <div className="form-group">
+            <label className="form-label">
+              Select Date Range
+              <DatePicker.RangePicker
+                value={outForDeliveryDates}
+                onChange={setOutForDeliveryDates}
+                format="YYYY-MM-DD"
+                className="date-picker"
+                allowClear
+                required
+              />
+            </label>
+          </div>
+          <div className="btn111">
+            <button className="form-button" type="submit">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+
+      {/* In Transit Report Box */}
+      <div className="report-box">
+        <form className="report-form" onSubmit={handleInTransitSubmit}>
+          <h2 className="report-title">Download Current Status Report</h2>
+          <div className="form-group">
+            <label className="form-label">
+              Email Address
+              <input
+                className="form-input"
+                type="email"
+                value={email}
+                onChange={handleEmailChange}
+                placeholder="Enter your email"
+                required
+              />
+            </label>
+          </div>
+          <div className="form-group">
+            <label className="form-label">
+              Select Date Range
+              <DatePicker.RangePicker
+                value={inTransitDates}
+                onChange={setInTransitDates}
+                format="YYYY-MM-DD"
+                className="date-picker"
+                allowClear
+                required
+              />
+            </label>
+          </div>
+          <div className="btn111">
+            <button className="form-button" type="submit">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div className="report-box">
+        <form
+          className="report-form"
+          // onSubmit={handleOutForDeliverySubmit}
+        >
+          <h2 className="report-title">Download Wallet Report</h2>
+          <div className="form-group">
+            <label className="form-label">
+              Email Address
+              <input
+                className="form-input"
+                type="email"
+                value={email}
+                onChange={handleEmailChange}
+                placeholder="Enter your email"
+                required
+              />
+            </label>
+          </div>
+          <div className="form-group">
+            <label className="form-label">
+              Select Date Range
+              <DatePicker.RangePicker
+                value={walletDates}
+                onChange={setwalletDates}
+                format="YYYY-MM-DD"
+                className="date-picker"
+                allowClear
+                required
+              />
+            </label>
+          </div>
+          <div className="btn111">
+            <button className="form-button" type="submit">
+              Submit
+            </button>
+          </div>
         </form>
       </div>
     </div>
