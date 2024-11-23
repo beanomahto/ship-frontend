@@ -40,7 +40,7 @@ const NDR = () => {
   const hasSelected = selectedRowKeys.length > 0;
 
   const actionRequired = dataSourceWithKeys?.filter(
-    (status) => status.ndrstatus === "Required"
+    (status) => status.ndrstatus === "Required" && status.status === "UnDelivered"
   );
   const actionTaken = dataSourceWithKeys?.filter(
     (status) => status.ndrstatus === "Taken" && status.status !== "Delivered"
