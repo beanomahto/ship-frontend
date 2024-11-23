@@ -133,7 +133,7 @@ const EcomData = ({ trackingInfo }) => {
   console.log(latestScan);
   
       // Update to "InTransit"
-      if (latestScan.status === 'Shipment Picked Up' && progressPercentage === 100 && currentOrder[0]?.status !== 'InTransit') {
+      if (latestScan.status === 'Shipment Picked Up' && currentOrder[0]?.status !== 'InTransit' && currentOrder[0]?.status !== 'Delivered') {
         updateOrderStatus(orderId, 'InTransit', shippingCost);
       }
   

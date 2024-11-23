@@ -54,6 +54,7 @@ import Employee from "./pages/Employee/Employee";
 import CreateEmployee from "./pages/Employee/CreateEmployee/CreateEmployee";
 import UpdateEmployee from "./pages/Employee/UpdateEmployee/UpdateEmployee";
 import EmployeeDash from "./pages/EmployeeDashboard/EmployeeDash";
+import ProductWeight from "./pages/channelIntegration/productWeight/ProductWeight";
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -291,6 +292,14 @@ const App = () => {
             />
             {/* <Route path="misreport" element={<ProtectedRoute><AdminMIS_Report /></ProtectedRoute>} /> */}
           </Route>
+          <Route
+            path="set_product_weight"
+            element={
+              <ProtectedRoute>
+                <ProductWeight />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="warehouse"
             element={

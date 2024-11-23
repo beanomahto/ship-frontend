@@ -5,7 +5,7 @@ import './Settings.css';
 
 const data = [
   { heading: 'Account', icon: FaUser, links: [{ label: 'Profile', url: '/profile' }, { label: 'KYC', url: '/kyc' }] },
-  { heading: 'Integrations', icon: FaPlug, links: [{ label: 'Integration', url: '/channelintegration' }] },
+  { heading: 'Integrations', icon: FaPlug, links: [{ label: 'Integration', url: '/channelintegration' },{label: 'product Weight', url:'/set_product_weight'}] },
     { heading: 'Carrier', icon: FaTruck, links: [{ label: 'Rate Card', url: '/ratecard' }, { label: 'Serviceable Pincodes', url: '/pincodeservice' }] },
   { heading: 'Manage Warehouse', icon: FaWarehouse, links: [{ label: 'Manage Warehouse', url: '/warehouse' }] },
   { heading: 'Order Lookup', icon: FaSearch, links: [{ label: 'Customize Track Order', url: '/customize-track-order' }] },

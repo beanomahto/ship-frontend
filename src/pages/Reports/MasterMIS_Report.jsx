@@ -161,6 +161,39 @@ const AdminMIS_Report = () => {
       message.error("An error occurred while downloading In Transit Report");
     }
   };
+  const handleDownloadWallet = async () => {
+    const data = { startDate: inTransitStartDate, endDate: inTransitEndDate };
+    try {
+      const response = await fetch(
+        "https://backend.shiphere.in/api/report/gettranscationsseller",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "transaction_report.xlsx");
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.URL.revokeObjectURL(url);
+        message.success("Transaction Report Downloaded successfully");
+      } else {
+        message.error("Failed to download Transaction Report");
+      }
+    } catch (error) {
+      message.error("An error occurred while downloading Transaction Report");
+    }
+  };
 
   return (
     <div className="report-container">
@@ -341,7 +374,7 @@ const AdminMIS_Report = () => {
           <button
             className="form-button"
             type="button"
-            // onClick={handleDownloadInTransit}
+            onClick={handleDownloadWallet}
           >
             Submit
           </button>
