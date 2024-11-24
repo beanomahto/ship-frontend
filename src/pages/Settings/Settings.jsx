@@ -5,10 +5,10 @@ import './Settings.css';
 
 const data = [
   { heading: 'Account', icon: FaUser, links: [{ label: 'Profile', url: '/profile' }, { label: 'KYC', url: '/kyc' }] },
-  { heading: 'Integrations', icon: FaPlug, links: [{ label: 'Integration', url: '/channelintegration' },{label: 'product Weight', url:'/set_product_weight'}] },
+  { heading: 'Integrations', icon: FaPlug, links: [{ label: 'Integration', url: '/channelintegration' }] },
     { heading: 'Carrier', icon: FaTruck, links: [{ label: 'Rate Card', url: '/ratecard' }, { label: 'Serviceable Pincodes', url: '/pincodeservice' }] },
   { heading: 'Manage Warehouse', icon: FaWarehouse, links: [{ label: 'Manage Warehouse', url: '/warehouse' }] },
-  { heading: 'Order Lookup', icon: FaSearch, links: [{ label: 'Customize Track Order', url: '/customize-track-order' }] },
+  { heading: 'Order Lookup', icon: FaSearch, links: [{ label: 'Customize Track Order', url: '/customize-track-order' },{label: 'Box Weight', url:'/set_product_weight'}] },
   // { heading: 'Invoice', icon: FaFileInvoice, links: [{ label: 'Store Details', url: '/store-details' }, { label: 'General', url: '/invoice-general' }, { label: 'Advance', url: '/invoice-advance' }] },
   { heading: 'Label', icon: FaTag, links: [{ label: 'Manage Labels', url: '/updatelabel' }] },
   // { heading: 'General', icon: FaCogs, links: [{ label: 'Add Package Box', url: '/add-package-box' }] },

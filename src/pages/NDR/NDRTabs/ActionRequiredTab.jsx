@@ -319,7 +319,7 @@ const ActionRequiredTab = ({
             flexDirection: "column",
             alignItems: "center",
             maxWidth: "4.5rem",
-            marginLeft: "1rem",
+            marginLeft: "5rem",
             fontFamily: "Poppins",
             fontSize: ".9rem",
             fontWeight: "500",

@@ -128,8 +128,8 @@ const AllOrderTab = ({
       dataIndex: "o_status",
       ...getColumnSearchProps("awb"),
       render: (text, order) => (
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <span style={{ marginRight: "6rem" }}>
+        <div style={{ display: "flex", flexDirection: "column", marginLeft:'5rem', justifyContent:'center' }}>
+          <span style={{ marginRight:'1rem' }}>
             {order.shippingPartner && order.awb && (
               <a
                 target="_blank"
@@ -142,7 +142,6 @@ const AllOrderTab = ({
           <Tag
             style={{
               display: "flex",
-              justifyContent: "center",
               maxWidth: "max-content",
               marginLeft: "3rem",
             }}
@@ -194,7 +193,7 @@ const AllOrderTab = ({
             flexDirection: "column",
             alignItems: "center",
             maxWidth: "4.5rem",
-            marginLeft: "1rem",
+            marginLeft: "5rem",
             fontFamily: "Poppins",
             fontSize: ".9rem",
             fontWeight: "500",

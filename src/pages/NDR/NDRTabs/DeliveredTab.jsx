@@ -128,8 +128,8 @@ const DeliveredTab = ({
       dataIndex: "o_status",
       ...getColumnSearchProps("awb"),
       render: (text, order) => (
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <span style={{ marginRight: "6rem" }}>
+        <div style={{ display: "flex", flexDirection: "column" ,marginLeft:'5rem'}}>
+          <span style={{ marginRight: "2rem" }}>
             {order.shippingPartner && order.awb && (
               <a
                 target="_blank"
@@ -188,7 +188,7 @@ const DeliveredTab = ({
             flexDirection: "column",
             alignItems: "center",
             maxWidth: "4.5rem",
-            marginLeft: "1rem",
+            marginLeft: "5rem",
             fontFamily: "Poppins",
             fontSize: ".9rem",
             fontWeight: "500",
