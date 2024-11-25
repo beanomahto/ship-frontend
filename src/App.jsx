@@ -248,6 +248,14 @@ const App = () => {
               }
             />
             <Route
+              path="pricing"
+              element={
+                <ProtectedRoute>
+                  <Pricing />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="lost_damage"
               element={
                 <ProtectedRoute>
@@ -418,9 +426,10 @@ const App = () => {
         <Route path="login" element={<Login1 />} />
         <Route path="resetpassword" element={<ResetPassword />} />
         <Route path="*" element={<NotFound />} />
-        <Route path="tracking/:selectedOption/:shippingPartner/:awb" element={
-              <Tracking />
-            }/>
+        <Route
+          path="tracking/:selectedOption/:shippingPartner/:awb"
+          element={<Tracking />}
+        />
       </Routes>
     </BrowserRouter>
   );
