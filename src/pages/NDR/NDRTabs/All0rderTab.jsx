@@ -128,8 +128,15 @@ const AllOrderTab = ({
       dataIndex: "o_status",
       ...getColumnSearchProps("awb"),
       render: (text, order) => (
-        <div style={{ display: "flex", flexDirection: "column", marginLeft:'5rem', justifyContent:'center' }}>
-          <span style={{ marginRight:'1rem' }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            marginLeft: "5rem",
+            justifyContent: "center",
+          }}
+        >
+          <span style={{ marginRight: "1rem" }}>
             {order.shippingPartner && order.awb && (
               <a
                 target="_blank"
@@ -217,7 +224,7 @@ const AllOrderTab = ({
       title: "Order Date",
       dataIndex: "updatedAt",
       ...getColumnSearchProps("updatedAt"),
-      sorter: (a, b) => moment(a.updatedAt).unix() - moment(b.updatedAt).unix(),
+
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,

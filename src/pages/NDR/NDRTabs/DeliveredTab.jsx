@@ -128,7 +128,13 @@ const DeliveredTab = ({
       dataIndex: "o_status",
       ...getColumnSearchProps("awb"),
       render: (text, order) => (
-        <div style={{ display: "flex", flexDirection: "column" ,marginLeft:'5rem'}}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            marginLeft: "5rem",
+          }}
+        >
           <span style={{ marginRight: "2rem" }}>
             {order.shippingPartner && order.awb && (
               <a
@@ -211,7 +217,7 @@ const DeliveredTab = ({
     {
       title: "Order Date",
       dataIndex: "updatedAt",
-      sorter: (a, b) => moment(a.updatedAt).unix() - moment(b.updatedAt).unix(),
+
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,

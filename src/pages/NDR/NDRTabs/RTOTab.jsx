@@ -211,7 +211,7 @@ const ActionTakenTab = ({
       title: "Order Date",
       dataIndex: "updatedAt",
       ...getColumnSearchProps("updatedAt"),
-      sorter: (a, b) => moment(a.updatedAt).unix() - moment(b.updatedAt).unix(),
+
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,

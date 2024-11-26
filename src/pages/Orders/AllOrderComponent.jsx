@@ -266,7 +266,7 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading, tab }) => {
       title: "Order Date",
       dataIndex: "createdAt",
       ...getColumnSearchProps("createdAt"),
-      sorter: (a, b) => moment(a.createdAt).unix() - moment(b.createdAt).unix(),
+
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,

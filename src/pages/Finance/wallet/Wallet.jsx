@@ -29,7 +29,7 @@ const Wallet = () => {
     {
       title: "Date & Time",
       dataIndex: "d&t",
-      sorter: (a, b) => moment(a.updatedAt).unix() - moment(b.updatedAt).unix(),
+
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,

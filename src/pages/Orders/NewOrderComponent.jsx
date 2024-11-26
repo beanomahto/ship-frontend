@@ -285,28 +285,12 @@ const NewOrderComponent = ({
       ),
       className: "centered-row",
     },
-    // {
-    //   title: "Order Date",
-    //   dataIndex: "createdAt",
-    //   ...getColumnSearchProps("createdAt"),
-    //   sorter: (a, b) => moment(a.createdAt).unix() - moment(b.createdAt).unix(),
-    //   render: (text, order) => (
-    //     <>
-    //       <div>
-    //         {moment(order?.createdAt).format("DD-MM-YYYY")}
-    //         <span style={{ marginLeft: "10px", fontStyle: "italic" }}>
-    //           {moment(order?.createdAt).format("HH:mm")}
-    //         </span>
-    //       </div>
-    //     </>
-    //   ),
-    //   className: "centered-row",
-    // },
+
     {
       title: "Order Date",
       dataIndex: "createdAt",
       ...getColumnSearchProps("createdAt"),
-      sorter: (a, b) => moment(a.createdAt).unix() - moment(b.createdAt).unix(),
+
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
