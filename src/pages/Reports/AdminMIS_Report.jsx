@@ -218,6 +218,55 @@ const AdminMIS_Report = () => {
       message.error("An error occurred while downloading In Transit report.");
     }
   };
+  const handlewalletSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!walletDates || !walletDates[0] || !walletDates[1]) {
+      message.error(
+        "Please select both start and end dates for In Transit report."
+      );
+      return;
+    }
+
+    const data = {
+      email,
+      startDate: walletDates[0].format("YYYY-MM-DD"),
+      endDate: walletDates[1].format("YYYY-MM-DD"),
+    };
+    console.log("wallet", data);
+    try {
+      const response = await fetch(
+        "https://backend.shiphere.in/api/report/gettranscations",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "wallet_report.xlsx");
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.URL.revokeObjectURL(url);
+        message.success("Wallet Report Downloaded successfully");
+        setInTransitDates([null, null]);
+        setEmail("");
+      } else {
+        message.error("Failed to download Wallet report.");
+      }
+    } catch (error) {
+      message.error("An error occurred while downloading Wallet report.");
+    }
+  };
 
   return (
     <div className="report-container">
@@ -374,10 +423,7 @@ const AdminMIS_Report = () => {
       </div>
 
       <div className="report-box">
-        <form
-          className="report-form"
-          // onSubmit={handleOutForDeliverySubmit}
-        >
+        <form className="report-form" onSubmit={handlewalletSubmit}>
           <h2 className="report-title">Download Wallet Report</h2>
           <div className="form-group">
             <label className="form-label">

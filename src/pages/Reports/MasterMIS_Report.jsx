@@ -162,7 +162,7 @@ const AdminMIS_Report = () => {
     }
   };
   const handleDownloadWallet = async () => {
-    const data = { startDate: inTransitStartDate, endDate: inTransitEndDate };
+    const data = { startDate: walletStartDate, endDate: walletEndDate };
     try {
       const response = await fetch(
         "https://backend.shiphere.in/api/report/gettranscationsseller",
