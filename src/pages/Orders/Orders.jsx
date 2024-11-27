@@ -35,6 +35,7 @@ import SF from "../../utils/newlogo/shadowfax.png";
 import InTranitComponent from "./InTransitComponent";
 import DeliveredComponent from "./DeliveredComponent";
 import BulkUploadComponent from "./BulkUploadComponent";
+import {Spin} from 'antd'
 
 const partnerImages = {
   "Blue Dart": BD,
@@ -537,7 +538,7 @@ const Orders = () => {
   }, [selectedOrderId, warehouse]);
   //console.log(selectedRowKeys);
 
-  const downloadMultipleLabels = async () => {
+  const ddownloadMultipleLabels = async () => {
     const pdf = new jsPDF({
       orientation: "portrait",
       unit: "in",
@@ -767,6 +768,257 @@ const Orders = () => {
     }
 
     pdf.save("labels.pdf");
+  };
+  function generateLabelHTML(labelData){
+    const partnerLogo = labelData?.shippingPartner
+          ? partnerImages[labelData.shippingPartner] || ""
+          : "";
+    return `
+        <style>
+        .label-container {
+          font-weight: bold;
+          border: 1px solid black;
+          margin:0.5rem;
+        }
+        .label-section {
+          margin-bottom: 0.5rem;
+        }
+          .companySection{
+           margin-bottom: 0.5rem;
+           position:relative;
+           width:100%;
+              height:auto;
+           display:flex;
+        
+            
+          }
+           .companyName{
+           position:relative;
+           border:1px solid black;
+           width:50%;
+           display:flex;
+           align-items:center;
+           justify-content:center;
+           }
+           .companylogo{
+           position:relative;
+          border:1px solid black;
+           width:50%;
+           display:flex;
+           flex-direction:column;
+           align-items:center;
+           justify-content:center;
+              padding-bottom:4px;
+           }
+           .companylogo p{
+           font-size:10px;
+           }
+           .companylogo img{
+           height:35px;
+           }
+        .labelSection img {
+        padding:5px 0px;
+          width: 10rem;
+        }
+          p{
+           font-weight: 500;
+          }
+        .label-section div {
+          margin-bottom: 0.5rem;
+        }
+          .OrderSection{
+          margin-bottom: 0.5rem;
+           position:relative;
+           width:100%;
+           height:auto;
+           display:flex;
+          }
+          .orderDetail{
+          position:relative;
+          border:1px solid black;
+          width:33%;
+          display:flex;
+          flex-direction:column;
+          align-items:center;
+          
+          padding:7px;
+          }
+          
+      </style>
+      <div class="label-container">
+        <div class="companySection">
+          <div class="companyName">
+          <img src="${Logo}" style="width: 70px;"/>
+            
+          </div>
+          <div class="companylogo">
+          <p style="margin-top: 2px;"> Delivered By:  </p>
+            ${
+              partnerLogo
+                ? `<img src="${partnerLogo}" alt="${labelData.shippingPartner}" style="width: 100px;"/>`
+                : `<p>${labelData?.shippingPartner || ""}</p>`
+            }
+              
+          </div>
+        </div>
+
+        <div style="${labelData?.logoUrl ? "display: flex;" : ""}">
+          <div class="labelSection">
+            <img src="data:image/png;base64,${
+              labelData?.barcode || ""
+            }" alt="Barcode" />
+          </div>
+        </div>
+
+        <div class="labelSection">
+          <p><strong>Ship To:</strong> <span> ${
+            labelData?.customerName || ""
+          }</span></p>
+          <p>${labelData?.address?.address || ""} ${
+          labelData?.address?.city || ""
+        } ${labelData?.address?.state || ""}</p>
+          <p><strong>PIN:</strong> ${labelData?.address?.pincode || ""}</p>
+        </div>
+         
+        <div class="OrderSection">
+        <div class="orderDetail">
+            <p><strong>Order Date</strong></p>
+            <p>${
+              moment(labelData?.invoiceDate).format("MMMM Do YYYY") || ""
+            }</p>
+        </div>
+        <div class="orderDetail">
+            <p><strong>Dimensions</strong></p>
+            <p><span>${labelData?.dimension?.length || ""} x ${
+          labelData?.dimension?.breadth || ""
+        } x ${labelData?.dimension?.height || ""}</span> CM</p>
+        </div>
+        <div class="orderDetail">
+            <p><strong>Weight</strong></p>
+            <p><span>${labelData?.weight || ""}</span> grm</p> 
+        </div>
+        </div>
+        <div class="OrderSection">
+          <div class="orderDetail">
+            <p><strong>Order Id:</strong> </p><p>${
+              labelData?.orderId || ""
+            }</p> 
+          </div>
+          <div class="orderDetail">
+            <p><strong>${labelData?.paymentType || ""}</strong></p>
+            <p>INR <span> ${labelData?.amount || ""}</span></p>
+          </div>
+          <div class="orderDetail">
+            <p><strong>Price Total</strong></p>
+            <p>INR ${labelData?.amount || ""}</p>
+            <p>Surface</p>
+          </div>
+        </div>
+
+        <div style="display: flex;">
+          <div class="labelSection" style="width: 12rem;">
+            <p><strong>Product (QTY)</strong></p>
+          </div>
+          <div class="labelSection" style="width: 12rem;">
+            <p>${labelData?.productName || ""}<span>(${
+          labelData?.productDetail?.quantity || ""
+        })</span></p>
+          </div>
+        </div>
+
+        <div style="display: flex;">
+          <div class="labelSection" style="width: 12rem;">
+            <p><strong>Total INR</strong></p>
+          </div>
+          <div class="labelSection" style="width: 12rem;">
+            <p>${labelData?.amount || ""}</p>
+          </div>
+        </div>
+
+        <div class="labelSection">
+          <p><strong>Return Address:</strong></p>
+          <p>${labelData?.pickupAddress?.address || ""} ${
+          labelData?.pickupAddress?.state || ""
+        } ${labelData?.pickupAddress?.city || ""} ${
+          labelData?.pickupAddress?.country || ""
+        }</p>
+        </div>
+
+        <p>Powered by <strong>ShipHere</strong></p>
+      </div>
+      `;
+  }
+  const downloadMultipleLabels = async () => {
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "in",
+      format: [4, 6],
+    });
+
+    const token = localStorage.getItem("token");
+    let currentCount = 0; 
+
+    const batchSize = 5; 
+
+    const processBatch = async (batch, isLastBatch) => {
+      const requests = batch.map((orderId) =>
+        axios.get(`https://backend.shiphere.in/api/shipping/getlabel/${orderId}`, {
+          headers: { Authorization: `${token}` },
+        })
+      );
+
+      const responses = await Promise.all(requests);
+
+      for (const [index, response] of responses.entries()) {
+        try {
+          const labelData = response.data;
+          const labelHtml = generateLabelHTML(labelData);
+          const labelContainer = document.createElement("div");
+          labelContainer.style.position = "absolute";
+          labelContainer.style.top = "-9999px";
+          labelContainer.innerHTML = labelHtml;
+          document.body.appendChild(labelContainer);
+
+          const canvas = await html2canvas(labelContainer, {
+            scale: 2,
+            useCORS: true,
+          });
+
+          const imgData = canvas.toDataURL("image/jpeg", 0.7); 
+          pdf.addImage(imgData, "JPEG", 0, 0, 4, 6);
+
+          currentCount++;
+          message.info(`Generated ${currentCount}/${selectedRowKeys.length} labels.`);
+
+          const isLastLabelInBatch = index === batch.length - 1;
+          const isLastLabelOverall =
+            isLastBatch && isLastLabelInBatch;
+
+          if (!isLastLabelOverall) {
+            pdf.addPage();
+          }
+
+          document.body.removeChild(labelContainer);
+        } catch (error) {
+          console.error("Error generating label:", error.message);
+          message.error(`Error generating label for order ID ${batch[index]}`);
+        }
+      }
+    };
+
+    try {
+      for (let i = 0; i < selectedRowKeys.length; i += batchSize) {
+        const batch = selectedRowKeys.slice(i, i + batchSize);
+        const isLastBatch = i + batchSize >= selectedRowKeys.length;
+        await processBatch(batch, isLastBatch);
+      }
+
+      pdf.save("labels.pdf");
+      message.success("All labels downloaded successfully!");
+    } catch (error) {
+      console.error("Error downloading labels:", error);
+      message.error("An error occurred while downloading labels.");
+    }
   };
 
   const getBase64ImageFromUrl = async (imageUrl) => {

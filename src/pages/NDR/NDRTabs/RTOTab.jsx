@@ -22,18 +22,9 @@ import { CalendarOutlined } from "@ant-design/icons";
 const ActionTakenTab = ({
   rowSelection,
   selectedRowKeys,
-  dataSource,
-  selectedOrderData,
-  fetchOrders,
+  dataSource
 }) => {
-  //console.log(dataSource);
-  //console.log(selectedRowKeys);
-  //console.log(selectedOrderData);
-
   const { authUser } = useAuthContext();
-  const [loading, setLoading] = useState(false);
-  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);

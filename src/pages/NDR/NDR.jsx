@@ -164,6 +164,10 @@ const NDR = () => {
         const updatePromises = orders.map((order) => {
           // console.log(order);
 
+          if (order.order_status === "RTO") {
+            
+          }
+
           const updateBody = {
             ...(order.order_status === "RTO"
               ? { ndrStatus: order.order_status }
