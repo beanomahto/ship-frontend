@@ -167,23 +167,70 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading, tab }) => {
         </Link>
       ),
     },
+
     {
       title: "Shipping Status",
       dataIndex: "awb",
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => (
+        <div style={{ padding: 8 }}>
+          <Input
+            placeholder="Search AWB or Partner"
+            value={selectedKeys[0]}
+            onChange={(e) =>
+              setSelectedKeys(e.target.value ? [e.target.value] : [])
+            }
+            onPressEnter={() => confirm()} // Trigger filtering on pressing Enter
+            style={{ marginBottom: 8, display: "block" }}
+          />
+          <Space>
+            <Button
+              type="primary"
+              onClick={() => confirm()}
+              size="small"
+              style={{ width: 90 }}
+            >
+              Search
+            </Button>
+            <Button
+              onClick={() => {
+                clearFilters();
+                confirm(); // Reset and apply the cleared filter
+              }}
+              size="small"
+              style={{ width: 90 }}
+            >
+              Reset
+            </Button>
+          </Space>
+        </div>
+      ),
+      onFilter: (value, record) => {
+        const lowerValue = value.toLowerCase();
+        return (
+          record.awb?.toLowerCase().includes(lowerValue) ||
+          record.shippingPartner?.toLowerCase().includes(lowerValue)
+        );
+      },
       render: (value, record) => (
         <>
-          <a
-            target="_blank"
-            href={`/tracking/shipment/${record.shippingPartner}/${record.awb}`}
-          >
-            <Button type="link">
-              <div>{record.awb}</div>
-            </Button>
-          </a>
-          <span>{record?.shippingPartner}</span>
+          {record.awb && record.shippingPartner && (
+            <a
+              target="_blank"
+              href={`/tracking/shipment/${record.shippingPartner}/${record.awb}`}
+            >
+              <Button type="link">
+                <div>{record.awb}</div>
+              </Button>
+            </a>
+          )}
+          <span>{record?.shippingPartner || "No Partner"}</span>
         </>
       ),
-      onFilter: (value, record) => record.s_status.indexOf(value) === 0,
     },
     {
       title: "Customer Info",

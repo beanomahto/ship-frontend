@@ -115,10 +115,55 @@ const InTranitComponent = ({
       ),
       className: "centered-row",
     },
+
     {
       title: "Shipping Status",
       dataIndex: "awb",
-      onFilter: (value, record) => record.s_status.indexOf(value) === 0,
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => (
+        <div style={{ padding: 8 }}>
+          <Input
+            placeholder="Search AWB or Partner"
+            value={selectedKeys[0]}
+            onChange={(e) =>
+              setSelectedKeys(e.target.value ? [e.target.value] : [])
+            }
+            onPressEnter={() => confirm()} // Trigger filtering on pressing Enter
+            style={{ marginBottom: 8, display: "block" }}
+          />
+          <Space>
+            <Button
+              type="primary"
+              onClick={() => confirm()}
+              size="small"
+              style={{ width: 90 }}
+            >
+              Search
+            </Button>
+            <Button
+              onClick={() => {
+                clearFilters();
+                confirm(); // Reset and apply the cleared filter
+              }}
+              size="small"
+              style={{ width: 90 }}
+            >
+              Reset
+            </Button>
+          </Space>
+        </div>
+      ),
+      onFilter: (value, record) => {
+        const lowerValue = value.toLowerCase();
+        return (
+          record.awb?.toLowerCase().includes(lowerValue) ||
+          record.shippingPartner?.toLowerCase().includes(lowerValue)
+        );
+      },
       render: (value, record) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           {record.shippingPartner && record.awb && (
