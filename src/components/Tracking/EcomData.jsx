@@ -1,9 +1,24 @@
-import React, { useEffect, useRef } from 'react';
-import { Card, Descriptions, Row, Col, Typography, Steps, Progress, message } from 'antd';
-import { CheckCircleOutlined, ClockCircleOutlined, SyncOutlined, CloseCircleOutlined, CheckOutlined } from '@ant-design/icons';
-import { useOrderContext } from '../../context/OrderContext';
-import axios from 'axios';
-import img1 from '../../utils/trackk.jpg'
+import React, { useEffect, useRef } from "react";
+import {
+  Card,
+  Descriptions,
+  Row,
+  Col,
+  Typography,
+  Steps,
+  Progress,
+  message,
+} from "antd";
+import {
+  CheckCircleOutlined,
+  ClockCircleOutlined,
+  SyncOutlined,
+  CloseCircleOutlined,
+  CheckOutlined,
+} from "@ant-design/icons";
+import { useOrderContext } from "../../context/OrderContext";
+import axios from "axios";
+import status from "../../utils/DeliveryStatus2.mp4";
 
 const { Title } = Typography;
 const { Step } = Steps;
@@ -13,11 +28,11 @@ const EcomData = ({ trackingInfo }) => {
   const lastUndeliveredReason = useRef(null);
 
   const statusToProgress = {
-    'Soft data uploaded': 25,
-    'Pickup Assigned': 50,
-    'Out for Pickup': 75,
-    'Shipment Picked Up': 100,
-    'Shipment delivered': 100,
+    "Soft data uploaded": 25,
+    "Pickup Assigned": 50,
+    "Out for Pickup": 75,
+    "Shipment Picked Up": 100,
+    "Shipment delivered": 100,
   };
 
   const parseScans = (scans) => {
@@ -59,20 +74,22 @@ const EcomData = ({ trackingInfo }) => {
 
   const latestScan = filteredScans?.[0];
   const fullLatestScan = parsedScans?.[0];
-  const undeliveredScan = parsedScans?.filter((status) => status?.status === 'Shipment un');
-  
+  const undeliveredScan = parsedScans?.filter(
+    (status) => status?.status === "Shipment un"
+  );
+
   const latestStatus = latestScan?.status || trackingInfo?.status;
   const fullLatestStatus = fullLatestScan?.status || trackingInfo?.status;
   const progressPercentage = statusToProgress[latestStatus] || 0;
   console.log(filteredScans);
   console.log(fullLatestStatus);
   console.log(fullLatestStatus.status);
-//   {
-//     "date": "18 Nov, 2024, 12:56",
-//     "status": "Shipment Picked Up",
-//     "name": "AGR\nGajendar . 75870",
-//     "city": "AGR\nService Center\nAGRA"
-// }
+  //   {
+  //     "date": "18 Nov, 2024, 12:56",
+  //     "status": "Shipment Picked Up",
+  //     "name": "AGR\nGajendar . 75870",
+  //     "city": "AGR\nService Center\nAGRA"
+  // }
 
   const getStepIcon = (status) => {
     switch (status) {
@@ -91,19 +108,31 @@ const EcomData = ({ trackingInfo }) => {
     }
   };
 
-  const shippedOrders = orders?.orders?.filter(order => order.status === 'Shipped' || order.status === 'InTransit'|| order.status === 'Delivered' || order.status === 'UnDelivered');
-  const currentOrder = shippedOrders?.filter((order) => order?.awb === trackingInfo?.awb_number);
+  const shippedOrders = orders?.orders?.filter(
+    (order) =>
+      order.status === "Shipped" ||
+      order.status === "InTransit" ||
+      order.status === "Delivered" ||
+      order.status === "UnDelivered"
+  );
+  const currentOrder = shippedOrders?.filter(
+    (order) => order?.awb === trackingInfo?.awb_number
+  );
   console.log(currentOrder);
-  
 
-  const updateOrderStatus = async (orderId, newStatus, shippingCost, reason = null) => {
+  const updateOrderStatus = async (
+    orderId,
+    newStatus,
+    shippingCost,
+    reason = null
+  ) => {
     try {
       const updateBody = {
         status: newStatus,
         shippingCost: shippingCost,
-        ...(newStatus === "UnDelivered" && { reason }), 
+        ...(newStatus === "UnDelivered" && { reason }),
       };
-  
+
       const response = await axios.put(
         `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
         updateBody,
@@ -114,7 +143,7 @@ const EcomData = ({ trackingInfo }) => {
           },
         }
       );
-  
+
       if (response.status === 201) {
         message.success(`Order marked as ${newStatus}`);
         fetchOrders();
@@ -128,26 +157,34 @@ const EcomData = ({ trackingInfo }) => {
     if (currentOrder?.length > 0) {
       const orderId = currentOrder[0]?._id;
       const shippingCost = currentOrder[0]?.shippingCost;
-      const reason = undeliveredScan[0]?.city?.split('\n')[0]; 
-  console.log(latestScan?.status === 'Shipment Picked Up');
-  console.log(latestScan);
-  
+      const reason = undeliveredScan[0]?.city?.split("\n")[0];
+      console.log(latestScan?.status === "Shipment Picked Up");
+      console.log(latestScan);
+
       // Update to "InTransit"
-      if (latestScan.status === 'Shipment Picked Up' && currentOrder[0]?.status !== 'InTransit' && currentOrder[0]?.status !== 'Delivered') {
-        updateOrderStatus(orderId, 'InTransit', shippingCost);
+      if (
+        latestScan.status === "Shipment Picked Up" &&
+        currentOrder[0]?.status !== "InTransit" &&
+        currentOrder[0]?.status !== "Delivered"
+      ) {
+        updateOrderStatus(orderId, "InTransit", shippingCost);
       }
-  
+
       // Update to "Delivered"
-      if (fullLatestStatus.includes('Shipment delivered') && currentOrder[0]?.status !== 'Delivered') {
-        updateOrderStatus(orderId, 'Delivered', shippingCost);
+      if (
+        fullLatestStatus.includes("Shipment delivered") &&
+        currentOrder[0]?.status !== "Delivered"
+      ) {
+        updateOrderStatus(orderId, "Delivered", shippingCost);
       }
-  
+
       // Update to "Undelivered" if the reason changes or if the status is not "UnDelivered"
       if (
         undeliveredScan?.length !== 0 &&
-        (currentOrder[0]?.status !== 'UnDelivered' || lastUndeliveredReason.current !== reason)
+        (currentOrder[0]?.status !== "UnDelivered" ||
+          lastUndeliveredReason.current !== reason)
       ) {
-        updateOrderStatus(orderId, 'UnDelivered', shippingCost, reason);
+        updateOrderStatus(orderId, "UnDelivered", shippingCost, reason);
         lastUndeliveredReason.current = reason;
       }
     }
@@ -183,15 +220,27 @@ const EcomData = ({ trackingInfo }) => {
               </Descriptions.Item>
             </Descriptions>
 
-            <img
-              src={img1}
-              alt="Shipment Image"
-              style={{
-                marginTop: "20px",
-                width: "100%",
-                borderRadius: "10px",
-              }}
-            />
+            <div
+              className="feature1-video-wrapper"
+              style={{ overflow: "hidden", height: "400px", width: "450px" }}
+            >
+              <video
+                className="feature1-responsive-video"
+                src={status} // Provide the path to your video file here
+                autoPlay
+                muted
+                loop
+                height="500px"
+                width="450px"
+                playsInline
+                style={{
+                  objectFit: "cover", // Ensures the video fills the container
+                  objectPosition: "center -80px", // Shifts the video upwards to crop from the top
+                }}
+              >
+                Your browser does not support the video tag.
+              </video>
+            </div>
           </Card>
         </Col>
 

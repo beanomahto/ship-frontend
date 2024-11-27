@@ -21,13 +21,15 @@ import { MdOutlineDownloadDone } from "react-icons/md";
 import img1 from "../../utils/trackk.jpg";
 import { useOrderContext } from "../../context/OrderContext";
 import axios from "axios";
+import ShippingSteps from "../../pages/Login/loginAnimation/ShippingSteps";
+import status from "../../utils/DeliveryStatus2.mp4";
 
 const { Title } = Typography;
 const { Step } = Steps;
 
 const SmartShipData = ({ trackingInfo }) => {
   console.log("oko");
-  
+
   const scanData = trackingInfo?.data?.scans;
   const scanKey = scanData ? Object.keys(scanData)[0] : null;
   const trackingHistory = scanKey ? scanData[scanKey] : [];
@@ -43,7 +45,7 @@ const SmartShipData = ({ trackingInfo }) => {
   ];
 
   const latestStatus = trackingHistory[0]?.status_description;
-console.log(latestStatus);
+  console.log(latestStatus);
 
   // Map the latest status to the step index in progressSteps
   const statusToStepIndex = {
@@ -109,8 +111,12 @@ console.log(latestStatus);
           order.status === "Delivered" ||
           order.status === "UnDelivered"
       );
-// console.log(shippedOrders);
-console.log(trackingHistory.map((ok) => ok.status_description + " and " + ok.status_code));
+      // console.log(shippedOrders);
+      console.log(
+        trackingHistory.map(
+          (ok) => ok.status_description + " and " + ok.status_code
+        )
+      );
 
       const trackingNumber = trackingHistory[0]?.tracking_number;
       const currentOrder = shippedOrders?.find(
@@ -119,9 +125,8 @@ console.log(trackingHistory.map((ok) => ok.status_description + " and " + ok.sta
 
       if (currentOrder) {
         const orderId = currentOrder?._id;
-console.log(reason);
-console.log(currentOrder?.status);
-
+        console.log(reason);
+        console.log(currentOrder?.status);
 
         if (
           latestStatus === "Delivered" &&
@@ -206,15 +211,27 @@ console.log(currentOrder?.status);
                 {trackingHistory[0]?.status_description}
               </Descriptions.Item>
             </Descriptions>
-            <img
-              src={img1}
-              alt="Shipment Image"
-              style={{
-                marginTop: "20px",
-                width: "100%",
-                borderRadius: "10px",
-              }}
-            />
+            <div
+              className="feature1-video-wrapper"
+              style={{ overflow: "hidden", height: "400px", width: "450px" }}
+            >
+              <video
+                className="feature1-responsive-video"
+                src={status} // Provide the path to your video file here
+                autoPlay
+                muted
+                loop
+                height="500px"
+                width="450px"
+                playsInline
+                style={{
+                  objectFit: "cover", // Ensures the video fills the container
+                  objectPosition: "center -80px", // Shifts the video upwards to crop from the top
+                }}
+              >
+                Your browser does not support the video tag.
+              </video>
+            </div>
           </Card>
         </Col>
 
@@ -255,8 +272,7 @@ console.log(currentOrder?.status);
                 <Step
                   key={index}
                   title={`${step.action} - ${step.location} - ${step.status_code} `}
-                  description={`Date: ${
-                    step?.date_time.toLocaleString()}`}
+                  description={`Date: ${step?.date_time.toLocaleString()}`}
                   icon={getStatusIcon(step.status_description)}
                 />
               ))}
