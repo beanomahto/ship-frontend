@@ -1,5 +1,14 @@
 import React from "react";
-import { Table, Input, Button, Space, Tag, Skeleton, DatePicker } from "antd";
+import {
+  Table,
+  Input,
+  Button,
+  Space,
+  Select,
+  Tag,
+  Skeleton,
+  DatePicker,
+} from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { Helmet } from "react-helmet";
@@ -123,57 +132,101 @@ const DeliveredComponent = ({
         selectedKeys,
         confirm,
         clearFilters,
-      }) => (
-        <div style={{ padding: 8 }}>
-          <Input
-            placeholder="Search AWB or Partner"
-            value={selectedKeys[0]}
-            onChange={(e) =>
-              setSelectedKeys(e.target.value ? [e.target.value] : [])
-            }
-            onPressEnter={() => confirm()} // Apply filter on pressing Enter
-            style={{ marginBottom: 8, display: "block" }}
-          />
-          <Space>
-            <Button
-              type="primary"
-              onClick={() => confirm()} // Apply filter
-              size="small"
-              style={{ width: 90 }}
-            >
-              Search
-            </Button>
-            <Button
-              onClick={() => {
-                clearFilters(); // Clear filter
+      }) => {
+        const [awbFilter, setAwbFilter] = React.useState("");
+        const [partnerFilter, setPartnerFilter] = React.useState("");
+
+        return (
+          <div style={{ padding: 8 }}>
+            <Input
+              placeholder="Search AWB"
+              value={awbFilter}
+              onChange={(e) => setAwbFilter(e.target.value)}
+              onPressEnter={() => {
+                setSelectedKeys([JSON.stringify({ awbFilter, partnerFilter })]);
                 confirm();
               }}
-              size="small"
-              style={{ width: 90 }}
-            >
-              Reset
-            </Button>
-          </Space>
-        </div>
-      ),
-      onFilter: (value, record) => {
-        const lowerValue = value.toLowerCase();
-        return (
-          record.awb?.toLowerCase().includes(lowerValue) ||
-          record.shippingPartner?.toLowerCase().includes(lowerValue)
+              style={{ marginBottom: 8, display: "block" }}
+            />
+            <Select
+              placeholder="Select Partner"
+              value={partnerFilter}
+              onChange={(value) => {
+                setPartnerFilter(value);
+                setSelectedKeys([
+                  JSON.stringify({ awbFilter, partnerFilter: value }),
+                ]);
+              }}
+              allowClear
+              style={{ width: "100%", marginBottom: 8 }}
+              options={[
+                { value: "", label: "None" },
+                { value: "Ecom Express", label: "Ecom Express" },
+                { value: "Delhivery", label: "Delhivery" },
+                { value: "Blue Dart", label: "Blue Dart" },
+                { value: "DTDC", label: "DTDC" },
+                { value: "Xpressbees", label: "Xpressbees" },
+                { value: "Shadowfax", label: "Shadowfax" },
+                { value: "Ekart", label: "Ekart" },
+              ]}
+            />
+            <Space>
+              <Button
+                type="primary"
+                onClick={() => {
+                  setSelectedKeys([
+                    JSON.stringify({ awbFilter, partnerFilter }),
+                  ]);
+                  confirm();
+                }}
+                size="small"
+                style={{ width: 90 }}
+              >
+                Apply
+              </Button>
+              <Button
+                onClick={() => {
+                  clearFilters();
+                  setAwbFilter("");
+                  setPartnerFilter("");
+                  confirm();
+                }}
+                size="small"
+                style={{ width: 90 }}
+              >
+                Reset
+              </Button>
+            </Space>
+          </div>
         );
+      },
+      onFilter: (value, record) => {
+        const { awbFilter, partnerFilter } = JSON.parse(value);
+
+        const lowerAwbFilter = awbFilter?.toLowerCase() || "";
+        const lowerPartnerFilter = partnerFilter?.toLowerCase() || "";
+
+        const awbMatches =
+          !lowerAwbFilter || record.awb?.toLowerCase().includes(lowerAwbFilter);
+        const partnerMatches =
+          !lowerPartnerFilter ||
+          record.shippingPartner?.toLowerCase() === lowerPartnerFilter;
+
+        return awbMatches && partnerMatches;
       },
       render: (value, record) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
-          {record.shippingPartner && record.awb && (
+          {record.awb && record.shippingPartner ? (
             <a
               target="_blank"
               href={`/tracking/shipment/${record.shippingPartner}/${record.awb}`}
             >
-              <Button type="link">{record.awb || "no"}</Button>
+              <Button type="link">{record.awb}</Button>
             </a>
+          ) : (
+            <span>No AWB</span>
           )}
-          <span>{record?.shippingPartner || "no partner"}</span>
+          <span>{record.shippingPartner || "No Partner"}</span>
         </div>
       ),
       className: "centered-row",

@@ -5,6 +5,7 @@ import {
   Button,
   Space,
   message,
+  Select,
   Tag,
   Skeleton,
   DatePicker,
@@ -176,49 +177,94 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading, tab }) => {
         selectedKeys,
         confirm,
         clearFilters,
-      }) => (
-        <div style={{ padding: 8 }}>
-          <Input
-            placeholder="Search AWB or Partner"
-            value={selectedKeys[0]}
-            onChange={(e) =>
-              setSelectedKeys(e.target.value ? [e.target.value] : [])
-            }
-            onPressEnter={() => confirm()} // Trigger filtering on pressing Enter
-            style={{ marginBottom: 8, display: "block" }}
-          />
-          <Space>
-            <Button
-              type="primary"
-              onClick={() => confirm()}
-              size="small"
-              style={{ width: 90 }}
-            >
-              Search
-            </Button>
-            <Button
-              onClick={() => {
-                clearFilters();
-                confirm(); // Reset and apply the cleared filter
-              }}
-              size="small"
-              style={{ width: 90 }}
-            >
-              Reset
-            </Button>
-          </Space>
-        </div>
-      ),
-      onFilter: (value, record) => {
-        const lowerValue = value.toLowerCase();
+      }) => {
+        // Separate states for AWB and Partner
+        const [awbFilter, setAwbFilter] = React.useState("");
+        const [partnerFilter, setPartnerFilter] = React.useState("");
+
         return (
-          record.awb?.toLowerCase().includes(lowerValue) ||
-          record.shippingPartner?.toLowerCase().includes(lowerValue)
+          <div style={{ padding: 8 }}>
+            <Input
+              placeholder="Search AWB"
+              value={awbFilter}
+              onChange={(e) => setAwbFilter(e.target.value)}
+              onPressEnter={() => {
+                setSelectedKeys([JSON.stringify({ awbFilter, partnerFilter })]);
+                confirm();
+              }}
+              style={{ marginBottom: 8, display: "block" }}
+            />
+            <Select
+              placeholder="Select Partner"
+              value={partnerFilter}
+              onChange={(value) => {
+                setPartnerFilter(value);
+                setSelectedKeys([
+                  JSON.stringify({ awbFilter, partnerFilter: value }),
+                ]);
+              }}
+              allowClear
+              style={{ width: "100%", marginBottom: 8 }}
+              options={[
+                { value: "", label: "None" }, // None option for no partner
+                { value: "Ecom Express", label: "Ecom Express" },
+                { value: "Delhivery", label: "Delhivery" },
+                { value: "Blue Dart", label: "Blue Dart" },
+                { value: "DTDC", label: "DTDC" },
+                { value: "Xpressbees", label: "Xpressbees" },
+                { value: "Shadowfax", label: "Shadowfax" },
+                { value: "Ekart", label: "Ekart" },
+              ]}
+            />
+            <Space>
+              <Button
+                type="primary"
+                onClick={() => {
+                  setSelectedKeys([
+                    JSON.stringify({ awbFilter, partnerFilter }),
+                  ]);
+                  confirm();
+                }}
+                size="small"
+                style={{ width: 90 }}
+              >
+                Apply
+              </Button>
+              <Button
+                onClick={() => {
+                  clearFilters();
+                  setAwbFilter("");
+                  setPartnerFilter("");
+                  confirm();
+                }}
+                size="small"
+                style={{ width: 90 }}
+              >
+                Reset
+              </Button>
+            </Space>
+          </div>
         );
+      },
+      onFilter: (value, record) => {
+        const { awbFilter, partnerFilter } = JSON.parse(value);
+
+        // Normalize values for case-insensitive comparison
+        const lowerAwbFilter = awbFilter?.toLowerCase() || "";
+        const lowerPartnerFilter = partnerFilter?.toLowerCase() || "";
+
+        // Check conditions independently or together
+        const awbMatches =
+          !lowerAwbFilter || record.awb?.toLowerCase().includes(lowerAwbFilter);
+        const partnerMatches =
+          !lowerPartnerFilter ||
+          record.shippingPartner?.toLowerCase() === lowerPartnerFilter;
+
+        return awbMatches && partnerMatches; // Combine conditions
       },
       render: (value, record) => (
         <>
-          {record.awb && record.shippingPartner && (
+          {record.awb && record.shippingPartner ? (
             <a
               target="_blank"
               href={`/tracking/shipment/${record.shippingPartner}/${record.awb}`}
@@ -227,8 +273,10 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading, tab }) => {
                 <div>{record.awb}</div>
               </Button>
             </a>
+          ) : (
+            <span>No AWB</span>
           )}
-          <span>{record?.shippingPartner || "No Partner"}</span>
+          <span>{record.shippingPartner || "No Partner"}</span>
         </>
       ),
     },
