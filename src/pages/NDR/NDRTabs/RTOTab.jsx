@@ -19,11 +19,7 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import axios from "axios";
 import { CalendarOutlined } from "@ant-design/icons";
-const ActionTakenTab = ({
-  rowSelection,
-  selectedRowKeys,
-  dataSource
-}) => {
+const ActionTakenTab = ({ rowSelection, selectedRowKeys, dataSource }) => {
   const { authUser } = useAuthContext();
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -290,7 +286,9 @@ const ActionTakenTab = ({
   ];
 
   const takenOrders = dataSource?.filter(
-    (order) => (order?.ndrstatus === "RTO" || order?.ndrstatus === 'RtoDone') && order?.status !== "Delivered"
+    (order) =>
+      (order?.ndrstatus === "RTO" || order?.ndrstatus === "RtoDone") &&
+      order?.status !== "Delivered"
   );
   return (
     <div>
@@ -315,6 +313,7 @@ const ActionTakenTab = ({
         columns={columns}
         dataSource={takenOrders}
         scroll={{ y: 350 }}
+        style={{ marginTop: "-20px" }}
       />
     </div>
   );
