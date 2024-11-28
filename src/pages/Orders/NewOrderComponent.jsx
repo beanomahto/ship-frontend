@@ -405,10 +405,13 @@ const NewOrderComponent = ({
         (order) => order._id === selectedOrderId
       );
 
-      const { codCost, forwardCost } = partner;
+      const { codCost, forwardCost, rtoCost } = partner;
+      // console.log(partner);
+      
       const gstRate = 0.018;
       const codCostWithGst = codCost * (1 + gstRate);
       const forwardCostWithGst = forwardCost * (1 + gstRate);
+      const rtoCostWithGst = rtoCost * (1 + gstRate);
       const totalDebit = forwardCostWithGst + codCostWithGst;
 
       const sendWarehouse =
@@ -428,7 +431,7 @@ const NewOrderComponent = ({
         };
 
         const codWalletResponse = await axios.post(
-          "https://backend.shiphere.in/api/transactions/decreaseAmount",
+          "http://localhost:5000/api/transactions/decreaseAmount",
           codWalletRequestBody,
           {
             headers: {
@@ -451,7 +454,7 @@ const NewOrderComponent = ({
       };
 
       const forwardWalletResponse = await axios.post(
-        "https://backend.shiphere.in/api/transactions/decreaseAmount",
+        "http://localhost:5000/api/transactions/decreaseAmount",
         forwardWalletRequestBody,
         {
           headers: {
@@ -469,7 +472,7 @@ const NewOrderComponent = ({
         // Proceed with shipping
         setCurrentDeliveryCost(totalDebit);
 
-        console.log("okokko");
+        // console.log("okokko");
 
         await shipOrder(selectedOrder, sendWarehouse, partner.deliveryPartner);
 
@@ -479,10 +482,12 @@ const NewOrderComponent = ({
         const updateBody = {
           status: "Shipped",
           shippingCost: totalDebit,
+          rtoCost: rtoCostWithGst
         };
+console.log(updateBody);
 
         const orderResponse = await axios.put(
-          `https://backend.shiphere.in/api/orders/updateOrderStatus/${selectedOrderId}`,
+          `http://localhost:5000/api/orders/updateOrderStatus/${selectedOrderId}`,
           updateBody,
           {
             headers: {
@@ -505,7 +510,7 @@ const NewOrderComponent = ({
         // Rollback wallet deductions if shipping fails
         if (codCostWithGst > 0) {
           await axios.post(
-            "https://backend.shiphere.in/api/transactions/increaseAmount",
+            "http://localhost:5000/api/transactions/increaseAmount",
             {
               credit: codCostWithGst,
               userId: selectedOrder.seller._id,
@@ -521,7 +526,7 @@ const NewOrderComponent = ({
         }
 
         await axios.post(
-          "https://backend.shiphere.in/api/transactions/increaseAmount",
+          "http://localhost:5000/api/transactions/increaseAmount",
           {
             credit: forwardCostWithGst,
             userId: selectedOrder.seller._id,

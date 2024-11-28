@@ -46,7 +46,7 @@ const NDR = () => {
     (status) => status.ndrstatus === "Taken" && status.status !== "Delivered"
   );
   const rtoOrder = dataSourceWithKeys?.filter(
-    (status) => status.ndrstatus === "RTO" && status.status !== "Delivered"
+    (status) => (status.ndrstatus === "RTO" || status.ndrstatus === 'RtoDone') && status.status !== "Delivered"
   );
   const ndrDeliveredOrder = dataSourceWithKeys?.filter(
     (status) =>
@@ -113,22 +113,78 @@ const NDR = () => {
         );
 
         const jsonObj = await res.json();
-        // console.log(jsonObj);
+        console.log(jsonObj);
 
         const data = jsonObj?.data?.shipmentDetails;
+        if (orders?.orders?.length > 0) {
+          const rtoDeduct = orders.orders.filter(
+            (order) => order.ndrstatus === "RTO" && order.status !== "Delivered"
+          );
+  
+        if (rtoDeduct.length > 0) {
+          await Promise.all(
+            rtoDeduct.map(async (order) => {
+              try {
+                const forwardWalletRequestBody = {
+                  debit: order.rtoCost,
+                  userId: order.seller._id,
+                  remark: `RTO charge for order ${order.orderId}`,
+                  orderId: order._id,
+                };
+console.log(forwardWalletRequestBody);
 
+                const forwardWalletResponse = await axios.post(
+                  "https://backend.shiphere.in/api/transactions/decreaseAmount",
+                  forwardWalletRequestBody,
+                  {
+                    headers: {
+                      Authorization: localStorage.getItem("token"),
+                    },
+                  }
+                );
+console.log(forwardWalletResponse.status);
+
+                if (forwardWalletResponse.status === 200) {
+                  try {
+                    const updateBody = {
+                      ndrstatus: "RtoDone",
+                      reattemptcount:order.reattemptcount+0 
+                    };
+console.log(updateBody);
+
+                    await axios.put(
+                      `https://backend.shiphere.in/api/orders/updateOrderStatus/${order._id}`,
+                      updateBody,
+                      {
+                        headers: {
+                          Authorization: localStorage.getItem("token"),
+                        },
+                      }
+                    );
+                  } catch (error) {
+                    console.error("Error updating order status:", error);
+                  }
+                }
+              } catch (error) {
+                console.error("Error processing RTO charge:", error);
+              }
+            })
+          );
+        }
+      }
+    
+        
         // console.log(data.map((ok) => ok.status + "-----" + ok.client_order_reference_id));
 
         const mapStatusCodeToOrderStatus = (status) => {
           // console.log(status);
 
-          if (["27", "30", "10"].includes(status)) return "InTransit";
-          if (status === "4") return "Shipped";
-          if (status === "11") return "Delivered";
-          if (status === "340") return "Cancelled";
-          if (["28", "19", "118", "199", "201"].includes(status)) return "RTO";
-          if (["12", "13", "14", "15", "16", "17"].includes(status))
-            return "UnDelivered";
+          if (["27", "30", "10",'121','103'].includes(status)) return "InTransit";
+          if (status === '4') return 'Shipped';
+          if (["11",'113'].includes(status)) return "Delivered";
+          if (status === '340') return 'Cancelled';
+          if (["189", "212", "214","115","117", "116"].includes(status)) return "Lost";
+          if (['12', '13', '14', '15', '16', '17','112'].includes(status)) return 'UnDelivered';
           return null;
         };
 

@@ -83,7 +83,7 @@ const Orders = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        "https://backend.shiphere.in/api/integration/syncButton",
+        "http://localhost:5000/api/integration/syncButton",
         {
           headers: {
             Authorization: localStorage.getItem("token"),
@@ -146,11 +146,11 @@ const Orders = () => {
         // //console.log(orderId);
         // //console.log(order);
 
-        let forwardCharge, codCharge;
+        let forwardCharge, codCharge, rtoCharge;
 
         try {
           const costData = await shipNowCost(orderId, selectedWarehouse?._id);
-          // //console.log('Cost Data for Order:', costData);
+          // console.log('Cost Data for Order:', costData);
 
           forwardCharge = costData?.cost?.find(
             (cost) => cost.deliveryPartner === selectedDeliveryPartner.name
@@ -159,6 +159,14 @@ const Orders = () => {
           codCharge = costData?.cost?.find(
             (cost) => cost.deliveryPartner === selectedDeliveryPartner.name
           )?.codCost;
+
+          rtoCharge = costData?.cost?.find(
+            (cost) => cost.deliveryPartner === selectedDeliveryPartner.name
+          )?.rtoCost;
+
+          // console.log(rtoCharge +" "+ forwardCharge +" " + codCharge);
+          
+
         } catch (error) {
           console.error("Error in shipOrder or shipNowCost:", error);
           message.error(
@@ -192,9 +200,10 @@ const Orders = () => {
         const gstRate = 1.8 / 100;
         const forwardChargeWithGST = forwardCharge * (1 + gstRate);
         const codChargeWithGST = codCharge * (1 + gstRate);
+        const rtoChargeWithGST = rtoCharge * (1 + gstRate);
 
         await fetch(
-          `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
+          `http://localhost:5000/api/orders/updateOrderStatus/${orderId}`,
           {
             method: "PUT",
             headers: {
@@ -204,6 +213,7 @@ const Orders = () => {
             body: JSON.stringify({
               status: "Shipped",
               shippingCost: forwardChargeWithGST,
+              rtoCost: rtoChargeWithGST,
             }),
           }
         );
@@ -230,7 +240,7 @@ const Orders = () => {
           // //console.log(walletRequest);
 
           await fetch(
-            `https://backend.shiphere.in/api/transactions/decreaseAmount`,
+            `http://localhost:5000/api/transactions/decreaseAmount`,
             {
               method: "POST",
               headers: {
@@ -366,7 +376,7 @@ const Orders = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch('https://backend.shiphere.in/api/smartship/getcurrentstatus', {
+        const res = await fetch('http://localhost:5000/api/smartship/getcurrentstatus', {
           headers: {
             Authorization: localStorage.getItem('token'),
           },
@@ -382,13 +392,12 @@ const Orders = () => {
         const mapStatusCodeToOrderStatus = (status) => {
           // console.log(status);
   
-          if (status === '27') return 'InTransit';
-          if (status === '10') return 'InTransit';
+          if (["27", "30", "10"].includes(status)) return "InTransit";
           if (status === '4') return 'Shipped';
           if (status === '11') return 'Delivered';
           if (status === '340') return 'Cancelled';
-          if (["189", "212", "214"].includes(status)) return "Lost";
-          if (['12', '13', '14', '15', '16', '17'].includes(status)) return 'UnDelivered';
+          if (["189", "212", "214","115","117", "116"].includes(status)) return "Lost";
+          if (['12', '13', '14', '15', '16', '17','112'].includes(status)) return 'UnDelivered';
           return null;
         };
   
@@ -432,7 +441,7 @@ const Orders = () => {
           // console.log(updateBody);
   
           return axios.put(
-            `https://backend.shiphere.in/api/orders/updateOrderStatus/${order.orderId}`,
+            `http://localhost:5000/api/orders/updateOrderStatus/${order.orderId}`,
             updateBody,
             {
               headers: {
@@ -473,7 +482,7 @@ const Orders = () => {
         const order = selectedOrderData.find((order) => order._id === orderId);
 
         const cancelResponse = await axios.put(
-          `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
+          `http://localhost:5000/api/orders/updateOrderStatus/${orderId}`,
           { status: "Cancelled" },
           { headers: { Authorization: `${token}` } }
         );
@@ -486,7 +495,7 @@ const Orders = () => {
           };
 
           const walletResponse = await axios.post(
-            `https://backend.shiphere.in/api/transactions/increaseAmount`,
+            `http://localhost:5000/api/transactions/increaseAmount`,
             walletRequestBody,
             { headers: { Authorization: `${token}` } }
           );
@@ -538,237 +547,6 @@ const Orders = () => {
   }, [selectedOrderId, warehouse]);
   //console.log(selectedRowKeys);
 
-  const ddownloadMultipleLabels = async () => {
-    const pdf = new jsPDF({
-      orientation: "portrait",
-      unit: "in",
-      format: [4, 6],
-    });
-
-    for (const orderId of selectedRowKeys) {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(
-          `https://backend.shiphere.in/api/shipping/getlabel/${orderId}`,
-          {
-            headers: {
-              Authorization: `${token}`,
-            },
-          }
-        );
-
-        const labelData = response.data;
-        //console.log(labelData);
-        const partnerLogo = labelData?.shippingPartner
-          ? partnerImages[labelData.shippingPartner] || ""
-          : "";
-        const labelContainer = document.createElement("div");
-        labelContainer.style.position = "absolute";
-        labelContainer.style.top = "-9999px";
-        document.body.appendChild(labelContainer);
-        //console.log(labelData);
-
-        const logoBase64 = await getBase64ImageFromUrl(labelData.logoUrl);
-
-        const labelHtml = `
-        <style>
-        .label-container {
-          font-weight: bold;
-          border: 1px solid black;
-          margin:0.5rem;
-        }
-        .label-section {
-          margin-bottom: 0.5rem;
-        }
-          .companySection{
-           margin-bottom: 0.5rem;
-           position:relative;
-           width:100%;
-              height:auto;
-           display:flex;
-        
-            
-          }
-           .companyName{
-           position:relative;
-           border:1px solid black;
-           width:50%;
-           display:flex;
-           align-items:center;
-           justify-content:center;
-           }
-           .companylogo{
-           position:relative;
-          border:1px solid black;
-           width:50%;
-           display:flex;
-           flex-direction:column;
-           align-items:center;
-           justify-content:center;
-              padding-bottom:4px;
-           }
-           .companylogo p{
-           font-size:10px;
-           }
-           .companylogo img{
-           height:35px;
-           }
-        .labelSection img {
-        padding:5px 0px;
-          width: 10rem;
-        }
-          p{
-           font-weight: 500;
-          }
-        .label-section div {
-          margin-bottom: 0.5rem;
-        }
-          .OrderSection{
-          margin-bottom: 0.5rem;
-           position:relative;
-           width:100%;
-           height:auto;
-           display:flex;
-          }
-          .orderDetail{
-          position:relative;
-          border:1px solid black;
-          width:33%;
-          display:flex;
-          flex-direction:column;
-          align-items:center;
-          
-          padding:7px;
-          }
-          
-      </style>
-      <div class="label-container">
-        <div class="companySection">
-          <div class="companyName">
-          <img src="${Logo}" style="width: 70px;"/>
-            
-          </div>
-          <div class="companylogo">
-          <p style="margin-top: 2px;"> Delivered By:  </p>
-            ${
-              partnerLogo
-                ? `<img src="${partnerLogo}" alt="${labelData.shippingPartner}" style="width: 100px;"/>`
-                : `<p>${labelData?.shippingPartner || ""}</p>`
-            }
-              
-          </div>
-        </div>
-
-        <div style="${labelData?.logoUrl ? "display: flex;" : ""}">
-          <div class="labelSection">
-            <img src="data:image/png;base64,${
-              labelData?.barcode || ""
-            }" alt="Barcode" />
-          </div>
-        </div>
-
-        <div class="labelSection">
-          <p><strong>Ship To:</strong> <span> ${
-            labelData?.customerName || ""
-          }</span></p>
-          <p>${labelData?.address?.address || ""} ${
-          labelData?.address?.city || ""
-        } ${labelData?.address?.state || ""}</p>
-          <p><strong>PIN:</strong> ${labelData?.address?.pincode || ""}</p>
-        </div>
-         
-        <div class="OrderSection">
-        <div class="orderDetail">
-            <p><strong>Order Date</strong></p>
-            <p>${
-              moment(labelData?.invoiceDate).format("MMMM Do YYYY") || ""
-            }</p>
-        </div>
-        <div class="orderDetail">
-            <p><strong>Dimensions</strong></p>
-            <p><span>${labelData?.dimension?.length || ""} x ${
-          labelData?.dimension?.breadth || ""
-        } x ${labelData?.dimension?.height || ""}</span> CM</p>
-        </div>
-        <div class="orderDetail">
-            <p><strong>Weight</strong></p>
-            <p><span>${labelData?.weight || ""}</span> grm</p> 
-        </div>
-        </div>
-        <div class="OrderSection">
-          <div class="orderDetail">
-            <p><strong>Order Id:</strong> </p><p>${
-              labelData?.orderId || ""
-            }</p> 
-          </div>
-          <div class="orderDetail">
-            <p><strong>${labelData?.paymentType || ""}</strong></p>
-            <p>INR <span> ${labelData?.amount || ""}</span></p>
-          </div>
-          <div class="orderDetail">
-            <p><strong>Price Total</strong></p>
-            <p>INR ${labelData?.amount || ""}</p>
-            <p>Surface</p>
-          </div>
-        </div>
-
-        <div style="display: flex;">
-          <div class="labelSection" style="width: 12rem;">
-            <p><strong>Product (QTY)</strong></p>
-          </div>
-          <div class="labelSection" style="width: 12rem;">
-            <p>${labelData?.productName || ""}<span>(${
-          labelData?.productDetail?.quantity || ""
-        })</span></p>
-          </div>
-        </div>
-
-        <div style="display: flex;">
-          <div class="labelSection" style="width: 12rem;">
-            <p><strong>Total INR</strong></p>
-          </div>
-          <div class="labelSection" style="width: 12rem;">
-            <p>${labelData?.amount || ""}</p>
-          </div>
-        </div>
-
-        <div class="labelSection">
-          <p><strong>Return Address:</strong></p>
-          <p>${labelData?.pickupAddress?.address || ""} ${
-          labelData?.pickupAddress?.state || ""
-        } ${labelData?.pickupAddress?.city || ""} ${
-          labelData?.pickupAddress?.country || ""
-        }</p>
-        </div>
-
-        <p>Powered by <strong>ShipHere</strong></p>
-      </div>
-      `;
-
-        labelContainer.innerHTML = labelHtml;
-
-        const canvas = await html2canvas(labelContainer, {
-          scale: 3, // Increase scale to 3 or 4 for better quality
-          useCORS: true, // Enable cross-origin images
-          logging: true, // Enable logging for troubleshooting
-        });
-        const imgData = canvas.toDataURL("image/png");
-
-        pdf.addImage(imgData, "PNG", 0, 0, 4, 6, undefined, "FAST");
-
-        if (orderId !== selectedRowKeys[selectedRowKeys.length - 1]) {
-          pdf.addPage();
-        }
-
-        document.body.removeChild(labelContainer);
-      } catch (error) {
-        console.error("Error generating label:", error.message);
-        alert(`Error generating label for order ID ${orderId}`);
-      }
-    }
-
-    pdf.save("labels.pdf");
-  };
   function generateLabelHTML(labelData){
     const partnerLogo = labelData?.shippingPartner
           ? partnerImages[labelData.shippingPartner] || ""
@@ -962,7 +740,7 @@ const Orders = () => {
 
     const processBatch = async (batch, isLastBatch) => {
       const requests = batch.map((orderId) =>
-        axios.get(`https://backend.shiphere.in/api/shipping/getlabel/${orderId}`, {
+        axios.get(`http://localhost:5000/api/shipping/getlabel/${orderId}`, {
           headers: { Authorization: `${token}` },
         })
       );
@@ -1049,7 +827,7 @@ const Orders = () => {
     const pageHeight = 841.89;
 
     const promises = selectedRowKeys.map((orderId) =>
-      fetch(`https://backend.shiphere.in/api/shipping/getinvoice/${orderId}`, {
+      fetch(`http://localhost:5000/api/shipping/getinvoice/${orderId}`, {
         headers: {
           Authorization: `${localStorage.getItem("token")}`,
         },

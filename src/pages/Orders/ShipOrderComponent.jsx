@@ -406,7 +406,7 @@ const ShipOrderComponent = ({
   const shippedOrders = dataSource?.filter(
     (order) => order?.status === "Shipped"
   );
-  //console.log(shippedOrders);
+  console.log(shippedOrders);
 
   return (
     <>
