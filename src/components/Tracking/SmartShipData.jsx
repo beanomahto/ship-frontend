@@ -18,10 +18,9 @@ import {
   CheckOutlined,
 } from "@ant-design/icons";
 import { MdOutlineDownloadDone } from "react-icons/md";
-import img1 from "../../utils/trackk.jpg";
+
 import { useOrderContext } from "../../context/OrderContext";
 import axios from "axios";
-import ShippingSteps from "../../pages/Login/loginAnimation/ShippingSteps";
 import status from "../../utils/DeliveryStatus2.mp4";
 
 const { Title } = Typography;

@@ -515,6 +515,7 @@ const ActionRequiredTab = ({
         rowKey="_id"
         className="centered-table"
         scroll={{ y: 350 }}
+        style={{ marginTop: "-20px" }}
       />
     </div>
   );

@@ -344,6 +344,7 @@ const AllOrderTab = ({
         dataSource={takenOrders}
         scroll={{ y: 350 }}
         className="centered-table"
+        style={{ marginTop: "-20px" }}
       />
     </div>
   );

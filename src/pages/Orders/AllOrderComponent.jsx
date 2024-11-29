@@ -263,21 +263,25 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading, tab }) => {
         return awbMatches && partnerMatches; // Combine conditions
       },
       render: (value, record) => (
-        <>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
           {record.awb && record.shippingPartner ? (
             <a
               target="_blank"
               href={`/tracking/shipment/${record.shippingPartner}/${record.awb}`}
             >
-              <Button type="link">
-                <div>{record.awb}</div>
-              </Button>
+              <Button type="link">{record.awb}</Button>
             </a>
           ) : (
             <span>No AWB</span>
           )}
-          <span>{record.shippingPartner || "No Partner"}</span>
-        </>
+          <span>{record?.shippingPartner || "No Partner"}</span>
+        </div>
       ),
     },
     {
