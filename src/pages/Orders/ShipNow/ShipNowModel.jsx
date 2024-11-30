@@ -1,17 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Modal, Select, message } from 'antd';
-import { useWarehouseContext } from '../../../context/WarehouseContext';
-import { useDeliveryPartner } from '../../../context/DeliveryPartners';
-import useShipNowCost from '../../../hooks/useShipNowCost';
+import React, { useState, useEffect } from "react";
+import { Button, Modal, Select, message, Typography } from "antd";
+import { HomeOutlined, CarOutlined } from "@ant-design/icons";
+import { useWarehouseContext } from "../../../context/WarehouseContext";
+import { useDeliveryPartner } from "../../../context/DeliveryPartners";
+import useShipNowCost from "../../../hooks/useShipNowCost";
+// import "./shipmodel.css";
 
-const ShipNowModel = ({ visible, onClose, onShipNow, selectedRowKeys, hasSelected, selectedOrderData }) => {
+const { Title, Text } = Typography;
+const ShipNowModel = ({
+  visible,
+  onClose,
+  onShipNow,
+  selectedRowKeys,
+  hasSelected,
+  selectedOrderData,
+}) => {
   const { deliveryPartners } = useDeliveryPartner();
   const { warehouse } = useWarehouseContext();
-  const { shipNowCost } = useShipNowCost(); 
+  const { shipNowCost } = useShipNowCost();
 
   const defaultWarehouse = warehouse?.warehouses?.[0];
-  
-  const [selectedWarehouse, setSelectedWarehouse] = useState(defaultWarehouse || null);
+
+  const [selectedWarehouse, setSelectedWarehouse] = useState(
+    defaultWarehouse || null
+  );
   const [selectedDeliveryPartner, setSelectedDeliveryPartner] = useState(null);
 
   useEffect(() => {
@@ -21,12 +33,16 @@ const ShipNowModel = ({ visible, onClose, onShipNow, selectedRowKeys, hasSelecte
   }, [defaultWarehouse]);
 
   const handleWarehouseChange = (value) => {
-    const selectedWarehouseData = warehouse?.warehouses?.find((w) => w._id === value);
+    const selectedWarehouseData = warehouse?.warehouses?.find(
+      (w) => w._id === value
+    );
     setSelectedWarehouse(selectedWarehouseData);
   };
 
   const handleDeliveryPartnerChange = (value) => {
-    const selectedPartner = deliveryPartners?.deliveryPartners?.find((d) => d._id === value);
+    const selectedPartner = deliveryPartners?.deliveryPartners?.find(
+      (d) => d._id === value
+    );
     setSelectedDeliveryPartner(selectedPartner);
   };
 
@@ -43,26 +59,61 @@ const ShipNowModel = ({ visible, onClose, onShipNow, selectedRowKeys, hasSelecte
       visible={visible}
       onCancel={onClose}
       footer={[
-        <Button key="cancel" onClick={onClose}>
-          Cancel
-        </Button>,
-        <Button
-          key="ship"
-          type="primary"
-          onClick={handleShipNow}
-          disabled={!selectedWarehouse || !selectedDeliveryPartner || selectedRowKeys.length === 0}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "10px",
+          }}
         >
-          Ship Now
-        </Button>,
+          <Button
+            key="cancel"
+            onClick={onClose}
+            style={{
+              fontSize: "16px",
+              padding: "20px",
+            }}
+          >
+            Cancel
+          </Button>
+
+          <Button
+            key="ship"
+            type="primary"
+            onClick={handleShipNow}
+            disabled={
+              !selectedWarehouse ||
+              !selectedDeliveryPartner ||
+              selectedRowKeys.length === 0
+            }
+            style={{
+              fontSize: "16px",
+              padding: "20px",
+            }}
+          >
+            Ship Now
+          </Button>
+        </div>,
       ]}
     >
       <div>
         <label>
-          <span>Select Warehouse</span>
+          <span style={{ fontSize: "17px", color: "#1758b3" }}>
+            Select Warehouse
+          </span>
           <Select
-            value={selectedWarehouse?._id}  
+            value={selectedWarehouse?._id}
             className="input shipModel"
             onChange={handleWarehouseChange}
+            style={{
+              marginLeft: "2px",
+              marginTop: "18px",
+              borderRadius: "8px",
+              padding: "1px",
+              boxShadow: "inset 0 1px 04px rgba(0, 0, 0, 0.1)",
+            }}
           >
             {warehouse?.warehouses?.map((w) => (
               <Select.Option key={w._id} value={w._id}>
@@ -70,11 +121,21 @@ const ShipNowModel = ({ visible, onClose, onShipNow, selectedRowKeys, hasSelecte
               </Select.Option>
             ))}
           </Select>
-          <span>Select Courier Partner</span>
+          <span style={{ fontSize: "17px", color: "#1758b3" }}>
+            Select Courier Partner
+          </span>
           <Select
-            value={selectedDeliveryPartner?._id}  
+            value={selectedDeliveryPartner?._id}
             className="input shipModel crr"
             onChange={handleDeliveryPartnerChange}
+            style={{
+              marginLeft: "2px",
+              marginTop: "18px",
+              marginBottom: "50px",
+              borderRadius: "8px",
+              padding: "1px",
+              boxShadow: "inset 0 1px 04px rgba(0, 0, 0, 0.1)",
+            }}
           >
             {deliveryPartners?.deliveryPartners?.map((d) => (
               <Select.Option key={d._id} value={d._id}>
@@ -83,8 +144,8 @@ const ShipNowModel = ({ visible, onClose, onShipNow, selectedRowKeys, hasSelecte
             ))}
           </Select>
         </label>
-        <span style={{ marginLeft: 8 }}>
-          {hasSelected ? `You Selected ${selectedRowKeys.length} items` : ''}
+        <span style={{ marginLeft: 8, color: "gray" }}>
+          {hasSelected ? `You Selected ${selectedRowKeys.length} items` : ""}
         </span>
       </div>
     </Modal>
