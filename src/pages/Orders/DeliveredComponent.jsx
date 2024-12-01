@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   Input,
@@ -7,6 +7,8 @@ import {
   Select,
   Tag,
   Skeleton,
+  Modal,
+  message,
   DatePicker,
 } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
@@ -17,17 +19,21 @@ import Woo from "../../utils/woocomerce.png";
 import logo from "../../utils/logo1.jpg";
 import { useAuthContext } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
+import { DeleteOutlined } from "@ant-design/icons";
+import axios from "axios";
+const { confirm } = Modal;
 
 const DeliveredComponent = ({
-  rowSelection,
   dataSource,
   fetchOrders,
+  rowSelection,
   loading,
   tab,
 }) => {
   //console.log(tab);
   const [searchText, setSearchText] = React.useState("");
   const [searchedColumn, setSearchedColumn] = React.useState("");
+
   const { authUser } = useAuthContext();
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -104,6 +110,67 @@ const DeliveredComponent = ({
   });
   const tabs = tab.tab.split(" ")[0];
   //console.log(tabs);
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(
+        `https://backend.shiphere.in/api/orders/deleteOrder/${id}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
+      message.success("Order deleted successfully");
+      fetchOrders(); // Refresh orders after deletion
+    } catch (error) {
+      console.error("Error deleting Order:", error);
+      message.error("Failed to delete Order");
+    }
+  };
+  const showDeleteConfirm = (id) => {
+    confirm({
+      title: "Are you sure you want to delete this Order?",
+      content: "This action cannot be undone.",
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {
+        handleDelete(id);
+      },
+      onCancel() {
+        console.log("Cancel deletion");
+      },
+    });
+  };
+
+  const handleBulkDelete = () => {
+    const { selectedRowKeys } = rowSelection; // Extract selected row keys
+    if (!selectedRowKeys || selectedRowKeys.length === 0) {
+      message.warning("No orders selected for deletion");
+      return;
+    }
+
+    confirm({
+      title: "Are you sure you want to delete the selected orders?",
+      content: "This action cannot be undone.",
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk: async () => {
+        try {
+          // Use Promise.all to delete all selected orders
+          const promises = selectedRowKeys.map((id) => handleDelete(id));
+          await Promise.all(promises);
+          message.success("Selected orders deleted successfully");
+          fetchOrders(); // Refresh orders after deletion
+        } catch (error) {
+          console.error("Error during bulk deletion:", error);
+          message.error("Failed to delete selected orders");
+        }
+      },
+    });
+  };
+
   const columns = [
     {
       title: "Order Id",
@@ -391,6 +458,20 @@ const DeliveredComponent = ({
           },
         ]
       : []),
+    ...(authUser?.role === "admin"
+      ? [
+          {
+            title: "Action",
+            render: (_, record) => (
+              <DeleteOutlined
+                style={{ color: "red", marginLeft: "1rem", cursor: "pointer" }}
+                onClick={() => showDeleteConfirm(record._id)}
+              />
+            ),
+            className: "centered-row",
+          },
+        ]
+      : []),
   ];
 
   const shippedOrders = dataSource?.filter(
@@ -404,6 +485,52 @@ const DeliveredComponent = ({
         <meta name="keyword" content={""} />
         <title>Orders </title>
       </Helmet>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          paddingRight: "30px",
+        }}
+      >
+        {rowSelection.selectedRowKeys.length > 0 && (
+          <Button
+            type="danger"
+            onClick={handleBulkDelete}
+            disabled={rowSelection.selectedRowKeys.length === 0}
+            style={{
+              marginBottom: "16px",
+              backgroundColor: "white",
+              borderColor: "#ff4d4f",
+              fontWeight: "500",
+              borderRadius: "8px",
+              fontSize: "16px",
+              display: "flex",
+              alignItems: "center",
+              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+              transition: "all 0.3s ease", // Smooth transition on hover
+            }}
+            icon={
+              <span
+                style={{
+                  marginRight: "8px", // Adds space between icon and text
+                  fontSize: "18px", // Increases icon size
+                  color: "white",
+                }}
+              >
+                🗑️
+              </span>
+            }
+            onMouseEnter={(e) => {
+              e.target.style.transform = "scale(1.05)"; // Slightly enlarge on hover
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.transform = "scale(1)"; // Reset scale
+            }}
+          >
+            Delete Selected Orders
+          </Button>
+        )}
+      </div>
       {loading ? (
         <Skeleton
           active
