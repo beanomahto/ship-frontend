@@ -179,7 +179,7 @@ console.log(updateBody);
         const mapStatusCodeToOrderStatus = (status) => {
           // console.log(status);
 
-          if (["27", "30", "10",'121','103'].includes(status)) return "InTransit";
+          if (["27", "30", "10",'121','103','126','108'].includes(status)) return "InTransit";
           if (status === '4') return 'Shipped';
           if (["11",'113'].includes(status)) return "Delivered";
           if (status === '340') return 'Cancelled';
@@ -192,7 +192,15 @@ console.log(updateBody);
           .map((order) => {
             // console.log(order);
 
-            const order_status = mapStatusCodeToOrderStatus(order.status);
+            const resolveStatusKey = (order) => {
+              if (!isNaN(order.status)) return order.status; 
+              if (!isNaN(order.status_code)) return order.status_code; 
+          
+              return order.status || order.status_code;
+          };  
+          
+          const statusKey = resolveStatusKey(order);
+          const order_status = mapStatusCodeToOrderStatus(statusKey);
             // console.log(order_status);
 
             if (order_status) {
