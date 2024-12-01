@@ -304,7 +304,7 @@ const DeliveredTab = ({
   const takenOrders = dataSource?.filter(
     (order) =>
       order?.status === "Delivered" &&
-      (order?.ndrstatus === "Taken" || order?.ndrstatus === "RTO")
+      (order?.ndrstatus === "Taken" || order?.ndrstatus === "RTO" || order.ndrstatus === 'Required')
   );
   return (
     <div>
