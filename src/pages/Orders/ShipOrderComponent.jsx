@@ -556,7 +556,7 @@ const ShipOrderComponent = ({
           dataSource={shippedOrders}
           className="centered-table"
           rowKey="_id"
-          scroll={{ x: 1050, y: 400 }}
+          scroll={{ x: 1050, y: 390 }}
           pagination={{
             showSizeChanger: true,
           }}

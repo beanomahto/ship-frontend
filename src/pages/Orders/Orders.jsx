@@ -388,6 +388,7 @@ const Orders = () => {
         const data = jsonObj?.data?.shipmentDetails;
   
         // console.log(data.map((ok) => ok.status + "-----" + ok.client_order_reference_id));
+        console.log(data.filter((ok) =>ok.client_order_reference_id === '67'));
   
         const mapStatusCodeToOrderStatus = (status) => {
           // console.log(status);
@@ -403,12 +404,12 @@ const Orders = () => {
   
         const updatedOrders = data
           .map((order) => {
-            console.log(order);
+            // console.log(order);
   
             const resolveStatusKey = (order) => {
-              if (!isNaN(order.status)) return order.status; 
-              if (!isNaN(order.status_code)) return order.status_code; 
-          
+              if (/^\d+$/.test(order.status)) return order.status;
+              if (/^\d+$/.test(order.status_code)) return order.status_code; 
+
               return order.status || order.status_code;
           };  
           

@@ -165,6 +165,7 @@ const ProductWeightForm = () => {
 
       // Clear the new products array after submission
       setNewProducts([]);
+      fetchProducts();
     } catch (error) {
       console.error("API Error:", error);
     } finally {

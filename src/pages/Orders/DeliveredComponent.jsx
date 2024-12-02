@@ -546,7 +546,7 @@ const DeliveredComponent = ({
           className="centered-table"
           rowKey="_id"
           scroll={{ x: 1050, y: 450 }}
-          pagination={false}
+          // pagination={false}
           style={{ width: "100%", height: "505px", marginTop: "-10px" }}
         />
       )}
