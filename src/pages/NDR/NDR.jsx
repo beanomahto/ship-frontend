@@ -102,6 +102,7 @@ const NDR = () => {
   ];
   useEffect(() => {
     const fetchData = async () => {
+      await fetchOrders()
       try {
         const res = await fetch(
           "https://backend.shiphere.in/api/smartship/getcurrentstatus",
@@ -116,7 +117,10 @@ const NDR = () => {
         console.log(jsonObj);
 
         const data = jsonObj?.data?.shipmentDetails;
+        
         if (orders?.orders?.length > 0) {
+          console.log(orders);
+          
           const rtoDeduct = orders.orders.filter(
             (order) => order.ndrstatus === "RTO" && order.status !== "Delivered"
           );
@@ -126,7 +130,7 @@ const NDR = () => {
             rtoDeduct.map(async (order) => {
               try {
                 const forwardWalletRequestBody = {
-                  debit: order.rtoCost,
+                  debit: order.rtoCost ?? order.shippingCost,
                   userId: order.seller._id,
                   remark: `RTO charge for order ${order.orderId}`,
                   orderId: order._id,
@@ -269,7 +273,7 @@ console.log(updateBody);
     const intervalId = setInterval(fetchData, 300000); // 5 minutes
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [orders]);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>

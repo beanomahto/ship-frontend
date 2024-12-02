@@ -490,7 +490,7 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading, tab }) => {
           </Button>
         )}
       </div> */}
-      <div
+     {authUser.role === 'admin' &&  <div
         style={{
           display: "flex",
           justifyContent: "flex-end",
@@ -535,7 +535,7 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading, tab }) => {
             Delete Selected Orders
           </Button>
         )}
-      </div>
+      </div>}
 
       {loading ? (
         <Skeleton

@@ -66,15 +66,15 @@ const App = () => {
 
     return children;
   };
-  useEffect(() => {
-    const desabl = (e) => {
-      e.preventDefault();
-    }
-    document.addEventListener('contextmenu', desabl);
-    return () => {
-      document.removeEventListener('contextmenu', desabl);
-      }
-  },[])
+  // useEffect(() => {
+  //   const desabl = (e) => {
+  //     e.preventDefault();
+  //   }
+  //   document.addEventListener('contextmenu', desabl);
+  //   return () => {
+  //     document.removeEventListener('contextmenu', desabl);
+  //     }
+  // },[])
   return (
     <BrowserRouter>
       <Routes>

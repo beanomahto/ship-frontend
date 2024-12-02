@@ -73,14 +73,14 @@ const DashboardTab = ({ dataSource }) => {
   const undelivered = dataSource?.filter(
     (dataSource) => dataSource.status === "UnDelivered"
   );
-  console.log(undelivered);
+  // console.log(undelivered);
 
   useEffect(() => {
     const calculateAttempts = () => {
       const undelivered = dataSource?.filter(
         (dataSource) => dataSource.status === "UnDelivered"
       );
-      console.log(undelivered);
+      // console.log(undelivered);
 
       // Initialize a temporary counter for attempts
       const tempCount = { attempt1: 0, attempt2: 0, attempt3: 0 };

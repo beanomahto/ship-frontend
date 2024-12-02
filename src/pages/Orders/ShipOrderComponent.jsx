@@ -494,7 +494,8 @@ const ShipOrderComponent = ({
         <meta name="keyword" content={""} />
         <title>Orders </title>
       </Helmet>
-      <div
+      {
+        authUser?.role === 'admin' && <div
         style={{
           display: "flex",
           justifyContent: "flex-end",
@@ -540,6 +541,7 @@ const ShipOrderComponent = ({
           </Button>
         )}
       </div>
+      }
       {loading ? (
         <Skeleton
           active

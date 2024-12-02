@@ -490,52 +490,54 @@ const InTranitComponent = ({
         <meta name="keyword" content={""} />
         <title>Orders </title>
       </Helmet>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          paddingRight: "30px",
-        }}
-      >
-        {rowSelection.selectedRowKeys.length > 0 && (
-          <Button
-            type="danger"
-            onClick={handleBulkDelete}
-            disabled={rowSelection.selectedRowKeys.length === 0}
-            style={{
-              marginBottom: "16px",
-              backgroundColor: "white",
-              borderColor: "#ff4d4f",
-              fontWeight: "500",
-              borderRadius: "8px",
-              fontSize: "16px",
-              display: "flex",
-              alignItems: "center",
-              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-              transition: "all 0.3s ease", // Smooth transition on hover
-            }}
-            icon={
-              <span
-                style={{
-                  marginRight: "8px", // Adds space between icon and text
-                  fontSize: "18px", // Increases icon size
-                  color: "white",
-                }}
-              >
-                🗑️
-              </span>
-            }
-            onMouseEnter={(e) => {
-              e.target.style.transform = "scale(1.05)"; // Slightly enlarge on hover
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.transform = "scale(1)"; // Reset scale
-            }}
-          >
-            Delete Selected Orders
-          </Button>
-        )}
-      </div>
+     {
+      authUser.role === 'admin' &&  <div
+      style={{
+        display: "flex",
+        justifyContent: "flex-end",
+        paddingRight: "30px",
+      }}
+    >
+      {rowSelection.selectedRowKeys.length > 0 && (
+        <Button
+          type="danger"
+          onClick={handleBulkDelete}
+          disabled={rowSelection.selectedRowKeys.length === 0}
+          style={{
+            marginBottom: "16px",
+            backgroundColor: "white",
+            borderColor: "#ff4d4f",
+            fontWeight: "500",
+            borderRadius: "8px",
+            fontSize: "16px",
+            display: "flex",
+            alignItems: "center",
+            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+            transition: "all 0.3s ease", // Smooth transition on hover
+          }}
+          icon={
+            <span
+              style={{
+                marginRight: "8px", // Adds space between icon and text
+                fontSize: "18px", // Increases icon size
+                color: "white",
+              }}
+            >
+              🗑️
+            </span>
+          }
+          onMouseEnter={(e) => {
+            e.target.style.transform = "scale(1.05)"; // Slightly enlarge on hover
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.transform = "scale(1)"; // Reset scale
+          }}
+        >
+          Delete Selected Orders
+        </Button>
+      )}
+    </div>
+     }
       {loading ? (
         <Skeleton
           active
