@@ -565,7 +565,7 @@ const NewOrderComponent = ({
         console.log(updateBody);
 
         const orderResponse = await axios.put(
-          `https://backend.shiphere.inapi/orders/updateOrderStatus/${selectedOrderId}`,
+          `https://backend.shiphere.in/api/orders/updateOrderStatus/${selectedOrderId}`,
           updateBody,
           {
             headers: {
