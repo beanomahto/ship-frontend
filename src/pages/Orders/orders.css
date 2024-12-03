@@ -1,6 +1,4 @@
-.table{
-    
-}
+
 /* Center align table headers */
 .ant-table-thead > tr > th {
   text-align: center;
@@ -11,24 +9,38 @@
 }
 .tab1_managingBtns{
   display: flex;
+  position:relative;
+  width: 100%;
   justify-content: flex-end;
-  gap: 4rem;
+  gap: 1rem;
   font-size: 2rem;
   font-family: 'Poppins';
 }
 .tab2_managingBtns{
   display: flex;
-  justify-content: space-evenly;
-  gap: 3rem;
+  gap: 1rem;
+}
+.download_extra_box{
+  position:relative;
+  
+  display: flex;
+ 
 }
 .download_extra{
+  position:relative;
+  width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content:space-between;
   flex-direction: row;
-  gap: 60rem;
+
 }
-/* style={{minWidth:'9rem',}}
-style={{ display: 'flex', justifyContent: 'space-between',flexDirection:'row', gap: '60rem' }} */
+
+.delete-btn-span-icon{
+    margin-Right: 8px;
+    font-Size: 18px;
+    color: white;
+
+}
 .downloadBtn{
   min-width: 9rem;
 }
@@ -56,6 +68,7 @@ style={{ display: 'flex', justifyContent: 'space-between',flexDirection:'row', g
 }
 .addorder{
     width: 99%;
+  
 }
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
@@ -240,7 +253,7 @@ input[type="number"]::-webkit-inner-spin-button {
     display: flex;
     justify-content: space-between;
     flex-direction: row;
-    gap: 6rem;
+    /* gap: 6rem; */
   }
   .downloadBtn{
     max-width: 9rem;
@@ -274,7 +287,31 @@ input[type="number"]::-webkit-inner-spin-button {
       padding: 1rem;
       margin-top: 1rem;
   }
-
+  .addorder{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 0rem;
+  }
+  .delete_btn{
+    padding-left: 35px;
+  }
+  .ant-btn-icon{
+    margin-top: 12px;
+  }
+  .tab1_managingBtns{
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .tab2_managingBtns{
+    display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        justify-content: flex-end;
+        margin-right: 12px;
+  }
   .title {
       font-size: 1.1rem;
       /* padding-left: 20px; */

@@ -99,7 +99,7 @@ import {
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import ProgressBar from "./ProgressBar.jsx";
 import { useOrderContext } from "../../context/OrderContext";
-
+import "./graph.css";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -113,6 +113,8 @@ ChartJS.register(
 const TopDestinationsGraph = () => {
   const { orders, loading, error } = useOrderContext(); // Fetching orders from context
   const [dataValues, setDataValues] = useState([0, 0, 0, 0, 0, 0]); // One more value for "Others"
+  const isMobile = window.innerWidth < 576;
+  // Styles for container
 
   const labels = [
     "Uttar Pradesh",
@@ -130,12 +132,7 @@ const TopDestinationsGraph = () => {
     "#f44336",
     "#9c27b0",
     "#607d8b",
-  ]; // Added color for "Others"
-
-  // Debugging logs to verify the orders data
-  //console.log("Orders data:", orders);
-  //console.log("Loading state:", loading);
-  //console.log("Error state:", error);
+  ];
 
   useEffect(() => {
     if (!loading && orders?.success && Array.isArray(orders.orders)) {
@@ -173,8 +170,7 @@ const TopDestinationsGraph = () => {
   const total =
     orders && orders.success && Array.isArray(orders.orders)
       ? orders.orders.length
-      : 0; // Check total orders
-  //console.log("Total orders:", total);
+      : 0;
 
   const stateData = labels.map((label, index) => ({
     state: label,
@@ -218,11 +214,20 @@ const TopDestinationsGraph = () => {
       datalabels: {
         formatter: (value, context) => {
           const percentage = total > 0 ? ((value / total) * 100).toFixed(2) : 0;
-          return `${percentage}%`; // Display percentage only on bars
+          return `${percentage}%`; // Display percentage
         },
         color: "#000",
-        anchor: "end",
-        align: "end",
+        anchor: (context) => {
+          const value = context.raw;
+          const percentage = total > 0 ? (value / total) * 100 : 0;
+          return percentage >= 90 ? "start" : "end"; // Position above for high values
+        },
+        align: (context) => {
+          const value = context.raw;
+          const percentage = total > 0 ? (value / total) * 100 : 0;
+          return percentage > 90 ? "top" : "end"; // Adjust alignment for high values
+        },
+        offset: 4, // Adds space between the label and the bar
       },
       tooltip: {
         callbacks: {
@@ -247,19 +252,8 @@ const TopDestinationsGraph = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "column",
-        justifyContent: "center",
-        width: "34rem",
-        height: "22rem",
-      }}
-    >
-      <span style={{ textAlign: "center", marginTop: "20px" }}>
-        Top Destinations
-      </span>
+    <div className="graph-container">
+      <span>Top Destinations</span>
       <ProgressBar data={stateData} />
       <Bar data={data} options={options} />
     </div>

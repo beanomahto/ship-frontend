@@ -192,34 +192,6 @@ const NewOrderComponent = ({
     });
   };
 
-  const handleBulkDelete = () => {
-    const { selectedRowKeys } = rowSelection; // Extract selected row keys
-    if (!selectedRowKeys || selectedRowKeys.length === 0) {
-      message.warning("No orders selected for deletion");
-      return;
-    }
-
-    confirm({
-      title: "Are you sure you want to delete the selected orders?",
-      content: "This action cannot be undone.",
-      okText: "Yes",
-      okType: "danger",
-      cancelText: "No",
-      onOk: async () => {
-        try {
-          // Use Promise.all to delete all selected orders
-          const promises = selectedRowKeys.map((id) => handleDelete(id));
-          await Promise.all(promises);
-          message.success("Selected orders deleted successfully");
-          fetchOrders(); // Refresh orders after deletion
-        } catch (error) {
-          console.error("Error during bulk deletion:", error);
-          message.error("Failed to delete selected orders");
-        }
-      },
-    });
-  };
-
   const columns = [
     {
       title: "Order Id",
@@ -642,66 +614,6 @@ const NewOrderComponent = ({
         <meta name="keyword" content={""} />
         <title>Orders </title>
       </Helmet>
-      {/* <div>
-        {rowSelection.selectedRowKeys.length > 0 && (
-          <Button
-            type="danger"
-            onClick={handleBulkDelete}
-            disabled={rowSelection.selectedRowKeys.length === 0}
-            style={{ marginBottom: "16px" }}
-          >
-            Delete Selected Orders
-          </Button>
-        )}
-      </div> */}
-     {
-      authUser.role === 'admin' && <div
-       style={{
-         display: "flex",
-         justifyContent: "flex-end",
-         paddingRight: "30px",
-       }}
-     >
-       {rowSelection.selectedRowKeys.length > 0 && (
-         <Button
-           type="danger"
-           onClick={handleBulkDelete}
-           disabled={rowSelection.selectedRowKeys.length === 0}
-           style={{
-             marginBottom: "16px",
-             backgroundColor: "white",
-             borderColor: "#ff4d4f",
-             fontWeight: "500",
-             borderRadius: "8px",
-             fontSize: "16px",
-             display: "flex",
-             alignItems: "center",
-             boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-             transition: "all 0.3s ease", // Smooth transition on hover
-           }}
-           icon={
-             <span
-               style={{
-                 marginRight: "8px", // Adds space between icon and text
-                 fontSize: "18px", // Increases icon size
-                 color: "white",
-               }}
-             >
-               🗑️
-             </span>
-           }
-           onMouseEnter={(e) => {
-             e.target.style.transform = "scale(1.05)"; // Slightly enlarge on hover
-           }}
-           onMouseLeave={(e) => {
-             e.target.style.transform = "scale(1)"; // Reset scale
-           }}
-         >
-           Delete Selected Orders
-         </Button>
-       )}
-     </div>
-     }
 
       {loading ? (
         <Skeleton

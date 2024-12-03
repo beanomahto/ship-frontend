@@ -35,7 +35,8 @@ import SF from "../../utils/newlogo/shadowfax.png";
 import InTranitComponent from "./InTransitComponent";
 import DeliveredComponent from "./DeliveredComponent";
 import BulkUploadComponent from "./BulkUploadComponent";
-import {Spin} from 'antd'
+import { Spin } from "antd";
+const { confirm } = Modal;
 
 const partnerImages = {
   "Blue Dart": BD,
@@ -55,6 +56,7 @@ const Orders = () => {
   const { shipOrder, error } = useCreateShipment();
   const { orders, setOrders, fetchOrders } = useOrderContext();
   const { fetchBalance, balance } = useAuthContext();
+  const { authUser } = useAuthContext();
 
   // states
   const [deliveryCosts, setDeliveryCosts] = useState([]);
@@ -94,7 +96,7 @@ const Orders = () => {
         const result = await response.json();
         console.log("Sync successful", result);
         message.success("Sync successful");
-        fetchOrders()
+        fetchOrders();
       } else {
         message.error("okokok");
         console.error("Sync failed", response);
@@ -118,7 +120,11 @@ const Orders = () => {
   };
   // //console.log(selectedWarehouseId);
 
-  const handleShipNow = async (selectedRowKeys,selectedWarehouse,selectedDeliveryPartner) => {
+  const handleShipNow = async (
+    selectedRowKeys,
+    selectedWarehouse,
+    selectedDeliveryPartner
+  ) => {
     // //console.log(selectedRowKeys);
     // //console.log(selectedWarehouse);
     // //console.log(selectedDeliveryPartner);
@@ -165,8 +171,6 @@ const Orders = () => {
           )?.rtoCost;
 
           // console.log(rtoCharge +" "+ forwardCharge +" " + codCharge);
-          
-
         } catch (error) {
           console.error("Error in shipOrder or shipNowCost:", error);
           message.error(
@@ -376,106 +380,118 @@ const Orders = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch('https://backend.shiphere.in/api/smartship/getcurrentstatus', {
-          headers: {
-            Authorization: localStorage.getItem('token'),
-          },
-        });
-  
+        const res = await fetch(
+          "https://backend.shiphere.in/api/smartship/getcurrentstatus",
+          {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
+        );
+
         const jsonObj = await res.json();
         // console.log(jsonObj);
-  
+
         const data = jsonObj?.data?.shipmentDetails;
-  
+
         // console.log(data.map((ok) => ok.status + "-----" + ok.client_order_reference_id));
-        console.log(data.filter((ok) =>ok.client_order_reference_id === '67'));
-  
+        console.log(data.filter((ok) => ok.client_order_reference_id === "67"));
+
         const mapStatusCodeToOrderStatus = (status) => {
           // console.log(status);
-  
-          if (["27", "30", "10",'121','103','126','108'].includes(status)) return "InTransit";
-          if (status === '4') return 'Shipped';
-          if (["11",'113'].includes(status)) return "Delivered";
-          if (status === '340') return 'Cancelled';
-          if (["189", "212", "214","115","117", "116"].includes(status)) return "Lost";
-          if (['12', '13', '14', '15', '16', '17','112'].includes(status)) return 'UnDelivered';
+
+          if (["27", "30", "10", "121", "103", "126", "108"].includes(status))
+            return "InTransit";
+          if (status === "4") return "Shipped";
+          if (["11", "113"].includes(status)) return "Delivered";
+          if (status === "340") return "Cancelled";
+          if (["189", "212", "214", "115", "117", "116"].includes(status))
+            return "Lost";
+          if (["12", "13", "14", "15", "16", "17", "112"].includes(status))
+            return "UnDelivered";
           return null;
         };
-  
+
         const updatedOrders = data
           .map((order) => {
             // console.log(order);
-  
+
             const resolveStatusKey = (order) => {
               if (/^\d+$/.test(order.status)) return order.status;
-              if (/^\d+$/.test(order.status_code)) return order.status_code; 
+              if (/^\d+$/.test(order.status_code)) return order.status_code;
 
               return order.status || order.status_code;
-          };  
-          
-          const statusKey = resolveStatusKey(order);
-          const order_status = mapStatusCodeToOrderStatus(statusKey);
+            };
+
+            const statusKey = resolveStatusKey(order);
+            const order_status = mapStatusCodeToOrderStatus(statusKey);
             // console.log(order_status);
-  
+
             if (order_status) {
               return { ...order, order_status, reason: order.reason };
             }
             return null;
           })
           .filter((order) => order !== null);
-  
+
         if (updatedOrders?.length > 0) {
           await updateMultipleOrders(updatedOrders);
           // console.log(updatedOrders);
         } else {
-          console.log('No orders to update: all statusCodes were invalid.');
+          console.log("No orders to update: all statusCodes were invalid.");
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
-  
+
     const updateMultipleOrders = async (orders) => {
       // console.log(orders);
-  
+
       try {
         const updatePromises = orders.map((order) => {
           // console.log(order);
-          
+
           const updateBody = {
             status: order.order_status,
-            reason: order.order_status === 'UnDelivered' ? order.status_description : null, 
-            ndrstatus: order.order_status === 'UnDelivered' ? 'Required' : order.order_status === 'Lost' ? 'Lost' : null
+            reason:
+              order.order_status === "UnDelivered"
+                ? order.status_description
+                : null,
+            ndrstatus:
+              order.order_status === "UnDelivered"
+                ? "Required"
+                : order.order_status === "Lost"
+                ? "Lost"
+                : null,
           };
           // console.log(updateBody);
-  
+
           return axios.put(
             `https://backend.shiphere.in/api/orders/updateOrderStatus/${order.orderId}`,
             updateBody,
             {
               headers: {
-                Authorization: localStorage.getItem('token'),
+                Authorization: localStorage.getItem("token"),
               },
             }
           );
         });
-  
+
         await Promise.all(updatePromises);
-  
       } catch (error) {
-        console.error('Error updating orders:', error);
+        console.error("Error updating orders:", error);
         // message.error('Batch update failed.');
       }
     };
-  
+
     fetchData();
     fetchOrders();
     const intervalId = setInterval(fetchData, 300000); // 5 minutes
-  
+
     return () => clearInterval(intervalId);
   }, []);
-  
-  
+
   const cancelShipment = async () => {
     if (selectedRowKeys.length === 0) {
       message.error("No orders selected");
@@ -556,10 +572,10 @@ const Orders = () => {
   }, [selectedOrderId, warehouse]);
   //console.log(selectedRowKeys);
 
-  function generateLabelHTML(labelData){
+  function generateLabelHTML(labelData) {
     const partnerLogo = labelData?.shippingPartner
-          ? partnerImages[labelData.shippingPartner] || ""
-          : "";
+      ? partnerImages[labelData.shippingPartner] || ""
+      : "";
     return `
         <style>
         .label-container {
@@ -662,8 +678,8 @@ const Orders = () => {
             labelData?.customerName || ""
           }</span></p>
           <p>${labelData?.address?.address || ""} ${
-          labelData?.address?.city || ""
-        } ${labelData?.address?.state || ""}</p>
+      labelData?.address?.city || ""
+    } ${labelData?.address?.state || ""}</p>
           <p><strong>PIN:</strong> ${labelData?.address?.pincode || ""}</p>
         </div>
          
@@ -677,8 +693,8 @@ const Orders = () => {
         <div class="orderDetail">
             <p><strong>Dimensions</strong></p>
             <p><span>${labelData?.dimension?.length || ""} x ${
-          labelData?.dimension?.breadth || ""
-        } x ${labelData?.dimension?.height || ""}</span> CM</p>
+      labelData?.dimension?.breadth || ""
+    } x ${labelData?.dimension?.height || ""}</span> CM</p>
         </div>
         <div class="orderDetail">
             <p><strong>Weight</strong></p>
@@ -708,8 +724,8 @@ const Orders = () => {
           </div>
           <div class="labelSection" style="width: 12rem;">
             <p>${labelData?.productName || ""}<span>(${
-          labelData?.productDetail?.quantity || ""
-        })</span></p>
+      labelData?.productDetail?.quantity || ""
+    })</span></p>
           </div>
         </div>
 
@@ -725,10 +741,10 @@ const Orders = () => {
         <div class="labelSection">
           <p><strong>Return Address:</strong></p>
           <p>${labelData?.pickupAddress?.address || ""} ${
-          labelData?.pickupAddress?.state || ""
-        } ${labelData?.pickupAddress?.city || ""} ${
-          labelData?.pickupAddress?.country || ""
-        }</p>
+      labelData?.pickupAddress?.state || ""
+    } ${labelData?.pickupAddress?.city || ""} ${
+      labelData?.pickupAddress?.country || ""
+    }</p>
         </div>
 
         <p>Powered by <strong>ShipHere</strong></p>
@@ -743,15 +759,18 @@ const Orders = () => {
     });
 
     const token = localStorage.getItem("token");
-    let currentCount = 0; 
+    let currentCount = 0;
 
-    const batchSize = 5; 
+    const batchSize = 5;
 
     const processBatch = async (batch, isLastBatch) => {
       const requests = batch.map((orderId) =>
-        axios.get(`https://backend.shiphere.in/api/shipping/getlabel/${orderId}`, {
-          headers: { Authorization: `${token}` },
-        })
+        axios.get(
+          `https://backend.shiphere.in/api/shipping/getlabel/${orderId}`,
+          {
+            headers: { Authorization: `${token}` },
+          }
+        )
       );
 
       const responses = await Promise.all(requests);
@@ -771,15 +790,16 @@ const Orders = () => {
             useCORS: true,
           });
 
-          const imgData = canvas.toDataURL("image/jpeg", 0.7); 
+          const imgData = canvas.toDataURL("image/jpeg", 0.7);
           pdf.addImage(imgData, "JPEG", 0, 0, 4, 6);
 
           currentCount++;
-          message.info(`Generated ${currentCount}/${selectedRowKeys.length} labels.`);
+          message.info(
+            `Generated ${currentCount}/${selectedRowKeys.length} labels.`
+          );
 
           const isLastLabelInBatch = index === batch.length - 1;
-          const isLastLabelOverall =
-            isLastBatch && isLastLabelInBatch;
+          const isLastLabelOverall = isLastBatch && isLastLabelInBatch;
 
           if (!isLastLabelOverall) {
             pdf.addPage();
@@ -997,6 +1017,51 @@ const Orders = () => {
     setCurrentTab(key);
     setSelectedRowKeys([]);
   };
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(
+        `https://backend.shiphere.in/api/orders/deleteOrder/${id}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
+      message.success("Order deleted successfully");
+      fetchOrders(); // Refresh orders after deletion
+    } catch (error) {
+      console.error("Error deleting Order:", error);
+      message.error("Failed to delete Order");
+    }
+  };
+
+  const handleBulkDelete = () => {
+    const { selectedRowKeys } = rowSelection; // Extract selected row keys
+    if (!selectedRowKeys || selectedRowKeys.length === 0) {
+      message.warning("No orders selected for deletion");
+      return;
+    }
+
+    confirm({
+      title: "Are you sure you want to delete the selected orders?",
+      content: "This action cannot be undone.",
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk: async () => {
+        try {
+          // Use Promise.all to delete all selected orders
+          const promises = selectedRowKeys.map((id) => handleDelete(id));
+          await Promise.all(promises);
+          message.success("Selected orders deleted successfully");
+          fetchOrders(); // Refresh orders after deletion
+        } catch (error) {
+          console.error("Error during bulk deletion:", error);
+          message.error("Failed to delete selected orders");
+        }
+      },
+    });
+  };
 
   //console.log(currentTab);
 
@@ -1005,8 +1070,6 @@ const Orders = () => {
       <div
         style={{
           display: "flex",
-          justifyContent: "space-between",
-          gap: "1rem",
         }}
         className="addorder"
       >
@@ -1036,9 +1099,8 @@ const Orders = () => {
               Ship Now
             </Button>
           )}
-
           {
-            <div>
+            <div className="download_extra_box">
               <div className="download_extra">
                 <Button
                   type="primary"
@@ -1050,8 +1112,16 @@ const Orders = () => {
                 >
                   Download
                 </Button>
+
                 {currentTab === "tab2" && (
                   <div className="tab2_managingBtns">
+                    {authUser.role === "admin" && (
+                      <div
+                        style={{
+                          display: "flex",
+                        }}
+                      ></div>
+                    )}
                     <Button
                       disabled={selectedRowKeys.length === 0}
                       style={{ borderColor: "black", borderRadius: "50px" }}
@@ -1078,6 +1148,7 @@ const Orders = () => {
               </div>
             </div>
           }
+
           {currentTab === "tab1" && (
             <>
               <Button
@@ -1129,6 +1200,48 @@ const Orders = () => {
               </Popover>
             </>
           )}
+          {(currentTab === "tab3" ||
+            currentTab === "tab2" ||
+            currentTab === "tab1" ||
+            currentTab === "tab4" ||
+            currentTab === "tab5") &&
+            authUser.role === "admin" && (
+              <div
+                style={{
+                  display: "flex",
+                }}
+              >
+                {rowSelection.selectedRowKeys.length > 0 && (
+                  <Button
+                    type="danger"
+                    onClick={handleBulkDelete}
+                    className="delete_btn"
+                    disabled={rowSelection.selectedRowKeys.length === 0}
+                    style={{
+                      marginBottom: "16px",
+                      backgroundColor: "white",
+                      borderColor: "#ff4d4f",
+                      fontWeight: "500",
+                      borderRadius: "8px",
+                      fontSize: "16px",
+                      display: "flex",
+                      alignItems: "center",
+                      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                      transition: "all 0.3s ease", // Smooth transition on hover
+                    }}
+                    icon={<span className="delete-btn-span-icon">🗑️</span>}
+                    onMouseEnter={(e) => {
+                      e.target.style.transform = "scale(1.05)"; // Slightly enlarge on hover
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.transform = "scale(1)"; // Reset scale
+                    }}
+                  >
+                    Delete Selected Orders
+                  </Button>
+                )}
+              </div>
+            )}
 
           <BulkOrderUploadModal visible={modalVisible} onClose={closeModal} />
           <BulkOrderDimension visible={modalVisibleBD} onClose={closeModalBD} />

@@ -151,7 +151,10 @@ const Dashboard = () => {
         <ShipmentStatusGraph />
       </div>
 
-      <div className="orderSummaryContainer">
+      <div
+        className="orderSummaryContainer1"
+        // style={{ gridTemplateColumns: "repeat(2, 1fr)" }}
+      >
         <div className="orderSummaryCard">
           <div className="orderSummary">
             <h3>{totalnewOrdersAmt?.length}</h3>

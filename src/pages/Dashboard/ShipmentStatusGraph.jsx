@@ -106,7 +106,7 @@ import {
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import ProgressBar from "./ProgressBar.jsx";
 import { useOrderContext } from "../../context/OrderContext";
-
+import "./graph.css";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -234,19 +234,8 @@ const ShipmentStatusGraph = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "column",
-        justifyContent: "center",
-        width: "34rem",
-        height: "22rem",
-      }}
-    >
-      <span style={{ textAlign: "center", marginTop: "20px" }}>
-        Shipment Status
-      </span>
+    <div className="graph-container">
+      <span>Shipment Status</span>
       <ProgressBar data={stateData} />
       <Bar data={data} options={options} />
     </div>

@@ -24,7 +24,13 @@ import { DeleteOutlined } from "@ant-design/icons";
 
 const { confirm } = Modal;
 
-const AllOrderComponent = ({ dataSource, fetchOrders, loading, tab }) => {
+const AllOrderComponent = ({
+  dataSource,
+  fetchOrders,
+  rowSelection,
+  loading,
+  tab,
+}) => {
   //console.log(tab);
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
@@ -346,21 +352,7 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading, tab }) => {
         </div>
       ),
     },
-    // {
-    //   title: "Order Date",
-    //   dataIndex: "createdAt",
-    //   sorter: (a, b) => moment(a.createdAt).unix() - moment(b.createdAt).unix(),
-    //   render: (text, order) => (
-    //     <>
-    //       <div>
-    //         {moment(order?.createdAt).format("DD-MM-YYYY")}
-    //         <span style={{ marginLeft: "10px", fontStyle: "italic" }}>
-    //           {moment(order?.createdAt).format("HH:mm")}
-    //         </span>
-    //       </div>
-    //     </>
-    //   ),
-    // },
+
     {
       title: "Order Date",
       dataIndex: "createdAt",
@@ -462,14 +454,6 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading, tab }) => {
       : []),
   ];
 
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: (selectedKeys) => {
-      setSelectedRowKeys(selectedKeys);
-    },
-  };
-  //console.log(dataSource);
-
   const allOrders = dataSource?.filter((order) => order?.status === "Shipped");
   console.log(selectedRowKeys);
   //console.log(allOrders);
@@ -479,63 +463,6 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading, tab }) => {
       <Helmet>
         <title>Orders</title>
       </Helmet>
-      {/* <div style={{ marginBottom: 16 }}>
-        {selectedRowKeys.length > 0 && (
-          <Button
-            type="danger"
-            onClick={handleBulkDelete}
-            disabled={selectedRowKeys.length === 0}
-          >
-            Delete Selected
-          </Button>
-        )}
-      </div> */}
-     {authUser.role === 'admin' &&  <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          paddingRight: "30px",
-        }}
-      >
-        {selectedRowKeys.length > 0 && (
-          <Button
-            type="danger"
-            onClick={handleBulkDelete}
-            disabled={selectedRowKeys.length === 0}
-            style={{
-              marginBottom: "26px",
-              backgroundColor: "white",
-              borderColor: "#ff4d4f",
-              fontWeight: "500",
-              borderRadius: "8px",
-              fontSize: "16px",
-              display: "flex",
-              alignItems: "center",
-              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-              transition: "all 0.3s ease", // Smooth transition on hover
-            }}
-            icon={
-              <span
-                style={{
-                  marginRight: "8px", // Adds space between icon and text
-                  fontSize: "18px", // Increases icon size
-                  color: "white",
-                }}
-              >
-                🗑️
-              </span>
-            }
-            onMouseEnter={(e) => {
-              e.target.style.transform = "scale(1.05)"; // Slightly enlarge on hover
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.transform = "scale(1)"; // Reset scale
-            }}
-          >
-            Delete Selected Orders
-          </Button>
-        )}
-      </div>}
 
       {loading ? (
         <Skeleton
@@ -551,7 +478,7 @@ const AllOrderComponent = ({ dataSource, fetchOrders, loading, tab }) => {
           dataSource={dataSource}
           rowKey="_id"
           scroll={{ x: 1050, y: 440 }}
-          style={{ marginTop: "-25px" }}
+          style={{ marginTop: "-10px" }}
         />
       )}
     </>
