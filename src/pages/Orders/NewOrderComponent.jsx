@@ -392,26 +392,31 @@ const NewOrderComponent = ({
       ),
       className: "centered-row",
     },
-    {
-      title: "Quick Assign",
-      dataIndex: "q_assign",
-      render: (text, order) => (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100%",
-          }}
-        >
-          <ThunderboltOutlined
-            style={{ cursor: "pointer", fontSize: "1.5rem", color: "#08c" }}
-            onClick={() => handleExpandRow(order._id)}
-          />
-        </div>
-      ),
-      className: "centered-row",
-    },
+    ...(authUser?.role !== "admin"
+      ? [
+        {
+          title: "Quick Assign",
+          dataIndex: "q_assign",
+          render: (text, order) => (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
+              }}
+            >
+              <ThunderboltOutlined
+                style={{ cursor: "pointer", fontSize: "1.5rem", color: "#08c" }}
+                onClick={() => handleExpandRow(order._id)}
+              />
+            </div>
+          ),
+          className: "centered-row",
+        },
+        ]
+      : []),
+
     ...(authUser?.role === "admin"
       ? [
           {

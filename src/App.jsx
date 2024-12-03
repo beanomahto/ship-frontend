@@ -67,15 +67,15 @@ const App = () => {
     return children;
   };
   // to desable inspect
-  useEffect(() => {
-    const desabl = (e) => {
-      e.preventDefault();
-    }
-    document.addEventListener('contextmenu', desabl);
-    return () => {
-      document.removeEventListener('contextmenu', desabl);
-      }
-  },[])
+  // useEffect(() => {
+  //   const desabl = (e) => {
+  //     e.preventDefault();
+  //   }
+  //   document.addEventListener('contextmenu', desabl);
+  //   return () => {
+  //     document.removeEventListener('contextmenu', desabl);
+  //     }
+  // },[])
   return (
     <BrowserRouter>
       <Routes>

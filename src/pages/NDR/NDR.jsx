@@ -258,10 +258,8 @@ console.log(updateBody);
           );
         });
 
-        // Await the update promises if needed
         await Promise.all(updatePromises);
 
-        // You can handle results or show messages if required
       } catch (error) {
         console.error("Error updating orders:", error);
         // message.error('Batch update failed.');
