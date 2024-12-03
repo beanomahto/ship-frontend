@@ -198,7 +198,7 @@ const TopDestinationsGraph = () => {
     scales: {
       x: {
         beginAtZero: true,
-        max: total, // Setting x-axis max value to the total number of orders
+        max: total + 1, // Setting x-axis max value to the total number of orders
         title: {
           display: true,
           text: `Total Orders: ${total}`, // Displaying total orders on the x-axis
