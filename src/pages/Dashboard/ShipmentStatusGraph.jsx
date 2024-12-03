@@ -189,7 +189,7 @@ const ShipmentStatusGraph = () => {
     scales: {
       x: {
         beginAtZero: true,
-        max: total, // Set x-axis max value to the total number of orders
+        max: total + total / 10, // Set x-axis max value to the total number of orders
         title: {
           display: true,
           text: `Total Orders: ${total}`, // Display total orders on the x-axis
