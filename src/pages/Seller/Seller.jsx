@@ -189,8 +189,13 @@ const Seller = () => {
     },
     {
       title: "Amount",
-      dataIndex: "amount",
+      // dataIndex: "amount",
       ...getColumnSearchProps("amount"),
+      render: (seller) => (
+        <>
+        <div>{seller.amount.toFixed(2)}</div>
+        </>
+      ),
     },
     // {
     //   title: "Created At",
@@ -336,8 +341,13 @@ const Seller = () => {
         dataSource={users}
         columns={columns}
         rowKey="_id"
-        pagination={true}
-        scroll={{ x: 1000, y: 500 }}
+        pagination={{
+          showSizeChanger: true,
+          pageSizeOptions: ['10', '20', '50', '100', '500', '1000'],
+          defaultPageSize: 10, 
+        }}
+        scroll={{ x: 1050, y: 500 }}
+        style={{ width: "100%", height: "600px", marginTop: "-10px" }}
       />
     </div>
   );

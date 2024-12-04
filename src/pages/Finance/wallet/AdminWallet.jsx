@@ -128,10 +128,6 @@ const AdminWallet = () => {
       dataIndex: "credit",
     },
     {
-      title: "Total",
-      dataIndex: "amount",
-    },
-    {
       title: "Remark",
       dataIndex: "remark",
     },
@@ -188,6 +184,11 @@ const AdminWallet = () => {
       <Table
         className="table"
         scroll={{ x: 1000, y: 500 }}
+        pagination={{
+          showSizeChanger: true,
+          pageSizeOptions: ['10', '20', '50', '100', '500', '1000'],
+          defaultPageSize: 10, 
+        }}
         dataSource={filteredUsers}
         columns={newOrders}
       />

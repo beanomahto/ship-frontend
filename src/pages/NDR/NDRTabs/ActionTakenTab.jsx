@@ -352,6 +352,11 @@ const ActionTakenTab = ({
         rowKey="_id"
         className="centered-table"
         scroll={{ y: 350 }}
+        pagination={{
+          showSizeChanger: true,
+          pageSizeOptions: ['10', '20', '50', '100', '500', '1000'],
+          defaultPageSize: 10, 
+        }}
         style={{ marginTop: "-20px" }}
       />
     </div>

@@ -478,7 +478,11 @@ const InTranitComponent = ({
           className="centered-table"
           rowKey="_id"
           scroll={{ x: 1050, y: 390 }}
-          // pagination={false}
+          pagination={{
+            showSizeChanger: true,
+            pageSizeOptions: ['10', '20', '50', '100', '500', '1000'],
+            defaultPageSize: 10, 
+          }}
           style={{ width: "100%", height: "505px", marginTop: "-10px" }}
         />
       )}

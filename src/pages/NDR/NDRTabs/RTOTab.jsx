@@ -313,6 +313,11 @@ const ActionTakenTab = ({ rowSelection, selectedRowKeys, dataSource }) => {
         columns={columns}
         dataSource={takenOrders}
         scroll={{ y: 350 }}
+        pagination={{
+          showSizeChanger: true,
+          pageSizeOptions: ['10', '20', '50', '100', '500', '1000'],
+          defaultPageSize: 10, 
+        }}
         style={{ marginTop: "-20px" }}
       />
     </div>
