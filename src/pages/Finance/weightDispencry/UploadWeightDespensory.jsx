@@ -5,6 +5,7 @@ import * as XLSX from 'xlsx';
 import axios from 'axios';
 import DownloadLink from 'react-download-link';
 import { useAuthContext } from '../../../context/AuthContext';
+import { useOrderContext } from "../../../context/OrderContext";
 
 const UploadWeightDespensory = ({ visible, onClose, fetchWeightDespensory }) => {
     const [file, setFile] = useState(null);
@@ -12,6 +13,7 @@ const UploadWeightDespensory = ({ visible, onClose, fetchWeightDespensory }) => 
     const [extractedData, setExtractedData] = useState([]);
     const [sellerIdMap, setSellerIdMap] = useState({});
     const { fetchBalance } = useAuthContext();
+    const { orders, setOrders, fetchOrders } = useOrderContext();
 
     const handleFileChange = async ({ file }) => {
         setFile(file);
@@ -155,17 +157,25 @@ const UploadWeightDespensory = ({ visible, onClose, fetchWeightDespensory }) => 
         try {
             for (const row of extractedData) {
                 const { sellerEmail, weightCharges, orderId } = row;
+console.log(sellerEmail);
+console.log(orderId);
+console.log(weightCharges);
 
-                if (sellerEmail && weightCharges && orderId) {
+const orderMongoId = orders?.orders?.filter((order) => order.orderId.toString() === orderId.toString())[0]._id;
+                if (sellerEmail && weightCharges && orderMongoId) {
                     const userId = sellerIdMap[sellerEmail];
+
+
+// console.log(orderMongoId);
 
                     if (userId) {
                         const walletRequestBody = {
                             debit: weightCharges,
                             userId: userId,
                             remark: `Weight charges ${weightCharges} deducted from ${sellerEmail}`,
-                            orderId: orderId,
+                            orderId: orderMongoId,
                         };
+// console.log(walletRequestBody);
 
                         const response = await axios.post(
                             'https://backend.shiphere.in/api/transactions/decreaseAmount',
@@ -176,6 +186,7 @@ const UploadWeightDespensory = ({ visible, onClose, fetchWeightDespensory }) => 
                                 },
                             }
                         );
+console.log(response.status);
 
                         if (response.status === 200) {
                             message.success(`Wallet amount deducted for ${sellerEmail}`);
