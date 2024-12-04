@@ -139,10 +139,15 @@ useEffect(() => {
       <div style={{ backgroundColor: '#fff', height: '40rem', borderRadius: '1rem' }}>
         <Table
           className="table"
-          pagination={false}
           columns={newOrders}
           dataSource={dataSourceWithKeys}
-          scroll={{ x: 800 }} // Enables horizontal scrolling for smaller screens
+          pagination={{
+            showSizeChanger: true,
+            pageSizeOptions: ['10', '20', '50', '100', '500', '1000'],
+            defaultPageSize: 10, 
+          }}
+          scroll={{ x: 1050, y: 500 }}
+          style={{ width: "100%", height: "600px", marginTop: "-10px" }}
         />
       </div>
     </>

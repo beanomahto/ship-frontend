@@ -573,6 +573,8 @@ const Orders = () => {
   //console.log(selectedRowKeys);
 
   function generateLabelHTML(labelData) {
+    console.log(labelData);
+    
     const partnerLogo = labelData?.shippingPartner
       ? partnerImages[labelData.shippingPartner] || ""
       : "";
@@ -690,17 +692,27 @@ const Orders = () => {
               moment(labelData?.invoiceDate).format("MMMM Do YYYY") || ""
             }</p>
         </div>
-        <div class="orderDetail">
-            <p><strong>Dimensions</strong></p>
+        ${labelData?.dimension ? `
+          <div class="orderDetail">
+          <p><strong>Dimensions</strong></p>
             <p><span>${labelData?.dimension?.length || ""} x ${
       labelData?.dimension?.breadth || ""
     } x ${labelData?.dimension?.height || ""}</span> CM</p>
         </div>
-        <div class="orderDetail">
-            <p><strong>Weight</strong></p>
-            <p><span>${labelData?.weight || ""}</span> grm</p> 
-        </div>
-        </div>
+        ` : `<div class="orderDetail">
+          <p><strong></strong></p>
+            <p><span></span></p>
+        </div>`}
+        ${labelData?.weight ? `
+          <div class="orderDetail">
+          <p><strong>Weight</strong></p>
+          <p><span>${labelData?.weight || ""}</span> grm</p> 
+          </div>
+          ` : `   <div class="orderDetail">
+          <p><strong></strong></p>
+          <p><span></span></p> 
+          </div>`}
+          </div>
         <div class="OrderSection">
           <div class="orderDetail">
             <p><strong>Order Id:</strong> </p><p>${
@@ -709,43 +721,62 @@ const Orders = () => {
           </div>
           <div class="orderDetail">
             <p><strong>${labelData?.paymentType || ""}</strong></p>
-            <p>INR <span> ${labelData?.amount || ""}</span></p>
+            <p>${labelData?.amount ? `${labelData?.amount} INR` : ``}INR <span></span></p>
           </div>
           <div class="orderDetail">
             <p><strong>Price Total</strong></p>
-            <p>INR ${labelData?.amount || ""}</p>
+                <p>${labelData?.amount ? `${labelData?.amount} INR` : ``}INR <span></span></p>
             <p>Surface</p>
           </div>
         </div>
-
-        <div style="display: flex;">
+        ${labelData?.productName ? `
+          <div style="display: flex;">
           <div class="labelSection" style="width: 12rem;">
-            <p><strong>Product (QTY)</strong></p>
+          <p><strong>Product (QTY)</strong></p>
           </div>
           <div class="labelSection" style="width: 12rem;">
             <p>${labelData?.productName || ""}<span>(${
-      labelData?.productDetail?.quantity || ""
-    })</span></p>
+              labelData?.productDetail?.quantity || ""
+              })</span></p>
+              </div>
+              ` : `  <div style="display: flex;">
+          <div class="labelSection" style="width: 12rem;">
+          <p><strong></p>
           </div>
+          <div class="labelSection" style="width: 12rem;">
+            <p></span></p>
+              </div>`}
         </div>
-
-        <div style="display: flex;">
+        ${labelData?.amount ? `
+          <div style="display: flex;">
           <div class="labelSection" style="width: 12rem;">
             <p><strong>Total INR</strong></p>
           </div>
           <div class="labelSection" style="width: 12rem;">
-            <p>${labelData?.amount || ""}</p>
+          <p>${labelData?.amount || ""}</p>
           </div>
-        </div>
-
-        <div class="labelSection">
+          </div>
+          ` : `<div style="display: flex;">
+          <div class="labelSection" style="width: 12rem;">
+            <p><strong></strong></p>
+          </div>
+          <div class="labelSection" style="width: 12rem;">
+          <p></p>
+          </div>
+          </div>`}
+        ${labelData?.returnWarehouse ? `
+          <div class="labelSection">
           <p><strong>Return Address:</strong></p>
-          <p>${labelData?.pickupAddress?.address || ""} ${
-      labelData?.pickupAddress?.state || ""
-    } ${labelData?.pickupAddress?.city || ""} ${
-      labelData?.pickupAddress?.country || ""
-    }</p>
-        </div>
+          <p>${labelData?.returnWarehouse?.address || ""} ${
+      labelData?.returnWarehouse?.state || ""
+    } ${labelData?.returnWarehouse?.city || ""} ${
+      labelData?.returnWarehouse?.country || ""
+      }</p>
+      </div>
+      ` : `  <div class="labelSection">
+          <p><strong></strong></p>
+          <p></p>
+      </div>`}
 
         <p>Powered by <strong>ShipHere</strong></p>
       </div>
