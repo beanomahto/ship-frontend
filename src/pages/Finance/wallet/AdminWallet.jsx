@@ -109,7 +109,7 @@ const AdminWallet = () => {
         return orderDate >= startDate && orderDate <= endDate;
       },
       render: (text, pUsers) => (
-        <div>
+        <div style={{ display: "flex" }}>
           {moment(pUsers?.updatedAt).format("DD-MM-YYYY")}
           <span style={{ marginLeft: "10px", fontStyle: "italic" }}>
             {moment(pUsers?.updatedAt).format("HH:mm")}
@@ -186,8 +186,8 @@ const AdminWallet = () => {
         scroll={{ x: 1000, y: 500 }}
         pagination={{
           showSizeChanger: true,
-          pageSizeOptions: ['10', '20', '50', '100', '500', '1000'],
-          defaultPageSize: 10, 
+          pageSizeOptions: ["10", "20", "50", "100", "500", "1000"],
+          defaultPageSize: 10,
         }}
         dataSource={filteredUsers}
         columns={newOrders}
