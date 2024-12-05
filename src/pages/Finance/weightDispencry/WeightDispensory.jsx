@@ -104,7 +104,7 @@ const WeightDispensory = () => {
         <title>Weight Despensory</title>
       </Helmet>
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginBottom: '1rem' }} className="addorder">
-        {authUser.role === 'company' && <Button onClick={showTakeActionModal}>Take Actions</Button>}
+        {authUser.role === 'company' && <Button onClick={showTakeActionModal}>Take Action</Button>}
         <TakeActionModal
           visible={takeActionModalVisible}
           onClose={closeTakeActionModal}
