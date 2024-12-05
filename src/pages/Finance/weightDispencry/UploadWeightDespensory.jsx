@@ -5,6 +5,7 @@ import * as XLSX from 'xlsx';
 import axios from 'axios';
 import DownloadLink from 'react-download-link';
 import { useAuthContext } from '../../../context/AuthContext';
+import { useOrderContext } from '../../../context/OrderContext';
 
 const UploadWeightDespensory = ({ visible, onClose, fetchWeightDespensory }) => {
     const [file, setFile] = useState(null);
@@ -12,6 +13,7 @@ const UploadWeightDespensory = ({ visible, onClose, fetchWeightDespensory }) => 
     const [extractedData, setExtractedData] = useState([]);
     const [sellerIdMap, setSellerIdMap] = useState({});
     const { fetchBalance } = useAuthContext();
+    const { orders } = useOrderContext();
 
     const handleFileChange = async ({ file }) => {
         setFile(file);
@@ -54,7 +56,6 @@ const UploadWeightDespensory = ({ visible, onClose, fetchWeightDespensory }) => 
 
         for (const email of sellerEmails) {
             try {
-                // const response = await axios.get('http://localhost:5000/api/users/search', {
                 const response = await axios.get('https://backend.shiphere.in/api/users/search', {
                     params: { query: email },
                     headers: {
@@ -85,7 +86,6 @@ const UploadWeightDespensory = ({ visible, onClose, fetchWeightDespensory }) => 
         formData.append('file', file);
 
         try {
-            // const response = await fetch('http://localhost:5000/api/weightdiscrepancy/uploadweightdiscrepancy', {
             const response = await fetch('https://backend.shiphere.in/api/weightdiscrepancy/uploadweightdiscrepancy', {
                 method: 'POST',
                 body: formData,
@@ -124,7 +124,6 @@ const UploadWeightDespensory = ({ visible, onClose, fetchWeightDespensory }) => 
                             remark: `Settled charges ${settledCharges} added for ${sellerEmail}`,
                         };
 
-                        // const response = await fetch('http://localhost:5000/api/transactions/increaseAmount', {
                         const response = await fetch('https://backend.shiphere.in/api/transactions/increaseAmount', {
                             method: 'POST',
                             headers: {
@@ -156,51 +155,70 @@ const UploadWeightDespensory = ({ visible, onClose, fetchWeightDespensory }) => 
 
     const callDeduceWalletAmount = async () => {
         try {
-            for (const row of extractedData) {
+            const promises = extractedData.map(async (row) => {
                 const { sellerEmail, weightCharges, orderId } = row;
-
-                if (sellerEmail && weightCharges && orderId) {
-                    const userId = sellerIdMap[sellerEmail];
-
-                    if (userId) {
-                        const walletRequestBody = {
-                            debit: weightCharges,
-                            userId: userId,
-                            remark: `Weight charges ${weightCharges} deducted from ${sellerEmail}`,
-                            orderId: orderId,
-                        };
-
-                        const response = await axios.post(
-                            // 'http://localhost:5000/api/transactions/decreaseAmount',
-                            'https://backend.shiphere.in/api/transactions/decreaseAmount',
-                            walletRequestBody,
-                            {
-                                headers: {
-                                    Authorization: localStorage.getItem('token'),
-                                },
-                            }
-                        );
-
-                        if (response.status === 200) {
-                            message.success(`Wallet amount deducted for ${sellerEmail}`);
-                        } else {
-                            console.error(`Failed to deduct wallet amount for ${sellerEmail}`);
-                            message.error(`Failed to deduct wallet amount for ${sellerEmail}`);
-                        }
-                    } else {
-                        console.warn(`No userId found for seller email: ${sellerEmail}`);
-                    }
-                } else {
+    
+                // Log missing or invalid data for debugging
+                if (!sellerEmail || !weightCharges || !orderId) {
                     console.warn(`Skipping row due to missing data:`, row);
+                    return null;  // Skip this row and return null
                 }
-            }
+    
+                const orderMongoId = orders?.orders?.find(
+                    (order) => order.orderId.toString() === orderId.toString()
+                )?._id;
+    
+                if (!orderMongoId) {
+                    console.warn(`Order ID not found for orderId: ${orderId}`);
+                    return null;
+                }
+    
+                const userId = sellerIdMap[sellerEmail];
+                if (!userId) {
+                    console.warn(`User ID not found for sellerEmail: ${sellerEmail}`);
+                    return null;
+                }
+    
+                // Create wallet request payload
+                const walletRequestBody = {
+                    debit: weightCharges,
+                    userId: userId,
+                    remark: `Weight charges ${weightCharges} deducted from ${sellerEmail}`,
+                    orderId: orderMongoId,
+                };
+    
+                try {
+                    const response = await axios.post(
+                        'https://backend.shiphere.in/api/transactions/decreaseAmount',
+                        walletRequestBody,
+                        {
+                            headers: {
+                                Authorization: localStorage.getItem('token'),
+                            },
+                        }
+                    );
+    
+                    if (response.status === 200) {
+                        message.success(`Wallet amount deducted for ${sellerEmail}`);
+                    } else {
+                        console.error(`Failed to deduct wallet amount for ${sellerEmail}:`, response);
+                        message.error(`Failed to deduct wallet amount for ${sellerEmail}`);
+                    }
+                } catch (error) {
+                    console.error(`Error during API call for ${sellerEmail}: ${error.message}`);
+                    message.error(`Error during API call for ${sellerEmail}: ${error.message}`);
+                }
+            });
+    
+            // Wait for all promises to resolve or reject
+            await Promise.all(promises);
+    
         } catch (error) {
             console.error(`Error during wallet deduction: ${error.message}`);
             message.error(`Error during wallet deduction: ${error.message}`);
         }
     };
-
-    const downloadFile = () => {
+     const downloadFile = () => {
         const header = `"sellerEmail","weightAppliedDate","enteredWeight","enteredDimension","orderId","awbNumber","productName","appliedWeight","weightCharges","settledCharges","remarks"`;
         const row1 = `"seller@email.com","2023_01_01","10.5","10x10x10","ORD123","AWB123","Product1","10","100","95","None"`;
         return `${header}\n${row1}`;

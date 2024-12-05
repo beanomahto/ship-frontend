@@ -400,9 +400,10 @@ const Orders = () => {
         const mapStatusCodeToOrderStatus = (status) => {
           // console.log(status);
 
-          if (["27", "30", "10", "121", "103", "126", "108"].includes(status))
+          if (["27", "30", "10", "121", "108", "126", "108",'109','110','122','123','124','125','126','133','120'].includes(status))
             return "InTransit";
-          if (status === "4") return "Shipped";
+          if (["4",'103','101','106','107','102','104','105','119','118'].includes(status))
+            return "Shipped";
           if (["11", "113"].includes(status)) return "Delivered";
           if (status === "340") return "Cancelled";
           if (["189", "212", "214", "115", "117", "116"].includes(status))
