@@ -42,6 +42,10 @@ const Dashboard = () => {
   const { orders } = useOrderContext();
   const { deliveryPartners } = useDeliveryPartner();
   const [remittanceData, setRemittanceData] = useState([]);
+  const today = new Date();
+  const todayStart = new Date(today.setHours(0, 0, 0, 0)); // Start of the day
+  const todayEnd = new Date(today.setHours(23, 59, 59, 999)); // End of the day
+
   useEffect(() => {
     const fetchRemittance = async () => {
       try {
@@ -78,6 +82,49 @@ const Dashboard = () => {
   const RTOOrdersAmt = order?.filter(
     (order) => order.ndrstatus === "RTO" || order.ndrstatus === "RtoDone"
   );
+
+  const todayNewOrders = order?.filter((order) => {
+    const createdAt = new Date(order.createdAt);
+    return (
+      createdAt >= todayStart && createdAt <= todayEnd && order.status === "New"
+    );
+  });
+  const todayShippedOrders = order?.filter((order) => {
+    const createdAt = new Date(order.createdAt);
+    return (
+      createdAt >= todayStart &&
+      createdAt <= todayEnd &&
+      order.status === "Shipped"
+    );
+  });
+  const todayCompletedOrders = order?.filter((order) => {
+    const createdAt = new Date(order.createdAt);
+    return (
+      createdAt >= todayStart &&
+      createdAt <= todayEnd &&
+      order.status === "Delivered"
+    );
+  });
+  const todayPendingOrders = order?.filter((order) => {
+    const createdAt = new Date(order.createdAt);
+    return (
+      createdAt >= todayStart &&
+      createdAt <= todayEnd &&
+      order.status === "InTransit"
+    );
+  });
+  const todayCancelledOrders = order?.filter((order) => {
+    const createdAt = new Date(order.createdAt);
+    return (
+      createdAt >= todayStart &&
+      createdAt <= todayEnd &&
+      order.status === "Cancelled"
+    );
+  });
+  const todayTotalOrders = order?.filter((order) => {
+    const createdAt = new Date(order.createdAt);
+    return createdAt >= todayStart && createdAt <= todayEnd;
+  });
 
   const shippingPartnerCounts = order?.reduce((acc, curr) => {
     const partnerName = curr.shippingPartner;
@@ -162,6 +209,10 @@ const Dashboard = () => {
           <div className="orderSummary">
             <h3>{totalnewOrdersAmt?.length}</h3>
             <p>New Orders</p>
+            <p style={{ fontWeight: "bolder", fontSize: "15px" }}>
+              <strong>Today: </strong>
+              {todayNewOrders?.length || 0}
+            </p>
           </div>
           <div className="orderIcon">
             <MdAutorenew size={40} color="#2B3FE5" />
@@ -172,6 +223,10 @@ const Dashboard = () => {
           <div className="orderSummary">
             <h3>{ShippedOrdersAmt?.length}</h3>
             <p>Shipped Orders</p>
+            <p style={{ fontWeight: "bolder", fontSize: "15px" }}>
+              <strong>Today: </strong>
+              {todayShippedOrders?.length || 0}
+            </p>
           </div>
           <div className="orderIcon">
             <FcShipped size={40} color="#FD8787" />
@@ -182,6 +237,10 @@ const Dashboard = () => {
           <div className="orderSummary">
             <h3>{newOrdersAmt?.length}</h3>
             <p>Pending Orders</p>
+            <p style={{ fontWeight: "bolder", fontSize: "15px" }}>
+              <strong>Today: </strong>
+              {todayPendingOrders?.length || 0}
+            </p>
           </div>
           <div className="orderIcon">
             <FaHourglassHalf size={40} color="#FAC013" />
@@ -192,6 +251,10 @@ const Dashboard = () => {
           <div className="orderSummary">
             <h3>{inTransitOrdersAmt?.length}</h3>
             <p>Completed Orders</p>
+            <p style={{ fontWeight: "bolder", fontSize: "15px" }}>
+              <strong>Today: </strong>
+              {todayCompletedOrders?.length || 0}
+            </p>
           </div>
           <div className="orderIcon">
             <FaCheckCircle size={40} color="#34A853" />
@@ -202,6 +265,10 @@ const Dashboard = () => {
           <div className="orderSummary">
             <h3>{cancelOrdersAmt?.length}</h3>
             <p>Cancelled Orders</p>
+            <p style={{ fontWeight: "bolder", fontSize: "15px" }}>
+              <strong>Today: </strong>
+              {todayCancelledOrders?.length || 0}
+            </p>
           </div>
           <div className="orderIcon">
             <FaTimesCircle size={40} color="#FD8787" />
@@ -212,6 +279,10 @@ const Dashboard = () => {
           <div className="orderSummary">
             <h3>{order?.length}</h3>
             <p>Total Orders</p>
+            <p style={{ fontWeight: "bolder", fontSize: "15px" }}>
+              <strong>Today: </strong>
+              {todayTotalOrders?.length || 0}
+            </p>
           </div>
           <div className="orderIcon">
             <FaShoppingCart size={40} color="#2B3FE5" />
