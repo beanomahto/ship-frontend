@@ -171,7 +171,7 @@ const UploadWeightDespensory = ({ visible, onClose, fetchWeightDespensory }) => 
                         };
 
                         const response = await axios.post(
-                            'http://localhost:5000/api/transactions/decreaseAmount',
+                            // 'http://localhost:5000/api/transactions/decreaseAmount',
                             'https://backend.shiphere.in/api/transactions/decreaseAmount',
                             walletRequestBody,
                             {
