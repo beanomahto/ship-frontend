@@ -75,7 +75,9 @@ const Dashboard = () => {
   const totalnewOrdersAmt = order?.filter((order) => order.status === "New");
   console.log(totalnewOrdersAmt);
   const ShippedOrdersAmt = order?.filter((order) => order.status === "Shipped");
-  const RTOOrdersAmt = order?.filter((order) => order.ndrstatus === "Required" || order.ndrstatus === "Taken" || order.ndrstatus === "RTO" || order.ndrstatus === "RtoDone");
+  const RTOOrdersAmt = order?.filter(
+    (order) => order.ndrstatus === "RTO" || order.ndrstatus === "RtoDone"
+  );
 
   const shippingPartnerCounts = order?.reduce((acc, curr) => {
     const partnerName = curr.shippingPartner;

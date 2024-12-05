@@ -25,7 +25,8 @@ const Seller = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
-  //
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [selectedSeller, setSelectedSeller] = useState(null);
 
   //console.log(users);
@@ -52,7 +53,8 @@ const Seller = () => {
       const data = await response.json();
       const companyUsers = data.filter((user) => user.role === "company");
       setUsers(companyUsers);
-      console.log(companyUsers);
+      // console.log(companyUsers);
+      setFilteredUsers(companyUsers);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
@@ -65,6 +67,26 @@ const Seller = () => {
     confirm();
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
+  };
+
+  const handleGlobalSearch = (query) => {
+    setSearchQuery(query);
+
+    const lowerCaseQuery = query.toLowerCase();
+    const filteredData = users.filter((user) => {
+      const fullName = `${user.firstName ?? ""} ${
+        user.lastName ?? ""
+      }`.toLowerCase();
+      return (
+        fullName.includes(lowerCaseQuery) ||
+        (user.companyName ?? "").toLowerCase().includes(lowerCaseQuery) ||
+        (user.companyId ?? "").toLowerCase().includes(lowerCaseQuery) ||
+        (user.email ?? "").toLowerCase().includes(lowerCaseQuery) ||
+        (user.phoneNumber ?? "").toLowerCase().includes(lowerCaseQuery)
+      );
+    });
+    // console.log(filteredData);
+    setFilteredUsers(filteredData);
   };
 
   const handleReset = (clearFilters) => {
@@ -164,7 +186,7 @@ const Seller = () => {
     {
       title: "Full Name",
       // key: 'fullName',
-      ...getColumnSearchProps("fullName"),
+      // ...getColumnSearchProps("fullName"),
       render: (record) => <div>{`${record.firstName} ${record.lastName}`}</div>,
     },
     {
@@ -193,7 +215,7 @@ const Seller = () => {
       ...getColumnSearchProps("amount"),
       render: (seller) => (
         <>
-        <div>{seller.amount.toFixed(2)}</div>
+          <div>{seller.amount.toFixed(2)}</div>
         </>
       ),
     },
@@ -336,15 +358,31 @@ const Seller = () => {
         onClose={closeModal}
         selectedSeller={selectedSeller} // Pass selected seller as prop
       />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          backgroundColor: "#fafafa",
+        }}
+      >
+        <Input.Search
+          placeholder="Search globally"
+          value={searchQuery}
+          onChange={(e) => handleGlobalSearch(e.target.value)}
+          onSearch={(value) => handleGlobalSearch(value)}
+          enterButton={<SearchOutlined />}
+          style={{ marginBottom: "1rem", width: "300px", minWidth: "200px" }}
+        />
+      </div>
       <Table
         className="custom-table"
-        dataSource={users}
+        dataSource={filteredUsers}
         columns={columns}
         rowKey="_id"
         pagination={{
           showSizeChanger: true,
-          pageSizeOptions: ['10', '20', '50', '100', '500', '1000'],
-          defaultPageSize: 10, 
+          pageSizeOptions: ["10", "20", "50", "100", "500", "1000"],
+          defaultPageSize: 10,
         }}
         scroll={{ x: 1050, y: 500 }}
         style={{ width: "100%", height: "600px", marginTop: "-10px" }}
