@@ -54,6 +54,7 @@ const UploadWeightDespensory = ({ visible, onClose, fetchWeightDespensory }) => 
 
         for (const email of sellerEmails) {
             try {
+                // const response = await axios.get('http://localhost:5000/api/users/search', {
                 const response = await axios.get('https://backend.shiphere.in/api/users/search', {
                     params: { query: email },
                     headers: {
@@ -84,6 +85,7 @@ const UploadWeightDespensory = ({ visible, onClose, fetchWeightDespensory }) => 
         formData.append('file', file);
 
         try {
+            // const response = await fetch('http://localhost:5000/api/weightdiscrepancy/uploadweightdiscrepancy', {
             const response = await fetch('https://backend.shiphere.in/api/weightdiscrepancy/uploadweightdiscrepancy', {
                 method: 'POST',
                 body: formData,
@@ -122,6 +124,7 @@ const UploadWeightDespensory = ({ visible, onClose, fetchWeightDespensory }) => 
                             remark: `Settled charges ${settledCharges} added for ${sellerEmail}`,
                         };
 
+                        // const response = await fetch('http://localhost:5000/api/transactions/increaseAmount', {
                         const response = await fetch('https://backend.shiphere.in/api/transactions/increaseAmount', {
                             method: 'POST',
                             headers: {
@@ -168,6 +171,7 @@ const UploadWeightDespensory = ({ visible, onClose, fetchWeightDespensory }) => 
                         };
 
                         const response = await axios.post(
+                            'http://localhost:5000/api/transactions/decreaseAmount',
                             'https://backend.shiphere.in/api/transactions/decreaseAmount',
                             walletRequestBody,
                             {
