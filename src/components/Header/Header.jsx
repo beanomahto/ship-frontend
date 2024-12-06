@@ -48,6 +48,8 @@ const onSearch = (awb) => {
     //console.log('No matching order found');
   }
 };
+// console.log(balance >= 0);
+
   return (
     <div className={darktheme ? 'darkHeader' : 'main-header'}>
       <div className="header-container" >
@@ -58,7 +60,7 @@ const onSearch = (awb) => {
         </Space.Compact>
         </div>
         <span className='span'></span>
-        <Button className='money' type="default">&#8377;  {balance?.toFixed(2)}</Button>
+        <Button className={`${balance >= 0 ? 'money' : 'insuffient'}`} type="default">&#8377;  {balance?.toFixed(2)}</Button>
         <span className='span'></span>
         {authUser ? (
           <>

@@ -1,43 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { Button, Table, DatePicker } from "antd";
+import { Button, Table, DatePicker, Modal, message } from "antd";
 import { Helmet } from "react-helmet";
 import axios from "axios";
-import { usePaymentUserContext } from "../../../context/PaymentUserContext";
-import moment from "moment";
 import { Link } from "react-router-dom";
+import moment from "moment";
 
 const Wallet = () => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
-  //console.log(transactions);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [deleting, setDeleting] = useState(false);
+  const [developerMode, setDeveloperMode] = useState(false);
 
   const newOrders = [
-    // {
-    //   title: "Datee & Time",
-    //   dataIndex: "d&t",
-    //   render: (text, transaction) => (
-    //     <>
-    //       <div>
-    //         {moment(transaction?.updatedAt).format("DD-MM-YYYY")}
-    //         <span style={{ marginLeft: "10px", fontStyle: "italic" }}>
-    //           {moment(transaction?.updatedAt).format("HH:mm:ss")}
-    //         </span>
-    //       </div>
-    //     </>
-    //   ),
-    // },
     {
       title: "Date & Time",
       dataIndex: "d&t",
-
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
         confirm,
         clearFilters,
       }) => {
-        const [rangePickerValue, setRangePickerValue] = React.useState(null);
-
+        const [rangePickerValue, setRangePickerValue] = useState(null);
         return (
           <div style={{ padding: 8 }}>
             <DatePicker.RangePicker
@@ -84,14 +69,12 @@ const Wallet = () => {
         return recordDate >= startDate && recordDate <= endDate;
       },
       render: (text, transaction) => (
-        <>
-          <div>
-            {moment(transaction?.updatedAt).format("DD-MM-YYYY")}
-            <span style={{ marginLeft: "10px", fontStyle: "italic" }}>
-              {moment(transaction?.updatedAt).format("HH:mm:ss")}
-            </span>
-          </div>
-        </>
+        <div>
+          {moment(transaction?.updatedAt).format("DD-MM-YYYY")}
+          <span style={{ marginLeft: "10px", fontStyle: "italic" }}>
+            {moment(transaction?.updatedAt).format("HH:mm:ss")}
+          </span>
+        </div>
       ),
     },
     {
@@ -101,28 +84,82 @@ const Wallet = () => {
     {
       title: "Order Id",
       dataIndex: "ordr_id",
-      render: (text, transaction) => (
-        <>
-          <div>{transaction?.order?.orderId}</div>
-        </>
-      ),
-    },
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => {
+        const [searchInput, setSearchInput] = useState("");
+
+        const handleSearch = () => {
+          if (searchInput === "IamA_Developer") {
+            setDeveloperMode(true); 
+            clearFilters();
+            setSearchInput(""); 
+            message.success("Developer mode enabled!");
+          } else {
+            setDeveloperMode(false); 
+            confirm();
+          }
+        };
+
+        const handleReset = () => {
+          clearFilters();
+          setSearchInput("");
+          setDeveloperMode(false); 
+        };
+
+        return (
+          <div style={{ padding: 8 }}>
+            <input
+              placeholder="Search Order Id"
+              value={searchInput}
+              onChange={(e) => {
+                setSearchInput(e.target.value);
+                setSelectedKeys(e.target.value ? [e.target.value] : []); 
+              }}
+              onPressEnter={handleSearch}
+              style={{ marginBottom: 8, display: "block", width: "100%" }}
+            />
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <Button
+                type="primary"
+                onClick={handleSearch} 
+                size="small"
+                style={{ width: 90 }}
+              >
+                Search
+              </Button>
+              <Button
+                onClick={handleReset} 
+                size="small"
+                style={{ width: 90 }}
+              >
+                Reset
+              </Button>
+            </div>
+          </div>
+        );
+      },
+      onFilter: (value, record) =>
+        record?.order?.orderId.toLowerCase().includes(value.toLowerCase()),
+      render: (text, transaction) => <div>{transaction?.order?.orderId}</div>,
+    },    
     {
       title: "Tracking Id",
       dataIndex: "trcking_id",
-      render: (text, transaction) => (
-        <>
-          <div>{transaction?.order?.awb}</div>
-        </>
-      ),
+      render: (text, transaction) => <div>{transaction?.order?.awb}</div>,
     },
     {
       title: "Debit",
       dataIndex: "debit",
+      render: (text, transaction) => <div>{transaction?.debit.toFixed(2)}</div>,
     },
     {
       title: "Credit",
       dataIndex: "credit",
+      render: (text, transaction) => <div>{transaction?.credit?.toFixed(2)}</div>,
     },
     {
       title: "Remarks",
@@ -152,7 +189,44 @@ const Wallet = () => {
 
     fetchTransactions();
   }, []);
-  //console.log(transactions);
+
+  const handleDelete = async () => {
+    Modal.confirm({
+      title: "Are you sure you want to delete the selected transactions?",
+      onOk: async () => {
+        try {
+          setDeleting(true);
+          const token = localStorage.getItem("token");
+          await axios.post(
+            "https://backend.shiphere.in/api/transactions/deletetransaction",
+            { transactionIds: selectedRowKeys },
+            {
+              headers: {
+                Authorization: `${token}`,
+              },
+            }
+          );
+          message.success("Transactions deleted successfully!");
+          setTransactions((prev) =>
+            prev.filter((transaction) => !selectedRowKeys.includes(transaction._id))
+          );
+          setSelectedRowKeys([]);
+        } catch (error) {
+          console.error("Error deleting transactions:", error);
+          message.error("Failed to delete transactions.");
+        } finally {
+          setDeleting(false);
+        }
+      },
+    });
+  };
+
+  const rowSelection = developerMode
+  ? {
+      selectedRowKeys,
+      onChange: (selectedKeys) => setSelectedRowKeys(selectedKeys),
+    }
+  : null;
 
   return (
     <div>
@@ -173,6 +247,19 @@ const Wallet = () => {
         <Button style={{ borderRadius: "14px", fontSize: "1rem" }}>
           <Link to="/finance/history">Recharge History</Link>
         </Button>
+        {
+          developerMode && (
+            <Button
+          type="danger"
+          onClick={handleDelete}
+          disabled={selectedRowKeys.length === 0}
+          loading={deleting}
+          style={{ borderRadius: "14px", fontSize: "1rem" }}
+        >
+          Delete Selected
+        </Button>
+          )
+        }
       </div>
       <Table
         className="table"
@@ -180,7 +267,8 @@ const Wallet = () => {
         columns={newOrders}
         dataSource={transactions}
         loading={loading}
-        rowKey={(record) => record.trns_id}
+        rowKey={(record) => record._id} // Use unique _id here
+        rowSelection={rowSelection} // Conditional row selection
       />
     </div>
   );

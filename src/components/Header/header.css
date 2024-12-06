@@ -17,13 +17,6 @@
     height: 2px;
 }
 
-.money {
-    font-size: 1.1rem;
-    color: #dcfce7;
-    background-color: #15803d;
-    border: 0px;
-}
-
 .Auth_Navbar {
     width: fit-content;
     margin: auto 0.5rem;
@@ -48,6 +41,14 @@
     font-size: 1.1rem;
     background-color: #dcfce7;
     color: #15803d;
+    border: 0px;
+}
+
+.insuffient{
+    font-size: 1.1rem;
+    background-color: #fde8e8; /* Light red background */
+    color: #b91c1c; /* Strong red text */
+    border: 0px;
 }
 
 .name {
