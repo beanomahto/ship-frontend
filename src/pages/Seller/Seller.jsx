@@ -297,6 +297,11 @@ const Seller = () => {
     {
       title: "Verified",
       dataIndex: "isVerified",
+      filters: [
+        { text: "Verified", value: true },
+        { text: "Not Verified", value: false },
+      ],
+      onFilter: (value, record) => record.isVerified === value,
       render: (text) => (
         <Tag color={text ? "green" : "geekblue"}>
           {text ? "Verified" : "Not verified"}
