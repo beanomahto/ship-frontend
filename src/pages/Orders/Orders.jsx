@@ -400,9 +400,41 @@ const Orders = () => {
         const mapStatusCodeToOrderStatus = (status) => {
           // console.log(status);
 
-          if (["27", "30", "10", "121", "108", "126", "108",'109','110','122','123','124','125','126','133','120'].includes(status))
+          if (
+            [
+              "27",
+              "30",
+              "10",
+              "121",
+              "108",
+              "126",
+              "108",
+              "109",
+              "110",
+              "122",
+              "123",
+              "124",
+              "125",
+              "126",
+              "133",
+              "120",
+            ].includes(status)
+          )
             return "InTransit";
-          if (["4",'103','101','106','107','102','104','105','119','118'].includes(status))
+          if (
+            [
+              "4",
+              "103",
+              "101",
+              "106",
+              "107",
+              "102",
+              "104",
+              "105",
+              "119",
+              "118",
+            ].includes(status)
+          )
             return "Shipped";
           if (["11", "113"].includes(status)) return "Delivered";
           if (status === "340") return "Cancelled";
@@ -575,7 +607,7 @@ const Orders = () => {
 
   function generateLabelHTML(labelData) {
     console.log(labelData);
-    
+
     const partnerLogo = labelData?.shippingPartner
       ? partnerImages[labelData.shippingPartner] || ""
       : "";
@@ -693,26 +725,34 @@ const Orders = () => {
               moment(labelData?.invoiceDate).format("MMMM Do YYYY") || ""
             }</p>
         </div>
-        ${labelData?.dimension ? `
+        ${
+          labelData?.dimension
+            ? `
           <div class="orderDetail">
           <p><strong>Dimensions</strong></p>
             <p><span>${labelData?.dimension?.length || ""} x ${
-      labelData?.dimension?.breadth || ""
-    } x ${labelData?.dimension?.height || ""}</span> CM</p>
+                labelData?.dimension?.breadth || ""
+              } x ${labelData?.dimension?.height || ""}</span> CM</p>
         </div>
-        ` : `<div class="orderDetail">
+        `
+            : `<div class="orderDetail">
           <p><strong></strong></p>
             <p><span></span></p>
-        </div>`}
-        ${labelData?.weight ? `
+        </div>`
+        }
+        ${
+          labelData?.weight
+            ? `
           <div class="orderDetail">
           <p><strong>Weight</strong></p>
           <p><span>${labelData?.weight || ""}</span> grm</p> 
           </div>
-          ` : `   <div class="orderDetail">
+          `
+            : `   <div class="orderDetail">
           <p><strong></strong></p>
           <p><span></span></p> 
-          </div>`}
+          </div>`
+        }
           </div>
         <div class="OrderSection">
           <div class="orderDetail">
@@ -722,33 +762,43 @@ const Orders = () => {
           </div>
           <div class="orderDetail">
             <p><strong>${labelData?.paymentType || ""}</strong></p>
-            <p>${labelData?.amount ? `${labelData?.amount} INR` : ``}INR <span></span></p>
+            <p>${
+              labelData?.amount ? `${labelData?.amount} INR` : ``
+            }INR <span></span></p>
           </div>
           <div class="orderDetail">
             <p><strong>Price Total</strong></p>
-                <p>${labelData?.amount ? `${labelData?.amount} INR` : ``}INR <span></span></p>
+                <p>${
+                  labelData?.amount ? `${labelData?.amount} INR` : ``
+                }INR <span></span></p>
             <p>Surface</p>
           </div>
         </div>
-        ${labelData?.productName ? `
+        ${
+          labelData?.productName
+            ? `
           <div style="display: flex;">
           <div class="labelSection" style="width: 12rem;">
           <p><strong>Product (QTY)</strong></p>
           </div>
           <div class="labelSection" style="width: 12rem;">
             <p>${labelData?.productName || ""}<span>(${
-              labelData?.productDetail?.quantity || ""
+                labelData?.productDetail?.quantity || ""
               })</span></p>
               </div>
-              ` : `  <div style="display: flex;">
+              `
+            : `  <div style="display: flex;">
           <div class="labelSection" style="width: 12rem;">
           <p><strong></p>
           </div>
           <div class="labelSection" style="width: 12rem;">
             <p></span></p>
-              </div>`}
+              </div>`
+        }
         </div>
-        ${labelData?.amount ? `
+        ${
+          labelData?.amount
+            ? `
           <div style="display: flex;">
           <div class="labelSection" style="width: 12rem;">
             <p><strong>Total INR</strong></p>
@@ -757,27 +807,33 @@ const Orders = () => {
           <p>${labelData?.amount || ""}</p>
           </div>
           </div>
-          ` : `<div style="display: flex;">
+          `
+            : `<div style="display: flex;">
           <div class="labelSection" style="width: 12rem;">
             <p><strong></strong></p>
           </div>
           <div class="labelSection" style="width: 12rem;">
           <p></p>
           </div>
-          </div>`}
-        ${labelData?.returnWarehouse ? `
+          </div>`
+        }
+        ${
+          labelData?.returnWarehouse
+            ? `
           <div class="labelSection">
           <p><strong>Return Address:</strong></p>
           <p>${labelData?.returnWarehouse?.address || ""} ${
-      labelData?.returnWarehouse?.state || ""
-    } ${labelData?.returnWarehouse?.city || ""} ${
-      labelData?.returnWarehouse?.country || ""
-      }</p>
+                labelData?.returnWarehouse?.state || ""
+              } ${labelData?.returnWarehouse?.city || ""} ${
+                labelData?.returnWarehouse?.country || ""
+              }</p>
       </div>
-      ` : `  <div class="labelSection">
+      `
+            : `  <div class="labelSection">
           <p><strong></strong></p>
           <p></p>
-      </div>`}
+      </div>`
+        }
 
         <p>Powered by <strong>ShipHere</strong></p>
       </div>
@@ -1141,6 +1197,7 @@ const Orders = () => {
                   icon={<DownloadOutlined />}
                   className="downloadBtn"
                   size="middle"
+                  style={{ marginRight: "10px" }}
                 >
                   Download
                 </Button>
