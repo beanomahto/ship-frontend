@@ -154,7 +154,7 @@ const Wallet = () => {
     {
       title: "Debit",
       dataIndex: "debit",
-      render: (text, transaction) => <div>{transaction?.debit.toFixed(2)}</div>,
+      render: (text, transaction) => <div>{transaction?.debit?.toFixed(2)}</div>,
     },
     {
       title: "Credit",

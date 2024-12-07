@@ -215,7 +215,7 @@ const Seller = () => {
       ...getColumnSearchProps("amount"),
       render: (seller) => (
         <>
-          <div>{seller.amount.toFixed(2)}</div>
+          <div>{seller.amount?.toFixed(2)}</div>
         </>
       ),
     },

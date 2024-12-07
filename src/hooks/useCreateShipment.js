@@ -48,9 +48,13 @@ const useCreateShipment = () => {
           url = "https://backend.shiphere.in/api/ecomExpress/createShipment";
           log = "ecom hit";
           break;
+        case "Xpressbees":
+          url = "https://backend.shiphere.in/api/xpressbees/createShipment";
+          log = "xpress hit";
+          break;
         case "Delhivery":
         case "Amazon Shipping":
-        case "Xpressbees":
+        // case "Xpressbees":
         case "Blue Dart":
         case "Ekart":
         case "DTDC":
@@ -61,17 +65,7 @@ const useCreateShipment = () => {
       }
 
       const token = localStorage.getItem("token");
-      if (
-        [
-          "Ekart",
-          "Blue Dart",
-          "DTDC",
-          "Shadowfax",
-          "Delhivery",
-          "Xpressbees",
-          "Amazon Shipping",
-        ].includes(deliveryPartnerName)
-      ) {
+      if (["Ekart","Blue Dart","DTDC","Shadowfax","Delhivery","Amazon Shipping",].includes(deliveryPartnerName)) {
         if (fShipWarehouseId === 0) {
           const warehouseResponse = await axios.post(
             fshipUrl,
@@ -93,7 +87,7 @@ const useCreateShipment = () => {
             else if (deliveryPartnerName === "Shadowfax") courierId = 295;
             else if (deliveryPartnerName === "Delhivery") courierId = 374;
             else if (deliveryPartnerName === "Amazon Shipping") courierId = 357;
-            else if (deliveryPartnerName === "Xpressbees") courierId = 368;
+            // else if (deliveryPartnerName === "Xpressbees") courierId = 368;
             fetchWarehouse();
 
             const hubCheckBody = {
@@ -182,7 +176,7 @@ const useCreateShipment = () => {
           else if (deliveryPartnerName === "DTDC") courierId = 355;
           else if (deliveryPartnerName === "Shadowfax") courierId = 295;
           else if (deliveryPartnerName === "Delhivery") courierId = 374;
-          else if (deliveryPartnerName === "Xpressbees") courierId = 368;
+          // else if (deliveryPartnerName === "Xpressbees") courierId = 368;
           else if (deliveryPartnerName === "Amazon Shipping") courierId = 357;
 
           fetchWarehouse();
@@ -266,7 +260,8 @@ const useCreateShipment = () => {
           //   throw new Error('Failed to retrieve fhipApiOrderId');
           // }
         }
-      } else {
+      } 
+      else {
         const response = await axios.post(
           url,
           {
@@ -284,7 +279,7 @@ const useCreateShipment = () => {
           "Order shipped successfully on warehouse " +
             warehouseId?.warehouseName
         );
-        //console.log(log);
+        console.log(log);
         //console.log(response);
 
         return response.data;

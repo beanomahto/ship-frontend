@@ -112,18 +112,18 @@ const UploadWeightDespensory = ({ visible, onClose, fetchWeightDespensory }) => 
     const callIncreaseWalletAmount = async () => {
         try {
             for (const row of extractedData) {
-                const { sellerEmail, settledCharges, orderId } = row;
-
+                const { sellerEmail, settledCharges, orderId, remarks } = row;
+    
                 if (sellerEmail && settledCharges && orderId) {
                     const userId = sellerIdMap[sellerEmail];
-
+    
                     if (userId) {
                         const walletRequestBody = {
                             credit: settledCharges,
                             userId: userId,
-                            remark: `Settled charges ${settledCharges} added for ${sellerEmail}`,
+                            remark: remarks || `Settled charges ${settledCharges} added for ${sellerEmail}`,
                         };
-
+    
                         const response = await fetch('https://backend.shiphere.in/api/transactions/increaseAmount', {
                             method: 'POST',
                             headers: {
@@ -132,7 +132,7 @@ const UploadWeightDespensory = ({ visible, onClose, fetchWeightDespensory }) => 
                             },
                             body: JSON.stringify(walletRequestBody),
                         });
-
+    
                         if (!response.ok) {
                             const errorData = await response.json();
                             console.error(`Failed to credit wallet amount for ${sellerEmail}: ${errorData.error}`);
@@ -152,16 +152,15 @@ const UploadWeightDespensory = ({ visible, onClose, fetchWeightDespensory }) => 
             message.error(`Error during wallet crediting: ${error.message}`);
         }
     };
-
+    
     const callDeduceWalletAmount = async () => {
         try {
             const promises = extractedData.map(async (row) => {
-                const { sellerEmail, weightCharges, orderId } = row;
+                const { sellerEmail, weightCharges, orderId, remarks } = row;
     
-                // Log missing or invalid data for debugging
                 if (!sellerEmail || !weightCharges || !orderId) {
                     console.warn(`Skipping row due to missing data:`, row);
-                    return null;  // Skip this row and return null
+                    return null;
                 }
     
                 const orderMongoId = orders?.orders?.find(
@@ -179,11 +178,10 @@ const UploadWeightDespensory = ({ visible, onClose, fetchWeightDespensory }) => 
                     return null;
                 }
     
-                // Create wallet request payload
                 const walletRequestBody = {
                     debit: weightCharges,
                     userId: userId,
-                    remark: `Weight charges ${weightCharges} deducted from ${sellerEmail}`,
+                    remark: remarks || `Weight charges ${weightCharges} deducted from ${sellerEmail}`,
                     orderId: orderMongoId,
                 };
     
@@ -210,7 +208,6 @@ const UploadWeightDespensory = ({ visible, onClose, fetchWeightDespensory }) => 
                 }
             });
     
-            // Wait for all promises to resolve or reject
             await Promise.all(promises);
     
         } catch (error) {
@@ -218,6 +215,7 @@ const UploadWeightDespensory = ({ visible, onClose, fetchWeightDespensory }) => 
             message.error(`Error during wallet deduction: ${error.message}`);
         }
     };
+    
      const downloadFile = () => {
         const header = `"sellerEmail","weightAppliedDate","enteredWeight","enteredDimension","orderId","awbNumber","productName","appliedWeight","weightCharges","settledCharges","remarks"`;
         const row1 = `"seller@email.com","2023_01_01","10.5","10x10x10","ORD123","AWB123","Product1","10","100","95","None"`;
