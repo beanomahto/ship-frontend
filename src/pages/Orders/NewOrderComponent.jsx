@@ -162,7 +162,7 @@ const NewOrderComponent = ({
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `https://backend.shiphere.in/api/orders/deleteOrder/${id}`,
+        `http://localhost:5000/api/orders/deleteOrder/${id}`,
         {
           headers: {
             Authorization: localStorage.getItem("token"),
@@ -486,7 +486,7 @@ const NewOrderComponent = ({
         };
 
         const codWalletResponse = await axios.post(
-          "https://backend.shiphere.in/api/transactions/decreaseAmount",
+          "http://localhost:5000/api/transactions/decreaseAmount",
           codWalletRequestBody,
           {
             headers: {
@@ -509,7 +509,7 @@ const NewOrderComponent = ({
       };
 
       const forwardWalletResponse = await axios.post(
-        "https://backend.shiphere.in/api/transactions/decreaseAmount",
+        "http://localhost:5000/api/transactions/decreaseAmount",
         forwardWalletRequestBody,
         {
           headers: {
@@ -542,7 +542,7 @@ const NewOrderComponent = ({
         console.log(updateBody);
 
         const orderResponse = await axios.put(
-          `https://backend.shiphere.in/api/orders/updateOrderStatus/${selectedOrderId}`,
+          `http://localhost:5000/api/orders/updateOrderStatus/${selectedOrderId}`,
           updateBody,
           {
             headers: {
@@ -565,7 +565,7 @@ const NewOrderComponent = ({
         // Rollback wallet deductions if shipping fails
         if (codCostWithGst > 0) {
           await axios.post(
-            "https://backend.shiphere.in/api/transactions/increaseAmount",
+            "http://localhost:5000/api/transactions/increaseAmount",
             {
               credit: codCostWithGst,
               userId: selectedOrder.seller._id,
@@ -581,7 +581,7 @@ const NewOrderComponent = ({
         }
 
         await axios.post(
-          "https://backend.shiphere.in/api/transactions/increaseAmount",
+          "http://localhost:5000/api/transactions/increaseAmount",
           {
             credit: forwardCostWithGst,
             userId: selectedOrder.seller._id,

@@ -52,7 +52,7 @@ const UploadPricingModel = ({ visible, onClose }) => {
 
     const downloadFile = () => {
         // Sample CSV headers, could be expanded with sample data
-        return "sellerEmail,deliveryPartner,weightCategory,zoneA_forward,zoneA_rto,zoneB_forward,zoneB_rto,zoneC_forward,zoneC_rto,zoneD_forward,zoneD_rto,zoneE_forward,zoneE_rto,codFixed,codPercentage";
+        return "sellerEmail,deliveryPartner,weightCategory,zoneA_forward,zoneA_rto,zoneA_additional,zoneB_forward,zoneB_rto,zoneB_additional,zoneC_forward,zoneC_rto,zoneC_additional,zoneD_forward,zoneD_rto,zoneD_additional,zoneE_forward,zoneE_rto,zoneE_additional,codFixed,codPercentage";
     };
 
     return (
