@@ -55,7 +55,7 @@ const UploadPricingModel = ({ visible, onClose }) => {
 
   const downloadFile = () => {
     // Sample CSV headers, could be expanded with sample data
-    return "sellerEmail,deliveryPartner,weightCategory,zoneA_forward,zoneA_rto,zoneA_ad_forward,zoneA_ad_rto,zoneB_forward,zoneB_rto,zoneB_ad_forward,zoneB_ad_rto,zoneC_forward,zoneC_rto,zoneC_ad_forward,zoneC_ad_rto,zoneD_forward,zoneD_rto,zoneD_ad_forward,zoneD_ad_rto,zoneE_forward,zoneE_rto,zoneE_ad_forward,zoneE_ad_rto,codFixed,codPercentage";
+    return "sellerEmail,deliveryPartner,weightCategory,zoneA_forward,zoneA_rto,zoneA_additional_forward,zoneA_additional_rto,zoneB_forward,zoneB_rto,zoneB_additional_forward,zoneB_additional_rto,zoneC_forward,zoneC_rto,zoneC_additional_forward,zoneC_additional_rto,zoneD_forward,zoneD_rto,zoneD_additional_forward,zoneD_additional_rto,zoneE_forward,zoneE_rto,zoneE_additional_forward,zoneE_additional_rto,codFixed,codPercentage";
   };
 
   return (
