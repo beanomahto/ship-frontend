@@ -25,7 +25,7 @@ const Tracking = () => {
         const splitPartners = shippingPartner.replace(/\s+/g, '');
         //console.log(splitPartners);
         
-        const fShipPartner = ['Ekart', 'BlueDart', 'DTDC', 'Shadowfax','Delhivery','Xpressbees'].includes(splitPartners);
+        const fShipPartner = ['Ekart', 'BlueDart', 'DTDC', 'Shadowfax','Delhivery'].includes(splitPartners);
         console.log(fShipPartner);
         
        if (fShipPartner) {
@@ -36,7 +36,10 @@ const Tracking = () => {
         console.log(response.data);
         
        } else {
-        const response = await axios.get(`https://backend.shiphere.in/api/${shippingPartner.replace(/\s+/g, '')}/track/${awb}`);
+        //  console.log(`https://backend.shiphere.in/api/Xpressbees/track/${awb}`);
+        // const response = await axios.get(`https://backend.shiphere.in/api/${shippingPartner.replace(/\s+/g, '')}/track/${awb}`);
+        const response = await axios.get(`https://backend.shiphere.in/api/xpressbees/track/${awb}`);
+console.log(response);
 
         if (shippingPartner.toLowerCase() === 'ecom express') {
           const parser = new DOMParser();
@@ -53,6 +56,9 @@ const Tracking = () => {
           //console.log(response)
           updateSteps(data);
         } else {
+          console.log(shippingPartner);
+          console.log(response);
+          
           setTrackingInfo(response.data.trackingInfo);
           updateSteps(response.data.trackingInfo);
         }
@@ -93,17 +99,32 @@ const Tracking = () => {
   if (!trackingInfo) {
     return <p>No tracking information available.</p>;
   }
+console.log(trackingInfo);
 
   return (
+    // <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    //   <div style={{ flexGrow: 1, padding: '20px', backgroundColor: '#ffffff' }}>
+    //   {
+    //     shippingPartner && shippingPartner.toLowerCase() === 'ecom express' ? (
+    //       <EcomData trackingInfo={trackingInfo} steps={steps} />
+    //     ) : (
+    //         <SmartShipData trackingInfo={trackingInfo} />
+    //       )
+        
+    //   }
+    //   </div> 
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <div style={{ flexGrow: 1, padding: '20px', backgroundColor: '#ffffff' }}>
       {
         shippingPartner && shippingPartner.toLowerCase() === 'ecom express' ? (
           <EcomData trackingInfo={trackingInfo} steps={steps} />
         ) : (
+          shippingPartner && shippingPartner === 'Xpressbees' ? (
+            <Xressbees trackingInfo={trackingInfo} />
+          ) : (
             <SmartShipData trackingInfo={trackingInfo} />
           )
-        
+        )
       }
       </div>
       <Footer />
