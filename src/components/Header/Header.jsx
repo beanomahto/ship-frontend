@@ -57,15 +57,103 @@ const Header = ({ darktheme }) => {
   const showModal = () => {
     setIsModalVisible(true);
   };
-  const handleOk = () => {
-    // Handle the recharge logic
-    console.log("Recharge amount:", rechargeAmount);
-    setIsModalVisible(false);
-  };
 
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+
+  // const handleOk = async () => {
+  //   if (!rechargeAmount) {
+  //     alert("Please enter a recharge amount.");
+  //     return;
+  //   }
+  //   console.log(rechargeAmount);
+
+  //   // Retrieve the token (assuming it's stored in localStorage)
+  //   const token = localStorage.getItem("token");
+  //   console.log(token);
+  //   try {
+  //     const response = await fetch("http://localhost:5000/api/phonepe/pay", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`, // Use backticks for string interpolation
+  //       },
+  //       body: JSON.stringify({ amount: rechargeAmount }), // Send amount in body
+  //     });
+  //     console.log(response);
+  //     if (response.ok) {
+  //       const redirectUrl = await response.text(); // Backend sends the URL as plain text
+  //       console.log("Redirect URL:", redirectUrl);
+  //       if (redirectUrl) {
+  //         window.location.href = redirectUrl;
+  //       } else {
+  //         alert("Failed to process the payment. Please try again.");
+  //       }
+  //     } else {
+  //       alert("Failed to connect to the server. Please try again later.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error processing payment:", error);
+  //     alert("An error occurred. Please try again.");
+  //   } finally {
+  //     setIsModalVisible(false);
+  //   }
+  // };
+
+  const handleOk = async () => {
+    if (!rechargeAmount) {
+      alert("Please enter a recharge amount.");
+      return;
+    }
+    console.log("Recharge Amount:", rechargeAmount);
+
+    // Retrieve the token (assuming it's stored in localStorage)
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("User is not authenticated. Please log in.");
+      return;
+    }
+    console.log("Token:", token);
+
+    try {
+      // Send a POST request to the backend
+      const response = await fetch(
+        "https://backend.shiphere.in/api/phonepe/pay",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`, // Include the token in the Authorization header
+          },
+          body: JSON.stringify({ amount: rechargeAmount }), // Send the amount as JSON
+        }
+      );
+
+      console.log("Response:", response);
+
+      // Handle response
+      if (response.ok) {
+        const redirectUrl = await response.text(); // Backend sends the URL as plain text
+        console.log("Redirect URL:", redirectUrl);
+        if (redirectUrl) {
+          window.location.href = redirectUrl; // Redirect the user
+        } else {
+          alert("Failed to process the payment. Please try again.");
+        }
+      } else {
+        const errorMessage = await response.text();
+        console.error("Error Response:", errorMessage);
+        alert("Failed to connect to the server. Please try again later.");
+      }
+    } catch (error) {
+      console.error("Error processing payment:", error);
+      alert("An error occurred. Please try again.");
+    } finally {
+      setIsModalVisible(false);
+    }
+  };
+
   return (
     <div className={darktheme ? "darkHeader" : "main-header"}>
       <div className="header-container">
@@ -154,7 +242,7 @@ const Header = ({ darktheme }) => {
         okText="Recharge Now"
         cancelText="Cancel"
         centered
-        bodyStyle={{
+        style={{
           padding: "20px",
           fontFamily: "Arial, sans-serif",
           backgroundColor: "#f9f9f9",
