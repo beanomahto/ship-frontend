@@ -465,11 +465,11 @@ const NewOrderComponent = ({
 
       const gstRate = 0.018;
       const codCostWithGst = codCost * (1 + gstRate);
-      // const forwardCostWithGst = forwardCost * (1 + gstRate);
-      const forwardCostWithGst = cost;
+      const forwardCostWithGst = forwardCost * (1 + gstRate);
+      // const forwardCostWithGst = cost;
       const rtoCostWithGst = rtoCost * (1 + gstRate);
-      // const totalDebit = forwardCostWithGst + codCostWithGst;
-      const totalDebit = forwardCostWithGst;
+      const totalDebit = forwardCostWithGst + codCostWithGst;
+      // const totalDebit = forwardCostWithGst;
 
       const sendWarehouse =
         Array.isArray(selectedWarehouseId) && selectedWarehouseId.length === 0
