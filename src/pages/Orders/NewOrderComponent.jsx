@@ -463,7 +463,7 @@ const NewOrderComponent = ({
       const { codCost, forwardCost, rtoCost, cost } = partner;
       // console.log(partner);
 
-      const gstRate = 0.018;
+      const gstRate = 0.18;
       const codCostWithGst = codCost * (1 + gstRate);
       const forwardCostWithGst = forwardCost * (1 + gstRate);
       // const forwardCostWithGst = cost;
