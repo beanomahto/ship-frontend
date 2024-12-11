@@ -62,45 +62,6 @@ const Header = ({ darktheme }) => {
     setIsModalVisible(false);
   };
 
-  // const handleOk = async () => {
-  //   if (!rechargeAmount) {
-  //     alert("Please enter a recharge amount.");
-  //     return;
-  //   }
-  //   console.log(rechargeAmount);
-
-  //   // Retrieve the token (assuming it's stored in localStorage)
-  //   const token = localStorage.getItem("token");
-  //   console.log(token);
-  //   try {
-  //     const response = await fetch("http://localhost:5000/api/phonepe/pay", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`, // Use backticks for string interpolation
-  //       },
-  //       body: JSON.stringify({ amount: rechargeAmount }), // Send amount in body
-  //     });
-  //     console.log(response);
-  //     if (response.ok) {
-  //       const redirectUrl = await response.text(); // Backend sends the URL as plain text
-  //       console.log("Redirect URL:", redirectUrl);
-  //       if (redirectUrl) {
-  //         window.location.href = redirectUrl;
-  //       } else {
-  //         alert("Failed to process the payment. Please try again.");
-  //       }
-  //     } else {
-  //       alert("Failed to connect to the server. Please try again later.");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error processing payment:", error);
-  //     alert("An error occurred. Please try again.");
-  //   } finally {
-  //     setIsModalVisible(false);
-  //   }
-  // };
-
   const handleOk = async () => {
     if (!rechargeAmount) {
       alert("Please enter a recharge amount.");
@@ -171,14 +132,14 @@ const Header = ({ darktheme }) => {
           &#8377; {balance?.toFixed(2)}
         </Button>
         <span className="span"></span>
-        <Button
+        {/* <Button
           style={{ backgroundColor: "ButtonHighlight" }}
           onClick={showModal}
         >
           <BsLightningChargeFill />
           Recharge
-        </Button>
-        <span className="span"></span>
+        </Button> */}
+        {/* <span className="span"></span> */}
         {authUser ? (
           <>
             <Popover
