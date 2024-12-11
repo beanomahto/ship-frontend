@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Modal, Button, Upload, message } from "antd";
+import { Modal, Button, Upload, message, notification } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-// import Sv from './orders.csv'
 import DownloadLink from "react-download-link";
 
 const BulkOrderUploadModal = ({ visible, onClose }) => {
@@ -34,19 +33,22 @@ const BulkOrderUploadModal = ({ visible, onClose }) => {
 
       if (response.ok) {
         const responseData = await response.json();
-        // console.log("bulk", responseData);
+
         if (
           responseData.duplicateOrderIds &&
           responseData.duplicateOrderIds.length > 0
         ) {
-          // Show a warning message with duplicate order IDs
-          message.warning(
-            <>
-              Error creating orders. The following duplicate orders were
-              detected: <b>{responseData.duplicateOrderIds.join(", ")}</b>.
-              Please change the order IDs and re-upload the file.
-            </>
-          );
+          // Show a notification with duplicate order IDs
+          notification.warning({
+            message: "Duplicate Orders Detected",
+            description: (
+              <>{" "}
+                <b>{responseData.duplicateOrderIds.join(", ")}</b>. Please change
+                the order IDs and re-upload the file.
+              </>
+            ),
+            duration: 0,
+          });
         } else {
           message.success("File uploaded successfully!");
         }
@@ -60,9 +62,11 @@ const BulkOrderUploadModal = ({ visible, onClose }) => {
       message.error(`Error: ${error.message}`);
     }
   };
+
   const downloadFile = () => {
     return "customerName,customerEmail,orderId,customerPhone,productName,productPrice,address,landMark,pincode,city,state,quantity,sku,weight,length,breadth,height,paymentMethod";
   };
+
   return (
     <Modal
       title="Upload Bulk Orders"

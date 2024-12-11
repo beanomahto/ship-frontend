@@ -56,6 +56,7 @@ import CreateEmployee from "./pages/Employee/CreateEmployee/CreateEmployee";
 import UpdateEmployee from "./pages/Employee/UpdateEmployee/UpdateEmployee";
 import EmployeeDash from "./pages/EmployeeDashboard/EmployeeDash";
 import ProductWeight from "./pages/channelIntegration/productWeight/ProductWeight";
+import Notification from "./pages/Notifications/Notification";
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -387,6 +388,14 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <PinCodeServicecability />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="notifications"
+            element={
+              <ProtectedRoute>
+                <Notification />
               </ProtectedRoute>
             }
           />

@@ -10,6 +10,7 @@ import { LiaRupeeSignSolid } from "react-icons/lia";
 import { MdMoney } from "react-icons/md";
 import { TbReportSearch } from "react-icons/tb";
 import { BiSupport } from "react-icons/bi";
+
 import { Link } from 'react-router-dom'
 import { useAuthContext } from '../../context/AuthContext';
 
@@ -70,6 +71,8 @@ const MenuList = ({darktheme, closeDrawer }) => {
                     <Link to='/pincodeservice' ><span style={{fontWeight:500}} >Pin Code Serviceablity</span></Link></Menu.Item>
                 <Menu.Item key='channelIntegration' >
                     <Link to='/channelintegration' ><span style={{fontWeight:500}} >Channel Integration</span></Link></Menu.Item>
+                <Menu.Item key='notifications' >
+                    <Link to='/notifications' ><span style={{fontWeight:500}} >Notification</span></Link></Menu.Item>
             </Menu.SubMenu>
             {/* <Menu.SubMenu key='reports' title='Reports' icon={<TbReportSearch  />} >
                 <Menu.Item key='misReport' >
