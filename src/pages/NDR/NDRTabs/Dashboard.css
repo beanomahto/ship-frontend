@@ -35,3 +35,12 @@
     justify-content: center;
     align-items: center;
   }
+  @media (max-width: 480px) {
+    .orderSummaryContainer {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, auto);
+      justify-content: center;
+      align-items: center;
+    }
+  }

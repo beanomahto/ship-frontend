@@ -351,13 +351,13 @@ const ActionTakenTab = ({
         dataSource={takenOrders}
         rowKey="_id"
         className="centered-table"
-        scroll={{ y: 350 }}
+        scroll={{ x: 800 }}
+        style={{ overflowX: "auto", marginTop: "-20px" }}
         pagination={{
           showSizeChanger: true,
-          pageSizeOptions: ['10', '20', '50', '100', '500', '1000'],
-          defaultPageSize: 10, 
+          pageSizeOptions: ["10", "20", "50", "100", "500", "1000"],
+          defaultPageSize: 10,
         }}
-        style={{ marginTop: "-20px" }}
       />
     </div>
   );

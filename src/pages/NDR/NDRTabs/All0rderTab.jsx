@@ -146,22 +146,30 @@ const AllOrderTab = ({
               </a>
             )}
           </span>
-          <Tag
+          <div
             style={{
               display: "flex",
-              maxWidth: "max-content",
-              marginLeft: "3rem",
+              alignItems: "center",
+              justifyContent: "center",
             }}
-            color={
-              order.status === "InTransit"
-                ? "blue"
-                : order.status === "UnDelivered"
-                ? "red"
-                : "green"
-            }
           >
-            {order.status}
-          </Tag>
+            <Tag
+              style={{
+                display: "flex",
+                maxWidth: "max-content",
+                marginLeft: "3rem",
+              }}
+              color={
+                order.status === "InTransit"
+                  ? "blue"
+                  : order.status === "UnDelivered"
+                  ? "red"
+                  : "green"
+              }
+            >
+              {order.status}
+            </Tag>
+          </div>
         </div>
       ),
       className: "centered-row",
@@ -197,25 +205,34 @@ const AllOrderTab = ({
         <div
           style={{
             display: "flex",
-            flexDirection: "column",
+            justifyContent: "center",
             alignItems: "center",
-            maxWidth: "4.5rem",
-            marginLeft: "5rem",
-            fontFamily: "Poppins",
-            fontSize: ".9rem",
-            fontWeight: "500",
           }}
         >
-          <div>&#8377; {order.productPrice}</div>
-          <Tag
-            color={
-              order.paymentMethod === "COD"
-                ? "green-inverse"
-                : "geekblue-inverse"
-            }
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              maxWidth: "4.5rem",
+
+              fontFamily: "Poppins",
+              fontSize: ".9rem",
+              fontWeight: "500",
+            }}
           >
-            {order.paymentMethod}
-          </Tag>
+            <div>&#8377; {order.productPrice}</div>
+            <Tag
+              color={
+                order.paymentMethod === "COD"
+                  ? "green-inverse"
+                  : "geekblue-inverse"
+              }
+            >
+              {order.paymentMethod}
+            </Tag>
+          </div>
         </div>
       ),
       className: "centered-row",
@@ -342,14 +359,14 @@ const AllOrderTab = ({
         rowSelection={rowSelection}
         columns={columns}
         dataSource={takenOrders}
-        scroll={{ y: 350 }}
+        scroll={{ x: 800 }}
+        style={{ overflowX: "auto", marginTop: "-20px" }}
         pagination={{
           showSizeChanger: true,
-          pageSizeOptions: ['10', '20', '50', '100', '500', '1000'],
-          defaultPageSize: 10, 
+          pageSizeOptions: ["10", "20", "50", "100", "500", "1000"],
+          defaultPageSize: 10,
         }}
         className="centered-table"
-        style={{ marginTop: "-20px" }}
       />
     </div>
   );

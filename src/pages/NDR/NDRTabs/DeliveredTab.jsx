@@ -131,8 +131,9 @@ const DeliveredTab = ({
         <div
           style={{
             display: "flex",
+            justifyContent: "center",
+
             flexDirection: "column",
-            marginLeft: "5rem",
           }}
         >
           <span style={{ marginRight: "2rem" }}>
@@ -145,17 +146,24 @@ const DeliveredTab = ({
               </a>
             )}
           </span>
-          <Tag
+          <div
             style={{
               display: "flex",
+              alignItems: "center",
               justifyContent: "center",
-              maxWidth: "max-content",
-              marginLeft: "3rem",
             }}
-            color={order.status === "Delivered" ? "green" : "volcano"}
           >
-            {order.status}
-          </Tag>
+            <Tag
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                maxWidth: "max-content",
+              }}
+              color={order.status === "Delivered" ? "green" : "volcano"}
+            >
+              {order.status}
+            </Tag>
+          </div>
         </div>
       ),
       className: "centered-row",
@@ -304,7 +312,9 @@ const DeliveredTab = ({
   const takenOrders = dataSource?.filter(
     (order) =>
       order?.status === "Delivered" &&
-      (order?.ndrstatus === "Taken" || order?.ndrstatus === "RTO" || order.ndrstatus === 'Required')
+      (order?.ndrstatus === "Taken" ||
+        order?.ndrstatus === "RTO" ||
+        order.ndrstatus === "Required")
   );
   return (
     <div>
@@ -328,14 +338,14 @@ const DeliveredTab = ({
         rowSelection={rowSelection}
         columns={columns}
         dataSource={takenOrders}
-        scroll={{ y: 350 }}
+        scroll={{ x: 800 }}
+        style={{ overflowX: "auto", marginTop: "-20px" }}
         pagination={{
           showSizeChanger: true,
-          pageSizeOptions: ['10', '20', '50', '100', '500', '1000'],
-          defaultPageSize: 10, 
+          pageSizeOptions: ["10", "20", "50", "100", "500", "1000"],
+          defaultPageSize: 10,
         }}
         className="centered-table"
-        style={{ marginTop: "-20px" }}
       />
     </div>
   );

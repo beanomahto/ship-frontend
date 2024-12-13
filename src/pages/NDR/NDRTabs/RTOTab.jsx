@@ -114,8 +114,15 @@ const ActionTakenTab = ({ rowSelection, selectedRowKeys, dataSource }) => {
       dataIndex: "o_status",
       ...getColumnSearchProps("awb"),
       render: (text, order) => (
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <span style={{ marginRight: "6rem" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <span>
             {order.shippingPartner && order.awb && (
               <a
                 target="_blank"
@@ -125,17 +132,24 @@ const ActionTakenTab = ({ rowSelection, selectedRowKeys, dataSource }) => {
               </a>
             )}
           </span>
-          <Tag
+          <div
             style={{
               display: "flex",
+              alignItems: "center",
               justifyContent: "center",
-              maxWidth: "max-content",
-              marginLeft: "3rem",
             }}
-            color={order.status === "Delivered" ? "green" : "volcano"}
           >
-            {order.status}
-          </Tag>
+            <Tag
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                maxWidth: "max-content",
+              }}
+              color={order.status === "Delivered" ? "green" : "volcano"}
+            >
+              {order.status}
+            </Tag>
+          </div>
         </div>
       ),
       className: "centered-row",
@@ -171,25 +185,33 @@ const ActionTakenTab = ({ rowSelection, selectedRowKeys, dataSource }) => {
         <div
           style={{
             display: "flex",
-            flexDirection: "column",
+            justifyContent: "center",
             alignItems: "center",
-            maxWidth: "4.5rem",
-            marginLeft: "1rem",
-            fontFamily: "Poppins",
-            fontSize: ".9rem",
-            fontWeight: "500",
           }}
         >
-          <div>&#8377; {order.productPrice}</div>
-          <Tag
-            color={
-              order.paymentMethod === "COD"
-                ? "green-inverse"
-                : "geekblue-inverse"
-            }
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              maxWidth: "4.5rem",
+              justifyContent: "center",
+              fontFamily: "Poppins",
+              fontSize: ".9rem",
+              fontWeight: "500",
+            }}
           >
-            {order.paymentMethod}
-          </Tag>
+            <div>&#8377; {order.productPrice}</div>
+            <Tag
+              color={
+                order.paymentMethod === "COD"
+                  ? "green-inverse"
+                  : "geekblue-inverse"
+              }
+            >
+              {order.paymentMethod}
+            </Tag>
+          </div>
         </div>
       ),
       className: "centered-row",
@@ -312,13 +334,14 @@ const ActionTakenTab = ({ rowSelection, selectedRowKeys, dataSource }) => {
         rowSelection={rowSelection}
         columns={columns}
         dataSource={takenOrders}
-        scroll={{ y: 350 }}
+        scroll={{ x: 800 }}
+        style={{ overflowX: "auto", marginTop: "-20px" }}
         pagination={{
           showSizeChanger: true,
-          pageSizeOptions: ['10', '20', '50', '100', '500', '1000'],
-          defaultPageSize: 10, 
+          pageSizeOptions: ["10", "20", "50", "100", "500", "1000"],
+          defaultPageSize: 10,
         }}
-        style={{ marginTop: "-20px" }}
+        className="centered-table"
       />
     </div>
   );
