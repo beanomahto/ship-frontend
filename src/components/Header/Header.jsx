@@ -67,7 +67,7 @@ const Header = ({ darktheme }) => {
       alert("Please enter a recharge amount.");
       return;
     }
-    console.log("Recharge Amount:", rechargeAmount);
+    // console.log("Recharge Amount:", rechargeAmount);
 
     // Retrieve the token (assuming it's stored in localStorage)
     const token = localStorage.getItem("token");
@@ -75,7 +75,7 @@ const Header = ({ darktheme }) => {
       alert("User is not authenticated. Please log in.");
       return;
     }
-    console.log("Token:", token);
+    // console.log("Token:", token);
 
     try {
       // Send a POST request to the backend
@@ -91,7 +91,7 @@ const Header = ({ darktheme }) => {
         }
       );
 
-      console.log("Response:", response);
+      // console.log("Response:", response);
 
       // Handle response
       if (response.ok) {
@@ -114,6 +114,7 @@ const Header = ({ darktheme }) => {
       setIsModalVisible(false);
     }
   };
+  // console.log(authUser);
 
   return (
     <div className={darktheme ? "darkHeader" : "main-header"}>
@@ -132,14 +133,18 @@ const Header = ({ darktheme }) => {
           &#8377; {balance?.toFixed(2)}
         </Button>
         <span className="span"></span>
-        {/* <Button
-          style={{ backgroundColor: "ButtonHighlight" }}
-          onClick={showModal}
-        >
-          <BsLightningChargeFill />
-          Recharge
-        </Button> */}
-        {/* <span className="span"></span> */}
+        {authUser.email === "test1@gmail.com" && (
+          <>
+            <Button
+              style={{ backgroundColor: "ButtonHighlight" }}
+              onClick={showModal}
+            >
+              <BsLightningChargeFill />
+              Recharge
+            </Button>
+            <span className="span"></span>
+          </>
+        )}
         {authUser ? (
           <>
             <Popover
