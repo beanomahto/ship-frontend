@@ -63,12 +63,19 @@ const Tracking = () => {
         } else {
           //  console.log(`https://backend.shiphere.in/api/Xpressbees/track/${awb}`);
           // const response = await axios.get(`https://backend.shiphere.in/api/${shippingPartner.replace(/\s+/g, '')}/track/${awb}`);
-          const response = await axios.get(
-            `https://backend.shiphere.in/api/xpressbees/track/${awb}`
-          );
-          console.log(response);
+          if (splitPartners.toLowerCase() === "xpressbees") {
+            const response = await axios.get(
+              `https://backend.shiphere.in/api/xpressbees/track/${awb}`
+            );
+            console.log(response);
+          } else if (shippingPartner.toLowerCase() === "ecom express") {
+            const response = await axios.get(
+              `https://backend.shiphere.in/api/${shippingPartner.replace(
+                /\s+/g,
+                ""
+              )}/track/${awb}`
+            );
 
-          if (shippingPartner.toLowerCase() === "ecom express") {
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(
               response.data.data,
@@ -82,13 +89,10 @@ const Tracking = () => {
               data[name] = value;
             });
             setTrackingInfo(data);
-            console.log(data);
-            console.log(response);
+            console.log("datttaa", data);
+            console.log("responsee", response);
             updateSteps(data);
           } else {
-            console.log(shippingPartner);
-            console.log(response);
-
             setTrackingInfo(response.data.trackingInfo);
             updateSteps(response.data.trackingInfo);
           }
