@@ -164,8 +164,6 @@ const Tracking = () => {
       <div style={{ flexGrow: 1, padding: "20px", backgroundColor: "#ffffff" }}>
         {shippingPartner && shippingPartner.toLowerCase() === "ecom express" ? (
           <EcomData trackingInfo={trackingInfo} steps={steps} />
-        ) : shippingPartner && shippingPartner === "Xpressbees" ? (
-          <Xressbees trackingInfo={trackingInfo} />
         ) : (
           <SmartShipData trackingInfo={trackingInfo} />
         )}
@@ -315,12 +313,12 @@ export default Tracking;
 //     <div
 //       style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
 //     >
-//       <div style={{ flexGrow: 1, padding: "20px", backgroundColor: "#ffffff" }}>
-//         {shippingPartner && shippingPartner.toLowerCase() === "ecom express" ? (
-//           <EcomData trackingInfo={trackingInfo} steps={steps} />
-//         ) : (
-//           <SmartShipData trackingInfo={trackingInfo} />
-//         )}
+// <div style={{ flexGrow: 1, padding: "20px", backgroundColor: "#ffffff" }}>
+//   {shippingPartner && shippingPartner.toLowerCase() === "ecom express" ? (
+//     <EcomData trackingInfo={trackingInfo} steps={steps} />
+//   ) : (
+//     <SmartShipData trackingInfo={trackingInfo} />
+//   )}
 //       </div>
 //       <Footer />
 //     </div>
