@@ -58,6 +58,7 @@ import EmployeeDash from "./pages/EmployeeDashboard/EmployeeDash";
 import ProductWeight from "./pages/channelIntegration/productWeight/ProductWeight";
 import Notification from "./pages/Notifications/Notification";
 import CustomizeTrack from "./pages/Settings/CustomiseTrack/CustomizeTrack";
+import Cancellation from "./pages/Login/cancellationRefund/Cancellation";
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -453,6 +454,7 @@ const App = () => {
         <Route path="employeedashboard" element={<EmployeeDash />} />
         <Route path="login" element={<Login1 />} />
         <Route path="resetpassword" element={<ResetPassword />} />
+        <Route path="cancellation-refund-policy" element={<Cancellation />} />
         <Route path="*" element={<NotFound />} />
         <Route
           path="tracking/:selectedOption/:shippingPartner/:awb"

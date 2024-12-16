@@ -22,6 +22,7 @@ const Login1 = () => {
   const { loading, login } = useLogin();
   const { fetchOrders } = useOrderContext();
   const { fetchWarehouse } = useWarehouseContext();
+  const [policyAccepted, setPolicyAccepted] = useState(false);
 
   const handleInputChange = (field, value) => {
     if (field === "email") setEmail(value);
@@ -122,9 +123,36 @@ const Login1 = () => {
                   )}
                 </div>
               </div>
+              {/* Checkbox for Cancellation and Refund Policy */}
+              <div
+                className="inputBx"
+                style={{ marginTop: "15px", display: "flex" }}
+              >
+                <label style={{ display: "flex", alignItems: "center" }}>
+                  <input
+                    type="checkbox"
+                    id="policyCheckbox"
+                    checked={policyAccepted}
+                    onChange={(e) => setPolicyAccepted(e.target.checked)}
+                    style={{ marginRight: "8px", width: "20px" }}
+                  />
+                  I agree to the{" "}
+                  <a
+                    href="/cancellation-refund-policy"
+                    target="_blank"
+                    style={{ fontSize: "13px", marginLeft: "5px" }}
+                  >
+                    Cancellation and Refund Policy
+                  </a>
+                </label>
+              </div>
 
               <div className="inputBx">
-                <input type="submit" value="Login" disabled={loading} />
+                <input
+                  type="submit"
+                  value="Login"
+                  disabled={loading || !policyAccepted}
+                />
               </div>
               <div className="inputBx">
                 <p>
