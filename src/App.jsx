@@ -57,6 +57,7 @@ import UpdateEmployee from "./pages/Employee/UpdateEmployee/UpdateEmployee";
 import EmployeeDash from "./pages/EmployeeDashboard/EmployeeDash";
 import ProductWeight from "./pages/channelIntegration/productWeight/ProductWeight";
 import Notification from "./pages/Notifications/Notification";
+import CustomizeTrack from "./pages/Settings/CustomiseTrack/CustomizeTrack";
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -356,6 +357,14 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <Settings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="customize-track-order"
+            element={
+              <ProtectedRoute>
+                <CustomizeTrack />
               </ProtectedRoute>
             }
           />
