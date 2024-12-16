@@ -77,6 +77,29 @@ const Login = () => {
               Forgot Password?{" "}
               <span onClick={() => setIsModalVisible(true)}>Click here!</span>
             </div>
+            {/* Checkbox for Cancellation and Refund Policy */}
+            <div
+              className="inputBx"
+              style={{ marginTop: "15px", display: "flex" }}
+            >
+              <label style={{ display: "flex", alignItems: "center" }}>
+                <input
+                  type="checkbox"
+                  id="policyCheckbox"
+                  checked={policyAccepted}
+                  onChange={(e) => setPolicyAccepted(e.target.checked)}
+                  style={{ marginRight: "8px", width: "20px" }}
+                />
+                I agree to the{" "}
+                <a
+                  href="/cancellation-refund-policy"
+                  target="_blank"
+                  style={{ fontSize: "13px", marginLeft: "5px" }}
+                >
+                  Cancellation and Refund Policy
+                </a>
+              </label>
+            </div>
             <div className="submit-container">
               <button className="submit">Login</button>
             </div>
