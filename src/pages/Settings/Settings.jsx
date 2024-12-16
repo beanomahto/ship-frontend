@@ -43,7 +43,7 @@ const data = [
     heading: "Order Lookup",
     icon: FaSearch,
     links: [
-      { label: "Customize Track Order", url: "/" },
+      { label: "Customize Track Order", url: "/customize-track-order" },
       { label: "Box Weight", url: "/set_product_weight" },
     ],
   },
