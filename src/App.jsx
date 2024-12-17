@@ -59,6 +59,10 @@ import ProductWeight from "./pages/channelIntegration/productWeight/ProductWeigh
 import Notification from "./pages/Notifications/Notification";
 import CustomizeTrack from "./pages/Settings/CustomiseTrack/CustomizeTrack";
 import Cancellation from "./pages/Login/cancellationRefund/Cancellation";
+import ShippingPolicy from "./pages/Login/cancellationRefund/ShippingPolicy";
+import TermCondition from "./pages/Login/cancellationRefund/TermCondition";
+import PrivacyPolicy from "./pages/Login/cancellationRefund/PrivacyPolicy";
+import AboutSection from "./pages/Login/cancellationRefund/AboutSection";
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -455,6 +459,10 @@ const App = () => {
         <Route path="login" element={<Login1 />} />
         <Route path="resetpassword" element={<ResetPassword />} />
         <Route path="cancellation-refund-policy" element={<Cancellation />} />
+        <Route path="shipping-policy" element={<ShippingPolicy />} />
+        <Route path="term-policy" element={<TermCondition />} />
+        <Route path="privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="about-policy" element={<AboutSection />} />
         <Route path="*" element={<NotFound />} />
         <Route
           path="tracking/:selectedOption/:shippingPartner/:awb"

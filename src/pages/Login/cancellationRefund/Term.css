@@ -1,0 +1,39 @@
+.section-condition {
+    padding: 7rem;
+}
+
+.term-heading {
+    font-size: 38px;
+    font-weight: 600;
+    text-align: center;
+    color: #1758b3;
+}
+
+.section-condition p {
+    margin-top: 1.5rem;
+}
+
+.section-description {
+    font-size: 1.1em;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.term-subheading {
+    font-size: 32px;
+    font-weight: 600;
+    color: #5a98ef;
+    margin-top: 1rem;
+    border-bottom: 1px solid #84bde4;
+}
+
+.section-condition ul li {
+    list-style: disc;
+    margin-top: 1.5rem;
+}
+
+.subsubheading {
+    font-size: 20px;
+    font-weight: 600;
+
+}

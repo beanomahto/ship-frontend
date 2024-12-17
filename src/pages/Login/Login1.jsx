@@ -134,16 +134,47 @@ const Login1 = () => {
                     id="policyCheckbox"
                     checked={policyAccepted}
                     onChange={(e) => setPolicyAccepted(e.target.checked)}
-                    style={{ marginRight: "8px", width: "20px" }}
+                    style={{ marginRight: "8px", width: "30px" }}
                   />
-                  I agree to the{" "}
+                  <p>
+                  I have read and agree to the
                   <a
                     href="/cancellation-refund-policy"
                     target="_blank"
                     style={{ fontSize: "13px", marginLeft: "5px" }}
                   >
                     Cancellation and Refund Policy
-                  </a>
+                  </a>, 
+                  <a
+                    href="/privacy-policy"
+                    target="_blank"
+                    style={{ fontSize: "13px", marginLeft: "5px" }}
+                  >
+                    Privacy Policy
+                  </a>, 
+                  <a
+                    href="/Shipping-policy"
+                    target="_blank"
+                    style={{ fontSize: "13px", marginLeft: "5px" }}
+                  >
+                   Shipping Policy
+                  </a>,
+                  <a
+                    href="/term-policy"
+                    target="_blank"
+                    style={{ fontSize: "13px", marginLeft: "5px" }}
+                  >
+                  Term and Conditions
+                  </a>,
+                  <a
+                    href="/about-policy"
+                    target="_blank"
+                    style={{ fontSize: "13px", marginLeft: "5px" }}
+                  >
+                    about us
+                  </a>{" "}
+                  of Transportix Solutions Technology Pvt Ltd.
+                  </p>
                 </label>
               </div>
 

@@ -1,0 +1,28 @@
+.shipping-policy-container {
+  margin: 20px auto;
+  padding: 7rem;
+  font-family: 'Arial', sans-serif;
+}
+
+.shipping-policy-title {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #0056b3;
+}
+
+.policy-section {
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.section-description {
+  font-size: 1.1em;
+  color: #555;
+  margin-bottom: 10px;
+}
