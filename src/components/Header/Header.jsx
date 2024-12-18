@@ -133,7 +133,7 @@ const Header = ({ darktheme }) => {
           &#8377; {balance?.toFixed(2)}
         </Button>
         <span className="span"></span>
-        {authUser.email === "test1@gmail.com" && (
+        
           <>
             <Button
               style={{ backgroundColor: "ButtonHighlight" }}
@@ -144,7 +144,7 @@ const Header = ({ darktheme }) => {
             </Button>
             <span className="span"></span>
           </>
-        )}
+       
         {authUser ? (
           <>
             <Popover
