@@ -202,7 +202,7 @@ const Orders = () => {
         }
 
         const gstRate = 1.8 / 100;
-        const forwardChargeWithGST = forwardCharge * (1 + gstRate);
+        const forwardChargeWithGST = forwardCharge * 1.18;
         const codChargeWithGST = codCharge * (1 + gstRate);
         const rtoChargeWithGST = rtoCharge * (1 + gstRate);
 
