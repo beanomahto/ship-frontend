@@ -72,6 +72,8 @@ const Orders = () => {
   const [selectedOrderId, setSelectedOrderId] = useState(null);
   const [currentDeliveryCost, setCurrentDeliveryCost] = useState(null);
 
+  const [isDisabled, setIsDisabled] = useState(false);
+
   //console.log(orders);
   //console.log(selectedOrderData);
   // models
@@ -526,49 +528,68 @@ const Orders = () => {
   }, []);
 
   const cancelShipment = async () => {
+    // console.log("at cancel shipment line 526");
     if (selectedRowKeys.length === 0) {
       message.error("No orders selected");
       return;
     }
+    setIsDisabled(true);
 
     const token = localStorage.getItem("token");
 
     try {
-      await cancelOrder(selectedOrderData);
-
+      const test = await cancelOrder(selectedOrderData);
+      let counter = 0;
       for (const orderId of selectedRowKeys) {
         const order = selectedOrderData.find((order) => order._id === orderId);
 
-        const cancelResponse = await axios.put(
-          `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
-          { status: "Cancelled" },
-          { headers: { Authorization: `${token}` } }
-        );
+        if (test[counter++].data?.order_cancellation_details?.successful) {
+          console.log("at line 540 and counter is " + counter);
+          try {
+            const cancelResponse = await axios.put(
+              `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
+              { status: "Cancelled" },
+              { headers: { Authorization: `${token}` } }
+            );
+            console.log("cancel response " + JSON.stringify(cancelResponse));
 
-        if (cancelResponse.status === 201) {
-          const walletRequestBody = {
-            userId: order.seller._id,
-            credit: order.shippingCost,
-            remark: `Credit charges for order ${order.orderId}`,
-          };
+            if (cancelResponse.status === 201) {
+              const walletRequestBody = {
+                userId: order.seller._id,
+                credit: order.shippingCost,
+                remark: `Credit charges for order ${order.orderId}`,
+              };
 
-          const walletResponse = await axios.post(
-            `https://backend.shiphere.in/api/transactions/increaseAmount`,
-            walletRequestBody,
-            { headers: { Authorization: `${token}` } }
-          );
+              const walletResponse = await axios.post(
+                `https://backend.shiphere.in/api/transactions/increaseAmount`,
+                walletRequestBody,
+                { headers: { Authorization: `${token}` } }
+              );
 
-          if (walletResponse.status === 200) {
-            // console.log(
-            //   `Wallet updated successfully for order ${order.orderId}`
-            // );
-          } else {
-            // console.log(`Failed to update wallet for order ${order.orderId}`);
-            message.error(`Failed to update wallet for order ${order.orderId}`);
+              if (walletResponse.status === 200) {
+                // Wallet updated successfully
+              } else {
+                message.error(
+                  `Failed to update wallet for order ${order.orderId}`
+                );
+              }
+            } else {
+              message.error(`Failed to cancel order ${order.orderId}`);
+            }
+            setTimeout(() => {
+              setIsDisabled(false);
+            }, 2000);
+          } catch (error) {
+            console.error(
+              `Error while processing order ${order.orderId}:`,
+              error
+            );
+            message.error(
+              `Error occurred while canceling order ${order.orderId}`
+            );
           }
         } else {
-          //console.log(`Failed to cancel order ${order.orderId}`);
-          message.error(`Failed to cancel order ${order.orderId}`);
+          console.log("error at line 575 cancel order");
         }
       }
 
@@ -1226,7 +1247,7 @@ const Orders = () => {
                       Invoice
                     </Button>
                     <Button
-                      disabled={selectedRowKeys.length === 0}
+                      disabled={isDisabled}
                       style={{ borderColor: "red", borderRadius: "50px" }}
                       onClick={cancelShipment}
                     >
