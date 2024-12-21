@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState,useEffect, useMemo } from "react";
 import { Button, Table, Input, DatePicker } from "antd";
 import PaymentModel from "./Payment/PaymentModel";
 import { usePaymentUserContext } from "../../../context/PaymentUserContext";
@@ -10,12 +10,14 @@ import "./wallet.css";
 const { Search } = Input;
 
 const AdminWallet = () => {
-  const { pUsers } = usePaymentUserContext();
+  const { pUsers, loading } = usePaymentUserContext();
   const [modalVisible, setModalVisible] = useState(false);
   const [searchText, setSearchText] = useState("");
 
+
   const showModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
+
 
   // Function to check if any field contains the search text
   const matchesSearchText = (record, searchText) => {
@@ -29,11 +31,12 @@ const AdminWallet = () => {
       record.remark?.toLowerCase().includes(lowercasedText)
     );
   };
-
+ 
   // Filtered data based on the search text across all fields
   const filteredUsers = useMemo(() => {
     return pUsers.filter((user) => matchesSearchText(user, searchText));
   }, [pUsers, searchText]);
+console.log("nokk", filteredUsers);
 
   // Function to convert data to CSV format
   const generateCsvData = () => {
@@ -41,20 +44,19 @@ const AdminWallet = () => {
       "Date & Time": moment(user.updatedAt).format("DD-MM-YYYY"),
       "Company Info": user.user?.companyName || "N/A",
       Payment: user.credit,
-      Total: user.amount,
+      Transaction_Id:user.phonepeTransactionId,
+      Updated_Total: user.amount,
+      Payment_Method: user.phonepeInstrument,
       Remark: user.remark,
     }));
   };
 
   const newOrders = [
-    // {
-    //   title: 'Date & Time',
-    //   dataIndex: 'updatedAt',
-    //   render: (text, pUsers) => moment(pUsers?.updatedAt).format('DD-MM-YYYY'),
-    // },
+   
     {
       title: "Date & Time",
       dataIndex: "updatedAt",
+      align: "center",
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -116,21 +118,74 @@ const AdminWallet = () => {
           </span>
         </div>
       ),
-      className: "centered-row",
+    
     },
     {
       title: "Company Info",
       dataIndex: "user",
+      align: "center",
       render: (user) => user?.companyName || "N/A",
+    },
+    {
+      title: "Transaction_Id",
+      dataIndex: "_id",
+      align: "center",
+      render: (text, filteredUsers) => (
+        <>
+          <div>{filteredUsers.phonepeTransactionId}</div>
+        </>
+      ),
     },
     {
       title: "Payment",
       dataIndex: "credit",
+      align: "center",
+    },
+    {
+      title: "Updated Amount",
+      dataIndex: "amount",
+      align: "center",
+      render: (text, filteredUsers) => (
+        <>
+          <div>{filteredUsers.amount?.toFixed(2)}</div>
+        </>
+      ),
+    },
+    {
+      title: "Transaction Status",
+      dataIndex: "status",
+      align: "center",
+      render: (text, filteredUsers) => (
+        <>
+          <div>{text}</div>
+          <div
+            style={{
+              color: filteredUsers.phonepeTransactionId ? "green" : "red",
+              fontStyle: "italic",
+            }}
+          >
+            {filteredUsers.phonepeTransactionId ? "Success" : "Failure"}
+          </div>
+        </>
+      ),
+  
+    },    
+    {
+      title: "Payment_Method",
+      dataIndex: "method",
+      align: "center",
+      render: (text, filteredUsers) => (
+        <>
+          <div>{filteredUsers.phonepeInstrument}</div>
+        </>
+      ),
     },
     {
       title: "Remark",
       dataIndex: "remark",
+      align: "center",
     },
+   
   ];
 
   const handleClearSearch = () => {
