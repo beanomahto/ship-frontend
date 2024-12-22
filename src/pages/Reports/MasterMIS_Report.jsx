@@ -21,7 +21,15 @@ const AdminMIS_Report = () => {
   const [walletStartDate, setwalletStartDate] = useState(null);
   const [walletEndDate, setwalletEndDate] = useState(null);
 
+  // Separate loading states for each report
+  const [loadingMis, setLoadingMis] = useState(false);
+  const [loadingNdr, setLoadingNdr] = useState(false);
+  const [loadingOutForDelivery, setLoadingOutForDelivery] = useState(false);
+  const [loadingInTransit, setLoadingInTransit] = useState(false);
+  const [loadingWallet, setLoadingWallet] = useState(false);
+
   const handleDownload = async () => {
+    setLoadingMis(true);
     const data = { startDate: misStartDate, endDate: misEndDate };
     try {
       const response = await fetch(
@@ -52,10 +60,13 @@ const AdminMIS_Report = () => {
       }
     } catch (error) {
       message.error("An error occurred while downloading MIS Report");
+    } finally {
+      setLoadingMis(false); // Reset loading state after download
     }
   };
 
   const handleDownloadNDR = async () => {
+    setLoadingNdr(true);
     const data = { startDate: ndrStartDate, endDate: ndrEndDate };
     try {
       const response = await fetch(
@@ -86,10 +97,13 @@ const AdminMIS_Report = () => {
       }
     } catch (error) {
       message.error("An error occurred while downloading NDR Report");
+    } finally {
+      setLoadingNdr(false); // Reset loading state after download
     }
   };
 
   const handleDownloadOutForDelivery = async () => {
+    setLoadingOutForDelivery(true);
     const data = {
       startDate: outForDeliveryStartDate,
       endDate: outForDeliveryEndDate,
@@ -125,10 +139,13 @@ const AdminMIS_Report = () => {
       message.error(
         "An error occurred while downloading Out For Delivery Report"
       );
+    } finally {
+      setLoadingOutForDelivery(false); // Reset loading state after download
     }
   };
 
   const handleDownloadInTransit = async () => {
+    setLoadingInTransit(true);
     const data = { startDate: inTransitStartDate, endDate: inTransitEndDate };
     try {
       const response = await fetch(
@@ -159,9 +176,13 @@ const AdminMIS_Report = () => {
       }
     } catch (error) {
       message.error("An error occurred while downloading In Transit Report");
+    } finally {
+      setLoadingInTransit(false); // Reset loading state after download
     }
   };
+
   const handleDownloadWallet = async () => {
+    setLoadingWallet(true);
     const data = { startDate: walletStartDate, endDate: walletEndDate };
     try {
       const response = await fetch(
@@ -192,6 +213,8 @@ const AdminMIS_Report = () => {
       }
     } catch (error) {
       message.error("An error occurred while downloading Transaction Report");
+    } finally {
+      setLoadingWallet(false); // Reset loading state after download
     }
   };
 
@@ -233,8 +256,9 @@ const AdminMIS_Report = () => {
             className="form-button"
             type="button"
             onClick={handleDownload}
+            disabled={loadingMis}
           >
-            Submit
+            {loadingMis ? "Downloading..." : "Submit"}
           </button>
         </div>
       </div>
@@ -269,8 +293,9 @@ const AdminMIS_Report = () => {
             className="form-button"
             type="button"
             onClick={handleDownloadNDR}
+            disabled={loadingNdr}
           >
-            Submit
+            {loadingNdr ? "Downloading..." : "Submit"}
           </button>
         </div>
       </div>
@@ -305,8 +330,9 @@ const AdminMIS_Report = () => {
             className="form-button"
             type="button"
             onClick={handleDownloadOutForDelivery}
+            disabled={loadingOutForDelivery}
           >
-            Submit
+            {loadingOutForDelivery ? "Downloading..." : "Submit"}
           </button>
         </div>
       </div>
@@ -341,11 +367,14 @@ const AdminMIS_Report = () => {
             className="form-button"
             type="button"
             onClick={handleDownloadInTransit}
+            disabled={loadingInTransit}
           >
-            Submit
+            {loadingInTransit ? "Downloading..." : "Submit"}
           </button>
         </div>
       </div>
+
+      {/* Wallet Report */}
       <div className="report-box">
         <h2 className="report-title">Download Wallet Report</h2>
         <div className="form-group">
@@ -375,8 +404,9 @@ const AdminMIS_Report = () => {
             className="form-button"
             type="button"
             onClick={handleDownloadWallet}
+            disabled={loadingWallet}
           >
-            Submit
+            {loadingWallet ? "Downloading..." : "Submit"}
           </button>
         </div>
       </div>
