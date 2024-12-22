@@ -577,6 +577,7 @@ const Orders = () => {
                 userId: order.seller._id,
                 credit: order.shippingCost,
                 remark: `Credit charges for order ${order.orderId}`,
+                orderId: order._id,
               };
 
               const walletResponse = await axios.post(
