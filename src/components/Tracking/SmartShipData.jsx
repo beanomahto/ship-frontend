@@ -8,41 +8,69 @@ import {
   Steps,
   Progress,
   message,
+  Carousel,
 } from "antd";
 
 import {
   CheckCircleOutlined,
-  CloseCircleOutlined,
-  SyncOutlined,
-  ClockCircleOutlined,
-  CheckOutlined,
+    ClockCircleOutlined,
+    SyncOutlined,
+    CheckOutlined,
+    TruckOutlined,
+    HomeOutlined,
 } from "@ant-design/icons";
-import { MdOutlineDownloadDone } from "react-icons/md";
+ import { MdLocalShipping, MdOutlineDownloadDone } from "react-icons/md";
 
 import { useOrderContext } from "../../context/OrderContext";
 import axios from "axios";
-import status from "../../utils/DeliveryStatus2.mp4";
+import statusVideo from "../../utils/DeliveryStatus2.mp4";
 
 const { Title } = Typography;
 const { Step } = Steps;
 
-const SmartShipData = ({ trackingInfo }) => {
+const SmartShipData = ({ trackingInfo, advertisement }) => {
   console.log("oko");
-
+console.log("advertisement", advertisement);
   const scanData = trackingInfo?.data?.scans;
   const scanKey = scanData ? Object.keys(scanData)[0] : null;
   const trackingHistory = scanKey ? scanData[scanKey] : [];
   const { orders, fetchOrders } = useOrderContext();
 
+  // const progressSteps = [
+  //   "Shipping Label Generated",
+  //   "Manifested",
+  //   "Shipped",
+  //   "In Transit",
+  //   "Out For Delivery",
+  //   "Delivered",
+  // ];
   const progressSteps = [
-    "Shipping Label Generated",
-    "Manifested",
-    "Shipped",
-    "In Transit",
-    "Out For Delivery",
-    "Delivered",
-  ];
-
+        {
+          title: "Shipping Label Generated",
+          icon: <CheckOutlined style={{ color: "#69c0ff" }} />,
+        },
+        {
+          title: "Manifested",
+          icon: <ClockCircleOutlined style={{ color: "#ffa940" }} />,
+        },
+        {
+          title: "Shipped",
+          icon: <MdLocalShipping style={{ color: "#1890ff" }} />,
+        },
+        {
+          title: "In Transit",
+          icon: <TruckOutlined style={{ color: "#faad14" }} />,
+        },
+        {
+          title: "Out For Delivery",
+          icon: <SyncOutlined style={{ color: "#1890ff" }} spin />,
+        },
+        {
+          title: "Delivered",
+          icon: <HomeOutlined style={{ color: "#52c41a" }} />,
+        },
+      ];
+    
   const latestStatus = trackingHistory[0]?.status_description;
   console.log(latestStatus);
 
@@ -90,7 +118,7 @@ const SmartShipData = ({ trackingInfo }) => {
           },
         }
       );
-
+      console.log(response);
       if (response.status === 201) {
         message.success(`Order marked as ${newStatus}`);
         fetchOrders();
@@ -179,100 +207,221 @@ const SmartShipData = ({ trackingInfo }) => {
   };
 
   return (
-    <div>
-      <Row gutter={16}>
-        <Col xs={24} sm={8}>
+    <div
+      style={{
+        background: "#f4f6f9",
+        padding: "30px",
+        minHeight: "100vh",
+        fontFamily: "Arial, sans-serif",
+      }}
+    >
+      <Row gutter={[24, 24]} justify="center">
+        {/* Left Section */}
+        <Col xs={24} md={10}>
           <Card
+            hoverable
             style={{
-              borderRadius: "10px",
-              boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+              borderRadius: "16px",
+              boxShadow: "0 6px 25px rgba(0, 0, 0, 0.1)",
+              background: "linear-gradient(135deg, #ffffff, #fafafa)",
             }}
           >
-            <Title level={4}>Tracking Information</Title>
-            <Descriptions
-              bordered
-              column={1}
-              labelStyle={{ fontWeight: "bold" }}
+            <Title
+              level={3}
+              style={{
+                textAlign: "center",
+                color: "#333",
+                marginBottom: "20px",
+              }}
             >
+              Tracking Information
+            </Title>
+            <Descriptions bordered column={1} size="middle">
               <Descriptions.Item label="AWB Number">
-                {trackingHistory[0]?.tracking_number}
+                <span style={{ fontWeight: "bold" }}>
+                  {trackingHistory[0]?.tracking_number || "N/A"}
+                </span>
               </Descriptions.Item>
               <Descriptions.Item label="Order ID">
-                {trackingHistory[0]?.order_reference_id}
+                <span style={{ fontWeight: "bold" }}>
+                  {trackingHistory[0]?.order_reference_id || "N/A"}
+                </span>
               </Descriptions.Item>
               <Descriptions.Item label="Ordered On">
-                {new Date(trackingHistory[0]?.order_date).toLocaleString()}
+                <span style={{ color: "#555" }}>
+                  {new Date(trackingHistory[0]?.order_date).toLocaleString() ||
+                    "N/A"}
+                </span>
               </Descriptions.Item>
-              <Descriptions.Item label="Expected Date">
-                {trackingHistory[0]?.expected_delivery_date}
+              <Descriptions.Item label="Expected Delivery">
+                <span style={{ color: "#555" }}>
+                  {trackingHistory[0]?.expected_delivery_date || "N/A"}
+                </span>
               </Descriptions.Item>
-              <Descriptions.Item label="Status">
-                {trackingHistory[0]?.status_description}
-              </Descriptions.Item>
+              
             </Descriptions>
+{/* 
             <div
-              className="feature1-video-wrapper"
-              style={{ overflow: "hidden", height: "400px", width: "450px" }}
+              style={{
+                marginTop: "20px",
+                textAlign: "center",
+                borderRadius: "8px",
+                overflow: "hidden",
+                boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
+              }}
             >
               <video
-                className="feature1-responsive-video"
-                src={status} // Provide the path to your video file here
+                src={statusVideo}
                 autoPlay
                 muted
                 loop
-                height="500px"
-                width="450px"
-                playsInline
                 style={{
-                  objectFit: "cover", // Ensures the video fills the container
-                  objectPosition: "center -80px", // Shifts the video upwards to crop from the top
+                  width: "100%",
+                  height: "auto",
                 }}
-              >
-                Your browser does not support the video tag.
-              </video>
+              />
+            </div> */}
+              {/* Conditional Advertisement Section */}
+              <div
+              style={{
+                marginTop: "20px",
+                textAlign: "center",
+                borderRadius: "8px",
+                overflow: "hidden",
+                boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
+              }}
+            >
+              {advertisement && advertisement.images?.length > 0 ? (
+                <div>
+                <Carousel autoplay>
+  {advertisement.images.map((imageSrc, index) => (
+    <div key={index} >
+      <a
+        href={advertisement.url} // Use the single URL
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ display:"flex",
+            justifyContent:"center",
+            alignItems:"center"}}
+      >
+        <img
+          src={imageSrc} // Use each image source
+          alt={`Advertisement ${index + 1}`}
+          style={{
+            display:"flex",
+            justifyContent:"center",
+            alignItems:"center",
+            width: "350px",
+            height: "350px",
+            objectFit: "cover",
+            borderRadius: "8px",
+          }}
+        />
+      </a>
+    </div>
+  ))}
+</Carousel>
+
+                  {advertisement.description && (
+                    <p style={{ marginTop: "10px", color: "#555",fontSize:"20px", fontWeight:"bolder", marginBottom:"10px" }}>
+                      {advertisement.description}
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <video
+                  src={statusVideo}
+                  autoPlay
+                  muted
+                  loop
+                  style={{
+                    marginTop:"-50px",
+                    width: "100%",
+                    height: "auto",
+                  }}
+                />
+              )}
             </div>
           </Card>
         </Col>
 
-        <Col xs={24} sm={16}>
+        {/* Right Section */}
+        <Col xs={24} md={14}>
           <Card
+            hoverable
             style={{
-              borderRadius: "10px",
-              boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-              marginBottom: "20px",
+              borderRadius: "16px",
+              boxShadow: "0 6px 25px rgba(0, 0, 0, 0.1)",
+              background: "linear-gradient(135deg, #ffffff, #f8f9fb)",
             }}
           >
-            <Title level={4}>Shipment Progress</Title>
-            <Progress
-              percent={progressPercentage}
+            <Title
+              level={3}
+              style={{
+                textAlign: "left",
+                color: "#333",
+                marginBottom: "15px",
+              }}
+            >
+              Shipping Progress
+            </Title>
+            <Steps
+              current={currentStepIndex}
+              size="small"
+              progressDot
+              style={{ marginBottom: "20px" }}
+            >
+              {progressSteps.map((step, index) => (
+                <Step
+                  key={index}
+                  title={step.title}
+                  icon={step.icon}
+                  description={
+                    index <= currentStepIndex
+                      ? "Completed"
+                      : index === currentStepIndex
+                      ? "In Progress"
+                      : "Pending"
+                  }
+                />
+              ))}
+            </Steps>
+            {/* <Progress
+               percent={parseFloat((((currentStepIndex + 1) / progressSteps.length) * 100).toFixed(2))}
               status={
                 currentStepIndex === progressSteps.length - 1
                   ? "success"
                   : "active"
               }
               strokeColor={
-                currentStepIndex === progressSteps.length - 1 ? "green" : "blue"
+                currentStepIndex === progressSteps.length - 1
+                  ? "#52c41a"
+                  : "#1890ff"
               }
-              showInfo={true}
-            />
+              showInfo
+            /> */}
           </Card>
 
           <Card
+            hoverable
             style={{
-              borderRadius: "10px",
-              boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-              maxHeight: "600px",
-              overflowY: "auto",
+              borderRadius: "16px",
+              boxShadow: "0 6px 25px rgba(0, 0, 0, 0.1)",
+              marginTop: "20px",
             }}
           >
-            <Title level={4}>Tracking History</Title>
-            <Steps direction="vertical">
+            <Title level={4} style={{ color: "#333" }}>
+              Tracking History
+            </Title>
+            <Steps direction="vertical" size="small">
               {trackingHistory.map((step, index) => (
                 <Step
                   key={index}
-                  title={`${step.action} - ${step.location} - ${step.status_code} `}
-                  description={`Date: ${step?.date_time.toLocaleString()}`}
-                  icon={getStatusIcon(step.status_description)}
+                  title={`${step.action} - ${step.location}`}
+                  description={`Date: ${new Date(
+                    step?.date_time
+                  ).toLocaleString()}`}
+                  icon={<CheckCircleOutlined style={{ color: "#52c41a" }} />}
                 />
               ))}
             </Steps>

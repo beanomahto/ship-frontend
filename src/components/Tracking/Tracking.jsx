@@ -35,6 +35,9 @@ const Tracking = () => {
   const [loading, setLoading] = useState(true);
   const [steps, setSteps] = useState([]);
   const { shippingPartner, awb } = useParams();
+  const [advertisement, setAdvertisement] = useState(null);
+const [advertisementLoading, setAdvertisementLoading] = useState(true);
+
 
   useEffect(() => {
     const fetchTrackingInfo = async () => {
@@ -121,8 +124,29 @@ const Tracking = () => {
         },
       ]);
     };
+    
+    const fetchAdvertisement = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(
+          "http://localhost:5000/api/customiseTrack/get-advertisement",
+          {
+            headers: { Authorization: `${token}` },
+          }
+        );
+        if (response.data) {
+          const { images, description, url } = response.data;
+          setAdvertisement({ images, description, url });
+        }
+      } catch (error) {
+        console.log("No advertisement found for the user.");
+      } finally {
+        setAdvertisementLoading(false);
+      }
+    };
 
     fetchTrackingInfo();
+    fetchAdvertisement();
   }, [awb, shippingPartner]);
 
   if (loading) {
@@ -161,11 +185,14 @@ const Tracking = () => {
     <div
       style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
     >
-      <div style={{ flexGrow: 1, padding: "20px", backgroundColor: "#ffffff" }}>
+      <div style={{ flexGrow: 1, padding: "20px",  background: "linear-gradient(135deg, #1758b3, #0f3d73, #0b2d55)", }}>
         {shippingPartner && shippingPartner.toLowerCase() === "ecom express" ? (
-          <EcomData trackingInfo={trackingInfo} steps={steps} />
+          <EcomData trackingInfo={trackingInfo} steps={steps}  
+          // advertisement={advertisement}
+
+          />
         ) : (
-          <SmartShipData trackingInfo={trackingInfo} />
+          <SmartShipData trackingInfo={trackingInfo}  advertisement={advertisement}/>
         )}
       </div>
       <Footer />
