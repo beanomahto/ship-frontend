@@ -10,27 +10,17 @@ const AdminMIS_Report = () => {
   const [ndrDates, setNdrDates] = useState([null, null]);
   const [outForDeliveryDates, setOutForDeliveryDates] = useState([null, null]);
   const [inTransitDates, setInTransitDates] = useState([null, null]);
-  const [walletDates, setWalletDates] = useState([null, null]);
-
-  // Separate loading states for each report
-  const [misLoading, setMisLoading] = useState(false);
-  const [ndrLoading, setNdrLoading] = useState(false);
-  const [outForDeliveryLoading, setOutForDeliveryLoading] = useState(false);
-  const [inTransitLoading, setInTransitLoading] = useState(false);
-  const [walletLoading, setWalletLoading] = useState(false);
-
+  const [walletDates, setwalletDates] = useState([null, null]);
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
 
   const handleMisSubmit = async (e) => {
     e.preventDefault();
-    setMisLoading(true);
 
     // Check if dates are selected
     if (!misDates || !misDates[0] || !misDates[1]) {
       message.error("Please select both start and end dates for MIS report.");
-      setMisLoading(false);
       return;
     }
 
@@ -71,18 +61,14 @@ const AdminMIS_Report = () => {
       }
     } catch (error) {
       message.error("An error occurred while downloading MIS");
-    } finally {
-      setMisLoading(false);
     }
   };
 
   const handleNdrSubmit = async (e) => {
     e.preventDefault();
-    setNdrLoading(true);
 
     if (!ndrDates || !ndrDates[0] || !ndrDates[1]) {
       message.error("Please select both start and end dates for NDR report.");
-      setNdrLoading(false);
       return;
     }
 
@@ -91,7 +77,7 @@ const AdminMIS_Report = () => {
       startDate: ndrDates[0].format("YYYY-MM-DD"),
       endDate: ndrDates[1].format("YYYY-MM-DD"),
     };
-
+    console.log("ndr", data);
     try {
       const response = await fetch(
         "https://backend.shiphere.in/api/report/generatendr",
@@ -123,18 +109,20 @@ const AdminMIS_Report = () => {
       }
     } catch (error) {
       message.error("An error occurred while downloading NDR report.");
-    } finally {
-      setNdrLoading(false);
     }
   };
 
   const handleOutForDeliverySubmit = async (e) => {
     e.preventDefault();
-    setOutForDeliveryLoading(true);
 
-    if (!outForDeliveryDates || !outForDeliveryDates[0] || !outForDeliveryDates[1]) {
-      message.error("Please select both start and end dates for Out For Delivery report.");
-      setOutForDeliveryLoading(false);
+    if (
+      !outForDeliveryDates ||
+      !outForDeliveryDates[0] ||
+      !outForDeliveryDates[1]
+    ) {
+      message.error(
+        "Please select both start and end dates for Out For Delivery report."
+      );
       return;
     }
 
@@ -143,7 +131,7 @@ const AdminMIS_Report = () => {
       startDate: outForDeliveryDates[0].format("YYYY-MM-DD"),
       endDate: outForDeliveryDates[1].format("YYYY-MM-DD"),
     };
-
+    console.log("out", data);
     try {
       const response = await fetch(
         "https://backend.shiphere.in/api/report/outfordelivery",
@@ -174,19 +162,20 @@ const AdminMIS_Report = () => {
         message.error("Failed to download Out For Delivery report.");
       }
     } catch (error) {
-      message.error("An error occurred while downloading Out For Delivery report.");
-    } finally {
-      setOutForDeliveryLoading(false);
+      message.error(
+        "An error occurred while downloading Out For Delivery report."
+      );
     }
   };
 
+  // Handle In Transit Report submission
   const handleInTransitSubmit = async (e) => {
     e.preventDefault();
-    setInTransitLoading(true);
 
     if (!inTransitDates || !inTransitDates[0] || !inTransitDates[1]) {
-      message.error("Please select both start and end dates for In Transit report.");
-      setInTransitLoading(false);
+      message.error(
+        "Please select both start and end dates for In Transit report."
+      );
       return;
     }
 
@@ -195,7 +184,7 @@ const AdminMIS_Report = () => {
       startDate: inTransitDates[0].format("YYYY-MM-DD"),
       endDate: inTransitDates[1].format("YYYY-MM-DD"),
     };
-
+    console.log("transit", data);
     try {
       const response = await fetch(
         "https://backend.shiphere.in/api/report/getintransit",
@@ -227,18 +216,16 @@ const AdminMIS_Report = () => {
       }
     } catch (error) {
       message.error("An error occurred while downloading In Transit report.");
-    } finally {
-      setInTransitLoading(false);
     }
   };
 
-  const handleWalletSubmit = async (e) => {
+  const handlewalletSubmit = async (e) => {
     e.preventDefault();
-    setWalletLoading(true);
 
     if (!walletDates || !walletDates[0] || !walletDates[1]) {
-      message.error("Please select both start and end dates for Wallet report.");
-      setWalletLoading(false);
+      message.error(
+        "Please select both start and end dates for In Transit report."
+      );
       return;
     }
 
@@ -247,7 +234,7 @@ const AdminMIS_Report = () => {
       startDate: walletDates[0].format("YYYY-MM-DD"),
       endDate: walletDates[1].format("YYYY-MM-DD"),
     };
-
+    console.log("wallet", data);
     try {
       const response = await fetch(
         "https://backend.shiphere.in/api/report/gettranscations",
@@ -272,15 +259,13 @@ const AdminMIS_Report = () => {
         link.remove();
         window.URL.revokeObjectURL(url);
         message.success("Wallet Report Downloaded successfully");
-        setWalletDates([null, null]);
+        setInTransitDates([null, null]);
         setEmail("");
       } else {
         message.error("Failed to download Wallet report.");
       }
     } catch (error) {
       message.error("An error occurred while downloading Wallet report.");
-    } finally {
-      setWalletLoading(false);
     }
   };
 
@@ -317,8 +302,8 @@ const AdminMIS_Report = () => {
             </label>
           </div>
           <div className="btn111">
-            <button className="form-button" type="submit" disabled={misLoading}>
-              {misLoading ? "Downloading..." : "Submit"}
+            <button className="form-button" type="submit">
+              Submit
             </button>
           </div>
         </form>
@@ -328,6 +313,19 @@ const AdminMIS_Report = () => {
       <div className="report-box">
         <form className="report-form" onSubmit={handleNdrSubmit}>
           <h2 className="report-title">Download NDR Report</h2>
+          <div className="form-group">
+            <label className="form-label">
+              Email Address
+              <input
+                className="form-input"
+                type="email"
+                value={email}
+                onChange={handleEmailChange}
+                placeholder="Enter your email"
+                required
+              />
+            </label>
+          </div>
           <div className="form-group">
             <label className="form-label">
               Select Date Range
@@ -342,8 +340,8 @@ const AdminMIS_Report = () => {
             </label>
           </div>
           <div className="btn111">
-            <button className="form-button" type="submit" disabled={ndrLoading}>
-              {ndrLoading ? "Downloading..." : "Submit"}
+            <button className="form-button" type="submit">
+              Submit
             </button>
           </div>
         </form>
@@ -353,6 +351,19 @@ const AdminMIS_Report = () => {
       <div className="report-box">
         <form className="report-form" onSubmit={handleOutForDeliverySubmit}>
           <h2 className="report-title">Download Out For Delivery Report</h2>
+          <div className="form-group">
+            <label className="form-label">
+              Email Address
+              <input
+                className="form-input"
+                type="email"
+                value={email}
+                onChange={handleEmailChange}
+                placeholder="Enter your email"
+                required
+              />
+            </label>
+          </div>
           <div className="form-group">
             <label className="form-label">
               Select Date Range
@@ -367,12 +378,8 @@ const AdminMIS_Report = () => {
             </label>
           </div>
           <div className="btn111">
-            <button
-              className="form-button"
-              type="submit"
-              disabled={outForDeliveryLoading}
-            >
-              {outForDeliveryLoading ? "Downloading..." : "Submit"}
+            <button className="form-button" type="submit">
+              Submit
             </button>
           </div>
         </form>
@@ -381,7 +388,20 @@ const AdminMIS_Report = () => {
       {/* In Transit Report Box */}
       <div className="report-box">
         <form className="report-form" onSubmit={handleInTransitSubmit}>
-          <h2 className="report-title">Download In Transit Report</h2>
+          <h2 className="report-title">Download Current Status Report</h2>
+          <div className="form-group">
+            <label className="form-label">
+              Email Address
+              <input
+                className="form-input"
+                type="email"
+                value={email}
+                onChange={handleEmailChange}
+                placeholder="Enter your email"
+                required
+              />
+            </label>
+          </div>
           <div className="form-group">
             <label className="form-label">
               Select Date Range
@@ -396,23 +416,35 @@ const AdminMIS_Report = () => {
             </label>
           </div>
           <div className="btn111">
-            <button className="form-button" type="submit" disabled={inTransitLoading}>
-              {inTransitLoading ? "Downloading..." : "Submit"}
+            <button className="form-button" type="submit">
+              Submit
             </button>
           </div>
         </form>
       </div>
 
-      {/* Wallet Report Box */}
       <div className="report-box">
-        <form className="report-form" onSubmit={handleWalletSubmit}>
+        <form className="report-form" onSubmit={handlewalletSubmit}>
           <h2 className="report-title">Download Wallet Report</h2>
+          <div className="form-group">
+            <label className="form-label">
+              Email Address
+              <input
+                className="form-input"
+                type="email"
+                value={email}
+                onChange={handleEmailChange}
+                placeholder="Enter your email"
+                required
+              />
+            </label>
+          </div>
           <div className="form-group">
             <label className="form-label">
               Select Date Range
               <DatePicker.RangePicker
                 value={walletDates}
-                onChange={setWalletDates}
+                onChange={setwalletDates}
                 format="YYYY-MM-DD"
                 className="date-picker"
                 allowClear
@@ -421,8 +453,8 @@ const AdminMIS_Report = () => {
             </label>
           </div>
           <div className="btn111">
-            <button className="form-button" type="submit" disabled={walletLoading}>
-              {walletLoading ? "Downloading..." : "Submit"}
+            <button className="form-button" type="submit">
+              Submit
             </button>
           </div>
         </form>
