@@ -42,9 +42,32 @@ const Dashboard = () => {
   const { orders } = useOrderContext();
   const { deliveryPartners } = useDeliveryPartner();
   const [remittanceData, setRemittanceData] = useState([]);
+  const [selectedTimeRange, setSelectedTimeRange] = useState("All Time");
+
   const today = new Date();
   const todayStart = new Date(today.setHours(0, 0, 0, 0)); // Start of the day
   const todayEnd = new Date(today.setHours(23, 59, 59, 999)); // End of the day
+  const oneWeekAgo = new Date(today - 7 * 24 * 60 * 60 * 1000); // 1 week ago
+  const oneMonthAgo = new Date(today.setMonth(today.getMonth() - 1)); // 1 month ago
+
+  const filterDataByDate = (startDate, endDate, data, key = "updatedAt") =>
+    data?.filter(
+      (item) =>
+        new Date(item[key]) >= startDate && new Date(item[key]) <= endDate
+    );
+
+  const calculateStartDate = (timeRange) => {
+    switch (timeRange) {
+      case "Today":
+        return todayStart;
+      case "1 Week":
+        return oneWeekAgo;
+      case "1 Month":
+        return oneMonthAgo;
+      default:
+        return new Date(0); // Epoch for all-time data
+    }
+  };
 
   useEffect(() => {
     const fetchRemittance = async () => {
@@ -66,22 +89,76 @@ const Dashboard = () => {
     };
     fetchRemittance();
   }, []);
+
   const remmitance = remittanceData.remittances;
+
   const order = orders?.orders;
-  console.log(order);
+  console.log("order", order);
+
   const cancelOrdersAmt = order?.filter(
     (order) => order.status === "Cancelled"
   );
   const newOrdersAmt = order?.filter((order) => order.status === "InTransit");
+
   const inTransitOrdersAmt = order?.filter(
     (order) => order.status === "Delivered"
   );
+
   const totalnewOrdersAmt = order?.filter((order) => order.status === "New");
   console.log(totalnewOrdersAmt);
+
   const ShippedOrdersAmt = order?.filter((order) => order.status === "Shipped");
+
   const RTOOrdersAmt = order?.filter(
     (order) => order.ndrstatus === "RTO" || order.ndrstatus === "RtoDone"
   );
+  // *******
+  console.log("s", ShippedOrdersAmt);
+  console.log("ss", RTOOrdersAmt);
+  console.log("sss", remmitance);
+  const filteredOrders = filterDataByDate(
+    calculateStartDate(selectedTimeRange),
+    todayEnd,
+    orders?.orders
+  );
+  const filteredRemittances = remmitance?.filter((remittance) => {
+    const remittanceDate = new Date(remittance.generatedDate); // Ensure this matches your remittance date field
+    return (
+      remittanceDate >= calculateStartDate(selectedTimeRange) &&
+      remittanceDate <= todayEnd
+    );
+  });
+  console.log("ssss", filteredRemittances);
+  const shippedOrders = filteredOrders?.filter(
+    (filteredOrders) => filteredOrders.status === "Shipped"
+  );
+  const rtoOrders = filteredOrders?.filter(
+    (order) => order.ndrstatus === "RTO" || order.ndrstatus === "RtoDone"
+  );
+
+  const doughnutData = {
+    labels: ["Shipped Orders", "COD Remittance", "RTO"],
+    datasets: [
+      {
+        label: "Order Status Overview",
+        data: [
+          shippedOrders?.length || 0,
+          filteredRemittances?.length || 0,
+          rtoOrders?.length || 0,
+        ],
+        backgroundColor: [
+          "rgba(43, 63, 229, 0.8)",
+          "rgba(250, 192, 19, 0.8)",
+          "rgba(253, 135, 135, 0.8)",
+        ],
+        borderColor: [
+          "rgba(43, 63, 229, 1)",
+          "rgba(250, 192, 19, 1)",
+          "rgba(253, 135, 135, 1)",
+        ],
+      },
+    ],
+  };
 
   const todayNewOrders = order?.filter((order) => {
     const createdAt = new Date(order.createdAt);
@@ -171,7 +248,12 @@ const Dashboard = () => {
       },
     ],
   };
-
+  // const filteredOrders = selectedTimeRange
+  // ? orders?.orders?.filter((order) => {
+  //     const createdAt = new Date(order.createdAt);
+  //     return createdAt >= startDate;
+  //   })
+  // : orders?.orders;
   const barChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -200,145 +282,156 @@ const Dashboard = () => {
       <div className="dataCard topDestinationsCard">
         <ShipmentStatusGraph />
       </div>
-
-      <div
-        className="orderSummaryContainer1"
-        // style={{ gridTemplateColumns: "repeat(2, 1fr)" }}
-      >
-        <div className="orderSummaryCard">
-          <div className="orderSummary">
-            <h3>{totalnewOrdersAmt?.length}</h3>
-            <p>New Orders</p>
-            <p style={{ fontWeight: "bolder", fontSize: "15px" }}>
-              <strong>Today: </strong>
-              {todayNewOrders?.length || 0}
-            </p>
+      <div style={{ display: "flex", gap: "1rem" }}>
+        <div
+          className="orderSummaryContainer1"
+          style={{ width: "60%", position: "relative" }}
+          // style={{ gridTemplateColumns: "repeat(2, 1fr)" }}
+        >
+          <div className="orderSummaryCard">
+            <div className="orderSummary">
+              <h3>{totalnewOrdersAmt?.length}</h3>
+              <p>New Orders</p>
+              <p style={{ fontWeight: "bolder", fontSize: "15px" }}>
+                <strong>Today: </strong>
+                {todayNewOrders?.length || 0}
+              </p>
+            </div>
+            <div className="orderIcon">
+              <MdAutorenew size={40} color="#2B3FE5" />
+            </div>
           </div>
-          <div className="orderIcon">
-            <MdAutorenew size={40} color="#2B3FE5" />
+
+          <div className="orderSummaryCard">
+            <div className="orderSummary">
+              <h3>{ShippedOrdersAmt?.length}</h3>
+              <p>Shipped Orders</p>
+              <p style={{ fontWeight: "bolder", fontSize: "15px" }}>
+                <strong>Today: </strong>
+                {todayShippedOrders?.length || 0}
+              </p>
+            </div>
+            <div className="orderIcon">
+              <FcShipped size={40} color="#FD8787" />
+            </div>
+          </div>
+
+          <div className="orderSummaryCard">
+            <div className="orderSummary">
+              <h3>{newOrdersAmt?.length}</h3>
+              <p>Pending Orders</p>
+              <p style={{ fontWeight: "bolder", fontSize: "15px" }}>
+                <strong>Today: </strong>
+                {todayPendingOrders?.length || 0}
+              </p>
+            </div>
+            <div className="orderIcon">
+              <FaHourglassHalf size={40} color="#FAC013" />
+            </div>
+          </div>
+
+          <div className="orderSummaryCard">
+            <div className="orderSummary">
+              <h3>{inTransitOrdersAmt?.length}</h3>
+              <p>Completed Orders</p>
+              <p style={{ fontWeight: "bolder", fontSize: "15px" }}>
+                <strong>Today: </strong>
+                {todayCompletedOrders?.length || 0}
+              </p>
+            </div>
+            <div className="orderIcon">
+              <FaCheckCircle size={40} color="#34A853" />
+            </div>
+          </div>
+
+          <div className="orderSummaryCard">
+            <div className="orderSummary">
+              <h3>{cancelOrdersAmt?.length}</h3>
+              <p>Cancelled Orders</p>
+              <p style={{ fontWeight: "bolder", fontSize: "15px" }}>
+                <strong>Today: </strong>
+                {todayCancelledOrders?.length || 0}
+              </p>
+            </div>
+            <div className="orderIcon">
+              <FaTimesCircle size={40} color="#FD8787" />
+            </div>
+          </div>
+
+          <div className="orderSummaryCard">
+            <div className="orderSummary">
+              <h3>{order?.length}</h3>
+              <p>Total Orders</p>
+              <p style={{ fontWeight: "bolder", fontSize: "15px" }}>
+                <strong>Today: </strong>
+                {todayTotalOrders?.length || 0}
+              </p>
+            </div>
+            <div className="orderIcon">
+              <FaShoppingCart size={40} color="#2B3FE5" />
+            </div>
           </div>
         </div>
 
-        <div className="orderSummaryCard">
-          <div className="orderSummary">
-            <h3>{ShippedOrdersAmt?.length}</h3>
-            <p>Shipped Orders</p>
-            <p style={{ fontWeight: "bolder", fontSize: "15px" }}>
-              <strong>Today: </strong>
-              {todayShippedOrders?.length || 0}
-            </p>
+        <div
+          style={{
+            width: "40%",
+            position: "relative",
+            backgroundColor: "#ffffff",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          {/* Dropdown for time range selection */}
+          <div className="dropdownContainer" style={{ paddingTop: "20px" }}>
+            <label htmlFor="timeRange">Customise Your Graph: </label>
+            <select
+              id="timeRange"
+              value={selectedTimeRange}
+              onChange={(e) => setSelectedTimeRange(e.target.value)}
+            >
+              <option value="Today">Today</option>
+              <option value="1 Week">This Week</option>
+              <option value="1 Month">This Month</option>
+              <option value="All Time">Overall</option>
+            </select>
           </div>
-          <div className="orderIcon">
-            <FcShipped size={40} color="#FD8787" />
-          </div>
-        </div>
 
-        <div className="orderSummaryCard">
-          <div className="orderSummary">
-            <h3>{newOrdersAmt?.length}</h3>
-            <p>Pending Orders</p>
-            <p style={{ fontWeight: "bolder", fontSize: "15px" }}>
-              <strong>Today: </strong>
-              {todayPendingOrders?.length || 0}
-            </p>
-          </div>
-          <div className="orderIcon">
-            <FaHourglassHalf size={40} color="#FAC013" />
-          </div>
-        </div>
-
-        <div className="orderSummaryCard">
-          <div className="orderSummary">
-            <h3>{inTransitOrdersAmt?.length}</h3>
-            <p>Completed Orders</p>
-            <p style={{ fontWeight: "bolder", fontSize: "15px" }}>
-              <strong>Today: </strong>
-              {todayCompletedOrders?.length || 0}
-            </p>
-          </div>
-          <div className="orderIcon">
-            <FaCheckCircle size={40} color="#34A853" />
-          </div>
-        </div>
-
-        <div className="orderSummaryCard">
-          <div className="orderSummary">
-            <h3>{cancelOrdersAmt?.length}</h3>
-            <p>Cancelled Orders</p>
-            <p style={{ fontWeight: "bolder", fontSize: "15px" }}>
-              <strong>Today: </strong>
-              {todayCancelledOrders?.length || 0}
-            </p>
-          </div>
-          <div className="orderIcon">
-            <FaTimesCircle size={40} color="#FD8787" />
-          </div>
-        </div>
-
-        <div className="orderSummaryCard">
-          <div className="orderSummary">
-            <h3>{order?.length}</h3>
-            <p>Total Orders</p>
-            <p style={{ fontWeight: "bolder", fontSize: "15px" }}>
-              <strong>Today: </strong>
-              {todayTotalOrders?.length || 0}
-            </p>
-          </div>
-          <div className="orderIcon">
-            <FaShoppingCart size={40} color="#2B3FE5" />
+          <div
+            className="dataCard categoryCard"
+            style={{
+              position: "relative",
+              width: "90%",
+            }}
+          >
+            <Doughnut
+              data={doughnutData}
+              options={{
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  title: {
+                    display: true,
+                    text: "Business Overview: Shipped and In Transit Orders",
+                    font: {
+                      size: 20,
+                    },
+                  },
+                  datalabels: {
+                    display: true,
+                    color: "white",
+                    font: {
+                      weight: "bold",
+                    },
+                    formatter: (value) => `${value}`,
+                  },
+                },
+              }}
+            />
           </div>
         </div>
       </div>
-
-      <div className="dataCard categoryCard">
-        <Doughnut
-          data={{
-            labels: ["Shipped Orders", "COD Remmitance", "RTO"],
-            datasets: [
-              {
-                label: "Order Status Overview",
-                data: [
-                  ShippedOrdersAmt?.length || 0,
-                  remmitance?.length || 0,
-                  RTOOrdersAmt?.length || 0,
-                ],
-                backgroundColor: [
-                  "rgba(43, 63, 229, 0.8)",
-                  "rgba(250, 192, 19, 0.8)",
-                  "rgba(253, 135, 135, 0.8)",
-                ],
-                borderColor: [
-                  "rgba(43, 63, 229, 1.8)",
-                  "rgba(250, 192, 19, 1.8)",
-                  "rgba(253, 135, 135,1.8)",
-                ],
-              },
-            ],
-          }}
-          options={{
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              title: {
-                display: true,
-                text: "Business Overview: Shipped and In Transit Orders",
-                font: {
-                  size: 20,
-                },
-              },
-              datalabels: {
-                display: true,
-                color: "white",
-                font: {
-                  weight: "bold",
-                },
-                formatter: (value) => `${value}`,
-              },
-            },
-          }}
-        />
-      </div>
-
       <div className="dataCard revenueCard">
         <Bar data={barChartData} options={barChartOptions} />
       </div>
