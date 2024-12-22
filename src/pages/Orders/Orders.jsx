@@ -501,7 +501,6 @@ const Orders = () => {
                 : null,
           };
           // console.log(updateBody);
-
           return axios.put(
             `https://backend.shiphere.in/api/orders/updateOrderStatus/${order.orderId}`,
             updateBody,
@@ -541,17 +540,37 @@ const Orders = () => {
       const test = await cancelOrder(selectedOrderData);
       let counter = 0;
       for (const orderId of selectedRowKeys) {
-        const order = selectedOrderData.find((order) => order._id === orderId);
-
+         const order = selectedOrderData.find((order) => order._id === orderId);
+            console.log("order 546", order); 
         if (test[counter++].data?.order_cancellation_details?.successful) {
           console.log("at line 540 and counter is " + counter);
+
+
+          // try {
+          //   const cancelResponse = await axios.put(
+          //     `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
+          //     { status: "Cancelled" },
+          //     { headers: { Authorization: `${token}` } }
+          //   );
+          console.log("current orderId",orderId);
+         
           try {
-            const cancelResponse = await axios.put(
-              `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
-              { status: "Cancelled" },
-              { headers: { Authorization: `${token}` } }
-            );
-            console.log("cancel response " + JSON.stringify(cancelResponse));
+            const cancelResponse =  await fetch(
+            `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: localStorage.getItem("token"),
+              },
+              body: JSON.stringify({
+                status: "Cancelled",
+              }),
+            }
+          ); 
+         
+
+            console.log("cancel response " + json.stringify(cancelResponse));
 
             if (cancelResponse.status === 201) {
               const walletRequestBody = {
