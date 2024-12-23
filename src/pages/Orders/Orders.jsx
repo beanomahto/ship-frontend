@@ -147,30 +147,42 @@ const Orders = () => {
 
     try {
       const updatedOrders = [];
+      const unmatchedOrders = [];
 
       for (const orderId of selectedRowKeys) {
         const order = orders?.orders.find((order) => order._id === orderId);
         if (!order) continue;
-        // //console.log(orderId);
-        // //console.log(order);
+        // console.log("orderId", orderId);
+        // console.log("order", order);
 
         let forwardCharge, codCharge, rtoCharge;
 
         try {
           const costData = await shipNowCost(orderId, selectedWarehouse?._id);
-          // console.log('Cost Data for Order:', costData);
+          console.log("Cost Data for Order:", costData);
 
-          forwardCharge = costData?.cost?.find(
+          const matchedCost = costData?.cost?.find(
             (cost) => cost.deliveryPartner === selectedDeliveryPartner.name
-          )?.forwardCost;
+          );
 
-          codCharge = costData?.cost?.find(
-            (cost) => cost.deliveryPartner === selectedDeliveryPartner.name
-          )?.codCost;
+          if (!matchedCost) {
+            unmatchedOrders.push(order.orderId); // Track unmatched orders
+            continue; // Skip to the next order
+          }
+          // forwardCharge = costData?.cost?.find(
+          //   (cost) => cost.deliveryPartner === selectedDeliveryPartner.name
+          // )?.forwardCost;
 
-          rtoCharge = costData?.cost?.find(
-            (cost) => cost.deliveryPartner === selectedDeliveryPartner.name
-          )?.rtoCost;
+          // codCharge = costData?.cost?.find(
+          //   (cost) => cost.deliveryPartner === selectedDeliveryPartner.name
+          // )?.codCost;
+
+          // rtoCharge = costData?.cost?.find(
+          //   (cost) => cost.deliveryPartner === selectedDeliveryPartner.name
+          // )?.rtoCost;
+          forwardCharge = matchedCost.forwardCost;
+          codCharge = matchedCost.codCost;
+          rtoCharge = matchedCost.rtoCost;
 
           // console.log(rtoCharge +" "+ forwardCharge +" " + codCharge);
         } catch (error) {
@@ -193,7 +205,9 @@ const Orders = () => {
           message.success("AWB generated");
         } catch (error) {
           // //console.log('Error in shipping with this partner:', error);
-          message.error("Error in shipping with this partner");
+          message.error(
+            `Error shipping order ${order.orderId}. Please try again.`
+          );
           continue;
         }
 
@@ -259,6 +273,13 @@ const Orders = () => {
         }
 
         updatedOrders.push({ ...order, status: "Shipped" });
+      }
+      if (unmatchedOrders.length > 0) {
+        message.warning(
+          `Orders ${unmatchedOrders.join(
+            ", "
+          )} do not match the selected delivery partner and were not shipped.`
+        );
       }
       fetchOrders();
       fetchBalance();
@@ -570,8 +591,6 @@ const Orders = () => {
                 }),
               }
             );
-
-        
 
             if (cancelResponse.status === 201) {
               const walletRequestBody = {
