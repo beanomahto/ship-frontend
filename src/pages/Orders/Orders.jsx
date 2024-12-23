@@ -540,11 +540,13 @@ const Orders = () => {
       const test = await cancelOrder(selectedOrderData);
       let counter = 0;
       for (const orderId of selectedRowKeys) {
-         const order = selectedOrderData.find((order) => order._id === orderId);
-            console.log("order 546", order); 
-        if (test[counter++].data?.order_cancellation_details?.successful) {
+        const order = selectedOrderData.find((order) => order._id === orderId);
+        console.log("order 546", order);
+        if (
+          order.awb == "false" ||
+          test[counter++].data?.order_cancellation_details?.successful
+        ) {
           console.log("at line 540 and counter is " + counter);
-
 
           // try {
           //   const cancelResponse = await axios.put(
@@ -552,23 +554,22 @@ const Orders = () => {
           //     { status: "Cancelled" },
           //     { headers: { Authorization: `${token}` } }
           //   );
-          console.log("current orderId",orderId);
-         
+          console.log("current orderId", orderId);
+
           try {
-            const cancelResponse =  await fetch(
-            `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
-            {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: localStorage.getItem("token"),
-              },
-              body: JSON.stringify({
-                status: "Cancelled",
-              }),
-            }
-          ); 
-         
+            const cancelResponse = await fetch(
+              `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
+              {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: localStorage.getItem("token"),
+                },
+                body: JSON.stringify({
+                  status: "Cancelled",
+                }),
+              }
+            );
 
             console.log("cancel response " + json.stringify(cancelResponse));
 
