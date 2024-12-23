@@ -571,7 +571,7 @@ const Orders = () => {
               }
             );
 
-            console.log("cancel response " + json.stringify(cancelResponse));
+        
 
             if (cancelResponse.status === 201) {
               const walletRequestBody = {
