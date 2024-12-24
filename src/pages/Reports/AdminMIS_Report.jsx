@@ -11,13 +11,21 @@ const AdminMIS_Report = () => {
   const [outForDeliveryDates, setOutForDeliveryDates] = useState([null, null]);
   const [inTransitDates, setInTransitDates] = useState([null, null]);
   const [walletDates, setwalletDates] = useState([null, null]);
+
+  // Separate loading states for each report
+  const [loadingMis, setLoadingMis] = useState(false);
+  const [loadingNdr, setLoadingNdr] = useState(false);
+  const [loadingOutForDelivery, setLoadingOutForDelivery] = useState(false);
+  const [loadingInTransit, setLoadingInTransit] = useState(false);
+  const [loadingWallet, setLoadingWallet] = useState(false);
+
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
 
   const handleMisSubmit = async (e) => {
     e.preventDefault();
-
+    setLoadingMis(true);
     // Check if dates are selected
     if (!misDates || !misDates[0] || !misDates[1]) {
       message.error("Please select both start and end dates for MIS report.");
@@ -59,6 +67,7 @@ const AdminMIS_Report = () => {
       } else {
         message.error("Failed to download MIS");
       }
+      setLoadingMis(false);
     } catch (error) {
       message.error("An error occurred while downloading MIS");
     }
@@ -66,7 +75,7 @@ const AdminMIS_Report = () => {
 
   const handleNdrSubmit = async (e) => {
     e.preventDefault();
-
+    setLoadingNdr(true);
     if (!ndrDates || !ndrDates[0] || !ndrDates[1]) {
       message.error("Please select both start and end dates for NDR report.");
       return;
@@ -107,6 +116,7 @@ const AdminMIS_Report = () => {
       } else {
         message.error("Failed to download NDR report.");
       }
+      setLoadingNdr(false);
     } catch (error) {
       message.error("An error occurred while downloading NDR report.");
     }
@@ -114,7 +124,7 @@ const AdminMIS_Report = () => {
 
   const handleOutForDeliverySubmit = async (e) => {
     e.preventDefault();
-
+    setLoadingOutForDelivery(true);
     if (
       !outForDeliveryDates ||
       !outForDeliveryDates[0] ||
@@ -161,6 +171,7 @@ const AdminMIS_Report = () => {
       } else {
         message.error("Failed to download Out For Delivery report.");
       }
+      setLoadingOutForDelivery(false);
     } catch (error) {
       message.error(
         "An error occurred while downloading Out For Delivery report."
@@ -171,7 +182,7 @@ const AdminMIS_Report = () => {
   // Handle In Transit Report submission
   const handleInTransitSubmit = async (e) => {
     e.preventDefault();
-
+    setLoadingInTransit(true);
     if (!inTransitDates || !inTransitDates[0] || !inTransitDates[1]) {
       message.error(
         "Please select both start and end dates for In Transit report."
@@ -214,6 +225,7 @@ const AdminMIS_Report = () => {
       } else {
         message.error("Failed to download In Transit report.");
       }
+      setLoadingInTransit(false);
     } catch (error) {
       message.error("An error occurred while downloading In Transit report.");
     }
@@ -221,7 +233,7 @@ const AdminMIS_Report = () => {
 
   const handlewalletSubmit = async (e) => {
     e.preventDefault();
-
+    setLoadingWallet(true);
     if (!walletDates || !walletDates[0] || !walletDates[1]) {
       message.error(
         "Please select both start and end dates for In Transit report."
@@ -264,6 +276,7 @@ const AdminMIS_Report = () => {
       } else {
         message.error("Failed to download Wallet report.");
       }
+      setLoadingWallet(false);
     } catch (error) {
       message.error("An error occurred while downloading Wallet report.");
     }
@@ -302,8 +315,8 @@ const AdminMIS_Report = () => {
             </label>
           </div>
           <div className="btn111">
-            <button className="form-button" type="submit">
-              Submit
+            <button className="form-button" type="submit" disabled={loadingMis}>
+              {loadingMis ? "Downloading..." : "Submit"}
             </button>
           </div>
         </form>
@@ -340,8 +353,8 @@ const AdminMIS_Report = () => {
             </label>
           </div>
           <div className="btn111">
-            <button className="form-button" type="submit">
-              Submit
+            <button className="form-button" type="submit" disabled={loadingNdr}>
+              {loadingNdr ? "Downloading..." : "Submit"}
             </button>
           </div>
         </form>
@@ -378,8 +391,12 @@ const AdminMIS_Report = () => {
             </label>
           </div>
           <div className="btn111">
-            <button className="form-button" type="submit">
-              Submit
+            <button
+              className="form-button"
+              type="submit"
+              disabled={loadingOutForDelivery}
+            >
+              {loadingOutForDelivery ? "Downloading..." : "Submit"}
             </button>
           </div>
         </form>
@@ -416,8 +433,12 @@ const AdminMIS_Report = () => {
             </label>
           </div>
           <div className="btn111">
-            <button className="form-button" type="submit">
-              Submit
+            <button
+              className="form-button"
+              type="submit"
+              disabled={loadingInTransit}
+            >
+              {loadingInTransit ? "Downloading..." : "Submit"}
             </button>
           </div>
         </form>
@@ -453,8 +474,12 @@ const AdminMIS_Report = () => {
             </label>
           </div>
           <div className="btn111">
-            <button className="form-button" type="submit">
-              Submit
+            <button
+              className="form-button"
+              type="submit"
+              disabled={loadingWallet}
+            >
+              {loadingWallet ? "Downloading..." : "Submit"}
             </button>
           </div>
         </form>
