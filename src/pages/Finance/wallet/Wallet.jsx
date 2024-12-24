@@ -94,12 +94,12 @@ const Wallet = () => {
 
         const handleSearch = () => {
           if (searchInput === "IamA_Developer") {
-            setDeveloperMode(true); 
+            setDeveloperMode(true);
             clearFilters();
-            setSearchInput(""); 
+            setSearchInput("");
             message.success("Developer mode enabled!");
           } else {
-            setDeveloperMode(false); 
+            setDeveloperMode(false);
             confirm();
           }
         };
@@ -107,7 +107,7 @@ const Wallet = () => {
         const handleReset = () => {
           clearFilters();
           setSearchInput("");
-          setDeveloperMode(false); 
+          setDeveloperMode(false);
         };
 
         return (
@@ -117,35 +117,37 @@ const Wallet = () => {
               value={searchInput}
               onChange={(e) => {
                 setSearchInput(e.target.value);
-                setSelectedKeys(e.target.value ? [e.target.value] : []); 
+                setSelectedKeys(e.target.value ? [e.target.value] : []);
               }}
               onPressEnter={handleSearch}
-              style={{ marginBottom: 8, display: "block", width: "100%" }}
+              style={{
+                marginBottom: 8,
+                padding: "5px",
+                display: "block",
+                width: "90%",
+              }}
             />
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <Button
                 type="primary"
-                onClick={handleSearch} 
+                onClick={handleSearch}
                 size="small"
                 style={{ width: 90 }}
               >
                 Search
               </Button>
-              <Button
-                onClick={handleReset} 
-                size="small"
-                style={{ width: 90 }}
-              >
+              <Button onClick={handleReset} size="small" style={{ width: 90 }}>
                 Reset
               </Button>
             </div>
           </div>
         );
       },
+
       onFilter: (value, record) =>
         record?.order?.orderId.toLowerCase().includes(value.toLowerCase()),
       render: (text, transaction) => <div>{transaction?.order?.orderId}</div>,
-    },    
+    },
     {
       title: "Tracking Id",
       dataIndex: "trcking_id",
@@ -154,12 +156,16 @@ const Wallet = () => {
     {
       title: "Debit",
       dataIndex: "debit",
-      render: (text, transaction) => <div>{transaction?.debit?.toFixed(2)}</div>,
+      render: (text, transaction) => (
+        <div>{transaction?.debit?.toFixed(2)}</div>
+      ),
     },
     {
       title: "Credit",
       dataIndex: "credit",
-      render: (text, transaction) => <div>{transaction?.credit?.toFixed(2)}</div>,
+      render: (text, transaction) => (
+        <div>{transaction?.credit?.toFixed(2)}</div>
+      ),
     },
     {
       title: "Remarks",
@@ -208,7 +214,9 @@ const Wallet = () => {
           );
           message.success("Transactions deleted successfully!");
           setTransactions((prev) =>
-            prev.filter((transaction) => !selectedRowKeys.includes(transaction._id))
+            prev.filter(
+              (transaction) => !selectedRowKeys.includes(transaction._id)
+            )
           );
           setSelectedRowKeys([]);
         } catch (error) {
@@ -222,11 +230,11 @@ const Wallet = () => {
   };
 
   const rowSelection = developerMode
-  ? {
-      selectedRowKeys,
-      onChange: (selectedKeys) => setSelectedRowKeys(selectedKeys),
-    }
-  : null;
+    ? {
+        selectedRowKeys,
+        onChange: (selectedKeys) => setSelectedRowKeys(selectedKeys),
+      }
+    : null;
 
   return (
     <div>
@@ -247,19 +255,17 @@ const Wallet = () => {
         <Button style={{ borderRadius: "14px", fontSize: "1rem" }}>
           <Link to="/finance/history">Recharge History</Link>
         </Button>
-        {
-          developerMode && (
-            <Button
-          type="danger"
-          onClick={handleDelete}
-          disabled={selectedRowKeys.length === 0}
-          loading={deleting}
-          style={{ borderRadius: "14px", fontSize: "1rem" }}
-        >
-          Delete Selected
-        </Button>
-          )
-        }
+        {developerMode && (
+          <Button
+            type="danger"
+            onClick={handleDelete}
+            disabled={selectedRowKeys.length === 0}
+            loading={deleting}
+            style={{ borderRadius: "14px", fontSize: "1rem" }}
+          >
+            Delete Selected
+          </Button>
+        )}
       </div>
       <Table
         className="table"
@@ -269,6 +275,11 @@ const Wallet = () => {
         loading={loading}
         rowKey={(record) => record._id} // Use unique _id here
         rowSelection={rowSelection} // Conditional row selection
+        pagination={{
+          showSizeChanger: true,
+          pageSizeOptions: ["10", "20", "50", "100", "500", "1000"],
+          defaultPageSize: 10,
+        }}
       />
     </div>
   );
