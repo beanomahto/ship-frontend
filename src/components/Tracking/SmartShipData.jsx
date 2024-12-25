@@ -13,13 +13,13 @@ import {
 
 import {
   CheckCircleOutlined,
-    ClockCircleOutlined,
-    SyncOutlined,
-    CheckOutlined,
-    TruckOutlined,
-    HomeOutlined,
+  ClockCircleOutlined,
+  SyncOutlined,
+  CheckOutlined,
+  TruckOutlined,
+  HomeOutlined,
 } from "@ant-design/icons";
- import { MdLocalShipping, MdOutlineDownloadDone } from "react-icons/md";
+import { MdLocalShipping, MdOutlineDownloadDone } from "react-icons/md";
 
 import { useOrderContext } from "../../context/OrderContext";
 import axios from "axios";
@@ -30,7 +30,7 @@ const { Step } = Steps;
 
 const SmartShipData = ({ trackingInfo, advertisement }) => {
   console.log("oko");
-console.log("advertisement", advertisement);
+  console.log("advertisement", advertisement);
   const scanData = trackingInfo?.data?.scans;
   const scanKey = scanData ? Object.keys(scanData)[0] : null;
   const trackingHistory = scanKey ? scanData[scanKey] : [];
@@ -45,32 +45,32 @@ console.log("advertisement", advertisement);
   //   "Delivered",
   // ];
   const progressSteps = [
-        {
-          title: "Shipping Label Generated",
-          icon: <CheckOutlined style={{ color: "#69c0ff" }} />,
-        },
-        {
-          title: "Manifested",
-          icon: <ClockCircleOutlined style={{ color: "#ffa940" }} />,
-        },
-        {
-          title: "Shipped",
-          icon: <MdLocalShipping style={{ color: "#1890ff" }} />,
-        },
-        {
-          title: "In Transit",
-          icon: <TruckOutlined style={{ color: "#faad14" }} />,
-        },
-        {
-          title: "Out For Delivery",
-          icon: <SyncOutlined style={{ color: "#1890ff" }} spin />,
-        },
-        {
-          title: "Delivered",
-          icon: <HomeOutlined style={{ color: "#52c41a" }} />,
-        },
-      ];
-    
+    {
+      title: "Shipping Label Generated",
+      icon: <CheckOutlined style={{ color: "#69c0ff" }} />,
+    },
+    {
+      title: "Manifested",
+      icon: <ClockCircleOutlined style={{ color: "#ffa940" }} />,
+    },
+    {
+      title: "Shipped",
+      icon: <MdLocalShipping style={{ color: "#1890ff" }} />,
+    },
+    {
+      title: "In Transit",
+      icon: <TruckOutlined style={{ color: "#faad14" }} />,
+    },
+    {
+      title: "Out For Delivery",
+      icon: <SyncOutlined style={{ color: "#1890ff" }} spin />,
+    },
+    {
+      title: "Delivered",
+      icon: <HomeOutlined style={{ color: "#52c41a" }} />,
+    },
+  ];
+
   const latestStatus = trackingHistory[0]?.status_description;
   console.log(latestStatus);
 
@@ -258,9 +258,8 @@ console.log("advertisement", advertisement);
                   {trackingHistory[0]?.expected_delivery_date || "N/A"}
                 </span>
               </Descriptions.Item>
-              
             </Descriptions>
-{/* 
+            {/* 
             <div
               style={{
                 marginTop: "20px",
@@ -281,8 +280,8 @@ console.log("advertisement", advertisement);
                 }}
               />
             </div> */}
-              {/* Conditional Advertisement Section */}
-              <div
+            {/* Conditional Advertisement Section */}
+            <div
               style={{
                 marginTop: "20px",
                 textAlign: "center",
@@ -293,37 +292,47 @@ console.log("advertisement", advertisement);
             >
               {advertisement && advertisement.images?.length > 0 ? (
                 <div>
-                <Carousel autoplay>
-  {advertisement.images.map((imageSrc, index) => (
-    <div key={index} >
-      <a
-        href={advertisement.url} // Use the single URL
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{ display:"flex",
-            justifyContent:"center",
-            alignItems:"center"}}
-      >
-        <img
-          src={imageSrc} // Use each image source
-          alt={`Advertisement ${index + 1}`}
-          style={{
-            display:"flex",
-            justifyContent:"center",
-            alignItems:"center",
-            width: "350px",
-            height: "350px",
-            objectFit: "cover",
-            borderRadius: "8px",
-          }}
-        />
-      </a>
-    </div>
-  ))}
-</Carousel>
+                  <Carousel autoplay>
+                    {advertisement.images.map((imageSrc, index) => (
+                      <div key={index}>
+                        <a
+                          href={advertisement.url} // Use the single URL
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <img
+                            src={imageSrc} // Use each image source
+                            alt={`Advertisement ${index + 1}`}
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              width: "350px",
+                              height: "350px",
+                              objectFit: "cover",
+                              borderRadius: "8px",
+                            }}
+                          />
+                        </a>
+                      </div>
+                    ))}
+                  </Carousel>
 
                   {advertisement.description && (
-                    <p style={{ marginTop: "10px", color: "#555",fontSize:"20px", fontWeight:"bolder", marginBottom:"10px" }}>
+                    <p
+                      style={{
+                        marginTop: "10px",
+                        color: "#555",
+                        fontSize: "20px",
+                        fontWeight: "bolder",
+                        marginBottom: "10px",
+                      }}
+                    >
                       {advertisement.description}
                     </p>
                   )}
@@ -335,7 +344,7 @@ console.log("advertisement", advertisement);
                   muted
                   loop
                   style={{
-                    marginTop:"-50px",
+                    marginTop: "-50px",
                     width: "100%",
                     height: "auto",
                   }}
@@ -408,6 +417,8 @@ console.log("advertisement", advertisement);
               borderRadius: "16px",
               boxShadow: "0 6px 25px rgba(0, 0, 0, 0.1)",
               marginTop: "20px",
+              maxHeight: "600px",
+              overflowY: "auto",
             }}
           >
             <Title level={4} style={{ color: "#333" }}>
@@ -418,9 +429,7 @@ console.log("advertisement", advertisement);
                 <Step
                   key={index}
                   title={`${step.action} - ${step.location}`}
-                  description={`Date: ${new Date(
-                    step?.date_time
-                  ).toLocaleString()}`}
+                  description={`Date: ${step?.date_time.toLocaleString()}`}
                   icon={<CheckCircleOutlined style={{ color: "#52c41a" }} />}
                 />
               ))}
