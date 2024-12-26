@@ -27,7 +27,7 @@ const WalletHistory = () => {
       align: "center",
       render: (text, transaction) => (
         <>
-     <div>{transaction.amount?.toFixed(2)}</div>
+          <div>{transaction.amount?.toFixed(2)}</div>
           {/* <div style={{ color: "#888" }}>{transaction.phonepetransactionid}</div> */}
         </>
       ),
@@ -46,30 +46,64 @@ const WalletHistory = () => {
       align: "center",
       render: (text, transaction) => (
         <>
-          <div >{transaction.phonepeTransactionId}</div>
-          
+          <div>{transaction.phonepeTransactionId}</div>
         </>
       ),
     },
+    // {
+    //   title: "Transaction Status",
+    //   dataIndex: "status",
+    //   align: "center",
+    //   render: (text, transaction) => (
+    //     <>
+    //       <div>{text}</div>
+    //       <div
+    //         style={{
+    //           color: transaction.phonepeTransactionId ? "green" : "red",
+    //           fontStyle: "italic",
+    //         }}
+    //       >
+    //         {/* {transaction.phonepeTransactionId ? "Success" : "Failure"} */}
+    //         {transaction.phonepeTransactionId === null ? "Success" : "Failure"}
+    //       </div>
+    //     </>
+    //   ),
+    // },
     {
       title: "Transaction Status",
       dataIndex: "status",
       align: "center",
-      render: (text, transaction) => (
-        <>
-          <div>{text}</div>
-          <div
-            style={{
-              color: transaction.phonepeTransactionId ? "green" : "red",
-              fontStyle: "italic",
-            }}
-          >
-            {transaction.phonepeTransactionId ? "Success" : "Failure"}
-          </div>
-        </>
-      ),
-  
-    },    
+      render: (text, transaction) => {
+        const isRechargedWithPhonepe =
+          transaction.remark === "Recharged with phonepe";
+        const hasTransactionId = !!transaction.phonepeTransactionId; // Check if transactionId exists
+
+        const statusText =
+          isRechargedWithPhonepe && hasTransactionId
+            ? "Success"
+            : isRechargedWithPhonepe && !hasTransactionId
+            ? "Failure"
+            : !isRechargedWithPhonepe && !hasTransactionId
+            ? "Success"
+            : "Failure";
+
+        const statusColor = statusText === "Success" ? "green" : "red";
+
+        return (
+          <>
+            <div>{text}</div>
+            <div
+              style={{
+                color: statusColor,
+                fontStyle: "italic",
+              }}
+            >
+              {statusText}
+            </div>
+          </>
+        );
+      },
+    },
     {
       title: "Date & Time",
       dataIndex: "d&t",
@@ -80,7 +114,7 @@ const WalletHistory = () => {
         </div>
       ),
     },
-    
+
     {
       title: "Remark",
       dataIndex: "remark",

@@ -71,7 +71,9 @@ const Orders = () => {
   const [modalLoading, setModalLoading] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
   const [currentDeliveryCost, setCurrentDeliveryCost] = useState(null);
-
+  const [loadingShippinglabel, setloadingShippinglabel] = useState(false);
+  const [loadingInvoice, setloadingInvoice] = useState(false);
+  const [loadingdownload, setloadingdownload] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
 
   //console.log(orders);
@@ -307,6 +309,7 @@ const Orders = () => {
   };
 
   const exportToExcel = () => {
+    setloadingdownload(true);
     const ordersToExport =
       selectedRowKeys.length > 0
         ? orders.orders.filter((order) => selectedRowKeys.includes(order._id))
@@ -321,6 +324,7 @@ const Orders = () => {
     const worksheet = XLSX.utils.json_to_sheet(ordersToExport);
     XLSX.utils.book_append_sheet(workbook, worksheet, "Orders");
     XLSX.writeFile(workbook, "Orders.xlsx");
+    setloadingdownload(false);
   };
 
   const dataSourceWithKeys =
@@ -579,7 +583,7 @@ const Orders = () => {
 
           try {
             const cancelResponse = await fetch(
-              `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
+              `http://localhost:5000/api/orders/updateOrderStatus/${orderId}`,
               {
                 method: "PUT",
                 headers: {
@@ -901,6 +905,7 @@ const Orders = () => {
       `;
   }
   const downloadMultipleLabels = async () => {
+    setloadingShippinglabel(true);
     const pdf = new jsPDF({
       orientation: "portrait",
       unit: "in",
@@ -974,6 +979,9 @@ const Orders = () => {
     } catch (error) {
       console.error("Error downloading labels:", error);
       message.error("An error occurred while downloading labels.");
+    } finally {
+      // Set loading to false once the operation is complete
+      setloadingShippinglabel(false);
     }
   };
 
@@ -995,6 +1003,7 @@ const Orders = () => {
     }
   };
   const downloadInvoices = async () => {
+    setloadingInvoice(true);
     const pdf = new jsPDF({
       orientation: "portrait",
       unit: "pt",
@@ -1160,6 +1169,7 @@ const Orders = () => {
 
     Promise.all(promises).then(() => {
       pdf.save("all_invoices.pdf");
+      setloadingInvoice(false);
     });
   };
   const handleTabChange = (key) => {
@@ -1259,8 +1269,9 @@ const Orders = () => {
                   className="downloadBtn"
                   size="middle"
                   style={{ marginRight: "10px" }}
+                  disabled={loadingdownload}
                 >
-                  Download
+                  {loadingdownload ? "Downloading..." : "Download"}
                 </Button>
 
                 {currentTab === "tab2" && (
@@ -1273,18 +1284,22 @@ const Orders = () => {
                       ></div>
                     )}
                     <Button
-                      disabled={selectedRowKeys.length === 0}
+                      disabled={
+                        selectedRowKeys.length === 0 || loadingShippinglabel
+                      }
                       style={{ borderColor: "black", borderRadius: "50px" }}
                       onClick={downloadMultipleLabels}
                     >
-                      Shipping Label
+                      {loadingShippinglabel
+                        ? "Downloading..."
+                        : " Shipping Label"}
                     </Button>
                     <Button
-                      disabled={selectedRowKeys.length === 0}
+                      disabled={selectedRowKeys.length === 0 || loadingInvoice}
                       style={{ borderColor: "gray", borderRadius: "50px" }}
                       onClick={downloadInvoices}
                     >
-                      Invoice
+                      {loadingInvoice ? "Downloading..." : " Invoice"}
                     </Button>
                     <Button
                       disabled={isDisabled}
