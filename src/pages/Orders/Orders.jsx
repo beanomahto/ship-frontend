@@ -464,7 +464,13 @@ const Orders = () => {
           )
             return "Shipped";
           if (["11", "113"].includes(status)) return "Delivered";
-          if (status === "340") return "Cancelled";
+          if (
+            status === "340" ||
+            status === "185" ||
+            status === "Pickup cancelled by shipper" ||
+            status === "Pickup cancelled by ecom"
+          )
+            return "Cancelled";
           if (["189", "212", "214", "115", "117", "116"].includes(status))
             return "Lost";
           if (["12", "13", "14", "15", "16", "17", "112"].includes(status))
