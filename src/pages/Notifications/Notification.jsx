@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import './notification.css';
+import React, { useEffect, useState } from "react";
+import "./notification.css";
 
 const Notification = () => {
   const [notifications, setNotifications] = useState([]);
@@ -9,17 +9,20 @@ const Notification = () => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/notifcation/getallnotifications',{
-          headers:{
-            Authorization: localStorage.getItem('token')
+        const response = await fetch(
+          "https://backend.shiphere.in/api/notifcation/getallnotifications",
+          {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
           }
-        });
+        );
         if (!response.ok) {
           throw new Error(`Error: ${response.statusText}`);
         }
         const data = await response.json();
         console.log(data);
-        
+
         setNotifications(data);
       } catch (err) {
         setError(err.message);

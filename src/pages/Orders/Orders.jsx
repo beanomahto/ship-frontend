@@ -589,7 +589,7 @@ const Orders = () => {
 
           try {
             const cancelResponse = await fetch(
-              `http://localhost:5000/api/orders/updateOrderStatus/${orderId}`,
+              `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
               {
                 method: "PUT",
                 headers: {
