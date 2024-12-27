@@ -22,13 +22,7 @@ const useFetchAndUpdateOrders = (fetchOrders) => {
           if (status === "27" || status === "10") return "InTransit";
           if (status === "4") return "Shipped";
           if (status === "11") return "Delivered";
-          if (
-            status === "340" ||
-            status === "185" ||
-            status === "Pickup cancelled by shipper" ||
-            status === "Pickup cancelled by ecom"
-          )
-            return "Cancelled";
+          if (status === "340") return "Cancelled";
           if (["12", "13", "14", "15", "16", "17"].includes(status))
             return "UnDelivered";
           return null;
