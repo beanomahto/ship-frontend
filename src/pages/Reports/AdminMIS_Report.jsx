@@ -18,6 +18,7 @@ const AdminMIS_Report = () => {
   const [loadingOutForDelivery, setLoadingOutForDelivery] = useState(false);
   const [loadingInTransit, setLoadingInTransit] = useState(false);
   const [loadingWallet, setLoadingWallet] = useState(false);
+  const [loadingSeller, setLoadingSeller] = useState(false);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -281,6 +282,46 @@ const AdminMIS_Report = () => {
       message.error("An error occurred while downloading Wallet report.");
     }
   };
+  const handleSellerSubmit = async (e) => {
+    e.preventDefault();
+    if (!email) {
+      return message.error("Please enter an email address.");
+    }
+
+    try {
+      setLoadingSeller(true);
+      const response = await fetch(
+        "https://backend.shiphere.in/api/report/userdetailsexcel",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ emails: [email] }), // Correct key is 'emails'
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Failed with status: ${response.status}`);
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `Seller_Details_${Date.now()}.xlsx`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      message.success("Seller details downloaded successfully!");
+    } catch (error) {
+      console.error("Error downloading seller details:", error);
+      message.error("Failed to download seller details.");
+    } finally {
+      setLoadingSeller(false);
+    }
+  };
 
   return (
     <div className="report-container">
@@ -480,6 +521,35 @@ const AdminMIS_Report = () => {
               disabled={loadingWallet}
             >
               {loadingWallet ? "Downloading..." : "Submit"}
+            </button>
+          </div>
+        </form>
+      </div>
+
+      {/* seller download */}
+      <div className="report-box">
+        <form className="report-form" onSubmit={handleSellerSubmit}>
+          <h2 className="report-title">Download Seller Details</h2>
+          <div className="form-group">
+            <label className="form-label">
+              Email Address
+              <input
+                className="form-input"
+                type="email"
+                value={email}
+                onChange={handleEmailChange}
+                placeholder="Enter seller email"
+                required
+              />
+            </label>
+          </div>
+          <div className="btn111">
+            <button
+              className="form-button"
+              type="submit"
+              disabled={loadingSeller}
+            >
+              {loadingSeller ? "Downloading..." : "Submit"}
             </button>
           </div>
         </form>

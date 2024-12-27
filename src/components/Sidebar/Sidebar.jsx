@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import './sidebar.css';
-import { Button, Layout, Drawer } from 'antd';
-import { MenuOutlined } from '@ant-design/icons';
-import Logo from './Logo';
-import MenuList from './MenuList';
+import React, { useState, useEffect } from "react";
+import "./sidebar.css";
+import { Button, Layout, Drawer } from "antd";
+import { MenuOutlined } from "@ant-design/icons";
+import Logo from "./Logo";
+import MenuList from "./MenuList";
 
 const { Sider } = Layout;
 
@@ -29,10 +29,10 @@ const Sidebar = ({ darktheme, toggleTheme }) => {
 
   // Add event listener for window resize
   useEffect(() => {
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     handleResize(); // Check on initial load
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -52,10 +52,11 @@ const Sidebar = ({ darktheme, toggleTheme }) => {
             title="Menu"
             placement="left"
             onClose={closeDrawer}
-            visible={drawerVisible}
-            bodyStyle={{ padding: 0 }}
+            open={drawerVisible}
+            style={{ padding: 0 }}
           >
-            <Logo />
+            <Logo drawerVisible={drawerVisible} />
+
             <MenuList darktheme={darktheme} closeDrawer={closeDrawer} />
           </Drawer>
         </>
@@ -66,10 +67,10 @@ const Sidebar = ({ darktheme, toggleTheme }) => {
           onMouseLeave={() => setCollapsed(true)}
           collapsible
           trigger={null}
-          theme={darktheme ? 'dark' : 'light'}
+          theme={darktheme ? "dark" : "light"}
           className="side-items"
         >
-          <Logo />
+          <Logo collapsed={collapsed} />
           <MenuList darktheme={darktheme} />
         </Sider>
       )}
