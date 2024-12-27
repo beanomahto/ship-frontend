@@ -1,26 +1,36 @@
-import { useEffect } from 'react';
-import axios from 'axios';
+import { useEffect } from "react";
+import axios from "axios";
 
 const useFetchAndUpdateOrders = (fetchOrders) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch('https://backend.shiphere.in/api/smartship/getcurrentstatus', {
-          headers: {
-            Authorization: localStorage.getItem('token'),
-          },
-        });
+        const res = await fetch(
+          "https://backend.shiphere.in/api/smartship/getcurrentstatus",
+          {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
+        );
 
         const jsonObj = await res.json();
         const data = jsonObj?.data?.shipmentDetails;
-console.log(data);
+        console.log(data);
 
         const mapStatusCodeToOrderStatus = (status) => {
-          if (status === '27' || status === '10') return 'InTransit';
-          if (status === '4') return 'Shipped';
-          if (status === '11') return 'Delivered';
-          if (status === '340') return 'Cancelled';
-          if (['12', '13', '14', '15', '16', '17'].includes(status)) return 'UnDelivered';
+          if (status === "27" || status === "10") return "InTransit";
+          if (status === "4") return "Shipped";
+          if (status === "11") return "Delivered";
+          if (
+            status === "340" ||
+            status === "185" ||
+            status === "Pickup cancelled by shipper" ||
+            status === "Pickup cancelled by ecom"
+          )
+            return "Cancelled";
+          if (["12", "13", "14", "15", "16", "17"].includes(status))
+            return "UnDelivered";
           return null;
         };
 
@@ -37,10 +47,10 @@ console.log(data);
         if (updatedOrders?.length > 0) {
           await updateMultipleOrders(updatedOrders);
         } else {
-          console.log('No orders to update: all statusCodes were invalid.');
+          console.log("No orders to update: all statusCodes were invalid.");
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -57,7 +67,7 @@ console.log(data);
             updateBody,
             {
               headers: {
-                Authorization: localStorage.getItem('token'),
+                Authorization: localStorage.getItem("token"),
               },
             }
           );
@@ -66,7 +76,7 @@ console.log(data);
         // Wait for all updates to complete (optional)
         await Promise.allSettled(updatePromises);
       } catch (error) {
-        console.error('Error updating orders:', error);
+        console.error("Error updating orders:", error);
       }
     };
 
