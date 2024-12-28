@@ -67,6 +67,13 @@ const Header = ({ darktheme }) => {
       alert("Please enter a recharge amount.");
       return;
     }
+    // Validate minimum recharge amount
+    if (parseFloat(rechargeAmount) < 200) {
+      alert(
+        "The minimum recharge amount is ₹200. Please enter a valid amount."
+      );
+      return;
+    }
     // console.log("Recharge Amount:", rechargeAmount);
 
     // Retrieve the token (assuming it's stored in localStorage)
@@ -91,7 +98,7 @@ const Header = ({ darktheme }) => {
         }
       );
 
-      // console.log("Response:", response);
+      // console.log("Response: pay", response);
 
       // Handle response
       if (response.ok) {
@@ -133,18 +140,18 @@ const Header = ({ darktheme }) => {
           &#8377; {balance?.toFixed(2)}
         </Button>
         <span className="span"></span>
-        
-          <>
-            <Button
-              style={{ backgroundColor: "ButtonHighlight" }}
-              onClick={showModal}
-            >
-              <BsLightningChargeFill />
-              Recharge
-            </Button>
-            <span className="span"></span>
-          </>
-       
+
+        <>
+          <Button
+            style={{ backgroundColor: "ButtonHighlight" }}
+            onClick={showModal}
+          >
+            <BsLightningChargeFill />
+            Recharge
+          </Button>
+          <span className="span"></span>
+        </>
+
         {authUser ? (
           <>
             <Popover
@@ -267,7 +274,7 @@ const Header = ({ darktheme }) => {
               flexWrap: "wrap",
             }}
           >
-            {[500, 1000, 2000, 5000, 10000].map((amount) => (
+            {[200, 500, 1000, 2000, 5000, 10000, 20000].map((amount) => (
               <Button
                 key={amount}
                 onClick={() => setRechargeAmount(amount)}

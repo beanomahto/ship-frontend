@@ -337,19 +337,11 @@ const DeliveredComponent = ({
       ),
       className: "centered-row",
     },
-    // {
-    //   title: 'Order Date',
-    //   dataIndex: 'createdAt',
-    //   sorter: (a, b) => moment(a.updatedAt).isAfter(moment(b.updatedAt)) ? 1 : -1,
-    //   render: (text, order) => (
-    //     <div>{formatDateInIST(order?.updatedAt)}</div>
-    //   ),
-    // },
+
     {
       title: "Order Date",
-      dataIndex: "createdAt",
-      ...getColumnSearchProps("updatedAt"),
-
+      dataIndex: "statusUpdateDate", // Change dataIndex to statusUpdateDate
+      ...getColumnSearchProps("statusUpdateDate"), // Ensure search works with statusUpdateDate
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -400,19 +392,30 @@ const DeliveredComponent = ({
       },
       onFilter: (value, record) => {
         const [startDate, endDate] = value;
-        const orderDate = moment(record.updatedAt).toISOString();
+        const orderDate = moment(
+          record.shipmentDetails.statusUpdateDate
+        ).toISOString(); // Update this to use statusUpdateDate
         return orderDate >= startDate && orderDate <= endDate;
       },
-      render: (text, order) => (
-        <>
-          <div>
-            {moment(order?.updatedAt).format("DD-MM-YYYY")}
-            <span style={{ marginLeft: "10px", fontStyle: "italic" }}>
-              {moment(order?.updatedAt).format("HH:mm")}
-            </span>
-          </div>
-        </>
-      ),
+      render: (text, order) => {
+        console.log(order?.shipmentDetails?.statusUpdateTime);
+        return (
+          <>
+            <div>
+              {moment(
+                order.shipmentDetails.statusUpdateDate,
+                "YYYY-MM-DD"
+              ).format("DD-MM-YYYY")}{" "}
+              <span style={{ marginLeft: "10px", fontStyle: "italic" }}>
+                {moment(
+                  order.shipmentDetails.statusUpdateTime,
+                  "HH:mm:ss"
+                ).format("HH:mm:ss")}
+              </span>
+            </div>
+          </>
+        );
+      },
       className: "centered-row",
     },
     ...(authUser?.role === "admin"
@@ -449,7 +452,7 @@ const DeliveredComponent = ({
   const shippedOrders = dataSource?.filter(
     (order) => order?.status === "Delivered"
   );
-
+  console.log("delivered", shippedOrders);
   return (
     <>
       <Helmet>
@@ -475,8 +478,8 @@ const DeliveredComponent = ({
           scroll={{ x: 1050, y: 450 }}
           pagination={{
             showSizeChanger: true,
-            pageSizeOptions: ['10', '20', '50', '100', '500', '1000'],
-            defaultPageSize: 10, 
+            pageSizeOptions: ["10", "20", "50", "100", "500", "1000"],
+            defaultPageSize: 10,
           }}
           style={{ width: "100%", height: "505px", marginTop: "-10px" }}
         />

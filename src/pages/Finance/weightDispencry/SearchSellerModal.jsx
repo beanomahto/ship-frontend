@@ -33,7 +33,7 @@ const SearchSellerModal = ({ visible, onClose, weightDispensory }) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ sellerIds: [email] }), // Send as an array
+          body: JSON.stringify({ email }), // Send as an array
         }
       );
 
