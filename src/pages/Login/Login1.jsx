@@ -8,7 +8,7 @@ import { useWarehouseContext } from "../../context/WarehouseContext";
 import imgg from "../../utils/new.png";
 import { MdCheckCircle } from "react-icons/md";
 import ShippingSteps from "./loginAnimation/ShippingSteps";
-
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 const Login1 = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -23,7 +23,11 @@ const Login1 = () => {
   const { fetchOrders } = useOrderContext();
   const { fetchWarehouse } = useWarehouseContext();
   const [policyAccepted, setPolicyAccepted] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
   const handleInputChange = (field, value) => {
     if (field === "email") setEmail(value);
     if (field === "password") setPassword(value);
@@ -101,23 +105,47 @@ const Login1 = () => {
 
               <div className="inputBx">
                 <label htmlFor="password">Password</label>
-                <div className="inputContainer" style={{ display: "flex" }}>
+                <div
+                  className="inputContainer"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    position: "relative",
+                  }}
+                >
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     id="password"
                     name="password"
                     value={password}
                     onChange={(e) =>
                       handleInputChange("password", e.target.value)
                     }
+                    style={{ paddingRight: "40px" }}
                   />
+                  <span
+                    onClick={togglePasswordVisibility}
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      right: "40px",
+                      transform: "translateY(-40%)",
+                      cursor: "pointer",
+                      color: "gray",
+                    }}
+                  >
+                    {showPassword ? (
+                      <AiFillEyeInvisible size={24} />
+                    ) : (
+                      <AiFillEye size={24} />
+                    )}
+                  </span>
                   {fieldFilled.password && (
                     <MdCheckCircle
                       size={27}
                       style={{
                         color: "green",
                         marginLeft: "8px",
-                        marginTop: "5px",
                       }}
                     />
                   )}
@@ -137,43 +165,47 @@ const Login1 = () => {
                     style={{ marginRight: "8px", width: "30px" }}
                   />
                   <p>
-                  I have read and agree to the
-                  <a
-                    href="/cancellation-refund-policy"
-                    target="_blank"
-                    style={{ fontSize: "13px", marginLeft: "5px" }}
-                  >
-                    Cancellation and Refund Policy
-                  </a>, 
-                  <a
-                    href="/privacy-policy"
-                    target="_blank"
-                    style={{ fontSize: "13px", marginLeft: "5px" }}
-                  >
-                    Privacy Policy
-                  </a>, 
-                  <a
-                    href="/Shipping-policy"
-                    target="_blank"
-                    style={{ fontSize: "13px", marginLeft: "5px" }}
-                  >
-                   Shipping Policy
-                  </a>,
-                  <a
-                    href="/term-policy"
-                    target="_blank"
-                    style={{ fontSize: "13px", marginLeft: "5px" }}
-                  >
-                  Term and Conditions
-                  </a>,
-                  <a
-                    href="/about-policy"
-                    target="_blank"
-                    style={{ fontSize: "13px", marginLeft: "5px" }}
-                  >
-                    about us
-                  </a>{" "}
-                  of Transportix Solutions Technology Pvt Ltd.
+                    I have read and agree to the
+                    <a
+                      href="/cancellation-refund-policy"
+                      target="_blank"
+                      style={{ fontSize: "13px", marginLeft: "5px" }}
+                    >
+                      Cancellation and Refund Policy
+                    </a>
+                    ,
+                    <a
+                      href="/privacy-policy"
+                      target="_blank"
+                      style={{ fontSize: "13px", marginLeft: "5px" }}
+                    >
+                      Privacy Policy
+                    </a>
+                    ,
+                    <a
+                      href="/Shipping-policy"
+                      target="_blank"
+                      style={{ fontSize: "13px", marginLeft: "5px" }}
+                    >
+                      Shipping Policy
+                    </a>
+                    ,
+                    <a
+                      href="/term-policy"
+                      target="_blank"
+                      style={{ fontSize: "13px", marginLeft: "5px" }}
+                    >
+                      Term and Conditions
+                    </a>
+                    ,
+                    <a
+                      href="/about-policy"
+                      target="_blank"
+                      style={{ fontSize: "13px", marginLeft: "5px" }}
+                    >
+                      about us
+                    </a>{" "}
+                    of Transportix Solutions Technology Pvt Ltd.
                   </p>
                 </label>
               </div>
