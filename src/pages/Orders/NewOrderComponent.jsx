@@ -394,26 +394,30 @@ const NewOrderComponent = ({
     },
     ...(authUser?.role !== "admin"
       ? [
-        {
-          title: "Quick Assign",
-          dataIndex: "q_assign",
-          render: (text, order) => (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100%",
-              }}
-            >
-              <ThunderboltOutlined
-                style={{ cursor: "pointer", fontSize: "1.5rem", color: "#08c" }}
-                onClick={() => handleExpandRow(order._id)}
-              />
-            </div>
-          ),
-          className: "centered-row",
-        },
+          {
+            title: "Quick Assign",
+            dataIndex: "q_assign",
+            render: (text, order) => (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "100%",
+                }}
+              >
+                <ThunderboltOutlined
+                  style={{
+                    cursor: "pointer",
+                    fontSize: "1.5rem",
+                    color: "#08c",
+                  }}
+                  onClick={() => handleExpandRow(order._id)}
+                />
+              </div>
+            ),
+            className: "centered-row",
+          },
         ]
       : []),
 
@@ -453,23 +457,182 @@ const NewOrderComponent = ({
     setIsModalVisible(true);
   };
 
+  // const handleAssign = async (partner) => {
+  //   console.log("partner", partner);
+  //   try {
+  //     setModalLoading(true);
+  //     const selectedOrder = dataSource.find(
+  //       (order) => order._id === selectedOrderId
+  //     );
+
+  //     const { codCost, forwardCost, rtoCost, cost } = partner;
+  //     console.log(partner);
+
+  //     const gstRate = 0.18;
+  //     const codCostWithGst = codCost * (1 + gstRate);
+  //     const forwardCostWithGst = forwardCost * (1 + gstRate);
+  //     // const forwardCostWithGst = cost;
+  //     const rtoCostWithGst = rtoCost * (1 + gstRate);
+  //     const totalDebit = forwardCostWithGst + codCostWithGst;
+  //     // const totalDebit = forwardCostWithGst;
+
+  //     const sendWarehouse =
+  //       Array.isArray(selectedWarehouseId) && selectedWarehouseId.length === 0
+  //         ? warehouse?.warehouses?.[0]
+  //         : selectedWarehouseId;
+
+  //     console.log(sendWarehouse);
+
+  //     // Deduct amounts
+  //     if (codCostWithGst > 0) {
+  //       const codWalletRequestBody = {
+  //         debit: codCostWithGst,
+  //         userId: selectedOrder.seller._id,
+  //         remark: `COD charge for order ${selectedOrder.orderId}`,
+  //         orderId: selectedOrder._id,
+  //       };
+
+  //       const codWalletResponse = await axios.post(
+  //         "https://backend.shiphere.in/api/transactions/decreaseAmount",
+  //         codWalletRequestBody,
+  //         {
+  //           headers: {
+  //             Authorization: localStorage.getItem("token"),
+  //           },
+  //         }
+  //       );
+
+  //       if (codWalletResponse.status !== 200) {
+  //         message.error("Failed to debit COD cost from wallet");
+  //         return;
+  //       }
+  //     }
+
+  //     const forwardWalletRequestBody = {
+  //       debit: forwardCostWithGst,
+  //       userId: selectedOrder.seller._id,
+  //       remark: `Forward charge for order ${selectedOrder.orderId}`,
+  //       orderId: selectedOrder._id,
+  //     };
+
+  //     const forwardWalletResponse = await axios.post(
+  //       "https://backend.shiphere.in/api/transactions/decreaseAmount",
+  //       forwardWalletRequestBody,
+  //       {
+  //         headers: {
+  //           Authorization: localStorage.getItem("token"),
+  //         },
+  //       }
+  //     );
+
+  //     if (forwardWalletResponse.status !== 200) {
+  //       message.error("Failed to debit forward cost from wallet");
+  //       return;
+  //     }
+
+  //     try {
+  //       // Proceed with shipping
+  //       setCurrentDeliveryCost(totalDebit);
+
+  //       // console.log("okokko");
+
+  //       const { awb } = await shipOrder(
+  //         selectedOrder,
+  //         sendWarehouse,
+  //         partner.deliveryPartner
+  //       );
+  //       console.log("awb in frontend", awb);
+  //       console.log("okokokok");
+
+  //       // Update order status
+  //       const updateBody = {
+  //         status: "Shipped",
+  //         shippingCost: totalDebit,
+  //         rtoCost: rtoCostWithGst,
+  //       };
+  //       console.log("updated", updateBody);
+
+  //       const orderResponse = await axios.put(
+  //         `https://backend.shiphere.in/api/orders/updateOrderStatus/${selectedOrderId}`,
+  //         updateBody,
+  //         {
+  //           headers: {
+  //             Authorization: `${localStorage.getItem("token")}`,
+  //           },
+  //         }
+  //       );
+  //       console.log("okkkkkkkkkk", orderResponse);
+  //       if (orderResponse.status === 201) {
+  //         message.success("Shipped successfully");
+  //         fetchOrders();
+  //         fetchBalance();
+  //         setIsModalVisible(false);
+  //         setSelectedOrderId(null);
+  //         setSelectedPartner(null);
+  //       } else {
+  //         throw new Error("Failed to update order status");
+  //       }
+  //     } catch (shippingError) {
+  //       // Rollback wallet deductions if shipping fails
+  //       if (codCostWithGst > 0) {
+  //         await axios.post(
+  //           "https://backend.shiphere.in/api/transactions/increaseAmount",
+  //           {
+  //             credit: codCostWithGst,
+  //             userId: selectedOrder.seller._id,
+  //             remark: `Refund COD charge for failed shipment ${selectedOrder.orderId}`,
+  //             orderId: selectedOrder._id,
+  //           },
+  //           {
+  //             headers: {
+  //               Authorization: localStorage.getItem("token"),
+  //             },
+  //           }
+  //         );
+  //       }
+
+  //       await axios.post(
+  //         "https://backend.shiphere.in/api/transactions/increaseAmount",
+  //         {
+  //           credit: forwardCostWithGst,
+  //           userId: selectedOrder.seller._id,
+  //           remark: `Refund forward charge for failed shipment ${selectedOrder.orderId}`,
+  //           orderId: selectedOrder._id,
+  //         },
+  //         {
+  //           headers: {
+  //             Authorization: localStorage.getItem("token"),
+  //           },
+  //         }
+  //       );
+
+  //       throw shippingError;
+  //     }
+  //   } catch (error) {
+  //     message.error(error.response?.data?.error || error.message);
+  //     console.error("Failed to process order assignment:", error);
+  //   } finally {
+  //     setModalLoading(false);
+  //   }
+  // };
+
+  //console.log(deliveryCosts);
+
   const handleAssign = async (partner) => {
+    console.log("partner", partner);
     try {
       setModalLoading(true);
       const selectedOrder = dataSource.find(
         (order) => order._id === selectedOrderId
       );
 
-      const { codCost, forwardCost, rtoCost, cost } = partner;
-      // console.log(partner);
+      const { codCost, forwardCost, rtoCost } = partner;
 
       const gstRate = 0.18;
       const codCostWithGst = codCost * (1 + gstRate);
       const forwardCostWithGst = forwardCost * (1 + gstRate);
-      // const forwardCostWithGst = cost;
       const rtoCostWithGst = rtoCost * (1 + gstRate);
       const totalDebit = forwardCostWithGst + codCostWithGst;
-      // const totalDebit = forwardCostWithGst;
 
       const sendWarehouse =
         Array.isArray(selectedWarehouseId) && selectedWarehouseId.length === 0
@@ -478,126 +641,104 @@ const NewOrderComponent = ({
 
       console.log(sendWarehouse);
 
-      // Deduct amounts
-      if (codCostWithGst > 0) {
-        const codWalletRequestBody = {
-          debit: codCostWithGst,
-          userId: selectedOrder.seller._id,
-          remark: `COD charge for order ${selectedOrder.orderId}`,
-          orderId: selectedOrder._id,
-        };
-
-        const codWalletResponse = await axios.post(
-          "https://backend.shiphere.in/api/transactions/decreaseAmount",
-          codWalletRequestBody,
-          {
-            headers: {
-              Authorization: localStorage.getItem("token"),
-            },
-          }
-        );
-
-        if (codWalletResponse.status !== 200) {
-          message.error("Failed to debit COD cost from wallet");
-          return;
-        }
-      }
-
-      const forwardWalletRequestBody = {
-        debit: forwardCostWithGst,
-        userId: selectedOrder.seller._id,
-        remark: `Forward charge for order ${selectedOrder.orderId}`,
-        orderId: selectedOrder._id,
-      };
-
-      const forwardWalletResponse = await axios.post(
-        "https://backend.shiphere.in/api/transactions/decreaseAmount",
-        forwardWalletRequestBody,
-        {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        }
-      );
-
-      if (forwardWalletResponse.status !== 200) {
-        message.error("Failed to debit forward cost from wallet");
-        return;
-      }
-
       try {
-        // Proceed with shipping
-        setCurrentDeliveryCost(totalDebit);
-
-        // console.log("okokko");
-
-        await shipOrder(selectedOrder, sendWarehouse, partner.deliveryPartner);
-
-        console.log("okokokok");
-
-        // Update order status
-        const updateBody = {
-          status: "Shipped",
-          shippingCost: totalDebit,
-          rtoCost: rtoCostWithGst,
-        };
-        console.log(updateBody);
-
-        const orderResponse = await axios.put(
-          `https://backend.shiphere.in/api/orders/updateOrderStatus/${selectedOrderId}`,
-          updateBody,
-          {
-            headers: {
-              Authorization: `${localStorage.getItem("token")}`,
-            },
-          }
+        // Attempt to ship the order
+        const { awb } = await shipOrder(
+          selectedOrder,
+          sendWarehouse,
+          partner.deliveryPartner
         );
 
-        if (orderResponse.status === 201) {
-          message.success("Shipped successfully");
-          fetchOrders();
-          fetchBalance();
-          setIsModalVisible(false);
-          setSelectedOrderId(null);
-          setSelectedPartner(null);
-        } else {
-          throw new Error("Failed to update order status");
-        }
-      } catch (shippingError) {
-        // Rollback wallet deductions if shipping fails
-        if (codCostWithGst > 0) {
-          await axios.post(
-            "https://backend.shiphere.in/api/transactions/increaseAmount",
-            {
-              credit: codCostWithGst,
+        console.log("awb in frontend", awb);
+
+        if (awb) {
+          console.log(
+            "AWB generated successfully, proceeding to deduct amounts"
+          );
+
+          // Deduct COD amount if applicable
+          if (codCostWithGst > 0) {
+            const codWalletRequestBody = {
+              debit: codCostWithGst,
               userId: selectedOrder.seller._id,
-              remark: `Refund COD charge for failed shipment ${selectedOrder.orderId}`,
+              remark: `COD charge for order ${selectedOrder.orderId}`,
               orderId: selectedOrder._id,
-            },
+            };
+
+            const codWalletResponse = await axios.post(
+              "https://backend.shiphere.in/api/transactions/decreaseAmount",
+              codWalletRequestBody,
+              {
+                headers: {
+                  Authorization: localStorage.getItem("token"),
+                },
+              }
+            );
+
+            if (codWalletResponse.status !== 200) {
+              message.error("Failed to debit COD cost from wallet");
+              return;
+            }
+          }
+
+          // Deduct forward amount
+          const forwardWalletRequestBody = {
+            debit: forwardCostWithGst,
+            userId: selectedOrder.seller._id,
+            remark: `Forward charge for order ${selectedOrder.orderId}`,
+            orderId: selectedOrder._id,
+          };
+
+          const forwardWalletResponse = await axios.post(
+            "https://backend.shiphere.in/api/transactions/decreaseAmount",
+            forwardWalletRequestBody,
             {
               headers: {
                 Authorization: localStorage.getItem("token"),
               },
             }
           );
-        }
 
-        await axios.post(
-          "https://backend.shiphere.in/api/transactions/increaseAmount",
-          {
-            credit: forwardCostWithGst,
-            userId: selectedOrder.seller._id,
-            remark: `Refund forward charge for failed shipment ${selectedOrder.orderId}`,
-            orderId: selectedOrder._id,
-          },
-          {
-            headers: {
-              Authorization: localStorage.getItem("token"),
-            },
+          if (forwardWalletResponse.status !== 200) {
+            message.error("Failed to debit forward cost from wallet");
+            return;
           }
-        );
 
-        throw shippingError;
+          // Update order status
+          const updateBody = {
+            status: "Shipped",
+            shippingCost: totalDebit,
+            rtoCost: rtoCostWithGst,
+          };
+
+          const orderResponse = await axios.put(
+            `https://backend.shiphere.in/api/orders/updateOrderStatus/${selectedOrderId}`,
+            updateBody,
+            {
+              headers: {
+                Authorization: `${localStorage.getItem("token")}`,
+              },
+            }
+          );
+
+          if (orderResponse.status === 201) {
+            message.success("Shipped successfully");
+            fetchOrders();
+            fetchBalance();
+            setIsModalVisible(false);
+            setSelectedOrderId(null);
+            setSelectedPartner(null);
+          } else {
+            throw new Error("Failed to update order status");
+          }
+        } else {
+          throw new Error("AWB generation failed");
+        }
+      } catch (shippingError) {
+        console.error("Shipping process failed:", shippingError);
+        message.error(
+          shippingError.response?.data?.error || shippingError.message
+        );
       }
     } catch (error) {
       message.error(error.response?.data?.error || error.message);
@@ -606,8 +747,6 @@ const NewOrderComponent = ({
       setModalLoading(false);
     }
   };
-
-  //console.log(deliveryCosts);
 
   const newOrders = dataSource?.filter(
     (order) => order.status === "New" || order.status === "Cancelled"
@@ -638,8 +777,8 @@ const NewOrderComponent = ({
             scroll={{ x: 1400, y: 430 }}
             pagination={{
               showSizeChanger: true,
-              pageSizeOptions: ['10', '20', '50', '100', '500', '1000'],
-              defaultPageSize: 10, 
+              pageSizeOptions: ["10", "20", "50", "100", "500", "1000"],
+              defaultPageSize: 10,
             }}
             style={{ width: "100%", height: "545px", marginTop: "-10px" }}
             rowClassName={(record) =>
@@ -650,7 +789,7 @@ const NewOrderComponent = ({
           />
           <Modal
             title="Assign Delivery Partner"
-            visible={isModalVisible}
+            open={isModalVisible}
             onCancel={() => setIsModalVisible(false)}
             footer={null}
             width={1000}

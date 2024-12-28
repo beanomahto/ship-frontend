@@ -65,7 +65,17 @@ const useCreateShipment = () => {
       }
 
       const token = localStorage.getItem("token");
-      if (["Ekart","Blue Dart","DTDC","Shadowfax","Delhivery","Amazon Shipping","Xpressbees"].includes(deliveryPartnerName)) {
+      if (
+        [
+          "Ekart",
+          "Blue Dart",
+          "DTDC",
+          "Shadowfax",
+          "Delhivery",
+          "Amazon Shipping",
+          "Xpressbees",
+        ].includes(deliveryPartnerName)
+      ) {
         if (fShipWarehouseId === 0) {
           const warehouseResponse = await axios.post(
             fshipUrl,
@@ -106,8 +116,7 @@ const useCreateShipment = () => {
                 },
               }
             );
-         
-            
+
             const carrierCheckBody = {
               warehouseId: warehouseIds,
               orderId: orderIds,
@@ -229,9 +238,13 @@ const useCreateShipment = () => {
             }
           );
 
-          // const fhipApiOrderId = forwardOrderResponse.data?.apiorderid;
-          //console.log(forwardOrderResponse);
+          const fhipApiOrderId = forwardOrderResponse.data?.apiorderid;
+          console.log("noop", forwardOrderResponse);
+          const awb =
+            forwardOrderResponse.data?.data.success_order_details.orders[0]
+              .awb_assigned || false;
 
+          console.log("awb in backend", awb);
           const createShipmentResponse = await axios.post(
             fshipCreateShipmentUrl,
             {
@@ -253,15 +266,14 @@ const useCreateShipment = () => {
           //console.log('FShip createShipment API hit');
           //console.log(createShipmentResponse);
 
-          return createShipmentResponse.data;
+          return { ...createShipmentResponse.data, awb };
           //   if (fhipApiOrderId) {
           // } else {
           //   message.error('Failed to retrieve fhipApiOrderId');
           //   throw new Error('Failed to retrieve fhipApiOrderId');
           // }
         }
-      } 
-      else {
+      } else {
         const response = await axios.post(
           url,
           {
@@ -280,7 +292,7 @@ const useCreateShipment = () => {
             warehouseId?.warehouseName
         );
         console.log(log);
-        console.log(response);
+        console.log("createdd", response.data);
 
         return response.data;
       }
@@ -294,7 +306,7 @@ const useCreateShipment = () => {
       setLoading(false);
     }
   };
-
+  // console.log("shiporderres", shipOrder);
   return {
     shipOrder,
     loading,
