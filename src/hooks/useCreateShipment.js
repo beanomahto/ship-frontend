@@ -10,7 +10,7 @@ const useCreateShipment = () => {
   const shipOrder = async (orderId, warehouseId, deliveryPartnerName) => {
     setLoading(true);
     setError(null);
-    //console.log(orderId);
+    console.log(orderId);
 
     const warehouseIds = warehouseId?._id;
     const fShipWarehouseId = warehouseId?.smartshipHubId;
@@ -27,8 +27,8 @@ const useCreateShipment = () => {
       orderWeight = [orderId?.weight];
     }
 
-    //console.log(orderIds);
-    //console.log(orderWeight);
+    console.log(orderIds);
+    console.log(orderWeight);
 
     try {
       let url = "";
@@ -165,8 +165,8 @@ const useCreateShipment = () => {
               "Order shipped successfully with shipment created on warehouse " +
                 warehouseId?.warehouseName
             );
-            //console.log('FShip createShipment API hit');
-            //console.log(createShipmentResponse);
+            console.log("FShip createShipment API hit");
+            console.log(createShipmentResponse);
 
             return createShipmentResponse.data;
             //   if (fhipApiOrderId) {
@@ -291,10 +291,12 @@ const useCreateShipment = () => {
           "Order shipped successfully on warehouse " +
             warehouseId?.warehouseName
         );
-        console.log(log);
+        // console.log("logggggg", log);
+        const awb = response.data?.shipment.shipments[0].success || false;
         console.log("createdd", response.data);
+        console.log("awb in backend", awb);
 
-        return response.data;
+        return { ...response.data, awb };
       }
     } catch (err) {
       console.log(err);
@@ -306,7 +308,7 @@ const useCreateShipment = () => {
       setLoading(false);
     }
   };
-  // console.log("shiporderres", shipOrder);
+  console.log("shiporderres", shipOrder);
   return {
     shipOrder,
     loading,
