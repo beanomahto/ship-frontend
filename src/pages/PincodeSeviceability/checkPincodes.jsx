@@ -53,7 +53,7 @@ const CheckPincode = () => {
       //   }
       // );
       const response = await fetch(
-        `http://localhost:5000/api/delivery-partners/${pincode}`,
+        `https://backend.shiphere.in/api/delivery-partners/${pincode}`,
         {
           method: "GET",
           headers: {
