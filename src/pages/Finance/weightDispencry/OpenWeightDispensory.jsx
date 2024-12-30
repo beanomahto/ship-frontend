@@ -23,15 +23,11 @@ const OpenWeightDispensory = ({ dataSource }) => {
       const entriesToUpdate = [];
 
       dataSource.forEach((newEntry) => {
-        // Find entries with the same orderId, same date, and different settledCharges
+        // Find entries with the same orderId and awb, and status not already "closed"
         const duplicateEntry = dataSource.find(
           (entry) =>
             entry.orderId === newEntry.orderId &&
-            moment(entry.weightAppliedDate).isSame(
-              moment(newEntry.weightAppliedDate),
-              "day"
-            ) &&
-            entry.settledCharges !== newEntry.settledCharges &&
+            entry.awb === newEntry.awb &&
             entry.status !== "closed"
         );
 
