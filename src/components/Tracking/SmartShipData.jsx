@@ -63,7 +63,7 @@ const SmartShipData = ({ trackingInfo, advertisement }) => {
     },
     {
       title: "Out For Delivery",
-      icon: <SyncOutlined style={{ color: "#1890ff" }} spin />,
+      icon: <SyncOutlined style={{ color: "#1890ff" }} />,
     },
     {
       title: "Delivered",
@@ -259,27 +259,7 @@ const SmartShipData = ({ trackingInfo, advertisement }) => {
                 </span>
               </Descriptions.Item>
             </Descriptions>
-            {/* 
-            <div
-              style={{
-                marginTop: "20px",
-                textAlign: "center",
-                borderRadius: "8px",
-                overflow: "hidden",
-                boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
-              }}
-            >
-              <video
-                src={statusVideo}
-                autoPlay
-                muted
-                loop
-                style={{
-                  width: "100%",
-                  height: "auto",
-                }}
-              />
-            </div> */}
+
             {/* Conditional Advertisement Section */}
             <div
               style={{
@@ -374,17 +354,26 @@ const SmartShipData = ({ trackingInfo, advertisement }) => {
             >
               Shipping Progress
             </Title>
-            <Steps
+            {/* <Steps
               current={currentStepIndex}
-              size="small"
-              progressDot
+              progressDot={(dot, { index }) => (
+                <span
+                  style={{
+                    border: "1px solid #eeeee4",
+                    borderRadius: "50%",
+                    padding: "4px",
+                    marginRight: "5px",
+                  }}
+                >
+                  {progressSteps[index].icon}
+                </span> // Use the custom icon here
+              )}
               style={{ marginBottom: "20px" }}
             >
               {progressSteps.map((step, index) => (
                 <Step
                   key={index}
                   title={step.title}
-                  icon={step.icon}
                   description={
                     index <= currentStepIndex
                       ? "Completed"
@@ -394,7 +383,60 @@ const SmartShipData = ({ trackingInfo, advertisement }) => {
                   }
                 />
               ))}
+            </Steps> */}
+            <Steps
+              current={currentStepIndex}
+              progressDot={(dot, { index }) => (
+                <span
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "35px", // Smaller circle
+                    height: "35px",
+                    backgroundColor: "white",
+                    fontSize: "16px",
+                    fontWeight: "bold",
+                    borderRadius: "50%",
+                    boxShadow: "0px 5px 5px rgba(0, 0, 0, 0.1)",
+                    marginLeft: "-12px",
+
+                    position: "relative",
+                    top: "-14px", // Align with connecting line
+                    transition: "all 0.3s ease",
+                  }}
+                >
+                  {progressSteps[index].icon}
+                </span>
+              )}
+              style={{
+                marginBottom: "20px",
+                padding: "10px 0", // Better spacing for alignment
+              }}
+            >
+              {progressSteps.map((step, index) => (
+                <Step
+                  key={index}
+                  title={<span style={{ color: "gray" }}>{step.title}</span>}
+                  description={
+                    <span
+                      style={{
+                        fontStyle: "italic",
+                        color:
+                          index <= currentStepIndex ? "#4caf50" : "#888888",
+                      }}
+                    >
+                      {index <= currentStepIndex
+                        ? "Completed"
+                        : index === currentStepIndex
+                        ? "In Progress"
+                        : "Pending"}
+                    </span>
+                  }
+                />
+              ))}
             </Steps>
+
             {/* <Progress
                percent={parseFloat((((currentStepIndex + 1) / progressSteps.length) * 100).toFixed(2))}
               status={
