@@ -1,4 +1,4 @@
-import React, { useState,useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Button, Table, Input, DatePicker } from "antd";
 import PaymentModel from "./Payment/PaymentModel";
 import { usePaymentUserContext } from "../../../context/PaymentUserContext";
@@ -14,10 +14,8 @@ const AdminWallet = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [searchText, setSearchText] = useState("");
 
-
   const showModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
-
 
   // Function to check if any field contains the search text
   const matchesSearchText = (record, searchText) => {
@@ -31,12 +29,12 @@ const AdminWallet = () => {
       record.remark?.toLowerCase().includes(lowercasedText)
     );
   };
- 
+
   // Filtered data based on the search text across all fields
   const filteredUsers = useMemo(() => {
     return pUsers.filter((user) => matchesSearchText(user, searchText));
   }, [pUsers, searchText]);
-console.log("nokk", filteredUsers);
+  // console.log("nokk", filteredUsers);
 
   // Function to convert data to CSV format
   const generateCsvData = () => {
@@ -44,7 +42,7 @@ console.log("nokk", filteredUsers);
       "Date & Time": moment(user.updatedAt).format("DD-MM-YYYY"),
       "Company Info": user.user?.companyName || "N/A",
       Payment: user.credit,
-      Transaction_Id:user.phonepeTransactionId,
+      Transaction_Id: user.phonepeTransactionId,
       Updated_Total: user.amount,
       Payment_Method: user.phonepeInstrument,
       Remark: user.remark,
@@ -52,7 +50,6 @@ console.log("nokk", filteredUsers);
   };
 
   const newOrders = [
-   
     {
       title: "Date & Time",
       dataIndex: "updatedAt",
@@ -118,7 +115,6 @@ console.log("nokk", filteredUsers);
           </span>
         </div>
       ),
-    
     },
     {
       title: "Company Info",
@@ -155,21 +151,37 @@ console.log("nokk", filteredUsers);
       title: "Transaction Status",
       dataIndex: "status",
       align: "center",
-      render: (text, filteredUsers) => (
-        <>
-          <div>{text}</div>
-          <div
-            style={{
-              color: filteredUsers.phonepeTransactionId ? "green" : "red",
-              fontStyle: "italic",
-            }}
-          >
-            {filteredUsers.phonepeTransactionId ? "Success" : "Failure"}
-          </div>
-        </>
-      ),
-  
-    },    
+      render: (text, filteredUsers) => {
+        const isRechargedWithPhonepe =
+          filteredUsers.remark === "Recharged with phonepe";
+        const hasTransactionId = !!filteredUsers.phonepeTransactionId; // Check if transactionId exists
+
+        const statusText =
+          isRechargedWithPhonepe && hasTransactionId
+            ? "Success"
+            : isRechargedWithPhonepe && !hasTransactionId
+            ? "Failure"
+            : !isRechargedWithPhonepe && !hasTransactionId
+            ? "Success"
+            : "Failure";
+
+        const statusColor = statusText === "Success" ? "green" : "red";
+
+        return (
+          <>
+            <div>{text}</div>
+            <div
+              style={{
+                color: statusColor,
+                fontStyle: "italic",
+              }}
+            >
+              {statusText}
+            </div>
+          </>
+        );
+      },
+    },
     {
       title: "Payment_Method",
       dataIndex: "method",
@@ -185,7 +197,6 @@ console.log("nokk", filteredUsers);
       dataIndex: "remark",
       align: "center",
     },
-   
   ];
 
   const handleClearSearch = () => {
