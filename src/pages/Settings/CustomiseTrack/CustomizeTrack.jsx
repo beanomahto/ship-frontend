@@ -370,9 +370,11 @@ function CustomizeTrack() {
               required
             />
           </div>
-          <button type="submit" className="form-submit-button">
-            {advertisement ? "Update" : "Submit"}
-          </button>
+          <div className="sub-btn">
+            <button type="submit" className="form-submit-button">
+              {advertisement ? "Update" : "Submit"}
+            </button>
+          </div>
         </form>
       </div>
 
@@ -387,6 +389,7 @@ function CustomizeTrack() {
                   href={advertisement.url}
                   target="_blank"
                   rel="noopener noreferrer"
+                  style={{ display: "flex", justifyContent: "center" }}
                 >
                   <img
                     src={imageSrc}
@@ -398,8 +401,19 @@ function CustomizeTrack() {
             ))}
           </Carousel>
         ) : (
-          <div className="placeholder-box">
-            <p>Here is how your advertisement will look like.</p>
+          <div
+            className="placeholder-box"
+            style={{
+              height: "280px",
+              width: "280px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <p>
+              After uploading, here is how your advertisement will look like.
+            </p>
           </div>
         )}
         {advertisement?.description && (
