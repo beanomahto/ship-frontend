@@ -46,14 +46,27 @@ const CheckPincode = () => {
     try {
       setError("");
       setLoading(true); // Start loading
-      const response = await axios.get(
+      // const response = await axios.get(
+      //   `https://backend.shiphere.in/api/pincode/delivery-partners/${pincode}`,
+      //   {
+      //     params: { pincode },
+      //   }
+      // );
+      const response = await fetch(
         `https://backend.shiphere.in/api/delivery-partners/${pincode}`,
         {
-          params: { pincode },
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       );
-
-      const { pincode: fetchedPincode, deliveryPartners } = response.data;
+      // Check if the response is OK (status 200-299)
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const { pincode: fetchedPincode, deliveryPartners } =
+        await response.json();
 
       if (!deliveryPartners || deliveryPartners.length === 0) {
         setData([]);
