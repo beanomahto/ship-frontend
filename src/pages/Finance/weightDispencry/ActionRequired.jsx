@@ -16,6 +16,7 @@ const ActionRequired = ({
   const actionRequired = dataSource?.filter(
     (data) => data.status === "action required"
   );
+  console.log("action req", actionRequired);
 
   useEffect(() => {
     const updateStatusToClosed = async () => {
@@ -99,7 +100,8 @@ const ActionRequired = ({
     {
       title: "Weight Applied Date",
       dataIndex: "weightAppliedDate",
-      render: (text, data) => moment(data?.createdAt).format("DD-MM-YYYY"),
+      render: (text, data) =>
+        moment(data?.weightAppliedDate).format("DD-MM-YYYY"),
     },
     {
       title: "Entered Weight",
