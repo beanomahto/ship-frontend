@@ -53,11 +53,12 @@ const CheckPincode = () => {
       //   }
       // );
       const response = await fetch(
-        `https://backend.shiphere.in/api/delivery-partners/${pincode}`,
+        `http://localhost:5000/api/delivery-partners/${pincode}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
           },
         }
       );
