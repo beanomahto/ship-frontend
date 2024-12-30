@@ -1451,18 +1451,22 @@ const Orders = () => {
           {
             <div className="download_extra_box">
               <div className="download_extra">
-                <Button
-                  type="primary"
-                  shape="round"
-                  onClick={exportToExcel}
-                  icon={<DownloadOutlined />}
-                  className="downloadBtn"
-                  size="middle"
-                  style={{ marginRight: "10px" }}
-                  disabled={loadingdownload}
-                >
-                  {loadingdownload ? "Downloading..." : "Download"}
-                </Button>
+                {(authUser.role === "admin" ||
+                  (authUser.role !== "admin" &&
+                    (currentTab === "tab1" || currentTab === "tab2"))) && (
+                  <Button
+                    type="primary"
+                    shape="round"
+                    onClick={exportToExcel}
+                    icon={<DownloadOutlined />}
+                    className="downloadBtn"
+                    size="middle"
+                    style={{ marginRight: "10px" }}
+                    disabled={loadingdownload}
+                  >
+                    {loadingdownload ? "Downloading..." : "Download"}
+                  </Button>
+                )}
 
                 {currentTab === "tab2" && (
                   <div className="tab2_managingBtns">
