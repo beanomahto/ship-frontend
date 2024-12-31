@@ -585,12 +585,12 @@ const Orders = () => {
       Component: DeliveredComponent,
       dataSource: dataSourceWithKeys,
     },
-    {
-      key: "tab6",
-      tab: `Out For Delivery (${outfordeliveryOrders?.length})`,
-      Component: OutForDelivery,
-      dataSource: dataSourceWithKeys,
-    },
+    // {
+    //   key: "tab6",
+    //   tab: `Out For Delivery (${outfordeliveryOrders?.length})`,
+    //   Component: OutForDelivery,
+    //   dataSource: dataSourceWithKeys,
+    // },
   ];
 
   //console.log(tabsData);
