@@ -36,6 +36,7 @@ import InTranitComponent from "./InTransitComponent";
 import DeliveredComponent from "./DeliveredComponent";
 import BulkUploadComponent from "./BulkUploadComponent";
 import { Spin } from "antd";
+import OutForDelivery from "./OutforDelivery";
 const { confirm } = Modal;
 
 const partnerImages = {
@@ -370,6 +371,7 @@ const Orders = () => {
             selectedDeliveryPartner.name
           );
 
+          console.log("line373", selectedDeliveryPartner.name);
           awb = response?.awb;
           console.log("Generated AWB:", awb);
 
@@ -546,6 +548,11 @@ const Orders = () => {
   const deliveredOrdersAmt = dataSourceWithKeys?.filter(
     (order) => order.status === "Delivered"
   );
+  const outfordeliveryOrders = dataSourceWithKeys?.filter(
+    (order) =>
+      order?.shipmentDetails.status_code === "121" ||
+      order?.shipmentDetails.status_code === "120"
+  );
 
   const tabsData = [
     {
@@ -578,12 +585,12 @@ const Orders = () => {
       Component: DeliveredComponent,
       dataSource: dataSourceWithKeys,
     },
-    // {
-    //   key: "tab6",
-    //   tab: `Bulk Upload (${dataSourceWithKeys?.length})`,
-    //   Component: BulkUploadComponent,
-    //   dataSource: dataSourceWithKeys,
-    // },
+    {
+      key: "tab6",
+      tab: `Out For Delivery (${outfordeliveryOrders?.length})`,
+      Component: OutForDelivery,
+      dataSource: dataSourceWithKeys,
+    },
   ];
 
   //console.log(tabsData);
