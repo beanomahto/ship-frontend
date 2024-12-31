@@ -34,6 +34,15 @@ const ShipOrderComponent = ({
   const [searchedColumn, setSearchedColumn] = React.useState("");
   const { authUser } = useAuthContext();
 
+  // const preprocessOrders = (orders) => {
+  //   return orders.map((order) => {
+  //     if (!order.awb && !order.shippingPartner) {
+  //       return { ...order, status: "Cancelled" };
+  //     }
+  //     return order;
+  //   });
+  // };
+  // const preprocessedDataSource = preprocessOrders(dataSource);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -345,18 +354,11 @@ const ShipOrderComponent = ({
       ),
       className: "centered-row",
     },
-    // {
-    //   title: 'Order Date',
-    //   dataIndex: 'createdAt',
-    //   sorter: (a, b) => moment(a.updatedAt).isAfter(moment(b.updatedAt)) ? 1 : -1,
-    //   render: (text, order) => (
-    //     <div>{formatDateInIST(order?.updatedAt)}</div>
-    //   ),
-    // },
+
     {
       title: "Order Date",
-      dataIndex: "updatedAt",
-      ...getColumnSearchProps("updatedAt"),
+      dataIndex: "shippingDate",
+      ...getColumnSearchProps("shippingDate"),
 
       filterDropdown: ({
         setSelectedKeys,
@@ -408,15 +410,15 @@ const ShipOrderComponent = ({
       },
       onFilter: (value, record) => {
         const [startDate, endDate] = value;
-        const orderDate = moment(record.updatedAt).toISOString();
+        const orderDate = moment(record.shippingDate).toISOString();
         return orderDate >= startDate && orderDate <= endDate;
       },
       render: (text, order) => (
         <>
           <div>
-            {moment(order?.updatedAt).format("DD-MM-YYYY")}
+            {moment(order?.shippingDate).format("DD-MM-YYYY")}
             <span style={{ marginLeft: "10px", fontStyle: "italic" }}>
-              {moment(order?.updatedAt).format("HH:mm")}
+              {moment(order?.shippingDate).format("HH:mm")}
             </span>
           </div>
         </>
@@ -457,7 +459,18 @@ const ShipOrderComponent = ({
   const shippedOrders = dataSource?.filter(
     (order) => order?.status === "Shipped"
   );
-  console.log(shippedOrders);
+  console.log("shippp", shippedOrders);
+  // const shippedOrders = dataSource
+  // ?.map((order) => {
+  //   // If AWB or partner is missing, update the status to "Cancelled"
+  //   if (!order.awb && !order.shippingPartner) {
+  //     return { ...order, status: "Cancelled" };
+  //   }
+  //   return order; // Return the order as is if it's valid
+  // })
+  // ?.filter((order) => order?.status === "Shipped"); // Filter orders with status "Shipped"
+
+  console.log("shippp", shippedOrders);
 
   return (
     <>
@@ -484,9 +497,9 @@ const ShipOrderComponent = ({
           scroll={{ x: 1050, y: 390 }}
           pagination={{
             showSizeChanger: true,
-            pageSizeOptions: ['10', '20', '50', '100', '500', '1000'],
-            defaultPageSize: 10, 
-          }} 
+            pageSizeOptions: ["10", "20", "50", "100", "500", "1000"],
+            defaultPageSize: 10,
+          }}
           style={{ width: "100%", height: "505px", marginTop: "-10px" }}
         />
       )}
