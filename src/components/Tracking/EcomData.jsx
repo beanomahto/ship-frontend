@@ -8,6 +8,7 @@ import {
   Steps,
   Progress,
   message,
+  Carousel,
 } from "antd";
 import {
   CheckCircleOutlined,
@@ -18,12 +19,12 @@ import {
 } from "@ant-design/icons";
 import { useOrderContext } from "../../context/OrderContext";
 import axios from "axios";
-import status from "../../utils/DeliveryStatus2.mp4";
+import statusVideo from "../../utils/DeliveryStatus2.mp4";
 
 const { Title } = Typography;
 const { Step } = Steps;
 
-const EcomData = ({ trackingInfo }) => {
+const EcomData = ({ trackingInfo, advertisement }) => {
   const { orders, fetchOrders } = useOrderContext();
   const lastUndeliveredReason = useRef(null);
 
@@ -191,16 +192,34 @@ const EcomData = ({ trackingInfo }) => {
   }, [fullLatestStatus, progressPercentage, currentOrder]);
 
   return (
-    <div>
-      <Row gutter={16}>
+    <div
+      style={{
+        background: "#f4f6f9",
+        padding: "30px",
+        minHeight: "100vh",
+        fontFamily: "Arial, sans-serif",
+      }}
+    >
+      <Row gutter={[24, 24]} justify="center">
         <Col xs={24} sm={8}>
           <Card
+            hoverable
             style={{
-              borderRadius: "10px",
-              boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+              borderRadius: "16px",
+              boxShadow: "0 6px 25px rgba(0, 0, 0, 0.1)",
+              background: "linear-gradient(135deg, #ffffff, #fafafa)",
             }}
           >
-            <Title level={4}>Tracking Information</Title>
+            <Title
+              level={3}
+              style={{
+                textAlign: "center",
+                color: "#333",
+                marginBottom: "20px",
+              }}
+            >
+              Tracking Information
+            </Title>
             <Descriptions
               bordered
               column={1}
@@ -219,27 +238,76 @@ const EcomData = ({ trackingInfo }) => {
                 {trackingInfo.pincode}
               </Descriptions.Item>
             </Descriptions>
-
+            {/* Conditional Advertisement Section */}
             <div
-              className="feature1-video-wrapper"
-              style={{ overflow: "hidden", height: "400px", width: "450px" }}
+              style={{
+                marginTop: "20px",
+                textAlign: "center",
+                borderRadius: "8px",
+                overflow: "hidden",
+                boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
+              }}
             >
-              <video
-                className="feature1-responsive-video"
-                src={status} // Provide the path to your video file here
-                autoPlay
-                muted
-                loop
-                height="500px"
-                width="450px"
-                playsInline
-                style={{
-                  objectFit: "cover", // Ensures the video fills the container
-                  objectPosition: "center -80px", // Shifts the video upwards to crop from the top
-                }}
-              >
-                Your browser does not support the video tag.
-              </video>
+              {advertisement && advertisement.images?.length > 0 ? (
+                <div>
+                  <Carousel autoplay>
+                    {advertisement.images.map((imageSrc, index) => (
+                      <div key={index}>
+                        <a
+                          href={advertisement.url} // Use the single URL
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <img
+                            src={imageSrc} // Use each image source
+                            alt={`Advertisement ${index + 1}`}
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              width: "350px",
+                              height: "350px",
+                              objectFit: "cover",
+                              borderRadius: "8px",
+                            }}
+                          />
+                        </a>
+                      </div>
+                    ))}
+                  </Carousel>
+
+                  {advertisement.description && (
+                    <p
+                      style={{
+                        marginTop: "10px",
+                        color: "#555",
+                        fontSize: "20px",
+                        fontWeight: "bolder",
+                        marginBottom: "10px",
+                      }}
+                    >
+                      {advertisement.description}
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <video
+                  src={statusVideo}
+                  autoPlay
+                  muted
+                  loop
+                  style={{
+                    marginTop: "-50px",
+                    width: "100%",
+                    height: "auto",
+                  }}
+                />
+              )}
             </div>
           </Card>
         </Col>

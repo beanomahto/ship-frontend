@@ -203,7 +203,7 @@ const Tracking = () => {
           <EcomData
             trackingInfo={trackingInfo}
             steps={steps}
-            // advertisement={advertisement}
+            advertisement={advertisement}
           />
         ) : (
           <SmartShipData
