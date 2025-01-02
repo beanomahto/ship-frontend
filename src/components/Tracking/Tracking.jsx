@@ -133,9 +133,16 @@ const Tracking = () => {
             headers: { Authorization: `${token}` },
           }
         );
-        if (response.data) {
-          const { images, description, url } = response.data;
+        // console.log("ress", response.data);
+
+        if (response.data && response.data.length > 0) {
+          const { images, description, url } = response.data[0]; // Access the first element
           setAdvertisement({ images, description, url });
+          // console.log(images);
+          // console.log(description);
+          // console.log(url);
+        } else {
+          console.log("No advertisement data found.");
         }
       } catch (error) {
         console.log("No advertisement found for the user.");
@@ -167,7 +174,8 @@ const Tracking = () => {
   if (!trackingInfo) {
     return <p>No tracking information available.</p>;
   }
-  console.log(trackingInfo);
+  // console.log(trackingInfo);
+  // console.log("addd", advertisement);
 
   return (
     // <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
