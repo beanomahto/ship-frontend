@@ -124,28 +124,65 @@ const Tracking = () => {
       ]);
     };
 
+    // const fetchAdvertisement = async () => {
+    //   try {
+    //     const token = localStorage.getItem("token");
+    //     const response = await axios.get(
+    //       "http://localhost:5000/api/customiseTrack/get-advertisement",
+    //       {
+    //         headers: { Authorization: `${token}` },
+    //       }
+    //     );
+    //     console.log("ress", response.data);
+
+    //     if (response.data && response.data.length > 0) {
+    //       const { images, description, url } = response.data[0]; // Access the first element
+    //       setAdvertisement({ images, description, url });
+    //       console.log(images);
+    //       console.log(description);
+    //       console.log(url);
+    //     } else {
+    //       console.log("No advertisement data found.");
+    //     }
+    //   } catch (error) {
+    //     console.log("No advertisement found for the user.");
+    //   } finally {
+    //     setAdvertisementLoading(false);
+    //   }
+    // };
+
     const fetchAdvertisement = async () => {
       try {
         const token = localStorage.getItem("token");
+        console.log("Token:", token);
+
         const response = await axios.get(
-          "https://backend.shiphere.in/api/customiseTrack/get-advertisement",
+          "http://localhost:5000/api/customiseTrack/get-advertisement",
           {
             headers: { Authorization: `${token}` },
           }
         );
-        // console.log("ress", response.data);
+        console.log("API Response:", response.data);
 
-        if (response.data && response.data.length > 0) {
-          const { images, description, url } = response.data[0]; // Access the first element
+        // Assuming response.data is the advertisement object
+        if (response.data) {
+          const { images, description, url } = response.data; // Directly access response.data
           setAdvertisement({ images, description, url });
-          // console.log(images);
-          // console.log(description);
-          // console.log(url);
+          console.log(
+            "Advertisement data set successfully:",
+            images,
+            description,
+            url
+          );
         } else {
           console.log("No advertisement data found.");
         }
       } catch (error) {
-        console.log("No advertisement found for the user.");
+        console.error(
+          "Error fetching advertisement:",
+          error.message,
+          error.response?.data || error
+        );
       } finally {
         setAdvertisementLoading(false);
       }
