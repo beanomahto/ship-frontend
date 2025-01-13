@@ -643,7 +643,7 @@ const NewOrderComponent = ({
 
       try {
         // Attempt to ship the order
-        const { awb } = await shipOrder(
+        const  awb  = await shipOrder(
           selectedOrder,
           sendWarehouse,
           partner.deliveryPartner

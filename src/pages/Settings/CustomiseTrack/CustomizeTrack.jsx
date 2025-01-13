@@ -17,7 +17,7 @@
 //     const fetchAdvertisement = async () => {
 //       try {
 //         const response = await axios.get(
-//           "http://localhost:5000/api/customiseTrack/get-advertisement",
+//           "https://backend.shiphere.in/api/customiseTrack/get-advertisement",
 //           {
 //             headers: { Authorization: `${token}` },
 //           }
@@ -85,7 +85,7 @@
 //       if (advertisementId) {
 //         // Update existing advertisement
 //         await axios.put(
-//           `http://localhost:5000/api/customiseTrack/update-advertisement/${advertisementId}`,
+//           `https://backend.shiphere.in/api/customiseTrack/update-advertisement/${advertisementId}`,
 //           formData,
 //           {
 //             headers: {
@@ -98,7 +98,7 @@
 //       } else {
 //         // Create a new advertisement
 //         await axios.post(
-//           "http://localhost:5000/api/customiseTrack/create-advertisement",
+//           "https://backend.shiphere.in/api/customiseTrack/create-advertisement",
 //           formData,
 //           {
 //             headers: {
@@ -240,7 +240,7 @@ function CustomizeTrack() {
     const fetchAdvertisement = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/customiseTrack/get-advertisement",
+          "https://backend.shiphere.in/api/customiseTrack/get-advertisement",
           { headers: { Authorization: `${token}` } }
         );
         const { images, description, url } = response.data;
@@ -290,7 +290,7 @@ function CustomizeTrack() {
     try {
       if (advertisement) {
         await axios.put(
-          `http://localhost:5000/api/customiseTrack/update-advertisement/${advertisement._id}`,
+          `https://backend.shiphere.in/api/customiseTrack/update-advertisement/${advertisement._id}`,
           formData,
           {
             headers: {
@@ -302,7 +302,7 @@ function CustomizeTrack() {
         alert("Advertisement updated!");
       } else {
         await axios.post(
-          "http://localhost:5000/api/customiseTrack/create-advertisement",
+          "https://backend.shiphere.in/api/customiseTrack/create-advertisement",
           formData,
           {
             headers: {

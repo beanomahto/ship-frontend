@@ -11,7 +11,7 @@ const useCreateShipment = () => {
     setLoading(true);
     setError(null);
     console.log(orderId);
-
+console.log(deliveryPartnerName)
     const warehouseIds = warehouseId?._id;
     const fShipWarehouseId = warehouseId?.smartshipHubId;
     //console.log(warehouseId);
@@ -48,10 +48,10 @@ const useCreateShipment = () => {
           url = "https://backend.shiphere.in/api/ecomExpress/createShipment";
           log = "ecom hit";
           break;
-        // case "Xpressbees":
-        //   url = "https://backend.shiphere.in/api/xpressbees/createShipment";
-        //   log = "xpress hit";
-        //   break;
+        case "Shree Maruti":
+          url = "https://backend.shiphere.in/api/maruti/booking";
+          log = "ok hit";
+          break;
         case "Delhivery":
         case "Amazon Shipping":
         case "Xpressbees":
@@ -273,7 +273,7 @@ const useCreateShipment = () => {
           //   throw new Error('Failed to retrieve fhipApiOrderId');
           // }
         }
-      } else {
+      } else if (deliveryPartnerName === "Ecom Express") {
         const response = await axios.post(
           url,
           {
@@ -291,12 +291,77 @@ const useCreateShipment = () => {
           "Order shipped successfully on warehouse " +
             warehouseId?.warehouseName
         );
-        // console.log("logggggg", log);
         const awb = response.data?.shipment.shipments[0].success || false;
         console.log("createdd", response.data);
         console.log("awb in backend", awb);
 
         return { ...response.data, awb };
+      }
+      else {
+        try {
+          const serviceability = await axios.post(
+            'https://backend.shiphere.in/api/maruti/serviceability',
+            {
+              warehouseId: warehouseIds,
+              orderId: orderIds,
+            },
+            {
+              headers: {
+                Authorization: `${token}`,
+              },
+            }
+          );
+        
+          if (serviceability.status === 200) {
+            const bookingResponse = await axios.post(
+              url,
+              {
+                orderId: orderIds,
+                warehouseId: warehouseIds,
+              },
+              {
+                headers: {
+                  Authorization: `${token}`,
+                },
+              }
+            );
+        
+            console.log(bookingResponse);
+            if (bookingResponse.status === 200) {
+              let awb = bookingResponse?.data?.data?.data?.awbNumber
+              let cawb = bookingResponse?.data?.data?.data?.cAwbNumber
+              const manifestResponse = await axios.post(
+                'https://backend.shiphere.in/api/maruti/manifest',
+                {
+                  awbNumber: awb,
+                  cAwbNumber: cawb,
+                },
+                {
+                  headers: {
+                    Authorization: `${token}`,
+                  },
+                }
+              );
+        
+              if (manifestResponse.status === 200) {
+                message.success(
+                  `Order shipped successfully on warehouse ${warehouseId?.warehouseName || "N/A"}`
+                );
+        
+                return { ...serviceability.data, bookingResponse: bookingResponse.data, manifestResponse: manifestResponse.data };
+              } else {
+                message.error("Failed to create manifest. Please try again.");
+              }
+            } else {
+              message.error("Failed to book the order. Please try again.");
+            }
+          } else {
+            message.error("Order is not serviceable.");
+          }
+        } catch (error) {
+          console.error("Error during shipping process:", error);
+          message.error("An error occurred. Please try again.");
+        }        
       }
     } catch (err) {
       console.log(err);

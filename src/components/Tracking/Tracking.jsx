@@ -128,7 +128,7 @@ const Tracking = () => {
     //   try {
     //     const token = localStorage.getItem("token");
     //     const response = await axios.get(
-    //       "http://localhost:5000/api/customiseTrack/get-advertisement",
+    //       "https://backend.shiphere.in/api/customiseTrack/get-advertisement",
     //       {
     //         headers: { Authorization: `${token}` },
     //       }
@@ -157,7 +157,7 @@ const Tracking = () => {
         console.log("Token:", token);
 
         const response = await axios.get(
-          "http://localhost:5000/api/customiseTrack/get-advertisement",
+          "https://backend.shiphere.in/api/customiseTrack/get-advertisement",
           {
             headers: { Authorization: `${token}` },
           }
