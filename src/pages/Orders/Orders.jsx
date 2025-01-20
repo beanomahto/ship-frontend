@@ -1424,7 +1424,7 @@ const Orders = () => {
       message.warning("Please enter an email.");
       return;
     }
-
+    console.log("emailllll", email);
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       message.warning("Please enter a valid email address.");
