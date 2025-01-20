@@ -76,7 +76,8 @@ const Orders = () => {
   const [loadingInvoice, setloadingInvoice] = useState(false);
   const [loadingdownload, setloadingdownload] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
-
+  // React State and Functionality
+  const [email, setEmail] = useState("");
   //console.log(orders);
   //console.log(selectedOrderData);
   // models
@@ -1418,6 +1419,42 @@ const Orders = () => {
       },
     });
   };
+  const handleSendEmail = async () => {
+    if (!email) {
+      message.warning("Please enter an email.");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      message.warning("Please enter a valid email address.");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "https://backend.shiphere.in/api/orders/movedelivered",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
+
+      if (response.ok) {
+        const result = await response.json();
+        message.success(result.message || "Orders moved successfully.");
+      } else {
+        const errorData = await response.json();
+        message.error(errorData.message || "Failed to move orders.");
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+      message.error("An unexpected error occurred.");
+    }
+  };
 
   //console.log(currentTab);
 
@@ -1445,7 +1482,44 @@ const Orders = () => {
             Sync
           </Button>
         )}
+
         <div className="tab1_managingBtns">
+          {authUser.role === "admin" && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px", // Adds spacing between the input and button
+              }}
+            >
+              <input
+                type="email"
+                placeholder="Enter email"
+                style={{
+                  padding: "8px",
+                  border: "1px solid #ccc",
+                  borderRadius: "4px",
+                  fontSize: "14px",
+                }}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)} // Update email state
+              />
+              <button
+                style={{
+                  padding: "8px 16px",
+                  backgroundColor: "#007BFF",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                  fontSize: "14px",
+                }}
+                onClick={handleSendEmail}
+              >
+                Submit
+              </button>
+            </div>
+          )}
           {currentTab === "tab1" && (
             <Button
               style={{ borderRadius: "34px" }}

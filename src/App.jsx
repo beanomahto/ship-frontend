@@ -63,6 +63,7 @@ import ShippingPolicy from "./pages/Login/cancellationRefund/ShippingPolicy";
 import TermCondition from "./pages/Login/cancellationRefund/TermCondition";
 import PrivacyPolicy from "./pages/Login/cancellationRefund/PrivacyPolicy";
 import AboutSection from "./pages/Login/cancellationRefund/AboutSection";
+import ExtradeliveredOrder from "./pages/Orders/ExtradeliveredOrder";
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -117,6 +118,14 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <Orders />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="orders/delivered"
+            element={
+              <ProtectedRoute>
+                <ExtradeliveredOrder />
               </ProtectedRoute>
             }
           />
