@@ -8,7 +8,7 @@ import MenuList from "./MenuList";
 const { Sider } = Layout;
 
 const Sidebar = ({ darktheme, toggleTheme }) => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
