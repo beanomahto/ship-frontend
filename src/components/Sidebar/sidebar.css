@@ -68,11 +68,18 @@
 .hamburger-menu {
     display: block;
     position: absolute;
-    top: 16px;
-    left: 20px; /* Adjusted to a more consistent value for mobile */
+    top: 14px;
+    left: 16px; /* Adjusted to a more consistent value for mobile */
     z-index: 1000; /* Ensure the button stays on top */
     cursor: pointer;
-    font-size: 2rem;
+    padding: 5px;
+    font-size: 1.08rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+    text-align: center;
+    margin-left: -9px;
 }
 
 @media (max-width: 768px) {

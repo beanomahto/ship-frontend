@@ -91,44 +91,33 @@ const Dashboard = () => {
   }, []);
 
   const remmitance = remittanceData.remittances;
-
   const order = orders?.orders;
-  console.log("order", order);
 
   const cancelOrdersAmt = order?.filter(
     (order) => order.status === "Cancelled"
   );
   const newOrdersAmt = order?.filter((order) => order.status === "InTransit");
-
   const inTransitOrdersAmt = order?.filter(
     (order) => order.status === "Delivered"
   );
-
   const totalnewOrdersAmt = order?.filter((order) => order.status === "New");
-  console.log(totalnewOrdersAmt);
-
   const ShippedOrdersAmt = order?.filter((order) => order.status === "Shipped");
-
   const RTOOrdersAmt = order?.filter(
     (order) => order.ndrstatus === "RTO" || order.ndrstatus === "RtoDone"
   );
-  // *******
-  console.log("s", ShippedOrdersAmt);
-  console.log("ss", RTOOrdersAmt);
-  console.log("sss", remmitance);
+
   const filteredOrders = filterDataByDate(
     calculateStartDate(selectedTimeRange),
     todayEnd,
     orders?.orders
   );
   const filteredRemittances = remmitance?.filter((remittance) => {
-    const remittanceDate = new Date(remittance.generatedDate); // Ensure this matches your remittance date field
+    const remittanceDate = new Date(remittance.generatedDate);
     return (
       remittanceDate >= calculateStartDate(selectedTimeRange) &&
       remittanceDate <= todayEnd
     );
   });
-  console.log("ssss", filteredRemittances);
   const shippedOrders = filteredOrders?.filter(
     (filteredOrders) => filteredOrders.status === "Shipped"
   );
@@ -248,12 +237,7 @@ const Dashboard = () => {
       },
     ],
   };
-  // const filteredOrders = selectedTimeRange
-  // ? orders?.orders?.filter((order) => {
-  //     const createdAt = new Date(order.createdAt);
-  //     return createdAt >= startDate;
-  //   })
-  // : orders?.orders;
+
   const barChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -276,19 +260,37 @@ const Dashboard = () => {
   return (
     <div className="mainCharts">
       <div className="dataCard topDestinationsCard">
-        <TopDestinationsGraph />
+        <div className="topDestinationsInnerContainer">
+          <TopDestinationsGraph />
+          <span className="chart-separator"></span>
+          <ShipmentStatusGraph />
+        </div>
       </div>
 
-      <div className="dataCard topDestinationsCard">
-        <ShipmentStatusGraph />
-      </div>
-      <div style={{ display: "flex", gap: "1rem" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "1rem",
+          margin: "0, auto",
+          width: "96%",
+          alignItems: "center",
+        }}
+      >
         <div
           className="orderSummaryContainer1"
-          style={{ width: "60%", position: "relative" }}
+          style={{
+            width: "98%",
+            gap: "0.5rem",
+            position: "relative",
+            marginBottom: "2rem",
+          }}
           // style={{ gridTemplateColumns: "repeat(2, 1fr)" }}
         >
-          <div className="orderSummaryCard">
+          <div
+            className="orderSummaryCard"
+            style={{ backgroundColor: "rgb(227, 225, 225)", height: "11rem", border: "1px solid black" }}
+          >
             <div className="orderSummary">
               <h3>{totalnewOrdersAmt?.length}</h3>
               <p>New Orders</p>
@@ -298,11 +300,14 @@ const Dashboard = () => {
               </p>
             </div>
             <div className="orderIcon">
-              <MdAutorenew size={40} color="#2B3FE5" />
+              <MdAutorenew size={50} color="#2B3FE5" />
             </div>
           </div>
 
-          <div className="orderSummaryCard">
+          <div
+            className="orderSummaryCard"
+            style={{ backgroundColor: "rgb(227, 225, 225)", height: "11rem", border: "1px solid black" }}
+          >
             <div className="orderSummary">
               <h3>{ShippedOrdersAmt?.length}</h3>
               <p>Shipped Orders</p>
@@ -312,11 +317,14 @@ const Dashboard = () => {
               </p>
             </div>
             <div className="orderIcon">
-              <FcShipped size={40} color="#FD8787" />
+              <FcShipped size={50} color="#FD8787" />
             </div>
           </div>
 
-          <div className="orderSummaryCard">
+          <div
+            className="orderSummaryCard"
+            style={{ backgroundColor: "rgb(227, 225, 225)", height: "11rem", border: "1px solid black" }}
+          >
             <div className="orderSummary">
               <h3>{newOrdersAmt?.length}</h3>
               <p>Pending Orders</p>
@@ -326,11 +334,14 @@ const Dashboard = () => {
               </p>
             </div>
             <div className="orderIcon">
-              <FaHourglassHalf size={40} color="#FAC013" />
+              <FaHourglassHalf size={50} color="#FAC013" />
             </div>
           </div>
 
-          <div className="orderSummaryCard">
+          <div
+            className="orderSummaryCard"
+            style={{ backgroundColor: "rgb(227, 225, 225)", height: "11rem", border: "1px solid black" }}
+          >
             <div className="orderSummary">
               <h3>{inTransitOrdersAmt?.length}</h3>
               <p>Completed Orders</p>
@@ -340,11 +351,14 @@ const Dashboard = () => {
               </p>
             </div>
             <div className="orderIcon">
-              <FaCheckCircle size={40} color="#34A853" />
+              <FaCheckCircle size={50} color="#34A853" />
             </div>
           </div>
 
-          <div className="orderSummaryCard">
+          <div
+            className="orderSummaryCard"
+            style={{ backgroundColor: "rgb(227, 225, 225)", height: "11rem", border: "1px solid black" }}
+          >
             <div className="orderSummary">
               <h3>{cancelOrdersAmt?.length}</h3>
               <p>Cancelled Orders</p>
@@ -354,11 +368,14 @@ const Dashboard = () => {
               </p>
             </div>
             <div className="orderIcon">
-              <FaTimesCircle size={40} color="#FD8787" />
+              <FaTimesCircle size={50} color="#FD8787" />
             </div>
           </div>
 
-          <div className="orderSummaryCard">
+          <div
+            className="orderSummaryCard"
+            style={{ backgroundColor: "rgb(227, 225, 225)", height: "11rem", border: "1px solid black" }}
+          >
             <div className="orderSummary">
               <h3>{order?.length}</h3>
               <p>Total Orders</p>
@@ -368,28 +385,35 @@ const Dashboard = () => {
               </p>
             </div>
             <div className="orderIcon">
-              <FaShoppingCart size={40} color="#2B3FE5" />
+              <FaShoppingCart size={50} color="#2B3FE5" />
             </div>
           </div>
         </div>
 
         <div
           style={{
-            width: "40%",
+            width: "98%",
+            margin: "0, auto",
             position: "relative",
-            backgroundColor: "#ffffff",
+            backgroundColor: "rgb(227, 225, 225)",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            border: "1px solid black",
+            borderRadius: "12px"
           }}
         >
           {/* Dropdown for time range selection */}
-          <div className="dropdownContainer" style={{ paddingTop: "20px" }}>
+          <div
+            className="dropdownContainer"
+            style={{ padding: "20px", display: "flex", gap: "1rem" }}
+          >
             <label htmlFor="timeRange">Customise Your Graph: </label>
             <select
               id="timeRange"
               value={selectedTimeRange}
               onChange={(e) => setSelectedTimeRange(e.target.value)}
+              style={{ height: "fit-content", margin: "auto", padding: "5px" }}
             >
               <option value="Today">Today</option>
               <option value="1 Week">This Week</option>
@@ -403,6 +427,7 @@ const Dashboard = () => {
             style={{
               position: "relative",
               width: "90%",
+              backgroundColor: "rgb(227, 225, 225)",
             }}
           >
             <Doughnut

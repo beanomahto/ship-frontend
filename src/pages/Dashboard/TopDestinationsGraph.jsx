@@ -220,14 +220,14 @@ const TopDestinationsGraph = () => {
         anchor: (context) => {
           const value = context.raw;
           const percentage = total > 0 ? (value / total) * 100 : 0;
-          return percentage >= 90 ? "start" : "end"; // Position above for high values
+          return percentage >= 90 ? "start" : "end"; 
         },
         align: (context) => {
           const value = context.raw;
           const percentage = total > 0 ? (value / total) * 100 : 0;
-          return percentage > 90 ? "top" : "end"; // Adjust alignment for high values
+          return percentage > 90 ? "top" : "end"; 
         },
-        offset: 4, // Adds space between the label and the bar
+        offset: 4,
       },
       tooltip: {
         callbacks: {
@@ -252,8 +252,8 @@ const TopDestinationsGraph = () => {
   };
 
   return (
-    <div className="graph-container">
-      <span>Top Destinations</span>
+    <div className="graph-container" style={{ border: "1px solid white", padding: "5px", borderRadius: "10px", backgroundColor: "rgb(242, 237, 237)"}}>
+      <span style={{ font: "bold", fontSize: "1.5rem", marginBottom: "1rem"}}>Top Destinations</span>
       <ProgressBar data={stateData} />
       <Bar data={data} options={options} />
     </div>

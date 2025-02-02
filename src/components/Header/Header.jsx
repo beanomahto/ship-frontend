@@ -124,7 +124,7 @@ const Header = ({ darktheme }) => {
   // console.log(authUser);
 
   return (
-    <div className={darktheme ? "darkHeader" : "main-header"}>
+    <div className={darktheme ? "darkHeader" : "main-header"} style={{ width: "99%" }}>
       <div className="header-container">
         <div className="header-search">
           <Space.Compact>
@@ -143,10 +143,10 @@ const Header = ({ darktheme }) => {
 
         <>
           <Button
-            style={{ backgroundColor: "ButtonHighlight" }}
+            style={{ backgroundColor: "ButtonHighlight", padding: "5px" }}
             onClick={showModal}
           >
-            <BsLightningChargeFill />
+            <BsLightningChargeFill className="rechargeLogo"/>
             Recharge
           </Button>
           <span className="span"></span>
@@ -178,15 +178,15 @@ const Header = ({ darktheme }) => {
               }
             >
               <div className="Auth_Navbar">
-                <div className="Symbol_logo_App">
-                  <p className="fstChar_logo_App">
+                <div className="Symbol_logo_App" style={{ backgroundColor: "rgb(248, 191, 191)" , color: "rgb(43, 4, 4)", fontWeight: "bolder", width: "3rem", height: "2.7rem", marginRight: "10px" }}>
+                  <p className="fstChar_logo_App" style={{ fontWeight: "bold", fontSize: "1.3rem",}}>
                     {authUser?.firstName?.charAt(0).toUpperCase() +
-                      " " +
+                      "" +
                       authUser?.lastName?.charAt(0).toUpperCase()}
                   </p>
                 </div>
-                <Button type="text" className="name">
-                  {authUser?.firstName + " " + authUser?.lastName}
+                <Button type="text" className="name" style={{ width: "fit-content", padding: "0px" }}>
+                  {authUser?.firstName?.toUpperCase() + " " + authUser?.lastName?.toUpperCase()}
                 </Button>
               </div>
             </Popover>
@@ -209,7 +209,7 @@ const Header = ({ darktheme }) => {
             🚀 Upgrade Your Limit
           </div>
         }
-        visible={isModalVisible}
+        open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
         okText="Recharge Now"
