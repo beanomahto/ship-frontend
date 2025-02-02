@@ -50,7 +50,7 @@ body {
 /* ========== BALANCE BUTTON ========== */
 .money, .insuffient {
     font-size: 1.1rem;
-    padding: 10px 15px;
+    padding: 10px 10px;
     border-radius: 8px;
     font-weight: 600;
     transition: all 0.3s ease;
@@ -117,6 +117,7 @@ body {
     font-size: 1.2rem;
     font-weight: 600;
     color: rgb(232, 216, 216);
+    margin-right: 1rem;
 }
 
 .span {
@@ -140,10 +141,6 @@ body {
     .header-container {
         gap: 10px;
     }
-
-    .header-search {
-        display: none; 
-    }
 }
 
 /* Small screens */
@@ -151,9 +148,14 @@ body {
     .main-header {
         padding: 0.5rem;
     }
-
+    .name{
+        display: none;
+    }
     .header-container {
         gap: 5px;
+    }
+    .header-search {
+        display: none; 
     }
 }
 
@@ -161,9 +163,6 @@ body {
 @media screen and (max-width: 350px) {
     .main-header {
         background-color: #0855a2;
-    }
-    .name{
-        display: none;
     }
     .rechargeLogo{
         display: none;

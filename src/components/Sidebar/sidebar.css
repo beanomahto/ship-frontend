@@ -88,6 +88,12 @@
         /* transform: translateX(-100%); Keep it hidden initially */
     }
 
+    .hamburger-menu{
+        top: 17px;
+        left: 22px;
+        font-size: 2rem;
+    }
+
     .ant-drawer-content-wrapper {
         box-shadow: none !important;
         width: 75% !important;
@@ -113,3 +119,10 @@
     }
 }
 
+@media (max-width: 500px) {
+    .hamburger-menu{
+        top: 14px;
+        left: 18px;
+        font-size: 1.1rem;
+    }
+}

@@ -143,7 +143,7 @@ const Header = ({ darktheme }) => {
 
         <>
           <Button
-            style={{ backgroundColor: "ButtonHighlight", padding: "5px" }}
+            style={{ backgroundColor: "ButtonHighlight", padding: "7px" }}
             onClick={showModal}
           >
             <BsLightningChargeFill className="rechargeLogo"/>

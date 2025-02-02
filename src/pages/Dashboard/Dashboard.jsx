@@ -284,12 +284,15 @@ const Dashboard = () => {
             gap: "0.5rem",
             position: "relative",
             marginBottom: "2rem",
+            marginLeft: "auto",
+            marginRight: "auto",
+            textAlign: "center"
           }}
           // style={{ gridTemplateColumns: "repeat(2, 1fr)" }}
         >
           <div
             className="orderSummaryCard"
-            style={{ backgroundColor: "rgb(227, 225, 225)", height: "11rem", border: "1px solid black" }}
+            style={{ backgroundColor: "rgb(227, 225, 225)", height: "11rem", border: "1px solid black", }}
           >
             <div className="orderSummary">
               <h3>{totalnewOrdersAmt?.length}</h3>
