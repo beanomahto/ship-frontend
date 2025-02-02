@@ -21,6 +21,7 @@ import BD from "../../utils/bluedart.png";
 import DLVRY from "../../utils/delhivery.png";
 import AS from "../../utils/amazon-shipping.png";
 import EE from "../../utils/ecom-express.png";
+import SM from "../../utils/shree-maruti.jpeg"
 import XPB from "../../utils/xpressbees.png";
 import Column from "antd/es/table/Column";
 import Shopify from "../../utils/shopify.png";
@@ -38,6 +39,7 @@ const partnerImages = {
   Delhivery: DLVRY,
   "Amazon Shipping": AS,
   "Ecom Express": EE,
+  "Shree Maruti": SM,
   Xpressbees: XPB,
   Ekart: Ekart,
   DTDC: Dtdc,

@@ -9,17 +9,17 @@ const useCancelShipment = () => {
   const cancelOrder = async (selectedOrderData) => {
     setLoading(true);
     setError(null);
-//console.log(selectedOrderData);
+    //console.log(selectedOrderData);
 
     try {
       const token = localStorage.getItem('token');
 
-      const allowedPartners = ['Ekart', 'Blue Dart', 'DTDC', 'Shadowfax','Delhivery', 'Xpressbees', 'Ecom Express'];
-//console.log(allowedPartners);
+      const allowedPartners = ['Ekart', 'Blue Dart', 'DTDC', 'Shadowfax', 'Delhivery', 'Xpressbees', 'Ecom Express', 'Shree Maruti'];
+      //console.log(allowedPartners);
 
       const filteredOrders = selectedOrderData.filter(order => allowedPartners.includes(order?.shippingPartner));
       //console.log(filteredOrders);
-      
+
 
       if (filteredOrders.length === 0) {
         message.info('No valid orders selected for cancellation');
@@ -31,7 +31,7 @@ const useCancelShipment = () => {
         const deliveryPartnerName = order?.shippingPartner;
         const orderAwb = order?.awb;
         const orderId = order?._id;
-//console.log(deliveryPartnerName);
+        //console.log(deliveryPartnerName);
 
         let url = '';
         let log = '';
@@ -40,6 +40,10 @@ const useCancelShipment = () => {
           case 'Ecom Express':
             url = 'https://backend.shiphere.in/api/ecomExpress/cancleShipment';
             log = 'Ecomm hit';
+            break;
+          case 'Shree Maruti':
+            url = 'https://backend.shiphere.in/api/maruti/cancel';
+            log = 'Maruti hit';
             break;
           // case 'Xpressbees':
           //   url = 'https://backend.shiphere.in/api/xpressbees/cancel';
@@ -55,7 +59,7 @@ const useCancelShipment = () => {
             log = 'Shiphere hit';
             break;
           default:
-            return;  
+            return;
         }
 
         if (['Ekart', 'Blue Dart', 'DTDC', 'Shadowfax','Delhivery','Xpressbees'].includes(deliveryPartnerName)) {
@@ -71,10 +75,23 @@ const useCancelShipment = () => {
 
           //console.log(log);
           return response.data;
-        } 
+        }
         else if (deliveryPartnerName === 'Ecom Express') {
           const response = await axios.post(url, {
             awb: orderAwb,
+          }, {
+            headers: {
+              Authorization: `${token}`,
+            },
+          });
+
+          //console.log(log);
+          return response.data;
+        }
+        else if (deliveryPartnerName === 'Shree Maruti') {
+          const response = await axios.post(url, {
+            orderId: order?.orderId,
+            cancelReason : "cancel"
           }, {
             headers: {
               Authorization: `${token}`,

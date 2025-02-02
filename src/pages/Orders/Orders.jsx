@@ -28,6 +28,7 @@ import BD from "../../utils/newlogo/bluedartlogo.png";
 import DLVRY from "../../utils/newlogo/delhivery.png";
 import AS from "../../utils/newlogo/amazonShippinglogo.jpg";
 import EE from "../../utils/newlogo/ecom-logo.jpg";
+import SM from "../../utils/shree-maruti.jpeg"
 import XPB from "../../utils/newlogo/Xpressbees.jpg";
 import Ekart from "../../utils/newlogo/ekartlogo.png";
 import Dtdc from "../../utils/newlogo/dtdc.png";
@@ -44,6 +45,7 @@ const partnerImages = {
   Delhivery: DLVRY,
   "Amazon Shipping": AS,
   "Ecom Express": EE,
+  "Shree Maruti": SM,
   Xpressbees: XPB,
   Ekart: Ekart,
   DTDC: Dtdc,
