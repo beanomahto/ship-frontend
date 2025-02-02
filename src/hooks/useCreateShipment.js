@@ -312,7 +312,12 @@ console.log(deliveryPartnerName)
             }
           );
         
-          if (serviceability.status === 200) {
+          if (serviceability.status !== 200) {
+            message.error("Order is not serviceable.");
+            return;
+          }
+        
+          try {
             const bookingResponse = await axios.post(
               url,
               {
@@ -326,10 +331,15 @@ console.log(deliveryPartnerName)
               }
             );
         
-            console.log(bookingResponse);
-            if (bookingResponse.status === 200) {
-              let awb = bookingResponse?.data?.data?.data?.awbNumber
-              let cawb = bookingResponse?.data?.data?.data?.cAwbNumber
+            if (bookingResponse.status !== 200) {
+              message.error("Failed to book the order. Please try again.");
+              return;
+            }
+        
+            let awb = bookingResponse?.data?.data?.data?.awbNumber;
+            let cawb = bookingResponse?.data?.data?.data?.cAwbNumber;
+        
+            try {
               const manifestResponse = await axios.post(
                 'https://backend.shiphere.in/api/maruti/manifest',
                 {
@@ -343,25 +353,29 @@ console.log(deliveryPartnerName)
                 }
               );
         
-              if (manifestResponse.status === 200) {
-                message.success(
-                  `Order shipped successfully on warehouse ${warehouseId?.warehouseName || "N/A"}`
-                );
-        
-                return { ...serviceability.data, bookingResponse: bookingResponse.data, manifestResponse: manifestResponse.data };
-              } else {
+              if (manifestResponse.status !== 200) {
                 message.error("Failed to create manifest. Please try again.");
+                return;
               }
-            } else {
-              message.error("Failed to book the order. Please try again.");
+        
+              message.success(
+                `Order shipped successfully on warehouse ${warehouseId?.warehouseName || "N/A"}`
+              );
+        
+              return { 
+                ...serviceability.data, 
+                bookingResponse: bookingResponse.data, 
+                manifestResponse: manifestResponse.data 
+              };
+            } catch (error) {
+              message.error("Failed to create manifest. Please try again.");
             }
-          } else {
-            message.error("Order is not serviceable.");
+          } catch (error) {
+            message.error("Failed to book the order. Please try again.");
           }
         } catch (error) {
-          console.error("Error during shipping process:", error);
-          message.error("An error occurred. Please try again.");
-        }        
+          message.error("Order is not serviceable.");
+        }       
       }
     } catch (err) {
       console.log(err);

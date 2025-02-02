@@ -101,8 +101,8 @@ const Tracking = () => {
             console.log("responsee", response);
             updateSteps(data);
           } else {
-            setTrackingInfo(response.data.trackingInfo);
-            updateSteps(response.data.trackingInfo);
+            setTrackingInfo(response.data.data.data);
+            updateSteps(response.data.data.data);
           }
         }
       } catch (error) {
