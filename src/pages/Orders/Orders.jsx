@@ -45,7 +45,7 @@ const partnerImages = {
   Delhivery: DLVRY,
   "Amazon Shipping": AS,
   "Ecom Express": EE,
-  "Shree Maruti": SM,
+  "Maruti": SM,
   Xpressbees: XPB,
   Ekart: Ekart,
   DTDC: Dtdc,

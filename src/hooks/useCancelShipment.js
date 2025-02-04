@@ -14,7 +14,7 @@ const useCancelShipment = () => {
     try {
       const token = localStorage.getItem('token');
 
-      const allowedPartners = ['Ekart', 'Blue Dart', 'DTDC', 'Shadowfax', 'Delhivery', 'Xpressbees', 'Ecom Express', 'Shree Maruti'];
+      const allowedPartners = ['Ekart', 'Blue Dart', 'DTDC', 'Shadowfax', 'Delhivery', 'Xpressbees', 'Ecom Express', 'Maruti'];
       //console.log(allowedPartners);
 
       const filteredOrders = selectedOrderData.filter(order => allowedPartners.includes(order?.shippingPartner));
