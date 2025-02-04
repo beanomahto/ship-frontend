@@ -22,6 +22,7 @@ import {
   CheckOutlined,
 } from "@ant-design/icons";
 import EcomData from "./EcomData";
+import MarutiData from "./MarutiData";
 import Footer from "./Footer";
 import FShipData from "./FShipData";
 import Xressbees from "./Xressbees";
@@ -101,8 +102,10 @@ const Tracking = () => {
             console.log("responsee", response);
             updateSteps(data);
           } else {
-            setTrackingInfo(response.data.data.data);
-            updateSteps(response.data.data.data);
+            const data = response.data.data.data;
+            data.awb_number = awb;
+            setTrackingInfo(data);
+            updateSteps(data);
           }
         }
       } catch (error) {
@@ -236,10 +239,15 @@ const Tracking = () => {
           background: "linear-gradient(135deg, #1758b3, #0f3d73, #0b2d55)",
         }}
       >
-        {shippingPartner && shippingPartner.toLowerCase() === "ecom express" ? (
+        {shippingPartner?.toLowerCase() === "ecom express" ? (
           <EcomData
             trackingInfo={trackingInfo}
             steps={steps}
+            advertisement={advertisement}
+          />
+        ) : shippingPartner?.toLowerCase() === "maruti" ? (
+          <MarutiData
+            trackingInfo={trackingInfo}
             advertisement={advertisement}
           />
         ) : (
