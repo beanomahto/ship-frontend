@@ -178,14 +178,14 @@ const Header = ({ darktheme }) => {
               }
             >
               <div className="Auth_Navbar">
-                <div className="Symbol_logo_App" style={{ backgroundColor: "rgb(248, 191, 191)" , color: "rgb(43, 4, 4)", fontWeight: "bolder", width: "3rem", height: "2.7rem", marginRight: "10px" }}>
+                <div className="Symbol_logo_App" style={{ backgroundColor: "rgb(248, 191, 191)" , color: "rgb(43, 4, 4)", fontWeight: "bolder", width: "3rem", height: "2.2rem", marginRight: "5px" }}>
                   <p className="fstChar_logo_App" style={{ fontWeight: "bold", fontSize: "1.3rem",}}>
                     {authUser?.firstName?.charAt(0).toUpperCase() +
                       "" +
                       authUser?.lastName?.charAt(0).toUpperCase()}
                   </p>
                 </div>
-                <Button type="text" className="name" style={{ width: "fit-content", padding: "0px" }}>
+                <Button type="text" className="name" style={{ width: "fit-content", padding: "5px" }}>
                   {authUser?.firstName?.toUpperCase() + " " + authUser?.lastName?.toUpperCase()}
                 </Button>
               </div>

@@ -245,10 +245,10 @@ const CodRemmitance = () => {
             value={searchText}
             style={{ width: 300 }}
           />
-          <div style={{ marginLeft: "1px" }}>
+          <div >
             <Button
               onClick={() => setSearchText("")}
-              style={{ borderRadius: "34px" }}
+              style={{ borderRadius: "10px", border: "1px solid rgb(36, 136, 243)" }}
             >
               X
             </Button>
@@ -257,14 +257,15 @@ const CodRemmitance = () => {
                 data={generateCsvData()}
                 filename={"filtered_remittance_data.csv"}
                 className="ant-btn ant-btn-primary"
+                style={{ backgroundColor: "transparent" }}
               >
-                <Button style={{ borderRadius: "34px" }}>Download CSV</Button>
+                <Button style={{ borderRadius: "10px", marginLeft: "16px", border: "1px solid rgb(55, 147, 246)" }}>Download CSV</Button>
               </CSVLink>
             )}
           </div>
         </div>
         <div className="right-actions">
-          <Button style={{ borderRadius: "34px" }} onClick={showEarlyCodModal}>
+          <Button style={{ borderRadius: "10px", border: "1px solid rgb(55, 147, 246)" }} onClick={showEarlyCodModal}>
             Early COD
           </Button>
           <CustomButton onClick={showModal}>Upload Remittance</CustomButton>
