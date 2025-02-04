@@ -234,8 +234,8 @@ const ShipmentStatusGraph = () => {
   };
 
   return (
-    <div className="graph-container">
-      <span>Shipment Status</span>
+    <div className="graph-container" style={{ border: "1px solid white", padding: "5px", borderRadius: "10px", backgroundColor: "rgb(242, 237, 237)"}}>
+      <span style={{ font: "bold", fontSize: "1.5rem", marginBottom: "1rem"}}>Shipment Status</span>
       <ProgressBar data={stateData} />
       <Bar data={data} options={options} />
     </div>

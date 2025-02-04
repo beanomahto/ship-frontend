@@ -42,11 +42,11 @@ const Sidebar = ({ darktheme, toggleTheme }) => {
         <>
           <Button
             className="hamburger-menu"
+            
             type="primary"
             onClick={showDrawer}
             icon={<MenuOutlined />}
           />
-
           {/* Drawer for mobile view */}
           <Drawer
             title="Menu"

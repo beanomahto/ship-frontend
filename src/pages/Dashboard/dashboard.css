@@ -1,16 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+/* ================== MAIN CONTAINERS ================== */
 .mainCharts {
-  height: auto;
   width: 100%;
   display: flex;
   flex-direction: row;
-  margin-top: 1rem;
   align-items: center;
   justify-content: center;
-  align-content: center;
-  gap: 2vw;
   flex-wrap: wrap;
+  gap: 2vw;
+  margin-top: 1rem;
+  margin-bottom: 1rem; /* extracted from inline */
 }
 
+/* ================== DATA CARDS ================== */
 .dataCard {
   background-color: #ffffff;
   border-radius: 0.5em;
@@ -18,65 +25,142 @@
   padding: 1em;
 }
 
-.revenueCard,
-.customerCard,
-.categoryCard,
-.polarCard,
-.indiaMapCard,
-.pieCard {
-  min-height: 20rem;
-}
-
-.revenueCard {
+/* Top Destinations Card (Charts Container) */
+.topDestinationsCard {
   width: 92%;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  background-color: rgb(227, 225, 225);
+  overflow-x: auto;
+  margin: auto;
+  border: 1px solid black;
 }
 
-.customerCard,
-.categoryCard,
-.polarCard,
-.pieCard {
-  width: 40%;
+/* Inner container for top destination charts */
+.topDestinationsInnerContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 22px;
+  align-items: center;
 }
 
-.indiaMapCard {
-  width: 50%;
+/* Chart separator between the two graphs */
+.chart-separator {
+  background-color: #888;
+  width: 2px;
+  height: 100%;
+  display: none;
 }
 
+@media screen and (max-width: 768px) {
+  .chart-separator {
+    display: block;
+    width: 100%;
+    height: 2px;
+    margin: 1rem auto;
+  }
+}
+
+/* Order Summary Section Container */
+.orderSummaryContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 96%;
+  margin: 0 auto;
+  align-items: center;
+}
+
+/* Order Summary Grid Container */
 .orderSummaryContainer1 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
-  padding-top: 20px;
+  gap: 0.5rem;
+  width: 98%;
+  margin-bottom: 2rem;
+  position: relative;
 }
 
+/* Order Summary Card */
 .orderSummaryCard {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
-  padding: 26px;
+  padding: 20px;
   border-radius: 10px;
-  background-color: #fbfcf8;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: rgb(227, 225, 225);
+  border: 1px solid black;
+  /* Retaining box-shadow from original CSS if needed */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  height: 11rem;
 }
 
+/* Order Summary Text */
 .orderSummary h3 {
   margin: 0;
   font-size: 24px;
 }
-
 .orderSummary p {
   margin: 0;
   font-size: 14px;
   color: #777;
 }
 
+/* Order Icon */
 .orderIcon {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/*=============== MEDIA QUERIES ===============*/
+/* Dropdown container for graph customization */
+.dropdownContainer {
+  padding: 20px;
+  display: flex;
+  gap: 1rem;
+}
+
+/* Select input for time range */
+#timeRange {
+  height: fit-content;
+  margin: auto;
+  padding: 5px;
+}
+
+/* Doughnut Card Overrides */
+.doughnutCard {
+  position: relative;
+  width: 90%;
+  background-color: rgb(227, 225, 225);
+}
+
+/* Revenue Card Overrides */
+.revenueCard {
+  width: 92%;
+  background-color: rgb(227, 225, 225);
+  border: 1px solid black;
+  min-height: 20rem;
+}
+
+/* ================== OTHER CARDS (unchanged sizing) ================== */
+.customerCard,
+.categoryCard,
+.polarCard,
+.pieCard {
+  width: 40%;
+  min-height: 20rem;
+}
+
+.indiaMapCard {
+  width: 50%;
+}
+
+/* ================== MEDIA QUERIES ================== */
 
 /* Large devices (desktop) */
 @media screen and (max-width: 1200px) {
@@ -89,34 +173,30 @@
 @media screen and (max-width: 992px) {
   .mainCharts {
     flex-direction: column;
-    gap: 2rem; /* Adjust gap for stacking */
+    gap: 2rem;
   }
-
   .customerCard,
   .categoryCard,
   .polarCard,
   .pieCard,
   .indiaMapCard {
-    width: 90%; /* Full width on medium devices */
+    width: 90%;
   }
-  
   .revenueCard {
     width: 100%;
   }
-
   .orderSummaryContainer1 {
-    /* grid-template-columns: 1fr; */
-    gap: 50px; /* Adjust gap */
     grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
+    padding-top: 20px;
   }
 }
 
 /* Small devices (mobile) */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 770px) {
   .mainCharts {
-    margin-top: 3rem;
+    margin-top: 1rem;
   }
-
   .revenueCard,
   .customerCard,
   .categoryCard,
@@ -126,25 +206,39 @@
     width: 100%;
     height: auto;
   }
-
   .orderSummaryCard {
     padding: 15px;
   }
-
   .orderSummary h3 {
     font-size: 20px;
   }
-
   .orderSummary p {
     font-size: 12px;
   }
+  .dataCard{
+    scale: 0.9;
+  }
+  .topDestinationsInnerContainer{
+    width: fit-content;
+    margin: 0, auto;
+    display: flex; 
+    flex-wrap: wrap;
+    justify-content: center;
+
+  }
+  .chart-separator{
+    width: 100%;
+  }
+  .topDestinationsCard{
+    width: 97%;
+  }
 }
 
+/* Extra Small devices (mobile) */
 @media screen and (max-width: 576px) {
   .mainCharts {
-    margin-top: 2rem;
+    margin-top: 0.5rem;
   }
-
   .revenueCard,
   .customerCard,
   .categoryCard,
@@ -154,38 +248,31 @@
     width: 100%;
     height: auto;
   }
- 
-
   .orderSummaryCard {
-    display: flex;
     flex-direction: column;
     gap: 10px;
     align-items: center;
-    padding: 12px;
-    width: 75px;
-    height: 125px;
+    padding: 10px;
+    width: 60px;
+    height: 145px;
   }
   .dataCard {
-    background-color: #ffffff;
-    border-radius: 0.5em;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     padding: 8px;
   }
-
   .orderSummary h3 {
     font-size: 18px;
     text-align: center;
   }
-.revenueCard{
-  display: none;
-}
   .orderSummary p {
     font-size: 11px;
     text-align: center;
   }
-  .orderSummaryContainer1 { 
-    grid-template-columns: repeat(2, 1fr); 
+  .orderSummaryContainer1 {
+    grid-template-columns: repeat(2, 1fr);
     gap: 35px;
     padding-top: 5px;
+  }
+  .revenueCard {
+    display: none;
   }
 }
