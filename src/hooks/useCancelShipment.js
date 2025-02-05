@@ -41,7 +41,7 @@ const useCancelShipment = () => {
             url = 'https://backend.shiphere.in/api/ecomExpress/cancleShipment';
             log = 'Ecomm hit';
             break;
-          case 'Shree Maruti':
+          case 'Maruti':
             url = 'https://backend.shiphere.in/api/maruti/cancel';
             log = 'Maruti hit';
             break;
@@ -88,7 +88,7 @@ const useCancelShipment = () => {
           //console.log(log);
           return response.data;
         }
-        else if (deliveryPartnerName === 'Shree Maruti') {
+        else if (deliveryPartnerName === 'Maruti') {
           const response = await axios.post(url, {
             orderId: order?.orderId,
             cancelReason : "cancel"
