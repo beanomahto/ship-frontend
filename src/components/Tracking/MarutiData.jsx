@@ -148,6 +148,12 @@ const MarutiData = ({ trackingInfo, advertisement }) => {
               <Descriptions.Item label="Order ID">
                 {trackingInfo.originalOrderId}
               </Descriptions.Item>
+              <Descriptions.Item label="Payment Status">
+                {trackingInfo.paymentStatus}
+              </Descriptions.Item>
+              <Descriptions.Item label="Order Status">
+                {trackingInfo.orderStatus.replaceAll("_", " ")}
+              </Descriptions.Item>
             </Descriptions>
             {/* Conditional Advertisement Section */}
             <div

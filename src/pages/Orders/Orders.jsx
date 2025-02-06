@@ -722,8 +722,8 @@ const Orders = () => {
               order.order_status === "UnDelivered"
                 ? "Required"
                 : order.order_status === "Lost"
-                ? "Lost"
-                : null,
+                  ? "Lost"
+                  : null,
           };
           // console.log(updateBody);
           return axios.put(
@@ -769,7 +769,8 @@ const Orders = () => {
         console.log("order 546", order);
         if (
           order.awb == "false" ||
-          test[counter++].data?.order_cancellation_details?.successful
+          test[counter].data?.order_cancellation_details?.successful ||
+          test[counter].data?.status == 200
         ) {
           console.log("at line 540 and counter is " + counter);
 
@@ -835,6 +836,7 @@ const Orders = () => {
         } else {
           console.log("error at line 575 cancel order");
         }
+        counter++;
       }
 
       await fetchOrders();
@@ -958,9 +960,9 @@ const Orders = () => {
           <p style="margin-top: 2px;"> Delivered By:  </p>
             ${
               partnerLogo
-                ? `<img src="${partnerLogo}" alt="${labelData.shippingPartner}" style="width: 100px;"/>`
-                : `<p>${labelData?.shippingPartner || ""}</p>`
-            }
+        ? `<img src="${partnerLogo}" alt="${labelData.shippingPartner}" style="width: 100px;"/>`
+        : `<p>${labelData?.shippingPartner || ""}</p>`
+      }
               
           </div>
         </div>
@@ -969,17 +971,17 @@ const Orders = () => {
           <div class="labelSection">
             <img src="data:image/png;base64,${
               labelData?.barcode || ""
-            }" alt="Barcode" />
+      }" alt="Barcode" />
           </div>
         </div>
 
         <div class="labelSection">
           <p><strong>Ship To:</strong> <span> ${
             labelData?.customerName || ""
-          }</span></p>
+      }</span></p>
           <p>${labelData?.address?.address || ""} ${
       labelData?.address?.city || ""
-    } ${labelData?.address?.state || ""}</p>
+      } ${labelData?.address?.state || ""}</p>
           <p><strong>PIN:</strong> ${labelData?.address?.pincode || ""}</p>
         </div>
          
@@ -988,60 +990,60 @@ const Orders = () => {
             <p><strong>Order Date</strong></p>
             <p>${
               moment(labelData?.invoiceDate).format("MMMM Do YYYY") || ""
-            }</p>
+      }</p>
         </div>
         ${
           labelData?.dimension
-            ? `
+        ? `
           <div class="orderDetail">
           <p><strong>Dimensions</strong></p>
             <p><span>${labelData?.dimension?.length || ""} x ${
                 labelData?.dimension?.breadth || ""
-              } x ${labelData?.dimension?.height || ""}</span> CM</p>
+        } x ${labelData?.dimension?.height || ""}</span> CM</p>
         </div>
         `
-            : `<div class="orderDetail">
+        : `<div class="orderDetail">
           <p><strong></strong></p>
             <p><span></span></p>
         </div>`
-        }
+      }
         ${
           labelData?.weight
-            ? `
+        ? `
           <div class="orderDetail">
           <p><strong>Weight</strong></p>
           <p><span>${labelData?.weight || ""}</span> grm</p> 
           </div>
           `
-            : `   <div class="orderDetail">
+        : `   <div class="orderDetail">
           <p><strong></strong></p>
           <p><span></span></p> 
           </div>`
-        }
+      }
           </div>
         <div class="OrderSection">
           <div class="orderDetail">
             <p><strong>Order Id:</strong> </p><p>${
               labelData?.orderId || ""
-            }</p> 
+      }</p> 
           </div>
           <div class="orderDetail">
             <p><strong>${labelData?.paymentType || ""}</strong></p>
             <p>${
               labelData?.amount ? `${labelData?.amount} INR` : ``
-            }INR <span></span></p>
+      }INR <span></span></p>
           </div>
           <div class="orderDetail">
             <p><strong>Price Total</strong></p>
                 <p>${
                   labelData?.amount ? `${labelData?.amount} INR` : ``
-                }INR <span></span></p>
+      }INR <span></span></p>
             <p>Surface</p>
           </div>
         </div>
         ${
           labelData?.productName
-            ? `
+        ? `
           <div style="display: flex;">
           <div class="labelSection" style="width: 12rem;">
           <p><strong>Product (QTY)</strong></p>
@@ -1049,21 +1051,21 @@ const Orders = () => {
           <div class="labelSection" style="width: 12rem;">
             <p>${labelData?.productName || ""}<span>(${
                 labelData?.productDetail?.quantity || ""
-              })</span></p>
+        })</span></p>
               </div>
               `
-            : `  <div style="display: flex;">
+        : `  <div style="display: flex;">
           <div class="labelSection" style="width: 12rem;">
           <p><strong></p>
           </div>
           <div class="labelSection" style="width: 12rem;">
             <p></span></p>
               </div>`
-        }
+      }
         </div>
         ${
           labelData?.amount
-            ? `
+        ? `
           <div style="display: flex;">
           <div class="labelSection" style="width: 12rem;">
             <p><strong>Total INR</strong></p>
@@ -1073,7 +1075,7 @@ const Orders = () => {
           </div>
           </div>
           `
-            : `<div style="display: flex;">
+        : `<div style="display: flex;">
           <div class="labelSection" style="width: 12rem;">
             <p><strong></strong></p>
           </div>
@@ -1081,24 +1083,24 @@ const Orders = () => {
           <p></p>
           </div>
           </div>`
-        }
+      }
         ${
           labelData?.returnWarehouse
-            ? `
+        ? `
           <div class="labelSection">
           <p><strong>Return Address:</strong></p>
           <p>${labelData?.returnWarehouse?.address || ""} ${
                 labelData?.returnWarehouse?.state || ""
               } ${labelData?.returnWarehouse?.city || ""} ${
                 labelData?.returnWarehouse?.country || ""
-              }</p>
+        }</p>
       </div>
       `
-            : `  <div class="labelSection">
+        : `  <div class="labelSection">
           <p><strong></strong></p>
           <p></p>
       </div>`
-        }
+      }
 
         <p>Powered by <strong>ShipHere</strong></p>
       </div>
@@ -1537,19 +1539,19 @@ const Orders = () => {
                 {(authUser.role === "admin" ||
                   (authUser.role !== "admin" &&
                     (currentTab === "tab1" || currentTab === "tab2"))) && (
-                  <Button
-                    type="primary"
-                    shape="round"
-                    onClick={exportToExcel}
-                    icon={<DownloadOutlined />}
-                    className="downloadBtn"
-                    size="middle"
-                    style={{ marginRight: "10px" }}
-                    disabled={loadingdownload}
-                  >
-                    {loadingdownload ? "Downloading..." : "Download"}
-                  </Button>
-                )}
+                    <Button
+                      type="primary"
+                      shape="round"
+                      onClick={exportToExcel}
+                      icon={<DownloadOutlined />}
+                      className="downloadBtn"
+                      size="middle"
+                      style={{ marginRight: "10px" }}
+                      disabled={loadingdownload}
+                    >
+                      {loadingdownload ? "Downloading..." : "Download"}
+                    </Button>
+                  )}
 
                 {currentTab === "tab2" && (
                   <div className="tab2_managingBtns">
