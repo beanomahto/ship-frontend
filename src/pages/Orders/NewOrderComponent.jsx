@@ -776,13 +776,13 @@ const NewOrderComponent = ({
             rowSelection={rowSelection}
             columns={columns}
             dataSource={newOrders}
-            scroll={{ x: 1400, y: 430 }}
+            scroll={{ x: 1400, y: 400 }}
             pagination={{
               showSizeChanger: true,
               pageSizeOptions: ["10", "20", "50", "100", "500", "1000"],
               defaultPageSize: 10,
             }}
-            style={{ width: "100%", height: "545px", marginTop: "-10px" }}
+            style={{ width: "100%", height: "545px", marginTop: "-15px" }}
             rowClassName={(record) =>
               record._id === selectedOrderId ? "selected-row" : ""
             }
