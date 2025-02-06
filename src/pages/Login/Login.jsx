@@ -28,13 +28,13 @@ const Login = () => {
     e.preventDefault();
     const userData = await login(email, password);
     //console.log("User data received:", userData);
+    fetchOrders();
     if (userData?.role === "employee") {
       // Redirect to employee dashboard if role is 'employee'
       //   fetchOrders();
       navigate("/employeedashboard");
     } else {
       // Default redirection for other users
-      fetchOrders();
       navigate("/");
     }
   };
@@ -55,6 +55,7 @@ const Login = () => {
                   placeholder="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
               </div>
               <div className="input">
@@ -64,6 +65,7 @@ const Login = () => {
                   placeholder="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  required
                 />
               </div>
             </div>

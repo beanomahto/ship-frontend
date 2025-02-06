@@ -10,7 +10,7 @@
 
 .container {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; 
     margin: auto;
     position: absolute;
     right: 7rem;
@@ -104,7 +104,7 @@
     width: 220px;
     height: 59px;
     color: #fff;
-    background: #4c00b4;
+    background: #1768f5;
     border-radius: 50px;
     font-size: 19px;
     font-weight: 700;
