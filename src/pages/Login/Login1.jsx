@@ -9,14 +9,12 @@ import imgg from "../../utils/new.png";
 import { MdCheckCircle } from "react-icons/md";
 import ShippingSteps from "./loginAnimation/ShippingSteps";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+
 const Login1 = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [fieldFilled, setFieldFilled] = useState({
-    email: false,
-    password: false,
-  });
+  const [errors, setErrors] = useState({ email: "", password: "", policy: "" });
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const { loading, login } = useLogin();
@@ -24,115 +22,114 @@ const Login1 = () => {
   const { fetchWarehouse } = useWarehouseContext();
   const [policyAccepted, setPolicyAccepted] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [fieldFilled, setFieldFilled] = useState({
+    email: false,
+    password: false,
+  });
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
+
   const handleInputChange = (field, value) => {
     if (field === "email") setEmail(value);
     if (field === "password") setPassword(value);
-
-    // Update fieldFilled state
+    setErrors((prev) => ({ ...prev, [field]: "" })); // Clear error on input change
     setFieldFilled((prev) => ({ ...prev, [field]: value.trim() !== "" }));
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     //console.log(email);
-  //     //console.log(password);
-  //     await login(email, password);
-  //     //console.log("ok");
-  //     fetchOrders();
-  //     navigate("/");
-  //   } catch (error) {
-  //     console.error("Login failed", error);
-  //   }
-  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let newErrors = { email: "", password: "", policy: "" };
+
+    if (!email.trim()) newErrors.email = "Email is a required field.";
+    if (!password.trim()) newErrors.password = "Password is a required field.";
+    if (!policyAccepted) newErrors.policy = "You must accept the policies.";
+
+    setErrors(newErrors);
+
+    if (newErrors.email || newErrors.password || newErrors.policy) return;
 
     const userData = await login(email, password);
-    //console.log("User data received:", userData);
-    if (userData == null) {
+
+    if (!userData) {
       navigate("/login");
-    }
-    if (userData?.role === "employee") {
-      // Redirect to employee dashboard if role is 'employee'
+    } else if (userData?.role === "employee") {
       fetchOrders();
       fetchWarehouse();
       navigate("/employeedashboard");
     } else {
-      // Default redirection for other users
       fetchWarehouse();
       fetchOrders();
       navigate("/");
     }
   };
+
   return (
     <>
+      {loading && <div className="loading-overlay"></div>}
+
       <div className="section">
         <div className="imgBx">
           <ShippingSteps />
-          {/* <img src={imgg} alt="Background" /> */}
         </div>
         <div className="contentBx">
           <div className="formBx">
             <h2>Login</h2>
             <form onSubmit={handleSubmit}>
               <div className="inputBx">
-                <label htmlFor="email">Email</label>
-                <div className="inputContainer" style={{ display: "flex" }}>
+                <label htmlFor="email">
+                  Email
+                  <span style={{ color: "red", fontWeight: "500" }}>*</span>
+                </label>
+                <div className="inputContainer">
                   <input
                     type="email"
                     id="email"
-                    name="email"
                     value={email}
                     onChange={(e) => handleInputChange("email", e.target.value)}
                   />
-                  {fieldFilled.email && (
-                    <MdCheckCircle
-                      size={27}
-                      style={{
-                        color: "green",
-                        marginLeft: "8px",
-                        marginTop: "5px",
-                      }}
-                    />
-                  )}
+                  <span>
+                    {fieldFilled.email && (
+                      <MdCheckCircle
+                        size={27}
+                        style={{
+                          color: "green",
+                          marginLeft: "8px",
+                          marginTop: "5px",
+                        }}
+                      />
+                    )}
+                  </span>
                 </div>
+
+                {errors.email && (
+                  <p
+                    className="error-message"
+                    style={{ color: "red", fontSize: "12px" }}
+                  >
+                    {errors.email}
+                  </p>
+                )}
               </div>
 
               <div className="inputBx">
-                <label htmlFor="password">Password</label>
-                <div
-                  className="inputContainer"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    position: "relative",
-                  }}
-                >
+                <label htmlFor="password">
+                  Password
+                  <span style={{ color: "red", fontWeight: "500" }}>*</span>
+                </label>
+                <div className="inputContainer">
                   <input
                     type={showPassword ? "text" : "password"}
                     id="password"
-                    name="password"
                     value={password}
                     onChange={(e) =>
                       handleInputChange("password", e.target.value)
                     }
-                    style={{ paddingRight: "40px" }}
                   />
                   <span
                     onClick={togglePasswordVisibility}
-                    style={{
-                      position: "absolute",
-                      top: "50%",
-                      right: "40px",
-                      transform: "translateY(-40%)",
-                      cursor: "pointer",
-                      color: "gray",
-                    }}
+                    className="toggle-password"
                   >
                     {showPassword ? (
                       <AiFillEyeInvisible size={24} />
@@ -140,20 +137,32 @@ const Login1 = () => {
                       <AiFillEye size={24} />
                     )}
                   </span>
-                  {fieldFilled.password && (
-                    <MdCheckCircle
-                      size={27}
-                      style={{
-                        color: "green",
-                        marginLeft: "8px",
-                      }}
-                    />
-                  )}
+                  <span>
+                    {fieldFilled.password && (
+                      <MdCheckCircle
+                        size={27}
+                        style={{
+                          color: "green",
+                          marginLeft: "8px",
+                          marginTop: "5px",
+                        }}
+                      />
+                    )}
+                  </span>
                 </div>
+                {errors.password && (
+                  <p
+                    className="error-message"
+                    style={{ color: "red", fontSize: "12px" }}
+                  >
+                    {errors.password}
+                  </p>
+                )}
               </div>
+
               {/* Checkbox for Cancellation and Refund Policy */}
               <div
-                className="inputBx"
+                className="inputBx policy-checkbox"
                 style={{ marginTop: "15px", display: "flex" }}
               >
                 <label style={{ display: "flex", alignItems: "center" }}>
@@ -162,7 +171,7 @@ const Login1 = () => {
                     id="policyCheckbox"
                     checked={policyAccepted}
                     onChange={(e) => setPolicyAccepted(e.target.checked)}
-                    style={{ marginRight: "8px", width: "30px" }}
+                    style={{ marginRight: "8px", width: "50px" }}
                   />
                   <p>
                     I have read and agree to the
@@ -208,20 +217,28 @@ const Login1 = () => {
                     of Transportix Solutions Technology Pvt Ltd.
                   </p>
                 </label>
+                <span>
+                  {!policyAccepted && (
+                    <p
+                      className="error-message"
+                      style={{ color: "red", fontSize: "12px", marginTop: "-5px", marginLeft: "5px" }}
+                    >
+                      {errors.policy}
+                    </p>
+                  )}
+                </span>
               </div>
 
               <div className="inputBx">
-                <input
-                  type="submit"
-                  value="Login"
-                  disabled={loading || !policyAccepted}
-                />
+                <input type="submit" value="Login" disabled={loading} />
               </div>
+
               <div className="inputBx">
                 <p>
                   Don't have an account? <Link to="/signup">Sign Up</Link>
                 </p>
               </div>
+
               <div className="inputBx">
                 Forgot Password?{" "}
                 <span
