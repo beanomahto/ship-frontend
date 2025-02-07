@@ -219,7 +219,9 @@ function EmployeeDash() {
             </button>
           </div>
 
-          <Button className="logout-button" onClick={logout}>
+          <Button className="logout-button"
+            onMouseEnter={(e) => (e.target.style.backgroundColor = "#c82333", e.target.style.color = "white")}
+           onClick={logout}>
             Logout
           </Button>
         </div>

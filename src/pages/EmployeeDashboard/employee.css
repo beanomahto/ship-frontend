@@ -1,16 +1,15 @@
 
    .header-section {
-    margin: 2rem;
+    margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
     justify-content: center;
   }
   
   .search-section {
-    margin: 2rem;
+    margin: 1rem;
     display: flex;
-    gap: 2rem;
+    gap: 1rem;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
@@ -19,7 +18,7 @@
   .search-bar-container {
     display: flex;
     align-items: center;
-    border: 1px solid #ccc;
+    border: 1px solid #504242;
     border-radius: 10px;
     width: 250px;
     height: 40px;
@@ -38,7 +37,7 @@
   }
   
   .search-input::placeholder {
-    color: #aaa; /* Placeholder color */
+    color: #595454; 
   }
   
   .search-button {
@@ -70,7 +69,7 @@
   /* Logout Button Style */
   .logout-button {
     background-color: #dc3545;
-    color: white;
+    color: rgb(244, 179, 179);
     border: none;
     padding: 20px 15px;
     cursor: pointer;
