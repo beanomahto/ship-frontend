@@ -69,7 +69,7 @@
   /* Logout Button Style */
   .logout-button {
     background-color: #dc3545;
-    color: rgb(244, 179, 179);
+    color: white;
     border: none;
     padding: 20px 15px;
     cursor: pointer;
