@@ -64,7 +64,7 @@ import TermCondition from "./pages/Login/cancellationRefund/TermCondition";
 import PrivacyPolicy from "./pages/Login/cancellationRefund/PrivacyPolicy";
 import AboutSection from "./pages/Login/cancellationRefund/AboutSection";
 import ExtradeliveredOrder from "./pages/Orders/ExtradeliveredOrder";
-import Blogs from "./pages/blogs/Blogs";
+
 const App = () => {
   const { authUser } = useAuthContext();
   const ProtectedRoute = ({ children }) => {
@@ -472,7 +472,6 @@ const App = () => {
         <Route path="term-policy" element={<TermCondition />} />
         <Route path="privacy-policy" element={<PrivacyPolicy />} />
         <Route path="about-policy" element={<AboutSection />} />
-        <Route path="blogs" element={<Blogs />} />
         <Route path="*" element={<NotFound />} />
         <Route
           path="tracking/:selectedOption/:shippingPartner/:awb"
