@@ -28,7 +28,7 @@ import BD from "../../utils/newlogo/bluedartlogo.png";
 import DLVRY from "../../utils/newlogo/delhivery.png";
 import AS from "../../utils/newlogo/amazonShippinglogo.jpg";
 import EE from "../../utils/newlogo/ecom-logo.jpg";
-import SM from "../../utils/shree-maruti.jpeg"
+import SM from "../../utils/shree-maruti.jpeg";
 import XPB from "../../utils/newlogo/Xpressbees.jpg";
 import Ekart from "../../utils/newlogo/ekartlogo.png";
 import Dtdc from "../../utils/newlogo/dtdc.png";
@@ -45,7 +45,7 @@ const partnerImages = {
   Delhivery: DLVRY,
   "Amazon Shipping": AS,
   "Ecom Express": EE,
-  "Maruti": SM,
+  Maruti: SM,
   Xpressbees: XPB,
   Ekart: Ekart,
   DTDC: Dtdc,
@@ -722,8 +722,8 @@ const Orders = () => {
               order.order_status === "UnDelivered"
                 ? "Required"
                 : order.order_status === "Lost"
-                  ? "Lost"
-                  : null,
+                ? "Lost"
+                : null,
           };
           // console.log(updateBody);
           return axios.put(
@@ -960,9 +960,9 @@ const Orders = () => {
           <p style="margin-top: 2px;"> Delivered By:  </p>
             ${
               partnerLogo
-        ? `<img src="${partnerLogo}" alt="${labelData.shippingPartner}" style="width: 100px;"/>`
-        : `<p>${labelData?.shippingPartner || ""}</p>`
-      }
+                ? `<img src="${partnerLogo}" alt="${labelData.shippingPartner}" style="width: 100px;"/>`
+                : `<p>${labelData?.shippingPartner || ""}</p>`
+            }
               
           </div>
         </div>
@@ -971,17 +971,17 @@ const Orders = () => {
           <div class="labelSection">
             <img src="data:image/png;base64,${
               labelData?.barcode || ""
-      }" alt="Barcode" />
+            }" alt="Barcode" />
           </div>
         </div>
 
         <div class="labelSection">
           <p><strong>Ship To:</strong> <span> ${
             labelData?.customerName || ""
-      }</span></p>
+          }</span></p>
           <p>${labelData?.address?.address || ""} ${
       labelData?.address?.city || ""
-      } ${labelData?.address?.state || ""}</p>
+    } ${labelData?.address?.state || ""}</p>
           <p><strong>PIN:</strong> ${labelData?.address?.pincode || ""}</p>
         </div>
          
@@ -990,60 +990,60 @@ const Orders = () => {
             <p><strong>Order Date</strong></p>
             <p>${
               moment(labelData?.invoiceDate).format("MMMM Do YYYY") || ""
-      }</p>
+            }</p>
         </div>
         ${
           labelData?.dimension
-        ? `
+            ? `
           <div class="orderDetail">
           <p><strong>Dimensions</strong></p>
             <p><span>${labelData?.dimension?.length || ""} x ${
                 labelData?.dimension?.breadth || ""
-        } x ${labelData?.dimension?.height || ""}</span> CM</p>
+              } x ${labelData?.dimension?.height || ""}</span> CM</p>
         </div>
         `
-        : `<div class="orderDetail">
+            : `<div class="orderDetail">
           <p><strong></strong></p>
             <p><span></span></p>
         </div>`
-      }
+        }
         ${
           labelData?.weight
-        ? `
+            ? `
           <div class="orderDetail">
           <p><strong>Weight</strong></p>
           <p><span>${labelData?.weight || ""}</span> grm</p> 
           </div>
           `
-        : `   <div class="orderDetail">
+            : `   <div class="orderDetail">
           <p><strong></strong></p>
           <p><span></span></p> 
           </div>`
-      }
+        }
           </div>
         <div class="OrderSection">
           <div class="orderDetail">
             <p><strong>Order Id:</strong> </p><p>${
               labelData?.orderId || ""
-      }</p> 
+            }</p> 
           </div>
           <div class="orderDetail">
             <p><strong>${labelData?.paymentType || ""}</strong></p>
             <p>${
               labelData?.amount ? `${labelData?.amount} INR` : ``
-      }INR <span></span></p>
+            }INR <span></span></p>
           </div>
           <div class="orderDetail">
             <p><strong>Price Total</strong></p>
                 <p>${
                   labelData?.amount ? `${labelData?.amount} INR` : ``
-      }INR <span></span></p>
+                }INR <span></span></p>
             <p>Surface</p>
           </div>
         </div>
         ${
           labelData?.productName
-        ? `
+            ? `
           <div style="display: flex;">
           <div class="labelSection" style="width: 12rem;">
           <p><strong>Product (QTY)</strong></p>
@@ -1051,21 +1051,21 @@ const Orders = () => {
           <div class="labelSection" style="width: 12rem;">
             <p>${labelData?.productName || ""}<span>(${
                 labelData?.productDetail?.quantity || ""
-        })</span></p>
+              })</span></p>
               </div>
               `
-        : `  <div style="display: flex;">
+            : `  <div style="display: flex;">
           <div class="labelSection" style="width: 12rem;">
           <p><strong></p>
           </div>
           <div class="labelSection" style="width: 12rem;">
             <p></span></p>
               </div>`
-      }
+        }
         </div>
         ${
           labelData?.amount
-        ? `
+            ? `
           <div style="display: flex;">
           <div class="labelSection" style="width: 12rem;">
             <p><strong>Total INR</strong></p>
@@ -1075,7 +1075,7 @@ const Orders = () => {
           </div>
           </div>
           `
-        : `<div style="display: flex;">
+            : `<div style="display: flex;">
           <div class="labelSection" style="width: 12rem;">
             <p><strong></strong></p>
           </div>
@@ -1083,24 +1083,24 @@ const Orders = () => {
           <p></p>
           </div>
           </div>`
-      }
+        }
         ${
           labelData?.returnWarehouse
-        ? `
+            ? `
           <div class="labelSection">
           <p><strong>Return Address:</strong></p>
           <p>${labelData?.returnWarehouse?.address || ""} ${
                 labelData?.returnWarehouse?.state || ""
               } ${labelData?.returnWarehouse?.city || ""} ${
                 labelData?.returnWarehouse?.country || ""
-        }</p>
+              }</p>
       </div>
       `
-        : `  <div class="labelSection">
+            : `  <div class="labelSection">
           <p><strong></strong></p>
           <p></p>
       </div>`
-      }
+        }
 
         <p>Powered by <strong>ShipHere</strong></p>
       </div>
@@ -1138,11 +1138,15 @@ const Orders = () => {
           const labelContainer = document.createElement("div");
           labelContainer.style.position = "absolute";
           labelContainer.style.top = "-9999px";
+          labelContainer.style.width = "400px"; // **Fixed Width for Consistency**
+          labelContainer.style.height = "600px";
           labelContainer.innerHTML = labelHtml;
           document.body.appendChild(labelContainer);
 
+          const scaleFactor = window.innerWidth < 768 ? 2.5 : 2;
+
           const canvas = await html2canvas(labelContainer, {
-            scale: 2,
+            scale: scaleFactor,
             useCORS: true,
           });
 
@@ -1423,6 +1427,18 @@ const Orders = () => {
       },
     });
   };
+
+  const [visible, setVisible] = useState(false);
+
+  const handleOpenChange = (newVisible) => {
+    setVisible(newVisible);
+  };
+
+  const handleClose = (callback) => {
+    setVisible(false); // Close the popover
+    if (callback) callback(); // Execute the function passed (showModal or showModalBD)
+  };
+
   const handleSendEmail = async () => {
     if (!email) {
       message.warning("Please enter an email.");
@@ -1539,19 +1555,19 @@ const Orders = () => {
                 {(authUser.role === "admin" ||
                   (authUser.role !== "admin" &&
                     (currentTab === "tab1" || currentTab === "tab2"))) && (
-                    <Button
-                      type="primary"
-                      shape="round"
-                      onClick={exportToExcel}
-                      icon={<DownloadOutlined />}
-                      className="downloadBtn"
-                      size="middle"
-                      style={{ marginRight: "10px" }}
-                      disabled={loadingdownload}
-                    >
-                      {loadingdownload ? "Downloading..." : "Download"}
-                    </Button>
-                  )}
+                  <Button
+                    type="primary"
+                    shape="round"
+                    onClick={exportToExcel}
+                    icon={<DownloadOutlined />}
+                    className="downloadBtn"
+                    size="middle"
+                    style={{ marginRight: "10px" }}
+                    disabled={loadingdownload}
+                  >
+                    {loadingdownload ? "Downloading..." : "Download"}
+                  </Button>
+                )}
 
                 {currentTab === "tab2" && (
                   <div className="tab2_managingBtns">
@@ -1614,6 +1630,8 @@ const Orders = () => {
               <Popover
                 trigger={"click"}
                 placement="leftTop"
+                visible={visible}
+                onVisibleChange={handleOpenChange}
                 title={
                   <div
                     style={{
@@ -1625,20 +1643,23 @@ const Orders = () => {
                   >
                     <Button
                       style={{ borderRadius: "35px", fontFamily: "Poppins" }}
-                      onClick={showModal}
+                      onClick={() => handleClose(showModal)}
                     >
                       Bulk Orders
                     </Button>
                     <Button
                       style={{ borderRadius: "35px", fontFamily: "Poppins" }}
-                      onClick={showModalBD}
+                      onClick={() => handleClose(showModalBD)}
                     >
                       Bulk Dimensions
                     </Button>
                   </div>
                 }
               >
-                <Button style={{ borderRadius: "35px", fontFamily: "Poppins" }}>
+                <Button
+                  style={{ borderRadius: "35px", fontFamily: "Poppins" }}
+                  onClick={() => setVisible(!visible)}
+                >
                   Bulk Actions
                 </Button>
               </Popover>
