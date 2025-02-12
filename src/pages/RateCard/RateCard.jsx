@@ -329,6 +329,7 @@ const RateCard = () => {
         scroll={{ x: 1000, y: 350 }}
         className="table"
         dataSource={pricing}
+        
         columns={columns}
       />
       <Divider />

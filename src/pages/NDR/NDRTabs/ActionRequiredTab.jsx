@@ -483,7 +483,7 @@ const ActionRequiredTab = ({
             style={{ marginTop: "-4rem", padding: "15px", fontSize: "17px" }}
             icon={<MenuFoldOutlined />}
           >
-            Action
+            {/* Action */}
           </Button>
         </Popover>
       </div>

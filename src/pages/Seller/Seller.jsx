@@ -350,7 +350,7 @@ const Seller = () => {
 
   return (
     <div
-      style={{ backgroundColor: "#fff", height: "45rem", borderRadius: "1rem" }}
+      style={{ backgroundColor: "#fff", height: "40rem", borderRadius: "1rem" }}
     >
       <Helmet>
         <meta charSet="utf-8" />
@@ -363,22 +363,18 @@ const Seller = () => {
         onClose={closeModal}
         selectedSeller={selectedSeller} // Pass selected seller as prop
       />
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          backgroundColor: "#fafafa",
-        }}
-      >
+      <div className="search-container">
         <Input.Search
+          style={{marginBottom: "1rem", minWidth: "300px"}}
+          className="search-input"
           placeholder="Search globally"
           value={searchQuery}
           onChange={(e) => handleGlobalSearch(e.target.value)}
           onSearch={(value) => handleGlobalSearch(value)}
           enterButton={<SearchOutlined />}
-          style={{ marginBottom: "1rem", width: "300px", minWidth: "200px" }}
         />
       </div>
+
       <Table
         className="custom-table"
         dataSource={filteredUsers}

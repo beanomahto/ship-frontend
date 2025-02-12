@@ -8,6 +8,7 @@ import RTOTab from "./NDRTabs/RTOTab.jsx";
 import { useOrderContext } from "../../context/OrderContext.jsx";
 import axios from "axios";
 import AllOrderTab from "./NDRTabs/All0rderTab.jsx";
+import "./ndr.css";
 
 const { TabPane } = Tabs;
 
