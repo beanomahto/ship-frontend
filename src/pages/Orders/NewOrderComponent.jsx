@@ -773,7 +773,7 @@ const NewOrderComponent = ({
       ) : (
         <>
           <Table
-            rowSelection={rowSelection}
+            rowSelection={{...rowSelection, columnWidth: 90}}
             columns={columns}
             dataSource={newOrders}
             scroll={{ x: 1400, y: 400 }}
