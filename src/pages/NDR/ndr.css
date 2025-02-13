@@ -1,4 +1,86 @@
-.chart{
-    width: 10rem;
-    height: 10rem;
-}
+/* Global Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* NDR Container */
+  .ndrContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 20px;
+  }
+  
+  /* Tabs Styling */
+  .tabs {
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Tab Content */
+  .ant-tabs-tab {
+    font-size: 16px;
+    font-weight: 600;
+    padding: 12px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .ant-tabs-tab:hover {
+    color: #2B3FE5;
+  }
+  
+  .ant-tabs-tab-active {
+    color: #2B3FE5 !important;
+    font-weight: 700;
+  }
+  
+  /* Selected Items Text */
+  .selectedItems {
+    font-size: 14px;
+    color: #333;
+    margin-top: 10px;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .tabs {
+      padding: 8px;
+    }
+  
+    .ant-tabs-tab {
+      font-size: 14px;
+      padding: 10px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .ndrContainer {
+      padding: 10px;
+    }
+  
+    .tabs {
+      padding: 5px;
+    }
+  
+    .ant-tabs-tab {
+      font-size: 12px;
+      padding: 8px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .tabs {
+      box-shadow: none;
+    }
+  
+    .ant-tabs-tab {
+      font-size: 12px;
+      padding: 6px;
+    }
+  }
+  

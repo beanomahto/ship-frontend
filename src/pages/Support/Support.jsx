@@ -96,19 +96,20 @@ const Support = () => {
                         <p className="titlesprt">Support</p>
                         <div className='flex2sprt'>
                             <div className="flexsprt">
-                                <label className='iptsprt'>
-                                    <span>Subject</span>
+                                <label className='iptsprt1'>
+                                    <span style={{ fontSize: "0.9rem" }}>Subject</span>
                                     <Select
-                                        className='inputsprt iptsprt'
-                                        value={subject}
+                                        className='inputsprt iptsprt select'
+                                        value={subject || undefined}
                                         onChange={handleSubjectChange}
+                                        placeholder="Select a subject"
                                     >
                                         {Object.keys(subjects).map(subject => (
                                             <Select.Option key={subject} value={subject}>
                                                 {subject}
                                             </Select.Option>
                                         ))}
-                                        <Select.Option value="other">Other</Select.Option>
+                                        <Select.Option value="other">Others</Select.Option>
                                     </Select>
                                 </label>
                             </div>
@@ -126,13 +127,13 @@ const Support = () => {
                                 </div>
                             )}
                         </div>
-                        <div className='flex2sprt'>
+                        <div className='flex2sprt flex2div'>
                             <div className="flexsprt">
                                 <label className='iptsprt'>
-                                    <span>AWB</span>
                                     {awbNumbers.map((awb, index) => (
                                         <div key={index} className='awb-field'>
                                             <input
+                                                placeholder='Enter AWB number'
                                                 className="inputsprt"
                                                 type="text"
                                                 value={awb}

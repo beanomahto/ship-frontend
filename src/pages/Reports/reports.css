@@ -47,11 +47,11 @@
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   max-width: 1200px; /* Adjust as needed for larger screens */
-  margin: 2rem auto;
+  margin: 1rem auto;
 }
 /* Report Box */
 .report-box {
-  background: #ffffff;
+  background: #f7efef;
   padding: 2rem;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -102,10 +102,45 @@
   border-color: #0073e6;
 }
 
-/* Date Picker */
+/* 📌 Date Picker Container */
 .date-picker {
-  width: 100%;
+  width: 100% !important;  /* Full width within the form */
+  max-width: 400px;  /* Ensures it doesn't stretch too much */
+  border: 1px solid #cfe2f5 !important; /* Adds a clear border */
+  border-radius: 6px !important;  /* Smooth rounded corners */
+  padding: 10px 5px !important; /* Adds spacing for better clarity */
+  font-size: 1rem !important;  /* Increases text size */
+  background-color: #fff !important;  /* Ensures good contrast */
 }
+
+/* 📌 Input Field Styling Inside RangePicker */
+.date-picker .ant-picker-input {
+  font-size: 1rem !important; /* Makes input text more readable */
+  font-weight: 500;
+  color: #333 !important;
+  text-align: center;
+  margin-left: 2rem;
+}
+
+/* 📌 Placeholder Text Styling */
+.date-picker .ant-picker-input input::placeholder {
+  color: #999 !important;
+  font-size: 0.9rem !important;
+}
+
+/* 📌 Hover & Focus Effects */
+.date-picker:hover,
+.date-picker:focus-within {
+  border-color: #0056b3 !important; /* Darker border on hover/focus */
+  box-shadow: 0 0 5px rgba(0, 115, 230, 0.3) !important;
+}
+
+/* 📌 Selected Date Styling */
+.date-picker .ant-picker-input input {
+  color: #0073e6 !important; /* Highlight selected date */
+  font-weight: 600;
+}
+
 .btn111{
   position: relative;
   width: 100%;
@@ -130,4 +165,25 @@
 
 .form-button:hover {
   background-color: #005bb5;
+}
+
+@media (max-width: 760px) {
+  .report-container {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+  .report-box {
+    width: 75%;
+  }
+  .form-button {
+    width: 100%;
+  }
+  .report-box {
+    background: #f7efef;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
 }
