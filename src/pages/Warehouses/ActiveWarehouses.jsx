@@ -10,7 +10,6 @@ import {
   DeleteOutlined,
   EditOutlined,
 } from "@ant-design/icons";
-import "./addWarehouse.css";
 
 const { confirm } = Modal;
 
@@ -162,34 +161,32 @@ const ActiveWarehouses = () => {
       <div
         style={{
           display: "flex",
-          justifyContent: "space-evenly",
+          justifyContent: "flex-end",
           gap: "1rem",
           marginBottom: "1rem",
         }}
-        className="warehouse-header"
       >
+        {" "}
         <Input
-          className="warehouse-search"
           placeholder="Search warehouses"
           value={searchQuery}
           onChange={(e) => handleSearch(e.target.value)}
           enterButton={<SearchOutlined />}
           style={{ width: "300px", minWidth: "200px" }}
         />
-        <Button className="warehouse-add-btn">
+        <Button>
           <Link to="addwarehouse">Add Warehouse</Link>
         </Button>
       </div>
       <div
         style={{
           backgroundColor: "#fff",
-          height: "30rem",
+          height: "40rem",
           borderRadius: "1rem",
         }}
-        className="warehouse-table-container"
       >
         <Table
-          className="warehouse-table"
+          className="table"
           columns={newOrders}
           dataSource={filteredWarehouses}
           pagination={{

@@ -324,7 +324,7 @@ const AdminMIS_Report = () => {
   };
 
   return (
-    <div className="report-container" style={{ backgroundColor: "#f0f2f5" }}>
+    <div className="report-container">
       {/* MIS Report Box */}
       <div className="report-box">
         <form className="report-form" onSubmit={handleMisSubmit}>
