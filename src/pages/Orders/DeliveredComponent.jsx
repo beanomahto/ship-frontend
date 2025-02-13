@@ -33,6 +33,8 @@ const DeliveredComponent = ({
   //console.log(tab);
   const [searchText, setSearchText] = React.useState("");
   const [searchedColumn, setSearchedColumn] = React.useState("");
+  rowSelection = {...rowSelection, columnWidth: 90}
+
 
   const { authUser } = useAuthContext();
 

@@ -33,6 +33,8 @@ const InTranitComponent = ({
   //console.log(tab);
   const [searchText, setSearchText] = React.useState("");
   const [searchedColumn, setSearchedColumn] = React.useState("");
+  rowSelection = {...rowSelection, columnWidth: 90}
+
 
   const { authUser } = useAuthContext();
 
@@ -472,7 +474,7 @@ const InTranitComponent = ({
         />
       ) : (
         <Table
-            rowSelection={{...rowSelection, columnWidth: 90}}
+            rowSelection={rowSelection}
           columns={columns}
           dataSource={shippedOrders}
           className="centered-table"

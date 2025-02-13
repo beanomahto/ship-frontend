@@ -74,6 +74,7 @@ const NewOrderComponent = ({
   console.log(deliveryCosts);
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
+  rowSelection = {...rowSelection, columnWidth: 90}
 
   //console.log(currentDeliveryCost);
   //console.log(warehouse);
@@ -773,7 +774,7 @@ const NewOrderComponent = ({
       ) : (
         <>
           <Table
-            rowSelection={{...rowSelection, columnWidth: 90}}
+            rowSelection={rowSelection}
             columns={columns}
             dataSource={newOrders}
             scroll={{ x: 1400, y: 400 }}

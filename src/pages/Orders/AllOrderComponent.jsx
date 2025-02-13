@@ -32,6 +32,7 @@ const AllOrderComponent = ({
   tab,
 }) => {
   //console.log(tab);
+  rowSelection = {...rowSelection, columnWidth: 90}
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -473,7 +474,7 @@ const AllOrderComponent = ({
         />
       ) : (
         <Table
-          rowSelection={{...rowSelection, columnWidth: 90}}
+          rowSelection={rowSelection}
           columns={columns}
           dataSource={dataSource}
           rowKey="_id"
