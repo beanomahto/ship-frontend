@@ -5,6 +5,49 @@
   }
   
   .custom-table {
-    height: 100%; 
+    height: 90%; 
   }
   
+
+
+      /* CSS for input fields */
+
+/* Search Bar Container */
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8dfdf;
+  padding: 1rem 0;
+  width: 100%;
+}
+
+/* Ant Design Input.Search Styling */
+.search-input {
+  width: 100% !important; /* Ensures full width inside container */
+  max-width: 500px !important; /* Prevents excessive stretching */
+  min-width: 250px !important; /* Ensures proper visibility */
+  margin-bottom: 1rem !important;
+  border-radius: 5px !important;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) { /* Tablets */
+  .search-input {
+      width: 80% !important;
+      max-width: 400px !important;
+  }
+}
+
+@media (max-width: 768px) { /* Mobile */
+  .search-container {
+      padding: 0.5rem 1rem;
+  }
+
+  .search-input {
+      width: 95% !important;
+      max-width: 100% !important;
+      font-size: 14px !important;
+  }
+}

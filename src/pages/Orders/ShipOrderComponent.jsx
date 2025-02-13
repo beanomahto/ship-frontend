@@ -489,7 +489,7 @@ const ShipOrderComponent = ({
         />
       ) : (
         <Table
-          rowSelection={rowSelection}
+          rowSelection={{...rowSelection, columnWidth: 90}}
           columns={columns}
           dataSource={shippedOrders}
           className="centered-table"

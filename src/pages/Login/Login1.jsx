@@ -80,7 +80,7 @@ const Login1 = () => {
               <div className="inputBx">
                 <label htmlFor="email">
                   Email
-                  <span style={{ color: "red", fontWeight: "500" }}>*</span>
+                  <span style={{ color: "red", fontWeight: "500", marginLeft: "2.5rem" }}>*</span>
                 </label>
                 <div className="inputContainer">
                   <input
@@ -116,7 +116,7 @@ const Login1 = () => {
               <div className="inputBx">
                 <label htmlFor="password">
                   Password
-                  <span style={{ color: "red", fontWeight: "500" }}>*</span>
+                  <span style={{ color: "red", fontWeight: "500", marginLeft: "4.8rem" }}>*</span>
                 </label>
                 <div className="inputContainer">
                   <input
@@ -165,7 +165,7 @@ const Login1 = () => {
                 className="inputBx policy-checkbox"
                 style={{ marginTop: "15px", display: "flex" }}
               >
-                <label style={{ display: "flex", alignItems: "center" }}>
+                <label style={{ display: "flex", alignItems: "center", flexDirection: "row" }}>
                   <input
                     type="checkbox"
                     id="policyCheckbox"

@@ -1,168 +1,306 @@
-
-.formConsprt {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 40px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.formsprt {
+/* ===== General Styling ===== */
+.support-container {
     display: flex;
-    flex-direction: column;
-    gap: 16px;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 10px;
+    gap: 40px;
+    background-color: #f3f4f6;
 }
 
+/* Flex Layout */
+.support-content {
+    display: flex;
+    flex: 1;
+    gap: 5px;
+}
+
+/* ===== Form Section ===== */
+.form-container {
+    margin-top: auto;
+    margin-bottom: auto;
+    flex: 2;
+    background: rgb(252, 248, 248);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: 100%;
+}
+
+/* Title */
 .titlesprt {
     font-size: 24px;
-    font-weight: bold;
+    font-weight: 700;
     margin-bottom: 20px;
     text-align: center;
     color: #333;
-    font-family: 'Poppins';
+    font-family: 'Poppins', sans-serif;
 }
 
+/* Form Elements */
 .flex2sprt {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    /* margin-bottom: 20px; */
 }
 
-.awbBtn{
-    width: fit-content;
-    padding: 10px 22px;
-    border: none;
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
-    margin: 12px 0px;
-    color: white;
-    background-color: #3987c8;
-}
-
-.flexsprt {
-    display: flex;
-    flex-direction: column;
+.flex2div{
+    margin-top: 5rem;
 }
 
 .iptsprt {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #444;
+    max-width: 95%;
 }
 
-.iptsprt span{
-    line-height: 24px;
+/* Label Styling for Subject */
+.iptsprt1 {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fefdfd;
+    position: relative;
 }
+
+.select{
+    position: absolute;
+    margin: 10px 2px;
+    top: 0;
+    left: 0;
+    border: 1px solid #f8f7f7 !important;
+}
+
+/* Adjusting Select Box under iptsprt1 */
+.iptsprt1 .ant-select {
+    width: 100% !important;
+}
+
+.iptsprt1 .ant-select-selector {
+    position: absolute !important;
+    top: 5;
+    left: 0;
+    height: 36px !important;
+    display: flex;
+    align-items: center;
+    padding: 1px !important;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    transition: 0.3s ease;
+    background: #faf9f9 !important;
+}
+
+.iptsprt1 .ant-select-selector:hover,
+.iptsprt1 .ant-select-selector:focus {
+    border-color: #0073e6;
+    box-shadow: 0 0 5px rgba(0, 115, 230, 0.2);
+}
+
+/* Placeholder & Selected Text */
+.iptsprt1 .ant-select-selection-placeholder {
+    color: #888 !important;
+    font-size: 14px !important;
+}
+
 
 .inputsprt {
     width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 5px;
     font-size: 16px;
-    height: 46px;
-    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: #fff;
+    transition: 0.3s ease;
+}
+
+.inputsprt:focus {
+    border-color: #0073e6;
+    box-shadow: 0 0 5px rgba(0, 115, 230, 0.2);
+}
+
+/* Ant Design Select Box */
+.ant-select {
+    width: 100% !important;
 }
 
 .ant-select-selector {
-    border-radius: 5px !important;
+    height: 46px !important;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc !important;
+    transition: 0.3s ease;
 }
 
-.submitsprt {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
+.ant-select-selector:hover,
+.ant-select-selector:focus {
+    border-color: #0073e6;
+    box-shadow: 0 0 5px rgba(0, 115, 230, 0.2);
+}
+
+.ant-select-selection-placeholder {
+    color: #888 !important; /* Light gray placeholder */
+    font-size: 14px !important;
+    font-weight: 500 !important;
+}
+
+.iptsprt1 .ant-select-arrow {
+    color: #283039; /* Change arrow color */
+    font-size: 18px; /* Adjust arrow size */
+    font-weight: bolder;
+    transition: transform 0.3s ease-in-out; /* Smooth animation */
+    transform: rotate(360deg);
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+/* Rotate the arrow when dropdown is open */
+.iptsprt1 .ant-select-open .ant-select-arrow {
+    transform: rotate(180deg);
+    color: #0056b3; /* Darker color when opened */
+}
+
+/* AWB Fields */
+.awb-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.awbBtn {
+    padding: 10px 22px;
     border: none;
-    border-radius: 5px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    margin: 12px 0;
+    color: white;
+    background: #0073e6;
+    transition: 0.3s ease;
+}
+
+.awbBtn:hover {
+    background: #0056b3;
+}
+
+.delete-awb-btn {
+    background: rgb(145, 145, 145);
+    border: none;
+    padding: 6px;
+    border-radius: 50%;
+    color: white;
     font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: 0.3s ease;
+}
+
+.delete-awb-btn:hover {
+    background: red;
+}
+
+/* Submit Button */
+.submitsprt {
+    padding: 12px 20px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
 .submitsprt:hover {
-    background-color: #45a049;
+    background: #3e8e41;
 }
 
-.add-awb-button {
-    margin-top: 10px;
-    padding: 5px 10px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s;
-}
-
-.add-awb-button:hover {
-    background-color: #0056b3;
-}
-.imgDiv{
-    background: rgba(255, 255, 255, 0.25);
-    /* background: rgba(233, 250, 215, 0.25); */
-    box-shadow: 0px 0px 8px 1px rgb(188 188 188 / 100%);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-}
-.support-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 20px;
-    gap: 20px;
-}
-
-.support-content {
-    display: flex;
-    flex: 1;
-    gap: 50px;
-}
-
-.form-container {
-    flex: 2;
-    background-color: white;
-    padding: 0 16px;
-    border-radius: 24px;
-}
-
+/* ===== Video/Image Section ===== */
 .image-container {
     flex: 1;
-    background-color: white;
-    /* margin-top: 23px;
-    padding: 12px */
+    background: rgb(239, 237, 237);
 }
 
 .support-image {
     width: 100%;
     height: 77vh;
+    object-fit: cover;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-.awb-field {
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
+
+/* ===== Responsive Design ===== */
+@media (max-width: 1024px) {
+    .support-container {
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        gap: 30px;
+    }
+
+    .support-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .form-container {
+        width: 100%;
+        padding: 30px;
+    }
+
+    .image-container {
+        display: none; /* Hide video/image on smaller devices */
+    }
 }
 
-.delete-awb-btn {
-    background-color:rgb(145, 145, 145);
-    border: none;
-    padding: 6px;
-    border-radius: 3rem;
-    color: rgb(255, 255, 255);
-    font-size: 16px;
-    cursor: pointer;
-    margin-left: 8px;
+@media (max-width: 768px) {
+    .form-container {
+        padding: 20px;
+    }
+
+    .titlesprt {
+        font-size: 22px;
+    }
+
+    .inputsprt {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .submitsprt {
+        font-size: 16px;
+    }
 }
 
-@media(max-width: 600px) {
-    .image-container{
-        display: none;
+@media (max-width: 480px) {
+    .support-container {
+        padding: 15px;
+    }
+
+    .form-container {
+        padding: 20px;
+        margin-left: -20px;
+    }
+
+    .titlesprt {
+        font-size: 20px;
+    }
+
+    .submitsprt {
+        font-size: 14px;
+        padding: 10px;
     }
 }

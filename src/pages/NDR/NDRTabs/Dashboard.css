@@ -1,46 +1,108 @@
+/* Global Styles */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 0;
+}
+
+/* Order Summary Container */
 .orderSummaryContainer {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, auto);
-    gap: 40px;
-    /* padding: 30px; */
-    padding-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columns for laptops */
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Order Summary Card */
+.orderSummaryCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 350px;
+  padding: 20px;
+  background: #e4e2e2;
+  border-radius: 12px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+/* Hover Effect for Cards */
+.orderSummaryCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Order Summary Text */
+.orderSummary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: #333;
+}
+
+.orderSummary h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  color: #2B3FE5;
+}
+
+.orderSummary p {
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 5px 0 0;
+  color: #666;
+}
+
+/* Order Icon */
+.orderIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .orderSummaryContainer {
+    grid-template-columns: repeat(2, 1fr); /* 2 cards per row on tablets */
   }
-  
+}
+
+@media (max-width: 768px) {
+  .orderSummaryContainer {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 10px;
+    padding: 10px;
+    padding-top: 40px;
+  }
+
   .orderSummaryCard {
-    display: flex;
-    max-width: 350px;
-    height: 100px;
-    justify-content:space-between;
-    align-items: center;
-    padding: 30px 40px;
-    border-radius: 10px;
-    background-color: #fbfcf8;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 80%;
+    margin: 0 auto;
   }
-  
+}
+
+@media (max-width: 480px) {
+  .orderSummaryContainer {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 10px;
+    padding: 0px;
+    padding-top: 40px;
+  }
+
+  .orderSummaryCard {
+    width: 90%;
+    padding: 5px;
+  }
+
   .orderSummary h3 {
-    margin: 0;
-    font-size: 24px;
+    font-size: 1.5rem;
   }
-  
+
   .orderSummary p {
-    margin: 0;
-    font-size: 14px;
-    color: #777;
+    font-size: 0.9rem;
   }
-  
-  .orderIcon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  @media (max-width: 480px) {
-    .orderSummaryContainer {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(2, auto);
-      justify-content: center;
-      align-items: center;
-    }
-  }
+}
