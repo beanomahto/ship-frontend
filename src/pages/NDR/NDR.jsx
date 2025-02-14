@@ -176,12 +176,13 @@ const NDR = () => {
         }
     
         const mapStatusCodeToOrderStatus = (status) => {
-          if (["27", "30", "10", "121", "108", "126", "108", "109", "110", "122", "123", "124", "125", "126", "133", "120"].includes(status)) return "InTransit";
+          if (["27", "30", "10", "59", "121", "108", "126", "108", "109", "110", "122", "123", "124", "125", "126", "133", "120","207", "209", "215"].includes(status)) return "InTransit";
           if (["4", "103", "101", "106", "107", "102", "104", "105", "119", "118"].includes(status)) return "Shipped";
           if (["11", "113"].includes(status)) return "Delivered";
-          if (status === "340") return "Cancelled";
-          if (["189", "212", "214", "115", "117", "116"].includes(status)) return "Lost";
-          if (["12", "13", "14", "15", "16", "17", "112"].includes(status)) return "UnDelivered";
+          if (["26", "185", "340"].includes(status)) return "Cancelled";
+          if (["189"].includes(status)) return "Lost";
+          if (["12", "13", "14", "15", "16", "17", "22", "23", "210", "112"].includes(status)) return "UnDelivered";
+          if (["214", "18", "19", "28", "198", "199", "201", "212"].includes(status)) return "RTO";
           return null;
         };
     
