@@ -480,17 +480,17 @@ const ActionRequiredTab = ({
         >
           <Button
             type="primary"
-            style={{ marginTop: "-4rem", padding: "15px", fontSize: "17px" }}
-            icon={<MenuFoldOutlined />}
+            style={{ marginTop: "-1.5rem", padding: "15px", fontSize: "17px" }}
+            icon={<MenuFoldOutlined style={{marginTop: "0.5rem"}}/>}
           >
-            Action
+            &nbsp; &nbsp; Action
           </Button>
         </Popover>
       </div>
 
       <Modal
         title="Select Re-attempt Date"
-        visible={isModalOpen}
+        open={isModalOpen}
         onOk={() => handleAction("Re-attempt")}
         onCancel={handleModalCancel}
         okText="Confirm"
@@ -515,7 +515,7 @@ const ActionRequiredTab = ({
         rowKey="_id"
         className="centered-table"
         scroll={{ x: 800 }}
-        style={{ overflowX: "auto", marginTop: "-20px" }}
+        style={{ overflowX: "auto", marginTop: "-10px", padding: "0 10px" }}
         pagination={{
           showSizeChanger: true,
           pageSizeOptions: ["10", "20", "50", "100", "500", "1000"],

@@ -8,6 +8,7 @@ import RTOTab from "./NDRTabs/RTOTab.jsx";
 import { useOrderContext } from "../../context/OrderContext.jsx";
 import axios from "axios";
 import AllOrderTab from "./NDRTabs/All0rderTab.jsx";
+import "./ndr.css";
 
 const { TabPane } = Tabs;
 
@@ -262,28 +263,29 @@ const NDR = () => {
   }, [orders]);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-      <Tabs defaultActiveKey="tab1" size="large" className="tabs">
-        {tabsData.map((tab) => (
-          <TabPane key={tab.key} tab={tab.tab} style={{ marginTop: "-25px" }}>
-            {tab.Component ? (
-              <tab.Component
-                dataSource={tab.dataSource}
-                rowSelection={rowSelection}
-                selectedRowKeys={selectedRowKeys}
-                fetchOrders={fetchOrders}
-                selectedOrderData={selectedOrderData}
-              />
-            ) : (
-              <span>No component for this tab</span>
-            )}
-            <span style={{ marginLeft: 8 }}>
-              {hasSelected ? `Selected ${selectedRowKeys.length} items` : ""}
-            </span>
-          </TabPane>
-        ))}
-      </Tabs>
-    </div>
+    <div className="ndrContainer">
+  <Tabs defaultActiveKey="tab1" size="large" className="custom-tabs">
+    {tabsData.map((tab) => (
+      <TabPane key={tab.key} tab={tab.tab} className="custom-tab-content">
+        {tab.Component ? (
+          <tab.Component
+            dataSource={tab.dataSource}
+            rowSelection={rowSelection}
+            selectedRowKeys={selectedRowKeys}
+            fetchOrders={fetchOrders}
+            selectedOrderData={selectedOrderData}
+          />
+        ) : (
+          <span>No component for this tab</span>
+        )}
+        <span className="selected-items">
+          {hasSelected ? `Selected ${selectedRowKeys.length} items` : ""}
+        </span>
+      </TabPane>
+    ))}
+  </Tabs>
+</div>
+
   );
 };
 

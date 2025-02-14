@@ -124,7 +124,10 @@ const Header = ({ darktheme }) => {
   // console.log(authUser);
 
   return (
-    <div className={darktheme ? "darkHeader" : "main-header"} style={{ width: "99%" }}>
+    <div
+      className={darktheme ? "darkHeader" : "main-header"}
+      style={{ width: "99%" }}
+    >
       <div className="header-container">
         <div className="header-search">
           <Space.Compact>
@@ -146,7 +149,7 @@ const Header = ({ darktheme }) => {
             style={{ backgroundColor: "ButtonHighlight", padding: "7px" }}
             onClick={showModal}
           >
-            <BsLightningChargeFill className="rechargeLogo"/>
+            <BsLightningChargeFill className="rechargeLogo" />
             Recharge
           </Button>
           <span className="span"></span>
@@ -173,20 +176,45 @@ const Header = ({ darktheme }) => {
                   <Button>
                     <Link to="/kyc">KYC</Link>
                   </Button>
-                  <Button onClick={logout}>Logout</Button>
+                  <Button
+                    onClick={!loading ? logout : undefined}
+                    className={`logout-btn ${loading ? "loading" : ""}`}
+                    disabled={loading}
+                  >
+                    {loading ? "Wait..." : "Logout"}
+                  </Button>
                 </div>
               }
             >
               <div className="Auth_Navbar">
-                <div className="Symbol_logo_App" style={{ backgroundColor: "rgb(248, 191, 191)" , color: "rgb(43, 4, 4)", fontWeight: "bolder", width: "3rem", height: "2.2rem", marginRight: "5px" }}>
-                  <p className="fstChar_logo_App" style={{ fontWeight: "bold", fontSize: "1.3rem",}}>
+                <div
+                  className="Symbol_logo_App"
+                  style={{
+                    backgroundColor: "rgb(248, 191, 191)",
+                    color: "rgb(43, 4, 4)",
+                    fontWeight: "bolder",
+                    width: "3rem",
+                    height: "2.2rem",
+                    marginRight: "5px",
+                  }}
+                >
+                  <p
+                    className="fstChar_logo_App"
+                    style={{ fontWeight: "bold", fontSize: "1.3rem" }}
+                  >
                     {authUser?.firstName?.charAt(0).toUpperCase() +
                       "" +
                       authUser?.lastName?.charAt(0).toUpperCase()}
                   </p>
                 </div>
-                <Button type="text" className="name" style={{ width: "fit-content", padding: "5px" }}>
-                  {authUser?.firstName?.toUpperCase() + " " + authUser?.lastName?.toUpperCase()}
+                <Button
+                  type="text"
+                  className="name"
+                  style={{ width: "fit-content", padding: "5px" }}
+                >
+                  {authUser?.firstName?.toUpperCase() +
+                    " " +
+                    authUser?.lastName?.toUpperCase()}
                 </Button>
               </div>
             </Popover>

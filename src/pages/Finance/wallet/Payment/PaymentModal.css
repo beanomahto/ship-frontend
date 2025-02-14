@@ -1,0 +1,76 @@
+/* Ensure modal does not conflict with Ant Design styles */
+.payment-modal .ant-modal-content {
+    padding: 2.5rem 1.5;
+    margin-top: 2rem;
+    padding-top: 3rem;
+  }
+  
+  /* Search Input */
+  .search-container {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .search-input {
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  /* List Styling */
+  .user-list {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+  
+  /* Individual List Item */
+  .user-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  /* Payment Inputs Container */
+  .payment-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 180px;
+  }
+  
+  /* Make the Payment Button Full Width on Small Screens */
+  .payment-inputs button {
+    width: 100%;
+  }
+  
+  /* Modal Footer */
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+  }
+  
+  /* 📱 Responsive Styles */
+  @media (max-width: 768px) {
+    .search-input {
+      max-width: 100%;
+    }
+  
+    .user-list-item {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .payment-inputs {
+      width: 100%;
+      max-width: none;
+    }
+  
+    .modal-footer {
+      justify-content: center;
+    }
+  }
+  

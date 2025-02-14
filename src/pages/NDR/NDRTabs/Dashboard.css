@@ -1,46 +1,97 @@
+/* DASHBOARD CONTAINER */
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 10px 30px;
+  background-color: transparent;
+}
+
+/* ORDER SUMMARY SECTION */
 .orderSummaryContainer {
-    display: grid;
+  display: grid;
+  gap: 2rem;
+  margin-bottom: 20px;
+  justify-content: center;
+  width: 100%;
+}
+
+/* INDIVIDUAL ORDER SUMMARY CARDS */
+.orderSummaryCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  min-width: 200px;
+  max-width: 90%;
+  transition: transform 0.3s ease-in-out;
+  height: 120px;
+}
+
+.orderSummaryCard:hover {
+  transform: scale(1.05);
+}
+
+/* ATTEMPT COUNTS */
+.orderSummary h3 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+.orderSummary p {
+  font-size: 14px;
+  color: #777;
+  margin-top: 5px;
+}
+
+/* ORDER ICON STYLES */
+.orderIcon {
+  display: flex;
+  align-items: center;
+}
+
+/* LAPTOP VIEW (3 COLUMNS) */
+@media (min-width: 1024px) {
+  .orderSummaryContainer {
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, auto);
-    gap: 40px;
-    /* padding: 30px; */
-    padding-top: 20px;
   }
-  
+}
+
+/* TABLET VIEW (2 COLUMNS) */
+@media (max-width: 1023px) and (min-width: 768px) {
+  .orderSummaryContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* MOBILE VIEW (1 COLUMN) */
+@media (max-width: 767px) {
+  .orderSummaryContainer {
+    grid-template-columns: 1fr;
+  }
+
   .orderSummaryCard {
-    display: flex;
-    max-width: 350px;
+    flex-direction: row;
     height: 100px;
-    justify-content:space-between;
-    align-items: center;
-    padding: 30px 40px;
-    border-radius: 10px;
-    background-color: #fbfcf8;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .orderSummary h3 {
-    margin: 0;
-    font-size: 24px;
-  }
-  
-  .orderSummary p {
-    margin: 0;
+    padding: 15px;
     font-size: 14px;
-    color: #777;
   }
-  
-  .orderIcon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+  .orderSummary h3 {
+    font-size: 20px;
   }
-  @media (max-width: 480px) {
-    .orderSummaryContainer {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(2, auto);
-      justify-content: center;
-      align-items: center;
-    }
+
+  .orderSummary p {
+    font-size: 12px;
   }
+
+  .orderIcon svg {
+    width: 35px;
+    height: 35px;
+  }
+}

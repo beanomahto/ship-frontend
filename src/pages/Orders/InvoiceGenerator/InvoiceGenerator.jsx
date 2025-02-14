@@ -89,7 +89,7 @@ const InvoiceGenerator = () => {
     <div>
       <Modal
         title="Invoice"
-        visible={isModalVisible}
+        open={isModalVisible}
         onOk={handleOk}
         onCancel={handleOk}
         className="custom-modal"

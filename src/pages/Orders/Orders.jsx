@@ -1502,21 +1502,20 @@ const Orders = () => {
             Sync
           </Button>
         )}
-
         <div className="tab1_managingBtns">
           {authUser.role === "admin" && (
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: "10px", // Adds spacing between the input and button
+                gap: "5px", // Adds spacing between the input and button
               }}
             >
               <input
                 type="email"
                 placeholder="Enter email"
                 style={{
-                  padding: "8px",
+                  padding: "8px 4px",
                   border: "1px solid #ccc",
                   borderRadius: "4px",
                   fontSize: "14px",

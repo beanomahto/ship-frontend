@@ -1,4 +1,80 @@
-.chart{
-    width: 10rem;
-    height: 10rem;
+.ndrContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 20px;
+}
+
+/* Tabs Styling */
+.custom-tabs {
+    background-color: rgb(232, 229, 229);
+    padding: 5px 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    min-height: 70vh;
+}
+
+/* Tab Content */
+.custom-tab-content {
+    margin-top: 5px;
+    min-height: 50vh;
+}
+
+/* Custom Tab Styles */
+.custom-tabs .ant-tabs-tab {
+    font-size: 16px;
+    font-weight: 600;
+    padding: 12px;
+    transition: all 0.3s ease-in-out;
+}
+
+.custom-tabs .ant-tabs-tab:hover {
+    color: #2B3FE5;
+}
+
+.custom-tabs .ant-tabs-tab-active {
+    color: #2B3FE5 !important;
+    font-weight: 700;
+}
+
+/* Selected Items Text */
+.selected-items {
+    font-size: 14px;
+    color: #333;
+    margin-top: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .custom-tabs {
+        padding: 8px;
+    }
+
+    .custom-tabs .ant-tabs-tab {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .ndrContainer {
+        padding: 10px;
+    }
+
+    .custom-tabs {
+        padding: 5px;
+    }
+
+    .custom-tabs .ant-tabs-tab {
+        font-size: 12px;
+        padding: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .custom-tabs .ant-tabs-tab {
+        font-size: 12px;
+        padding: 6px;
+    }
 }

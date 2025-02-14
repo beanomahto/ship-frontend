@@ -120,40 +120,25 @@ const DashboardTab = ({ dataSource }) => {
   };
 
   return (
-    <div>
-      <div className="orderSummaryContainer">
-        <div className="orderSummaryCard">
+    <div className="dashboard-container">
+    <div className="orderSummaryContainer">
+      {[
+        { count: attemptsCount.attempt1, label: "Attempt 1", color: "#2B3FE5" },
+        { count: attemptsCount.attempt2, label: "Attempt 2", color: "#FD8787" },
+        { count: attemptsCount.attempt3, label: "Attempt 3", color: "#FAC013" }
+      ].map((attempt, index) => (
+        <div className="orderSummaryCard" key={index}>
           <div className="orderSummary">
-            <h3>{attemptsCount.attempt1}</h3>
-            <p>Attempt 1</p>
+            <h3>{attempt.count}</h3>
+            <p>{attempt.label}</p>
           </div>
           <div className="orderIcon">
-            <MdAutorenew size={40} color="#2B3FE5" />
+            <MdAutorenew size={40} color={attempt.color} />
           </div>
         </div>
-
-        <div className="orderSummaryCard">
-          <div className="orderSummary">
-            <h3>{attemptsCount.attempt2}</h3>
-            <p>Attempt 2</p>
-          </div>
-          <div className="orderIcon">
-            <MdAutorenew size={40} color="#FD8787" />
-          </div>
-        </div>
-
-        <div className="orderSummaryCard">
-          <div className="orderSummary">
-            <h3>{attemptsCount.attempt3}</h3>
-            <p>Attempt 3</p>
-          </div>
-          <div className="orderIcon">
-            <MdAutorenew size={40} color="#FAC013" />
-          </div>
-        </div>
-
-      </div>
+      ))}
     </div>
+  </div>
   );
 };
 

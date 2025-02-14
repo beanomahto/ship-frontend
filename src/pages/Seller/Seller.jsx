@@ -17,6 +17,7 @@ import TagEmployee from "./TagEmployee/TagEmployee";
 import { FaTags } from "react-icons/fa";
 import axios from "axios";
 import moment from "moment";
+import "./Seller.css"
 
 const { confirm } = Modal;
 
@@ -350,7 +351,7 @@ const Seller = () => {
 
   return (
     <div
-      style={{ backgroundColor: "#fff", height: "45rem", borderRadius: "1rem" }}
+      style={{ backgroundColor: "#fff", height: "40rem", borderRadius: "1rem" }}
     >
       <Helmet>
         <meta charSet="utf-8" />
@@ -364,11 +365,7 @@ const Seller = () => {
         selectedSeller={selectedSeller} // Pass selected seller as prop
       />
       <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          backgroundColor: "#fafafa",
-        }}
+        className="search-container"
       >
         <Input.Search
           placeholder="Search globally"
@@ -376,7 +373,8 @@ const Seller = () => {
           onChange={(e) => handleGlobalSearch(e.target.value)}
           onSearch={(value) => handleGlobalSearch(value)}
           enterButton={<SearchOutlined />}
-          style={{ marginBottom: "1rem", width: "300px", minWidth: "200px" }}
+          style={{ marginBottom: "1rem"}}
+          className="search-input"
         />
       </div>
       <Table

@@ -327,7 +327,7 @@ const RateCard = () => {
       <Table
         pagination={false}
         scroll={{ x: 1000, y: 350 }}
-        className="table"
+        className="rate-table"
         dataSource={pricing}
         columns={columns}
       />

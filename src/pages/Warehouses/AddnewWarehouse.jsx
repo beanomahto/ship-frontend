@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import useAddWarehouse from '../../hooks/useAddWarehouse';
 import { Helmet } from 'react-helmet';
 import { useWarehouseContext } from '../../context/WarehouseContext';
+import "./addWareHouse.css"
 
 const AddnewWarehouse = () => {
     const {warehouse,fetchWarehouse} = useWarehouseContext();
@@ -65,7 +66,7 @@ const AddnewWarehouse = () => {
    {
     loading ? '' :  <div >
     <div className='formCon'>
-        <form class="form" onSubmit={handleOrderSubmit}>
+        <form class="ware-form" onSubmit={handleOrderSubmit}>
             <p class="title">Create Warehouse</p>
             <div className="flex">
 
