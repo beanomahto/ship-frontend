@@ -2,22 +2,68 @@ import React, { useState } from "react";
 import { Modal, Button, Input, List, Tooltip } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import "./PaymentModal.css"; // Import the CSS file
+import axios from "axios";
 
 const PaymentModal = ({
   visible,
   onClose,
-  handleSearch,
-  loading,
-  searchResults,
-  hoveredUser,
-  handleMouseEnter,
-  handleMouseLeave,
-  paymentAmount,
-  setPaymentAmount,
-  paymentRemark,
-  setPaymentRemark,
-  handlePay
+ 
 }) => {
+  const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [hoveredUser, setHoveredUser] = useState(null);
+  const [paymentAmount, setPaymentAmount] = useState('');
+  const [paymentRemark, setPaymentRemark] = useState('');
+  const handleSearch = async (value) => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get('https://backend.shiphere.in/api/users/search', {
+        params: { query: value },
+        headers: {
+          Authorization: `${token}`
+        }
+      });
+      setSearchResults(response.data);
+    } catch (error) {
+      console.error("Error fetching search results:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleMouseEnter = (user) => {
+    setHoveredUser(user);
+  };
+  const handleMouseLeave = () => {
+    setHoveredUser(null);
+  };
+  const handlePay = async () => {
+    if (!hoveredUser || !paymentAmount.trim() || !paymentRemark.trim()) {
+      console.error("User, payment amount, or remark not selected");
+      return;
+    }
+    try {
+      const response = await axios.post(
+        'https://backend.shiphere.in/api/recharge/recharge',
+        {
+          userId: hoveredUser._id,
+          credit: parseFloat(paymentAmount),
+          remark: paymentRemark.trim()
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem('token')
+          }
+        }
+      );
+      
+      message.success("Payment Successful")
+      //console.log("Payment successful:", response.data);
+    } catch (error) {
+      message.error("Payment failed")
+      console.error("Error updating user:", error);
+    }
+  };
   return (
     <Modal open={visible} onCancel={onClose} className="payment-modal" footer={null}>
       <div className="search-container">
