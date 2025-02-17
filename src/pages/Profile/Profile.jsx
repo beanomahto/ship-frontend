@@ -16,7 +16,7 @@ const Profile = () => {
         city: '',
         state: '',
         country: '',
-        logo: null, // Add logo field here
+        logo: null,
     });
 
     const title = 'User Profile';
@@ -30,7 +30,6 @@ const Profile = () => {
                     },
                 });
                 const data = await response.json();
-                //console.log(data);
                 
                 setInputs({
                     brandName: data.brandName || '',
@@ -40,7 +39,7 @@ const Profile = () => {
                     city: data.city || '',
                     state: data.state || '',
                     country: data.country || '',
-                    logo: data.logo || null // Set the logo if available
+                    logo: data.logo || null
                 });
             } catch (error) {
                 console.error('Error fetching user data:', error);
@@ -99,38 +98,38 @@ const Profile = () => {
                 },
                 body: JSON.stringify(inputs)
             });
-            //console.log(response);
             
             if (response.ok) {
-                alert('Profile updated successfully!');
+                message.success('Profile updated successfully!');
             } else {
-                alert('Failed to update profile.');
+                message.error('Failed to update profile.');
             }
         } catch (error) {
             console.error('Error updating user data:', error);
+            message.error('An error occurred while updating the profile.');
         }
     };
 
     return (
-        <div className='formCon'>
+        <div className='form-container'>
             <Helmet>
                 <meta charSet='utf-8' />
                 <meta name='description' content='' />
                 <title>{title}</title>
             </Helmet>
             <form className="form" onSubmit={handleSubmit}>
-                <p className="title">Profile</p>
-                <div className='flex1'>
+                <h2 className="title">Profile</h2>
+                <div className='flex-container'>
                     <div className="flex">
                         <label>
-                            <span>Register Company Name</span>
+                            <span>Company Name</span>
                             <input
                                 className="input"
                                 type="text"
                                 name="companyName"
-                                placeholder=""
                                 value={authUser.companyName}
-                                // onChange={handleChange}
+                                disabled
+                                style={{ cursor: 'not-allowed' }}
                             />
                         </label>
                         <label>
@@ -139,64 +138,64 @@ const Profile = () => {
                                 className="input"
                                 type="email"
                                 name="email"
-                                placeholder=""
                                 value={authUser.email}
-                                // onChange={handleChange}
+                                disabled
+                                style={{ cursor: 'not-allowed' }}
                             />
                         </label>
-                        <div className='picc'>
+                        <div className='logo-upload'>
                             <label>
-                                <span>Company Logo <span><p>(optional)</p></span></span>
-                                <img
-                                    className='input img'
-                                    alt="Company Logo"
-                                    src={inputs.logo} 
-                                    style={{ maxWidth: '100px', maxHeight: '100px' }}
-                                />
+                                <span>Company Logo</span>
+                                {inputs.logo && (
+                                    <img
+                                        className='company-logo'
+                                        alt="Company Logo"
+                                        src={inputs.logo} 
+                                    />
+                                )}
                             </label>
                             <Upload
                                 accept="image/*"
                                 customRequest={handleLogoUpload}
                                 showUploadList={false}
                             >
-                                <Button icon={<UploadOutlined />}>Upload Logo</Button>
+                                <Button className='upload-btn' icon={<UploadOutlined />}>Upload Logo</Button>
                             </Upload>
                         </div>
                     </div>
+
                     <div className="flex">
-                        <label className='bn'>
-                            <span>Brand Name<span><p>(optional)</p></span></span>
+                        <label>
+                            <span>Brand Name</span>
                             <input
                                 className="input"
                                 type="text"
                                 name="brandName"
-                                placeholder=""
                                 value={inputs.brandName}
                                 onChange={handleChange}
                             />
                         </label>
-                        <label className='bn'>
-                            <span>Website <span><p>(optional)</p></span></span>
+                        <label>
+                            <span>Website</span>
                             <input
                                 className="input"
                                 type="text"
                                 name="website"
-                                placeholder=""
                                 value={inputs.website}
                                 onChange={handleChange}
                             />
                         </label>
                     </div>
                 </div>
-                <div className='flex2'>
+
+                <div className='flex-container'>
                     <div className="flex">
                         <label>
-                            <span>Complete address</span>
+                            <span>Complete Address</span>
                             <input
-                                className="input add"
+                                className="input"
                                 type="text"
                                 name="address"
-                                placeholder=""
                                 value={inputs.address}
                                 onChange={handleChange}
                             />
@@ -207,7 +206,6 @@ const Profile = () => {
                                 className="input"
                                 type="text"
                                 name="pincode"
-                                placeholder=""
                                 value={inputs.pincode}
                                 onChange={handlePincodeChange}
                             />
@@ -220,7 +218,6 @@ const Profile = () => {
                                 className="input"
                                 type="text"
                                 name="city"
-                                placeholder=""
                                 value={inputs.city}
                                 onChange={handleChange}
                             />
@@ -231,7 +228,6 @@ const Profile = () => {
                                 className="input"
                                 type="text"
                                 name="state"
-                                placeholder=""
                                 value={inputs.state}
                                 onChange={handleChange}
                             />
@@ -242,14 +238,13 @@ const Profile = () => {
                                 className="input"
                                 type="text"
                                 name="country"
-                                placeholder=""
                                 value={inputs.country}
                                 onChange={handleChange}
                             />
                         </label>
                     </div>
                 </div>
-                <button className="submit" type="submit" style={{marginTop:'16px'}} >Save</button>
+                <button className="submit-btn" type="submit">Save</button>
             </form>
         </div>
     );

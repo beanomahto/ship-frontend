@@ -132,9 +132,9 @@ const Login1 = () => {
                     className="toggle-password"
                   >
                     {showPassword ? (
-                      <AiFillEyeInvisible size={24} />
+                      <AiFillEyeInvisible size={22} />
                     ) : (
-                      <AiFillEye size={24} />
+                      <AiFillEye size={22} />
                     )}
                   </span>
                   <span>
@@ -143,7 +143,7 @@ const Login1 = () => {
                         size={27}
                         style={{
                           color: "green",
-                          marginLeft: "8px",
+                          marginLeft: "4px",
                           marginTop: "5px",
                         }}
                       />

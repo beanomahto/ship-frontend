@@ -1,40 +1,114 @@
-
-.flex1,.flex2{
-    border: 1px solid rgb(196, 176, 176);
-    border-radius: 5px;
+.form-container {
+    max-width: 800px;
+    margin: 0 auto;
     padding: 2rem;
-    padding-bottom: 5rem;
-}
-.flex{
-    /* gap: 1rem; */
-    margin-bottom: 2rem;
-}
-.form label .add{
-width: 46rem;
-}
-.form label .img{
-    height: 12rem;
+    background: transparent !important;
+    border-radius: 8px;
+    box-shadow: none !important;
 }
 
-.bn{
-    margin-top: -9rem;
+.form{
+    margin-top: -1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border: 1px solid #d3d0d0;
 }
-/* Media queries for responsiveness */
+
+.title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.flex-container {
+    padding: 1.5rem;
+    border-radius: 6px;
+    background: #f9f9f9;
+    margin-bottom: 1.5rem;
+}
+
+.flex {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #696868 !important;
+    border-radius: 4px;
+    margin-top: 5px;
+}
+
+.logo-upload {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    margin: auto;
+    padding: 1rem;
+    border: 1px solid #d3d0d0;
+    border-radius: 6px;
+}
+
+.company-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.submit-btn {
+    width: 40%;
+    padding: 0.50rem;
+    background: #1890ff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin: auto;
+    font-size: x-large;
+    border-radius: 1rem;
+}
+
 @media (max-width: 768px) {
-    .flex{
-        /* gap: 10rem; */
-        margin-bottom: 2rem;
+    .flex-container{
+        padding: 0.4rem;
+        width: 98% !important;
+        margin-left: -5px;
     }
-    .form label .add {
-        width: 100%;
+    
+    .flex {
+        flex-direction: column;
+        margin-left: -10px;
     }
-.bn{
-    margin-top: 2rem;
-}
-}
 
-@media (max-width: 480px) {
- .title{
-    margin-left: 3rem;
- } 
+    .form{
+        margin-top: 1rem;
+        margin: auto;
+        width: 105% !important;
+        padding: 0.8rem;
+        gap: 0px;
+        margin-left: -18px;
+    }
+
+    .form-container{
+        width: 86% !important;
+        padding: 0 !important;
+    }
+
+    .input{
+        width: 96% !important;
+        padding: 4px 12px !important;
+    }
+
+    .upload-btn{
+        width: 100% !important;
+        text-align: end;
+        padding-left: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 10px;
+    }
 }
