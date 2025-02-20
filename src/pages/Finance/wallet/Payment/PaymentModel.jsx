@@ -69,6 +69,7 @@ const PaymentModal = ({
       <div className="search-container">
         <Input.Search
           className="search-input"
+          style={{ padding: "0"}}
           placeholder="Search by email, name, company name"
           allowClear
           enterButton={<SearchOutlined />}
@@ -91,9 +92,9 @@ const PaymentModal = ({
           >
             <Tooltip
               title={`${user.firstName} ${user.lastName} - ${user.phoneNumber}, ${user.companyName}`}
-              visible={hoveredUser === user}
+              open={hoveredUser === user}
             >
-              <List.Item.Meta title={user.firstName} description={user.email} />
+              <List.Item.Meta style={{ width: "100%", padding: "10px 5px", borderRadius: "8px", marginBottom: "10px" }} title={user.firstName} description={user.email} />
             </Tooltip>
 
             <div className="payment-inputs">
