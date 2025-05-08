@@ -1,24 +1,23 @@
-import React, { useState } from "react";
 import {
-  Button,
-  DatePicker,
-  Input,
-  message,
-  Popover,
-  Space,
-  Table,
-  Modal,
-  Tag,
-} from "antd";
-import {
-  MenuFoldOutlined,
-  SearchOutlined,
-  ThunderboltOutlined,
+    MenuFoldOutlined,
+    SearchOutlined
 } from "@ant-design/icons";
-import { useAuthContext } from "../../../context/AuthContext";
-import { Link } from "react-router-dom";
-import moment from "moment";
+import {
+    Button,
+    DatePicker,
+    Input,
+    message,
+    Modal,
+    Popover,
+    Space,
+    Table,
+    Tag,
+} from "antd";
 import axios from "axios";
+import moment from "moment";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useAuthContext } from "../../../context/AuthContext";
 
 const ActionRequiredTab = ({
   rowSelection,
@@ -76,7 +75,7 @@ const ActionRequiredTab = ({
 
       if (selectedOrderData[0].shippingPartner === "Ecom Express") {
         await axios.post(
-          "https://backend.shiphere.in/api/ecomExpress/createNdr",
+          "http://localhost:3001/api/ecomExpress/createNdr",
           ecomPayload,
           {
             headers: {
@@ -86,7 +85,7 @@ const ActionRequiredTab = ({
         );
       } else {
         await axios.post(
-          "https://backend.shiphere.in/api/smartship/orderReattempt",
+          "http://localhost:3001/api/smartship/orderReattempt",
           otherPayload,
           {
             headers: {
@@ -106,7 +105,7 @@ const ActionRequiredTab = ({
             }),
           };
           await axios.put(
-            `https://backend.shiphere.in/api/orders/updateOrderStatus/${order._id}`,
+            `http://localhost:3001/api/orders/updateOrderStatus/${order._id}`,
             updatedStatus,
             {
               headers: {
@@ -122,7 +121,7 @@ const ActionRequiredTab = ({
             }),
           };
           await axios.put(
-            `https://backend.shiphere.in/api/orders/updateOrderStatus/${order._id}`,
+            `http://localhost:3001/api/orders/updateOrderStatus/${order._id}`,
             updatedStatus,
             {
               headers: {

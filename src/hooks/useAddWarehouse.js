@@ -5,38 +5,40 @@ const useAddWarehouse = () => {
 	const [loading, setLoading] = useState(false);
 
 	const addWarehouse = async ({
-        contactPerson,
+		contactPerson,
 		warehouseName,
-        contactEmail,
-        contactNumber,
-       pincode,
-       city,
-       state,
-       address,
-       landmark,
-       country,}) => {
-		const success = handleInputErrors({  contactPerson,
+		contactEmail,
+		contactNumber,
+		pincode,
+		city,
+		state,
+		address,
+		landmark,
+		country, }) => {
+		const success = handleInputErrors({
+			contactPerson,
 			warehouseName,
-            contactEmail,
-            contactNumber,
-           pincode,
-           city,
-           state,
-           address,
-           landmark,
-           country});
+			contactEmail,
+			contactNumber,
+			pincode,
+			city,
+			state,
+			address,
+			landmark,
+			country
+		});
 		if (!success) return;
 		setLoading(true);
 		try {
-            const token = localStorage.getItem('token');
-			const res = await fetch("https://backend.shiphere.in/api/warehouses/createWarehouse", {
+			const token = localStorage.getItem('token');
+			const res = await fetch("http://localhost:3001/api/warehouses/createWarehouse", {
 				method: "POST",
-				headers: { "Content-Type": "application/json",  Authorization: `${token}`, },
-				body: JSON.stringify({   warehouseName,contactPerson,contactEmail,contactNumber,pincode,city,state,address,landmark,country }),
+				headers: { "Content-Type": "application/json", Authorization: `${token}`, },
+				body: JSON.stringify({ warehouseName, contactPerson, contactEmail, contactNumber, pincode, city, state, address, landmark, country }),
 			});
 
 			const data = await res.json();
-            //console.log(data);
+			//console.log(data);
 			if (data.error) {
 				throw new Error(data.error);
 			}
@@ -51,14 +53,14 @@ const useAddWarehouse = () => {
 };
 export default useAddWarehouse;
 
-function handleInputErrors( {  contactPerson,
+function handleInputErrors({ contactPerson,
 	warehouseName,
-    contactEmail,
-    contactNumber,
-   address,
-   landmark,}){
+	contactEmail,
+	contactNumber,
+	address,
+	landmark, }) {
 
-	if(!warehouseName || !contactPerson || !contactEmail || !contactNumber || !address || !landmark) {
+	if (!warehouseName || !contactPerson || !contactEmail || !contactNumber || !address || !landmark) {
 		alert("Please fill in all fields");
 		return false;
 	}

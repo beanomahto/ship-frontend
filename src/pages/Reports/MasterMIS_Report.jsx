@@ -1,8 +1,7 @@
+import { DatePicker, message } from "antd";
 import React, { useState } from "react";
-import { Button, message, DatePicker } from "antd";
 import { Helmet } from "react-helmet";
 import "./reports.css";
-import moment from "moment";
 
 const AdminMIS_Report = () => {
   // Separate state for each report's start and end date
@@ -33,7 +32,7 @@ const AdminMIS_Report = () => {
     const data = { startDate: misStartDate, endDate: misEndDate };
     try {
       const response = await fetch(
-        "https://backend.shiphere.in/api/report/getmisreport",
+        "http://localhost:3001/api/report/getmisreport",
         {
           method: "POST",
           headers: {
@@ -70,7 +69,7 @@ const AdminMIS_Report = () => {
     const data = { startDate: ndrStartDate, endDate: ndrEndDate };
     try {
       const response = await fetch(
-        "https://backend.shiphere.in/api/report/getndrreport",
+        "http://localhost:3001/api/report/getndrreport",
         {
           method: "POST",
           headers: {
@@ -110,7 +109,7 @@ const AdminMIS_Report = () => {
     };
     try {
       const response = await fetch(
-        "https://backend.shiphere.in/api/report/outfordeliveryseller",
+        "http://localhost:3001/api/report/outfordeliveryseller",
         {
           method: "POST",
           headers: {
@@ -149,7 +148,7 @@ const AdminMIS_Report = () => {
     const data = { startDate: inTransitStartDate, endDate: inTransitEndDate };
     try {
       const response = await fetch(
-        "https://backend.shiphere.in/api/report/getintransitseller",
+        "http://localhost:3001/api/report/getintransitseller",
         {
           method: "POST",
           headers: {
@@ -186,7 +185,7 @@ const AdminMIS_Report = () => {
     const data = { startDate: walletStartDate, endDate: walletEndDate };
     try {
       const response = await fetch(
-        "https://backend.shiphere.in/api/report/gettranscationsseller",
+        "http://localhost:3001/api/report/gettranscationsseller",
         {
           method: "POST",
           headers: {

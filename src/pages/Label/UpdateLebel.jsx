@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Form, Input, Select, Upload, Button, Col, Row, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import { Button, Col, Form, Row, Select, Upload, message } from "antd";
 import axios from "axios";
-import useUpdateLabel from "../../hooks/useUpdateLabel";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
+import useUpdateLabel from "../../hooks/useUpdateLabel";
 import "./newLabelStyles.css";
 const { Option } = Select;
 
@@ -32,7 +32,7 @@ const UpdateLabel = () => {
     const fetchLabelInfo = async () => {
       try {
         const response = await axios.get(
-          "https://backend.shiphere.in/api/shipping/getLabelInfo",
+          "http://localhost:3001/api/shipping/getLabelInfo",
           {
             headers: {
               Authorization: localStorage.getItem("token"),

@@ -1,10 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
 import { Button, Modal } from 'antd';
-import { useParams } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import moment from 'moment';
 import { toWords } from 'number-to-words';
+import React, { useEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
 // import './InvoiceGenerator.css';
 
 const InvoiceGenerator = () => {
@@ -19,7 +19,7 @@ const InvoiceGenerator = () => {
     const fetchInvoiceData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`https://backend.shiphere.in/api/shipping/getinvoice/${id}`,{
+        const response = await fetch(`http://localhost:3001/api/shipping/getinvoice/${id}`,{
           headers: {
             Authorization:`${token}`,
           }

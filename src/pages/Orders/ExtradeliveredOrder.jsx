@@ -1,26 +1,24 @@
-import React, { useEffect, useState } from "react";
+import { DeleteOutlined, SearchOutlined } from "@ant-design/icons";
 import {
-  Table,
-  Input,
-  Button,
-  Space,
-  Select,
-  Tag,
-  Skeleton,
-  Modal,
-  message,
-  DatePicker,
+    Button,
+    DatePicker,
+    Input,
+    Modal,
+    Select,
+    Skeleton,
+    Space,
+    Table,
+    Tag,
+    message,
 } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import axios from "axios";
 import moment from "moment";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
+import { useAuthContext } from "../../context/AuthContext";
+import logo from "../../utils/logo1.jpg";
 import Shopify from "../../utils/shopify.png";
 import Woo from "../../utils/woocomerce.png";
-import logo from "../../utils/logo1.jpg";
-import { useAuthContext } from "../../context/AuthContext";
-import { Link } from "react-router-dom";
-import { DeleteOutlined } from "@ant-design/icons";
-import axios from "axios";
 const { confirm } = Modal;
 
 const ExtradeliveredOrder = () => {
@@ -37,7 +35,7 @@ const ExtradeliveredOrder = () => {
     const fetchDeliveredOrders = async () => {
       try {
         const response = await fetch(
-          "https://backend.shiphere.in/api/orders/getdelivered", // Backend endpoint
+          "http://localhost:3001/api/orders/getdelivered", // Backend endpoint
           {
             method: "POST", // Change to POST to match the backend route
             headers: {
@@ -143,7 +141,7 @@ const ExtradeliveredOrder = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `https://backend.shiphere.in/api/orders/deleteOrder/${id}`,
+        `http://localhost:3001/api/orders/deleteOrder/${id}`,
         {
           headers: {
             Authorization: localStorage.getItem("token"),

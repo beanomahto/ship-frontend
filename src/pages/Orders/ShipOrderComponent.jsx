@@ -1,26 +1,25 @@
-import React, { useEffect, useState } from "react";
+import { DeleteOutlined, SearchOutlined } from "@ant-design/icons";
 import {
-  Table,
-  Input,
-  Button,
-  Select,
-  Space,
-  Modal,
-  Tag,
-  message,
-  Skeleton,
-  DatePicker,
+    Button,
+    DatePicker,
+    Input,
+    message,
+    Modal,
+    Select,
+    Skeleton,
+    Space,
+    Table,
+    Tag,
 } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import axios from "axios";
 import moment from "moment";
+import React from "react";
 import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
+import { useAuthContext } from "../../context/AuthContext";
+import logo from "../../utils/logo1.jpg";
 import Shopify from "../../utils/shopify.png";
 import Woo from "../../utils/woocomerce.png";
-import logo from "../../utils/logo1.jpg";
-import { useAuthContext } from "../../context/AuthContext";
-import { DeleteOutlined } from "@ant-design/icons";
-import axios from "axios";
-import { Link } from "react-router-dom";
 const { confirm } = Modal;
 const ShipOrderComponent = ({
   dataSource,
@@ -121,7 +120,7 @@ const ShipOrderComponent = ({
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `https://backend.shiphere.in/api/orders/deleteOrder/${id}`,
+        `http://localhost:3001/api/orders/deleteOrder/${id}`,
         {
           headers: {
             Authorization: localStorage.getItem("token"),

@@ -1,14 +1,14 @@
 import { Button, Tabs } from "antd";
 import React, { useEffect, useState } from "react";
-import UploadWeightDespensory from "./UploadWeightDespensory";
+import { Helmet } from "react-helmet";
 import CustomButton from "../../../components/Button/Button";
+import { useAuthContext } from "../../../context/AuthContext";
 import ActionRequired from "./ActionRequired";
+import ClosedWeightDispensory from "./ClosedWeightDispensory";
 import OpenWeightDispensory from "./OpenWeightDispensory";
 import SearchSellerModal from "./SearchSellerModal";
 import TakeActionModal from "./TakeActionModal";
-import ClosedWeightDispensory from "./ClosedWeightDispensory";
-import { useAuthContext } from "../../../context/AuthContext";
-import { Helmet } from "react-helmet";
+import UploadWeightDespensory from "./UploadWeightDespensory";
 
 const { TabPane } = Tabs;
 
@@ -41,7 +41,7 @@ const WeightDispensory = () => {
   const fetchWeightDespensory = async () => {
     try {
       const res = await fetch(
-        "https://backend.shiphere.in/api/weightdiscrepancy/getweightdiscrepancy",
+        "http://localhost:3001/api/weightdiscrepancy/getweightdiscrepancy",
         {
           headers: {
             Authorization: localStorage.getItem("token"),

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Modal, Checkbox, Button, message } from 'antd';
+import { Button, Checkbox, message, Modal } from 'antd';
 import axios from 'axios';
+import React, { useState } from 'react';
 import './earlyCodPopup.css';
 
 const EarlyCodPopup = ({ visible, onClose }) => {
@@ -38,7 +38,7 @@ const EarlyCodPopup = ({ visible, onClose }) => {
     
     const token = localStorage.getItem('token');
     try {
-      const response = await axios.put('https://backend.shiphere.in/api/users/updateEarlyCod', {
+      const response = await axios.put('http://localhost:3001/api/users/updateEarlyCod', {
         earlyCod:earlyCod,
       }, {
         headers: {

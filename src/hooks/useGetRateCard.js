@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 const useShippingRateCard = () => {
     const [data, setData] = useState(null);
@@ -10,7 +10,7 @@ const useShippingRateCard = () => {
         const fetchRateCard = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('https://backend.shiphere.in/api/shipping/rateCard', {
+                const response = await axios.get('http://localhost:3001/api/shipping/rateCard', {
                     headers: {
                         Authorization: `${token}`
                     }

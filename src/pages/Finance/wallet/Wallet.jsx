@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { Button, Table, DatePicker, Modal, message } from "antd";
-import { Helmet } from "react-helmet";
+import { Button, DatePicker, Modal, Table, message } from "antd";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import moment from "moment";
+import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
 
 const Wallet = () => {
   const [transactions, setTransactions] = useState([]);
@@ -178,7 +178,7 @@ const Wallet = () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          "https://backend.shiphere.in/api/transactions/getTransactions",
+          "http://localhost:3001/api/transactions/getTransactions",
           {
             headers: {
               Authorization: `${token}`,
@@ -204,7 +204,7 @@ const Wallet = () => {
           setDeleting(true);
           const token = localStorage.getItem("token");
           await axios.post(
-            "https://backend.shiphere.in/api/transactions/deletetransaction",
+            "http://localhost:3001/api/transactions/deletetransaction",
             { transactionIds: selectedRowKeys },
             {
               headers: {

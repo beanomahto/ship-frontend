@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import axios from 'axios';
+import { useState } from 'react';
 
 const useUpdateLabel = () => {
     const [loading, setLoading] = useState(false);
@@ -10,7 +10,7 @@ const useUpdateLabel = () => {
         setLoading(true);
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post(`https://backend.shiphere.in/api/shipping/updateLabelinfo`, updateLebel, {
+            const response = await axios.post(`http://localhost:3001/api/shipping/updateLabelinfo`, updateLebel, {
                 headers: {
                     Authorization: `${token}`,
                 },

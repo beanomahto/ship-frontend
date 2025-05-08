@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Button, Select, Input, Modal, Upload, message, Image } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import { Button, Image, Input, Modal, Select, Upload, message } from "antd";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 const { TextArea } = Input;
 const VerifyKyc = () => {
@@ -28,7 +28,7 @@ const VerifyKyc = () => {
     const fetchKycData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch(`https://backend.shiphere.in/api/kyc/${id}`, {
+        const response = await fetch(`http://localhost:3001/api/kyc/${id}`, {
           headers: { Authorization: `${token}` },
         });
         if (!response.ok) throw new Error("Failed to fetch KYC data");
@@ -61,7 +61,7 @@ const VerifyKyc = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `https://backend.shiphere.in/api/kyc/verify/${id}`,
+        `http://localhost:3001/api/kyc/verify/${id}`,
         {
           method: "POST",
           headers: {
@@ -86,7 +86,7 @@ const VerifyKyc = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `https://backend.shiphere.in/api/kyc/update/${id}`,
+        `http://localhost:3001/api/kyc/update/${id}`,
         {
           method: "PUT",
           headers: {
@@ -122,7 +122,7 @@ const VerifyKyc = () => {
   const handleOk = async () => {
     console.log("Remark:", remark); 
     try {
-        const response = await fetch(`https://backend.shiphere.in/api/kyc/remove/${id}` , {
+        const response = await fetch(`http://localhost:3001/api/kyc/remove/${id}` , {
             method: 'POST',
             headers: {
                 Authorization: localStorage.getItem('token'),

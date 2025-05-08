@@ -1,43 +1,39 @@
-import React, { useEffect, useState } from "react";
-import { Button, Tabs, Modal, Popover, message } from "antd";
-import { Link } from "react-router-dom";
-import { useOrderContext } from "../../context/OrderContext";
-import BulkOrderUploadModal from "./BulkOrder/BulkOrder";
-import BulkOrderDimension from "./BulkOrder/BulkDimension";
-import ShipNowModel from "./ShipNow/ShipNowModel";
-import NewOrderComponent from "./NewOrderComponent";
-import ShipOrderComponent from "./ShipOrderComponent";
-import * as XLSX from "xlsx";
 import { DownloadOutlined } from "@ant-design/icons";
-import AllOrderComponent from "./AllOrderComponent";
+import { Button, Modal, Popover, Tabs, message } from "antd";
 import axios from "axios";
-import useShipNowCost from "../../hooks/useShipNowCost";
-import { useWarehouseContext } from "../../context/WarehouseContext";
-import useCreateShipment from "../../hooks/useCreateShipment";
-import LabelGenerator from "./LabelGenerator/LabelGenerator";
-import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 import moment from "moment";
-import useCancelShipment from "../../hooks/useCancelShipment";
-const { TabPane } = Tabs;
-import Logo from "../../utils/logo.png";
 import { toWords } from "number-to-words";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import * as XLSX from "xlsx";
 import { useAuthContext } from "../../context/AuthContext";
+import { useOrderContext } from "../../context/OrderContext";
+import { useWarehouseContext } from "../../context/WarehouseContext";
+import useCancelShipment from "../../hooks/useCancelShipment";
+import useCreateShipment from "../../hooks/useCreateShipment";
+import useShipNowCost from "../../hooks/useShipNowCost";
+import Logo from "../../utils/logo.png";
 import BD from "../../utils/newlogo/bluedartlogo.png";
+import AllOrderComponent from "./AllOrderComponent";
+import BulkOrderDimension from "./BulkOrder/BulkDimension";
+import BulkOrderUploadModal from "./BulkOrder/BulkOrder";
+import NewOrderComponent from "./NewOrderComponent";
+import ShipNowModel from "./ShipNow/ShipNowModel";
+import ShipOrderComponent from "./ShipOrderComponent";
+const { TabPane } = Tabs;
 // import DLVRY from "../../utils/newlogo/delhivery.png";
-import DLVRY from "../../utils/newlogo/delhivery.png";
-import AS from "../../utils/newlogo/amazonShippinglogo.jpg";
-import EE from "../../utils/newlogo/ecom-logo.jpg";
-import SM from "../../utils/shree-maruti.jpeg";
 import XPB from "../../utils/newlogo/Xpressbees.jpg";
-import Ekart from "../../utils/newlogo/ekartlogo.png";
+import AS from "../../utils/newlogo/amazonShippinglogo.jpg";
+import DLVRY from "../../utils/newlogo/delhivery.png";
 import Dtdc from "../../utils/newlogo/dtdc.png";
+import EE from "../../utils/newlogo/ecom-logo.jpg";
+import Ekart from "../../utils/newlogo/ekartlogo.png";
 import SF from "../../utils/newlogo/shadowfax.png";
-import InTranitComponent from "./InTransitComponent";
+import SM from "../../utils/shree-maruti.jpeg";
 import DeliveredComponent from "./DeliveredComponent";
-import BulkUploadComponent from "./BulkUploadComponent";
-import { Spin } from "antd";
-import OutForDelivery from "./OutforDelivery";
+import InTranitComponent from "./InTransitComponent";
 const { confirm } = Modal;
 
 const partnerImages = {
@@ -93,7 +89,7 @@ const Orders = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        "https://backend.shiphere.in/api/integration/syncButton",
+        "http://localhost:3001/api/integration/syncButton",
         {
           headers: {
             Authorization: localStorage.getItem("token"),
@@ -229,7 +225,7 @@ const Orders = () => {
   //       const rtoChargeWithGST = rtoCharge * (1 + gstRate);
 
   //       await fetch(
-  //         `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
+  //         `http://localhost:3001/api/orders/updateOrderStatus/${orderId}`,
   //         {
   //           method: "PUT",
   //           headers: {
@@ -266,7 +262,7 @@ const Orders = () => {
   //         // //console.log(walletRequest);
 
   //         await fetch(
-  //           `https://backend.shiphere.in/api/transactions/decreaseAmount`,
+  //           `http://localhost:3001/api/transactions/decreaseAmount`,
   //           {
   //             method: "POST",
   //             headers: {
@@ -407,7 +403,7 @@ const Orders = () => {
 
         // Update order status only if AWB is generated
         await fetch(
-          `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
+          `http://localhost:3001/api/orders/updateOrderStatus/${orderId}`,
           {
             method: "PUT",
             headers: {
@@ -443,7 +439,7 @@ const Orders = () => {
         for (const walletRequest of walletRequests) {
           try {
             await fetch(
-              `https://backend.shiphere.in/api/transactions/decreaseAmount`,
+              `http://localhost:3001/api/transactions/decreaseAmount`,
               {
                 method: "POST",
                 headers: {
@@ -602,7 +598,7 @@ const Orders = () => {
     const fetchData = async () => {
       try {
         const res = await fetch(
-          "https://backend.shiphere.in/api/smartship/getcurrentstatus",
+          "http://localhost:3001/api/smartship/getcurrentstatus",
           {
             headers: {
               Authorization: localStorage.getItem("token"),
@@ -743,7 +739,7 @@ const Orders = () => {
           };
           // console.log(updateBody);
           return axios.put(
-            `https://backend.shiphere.in/api/orders/updateOrderStatus/${order.orderId}`,
+            `http://localhost:3001/api/orders/updateOrderStatus/${order.orderId}`,
             updateBody,
             {
               headers: {
@@ -792,7 +788,7 @@ const Orders = () => {
 
           // try {
           //   const cancelResponse = await axios.put(
-          //     `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
+          //     `http://localhost:3001/api/orders/updateOrderStatus/${orderId}`,
           //     { status: "Cancelled" },
           //     { headers: { Authorization: `${token}` } }
           //   );
@@ -800,7 +796,7 @@ const Orders = () => {
 
           try {
             const cancelResponse = await fetch(
-              `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
+              `http://localhost:3001/api/orders/updateOrderStatus/${orderId}`,
               {
                 method: "PUT",
                 headers: {
@@ -822,7 +818,7 @@ const Orders = () => {
               };
 
               const walletResponse = await axios.post(
-                `https://backend.shiphere.in/api/transactions/increaseAmount`,
+                `http://localhost:3001/api/transactions/increaseAmount`,
                 walletRequestBody,
                 { headers: { Authorization: `${token}` } }
               );
@@ -1138,7 +1134,7 @@ const Orders = () => {
     const processBatch = async (batch, isLastBatch) => {
       const requests = batch.map((orderId) =>
         axios.get(
-          `https://backend.shiphere.in/api/shipping/getlabel/${orderId}`,
+          `http://localhost:3001/api/shipping/getlabel/${orderId}`,
           {
             headers: { Authorization: `${token}` },
           }
@@ -1236,7 +1232,7 @@ const Orders = () => {
     const pageHeight = 841.89;
 
     const promises = selectedRowKeys.map((orderId) =>
-      fetch(`https://backend.shiphere.in/api/shipping/getinvoice/${orderId}`, {
+      fetch(`http://localhost:3001/api/shipping/getinvoice/${orderId}`, {
         headers: {
           Authorization: `${localStorage.getItem("token")}`,
         },
@@ -1401,7 +1397,7 @@ const Orders = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `https://backend.shiphere.in/api/orders/deleteOrder/${id}`,
+        `http://localhost:3001/api/orders/deleteOrder/${id}`,
         {
           headers: {
             Authorization: localStorage.getItem("token"),
@@ -1469,7 +1465,7 @@ const Orders = () => {
 
     try {
       const response = await fetch(
-        "https://backend.shiphere.in/api/orders/movedelivered",
+        "http://localhost:3001/api/orders/movedelivered",
         {
           method: "POST",
           headers: {

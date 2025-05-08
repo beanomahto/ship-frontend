@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { message } from "antd";
-import './shopify.css'
-import shopifyInt from "../../../utils/shopifyInt.png.jpg";
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import './shopify.css';
 
 const Shopify = () => {
   const params = useParams();
@@ -22,7 +21,7 @@ const Shopify = () => {
 //       try {
 //         const token = localStorage.getItem("token");
 //         const res = await fetch(
-//           `https://backend.shiphere.in/api/integration/getApi/${slug}`,
+//           `http://localhost:3001/api/integration/getApi/${slug}`,
 //           {
 //             headers: {
 //               Authorization: `${token}`,
@@ -79,7 +78,7 @@ const handleSubmit = async (e) => {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        `https://backend.shiphere.in/api/integration/createApi`,
+        `http://localhost:3001/api/integration/createApi`,
         {
           method: "POST",
           headers: {
@@ -105,7 +104,7 @@ const handleSubmit = async (e) => {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        `https://backend.shiphere.in/api/integration/updateApi/${slug}`,
+        `http://localhost:3001/api/integration/updateApi/${slug}`,
         {
           method: "PUT",
           headers: {

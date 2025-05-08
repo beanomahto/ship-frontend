@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { Table, Tag, Button, Input, Space, message, Modal } from "antd";
-import { Link, NavLink } from "react-router-dom";
-import { SearchOutlined } from "@ant-design/icons";
-import { Helmet } from "react-helmet";
-import CustomButton from "../../components/Button/Button";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, SearchOutlined } from "@ant-design/icons";
+import { Button, Input, message, Modal, Space, Table } from "antd";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
+import { NavLink } from "react-router-dom";
+import CustomButton from "../../components/Button/Button";
 const Employee = () => {
   const { confirm } = Modal;
   const [users, setUsers] = useState([]);
@@ -17,7 +16,7 @@ const Employee = () => {
 
     try {
       await axios.delete(
-        `https://backend.shiphere.in/api/employee/deleteEmployee/${id}`,
+        `http://localhost:3001/api/employee/deleteEmployee/${id}`,
         {
           headers: {
             Authorization: localStorage.getItem("token"),
@@ -34,7 +33,7 @@ const Employee = () => {
   const fetchUsers = async () => {
     try {
       const response = await fetch(
-        "https://backend.shiphere.in/api/employee/getEmployees",
+        "http://localhost:3001/api/employee/getEmployees",
         {
           headers: {
             Authorization: localStorage.getItem("token"),

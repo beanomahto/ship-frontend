@@ -1,6 +1,6 @@
-import { useState } from "react";
-import axios from "axios";
 import { message } from "antd";
+import axios from "axios";
+import { useState } from "react";
 import { useWarehouseContext } from "../context/WarehouseContext";
 
 const useCreateShipment = () => {
@@ -33,23 +33,23 @@ console.log(deliveryPartnerName)
     try {
       let url = "";
       let log = "";
-      const fshipUrl = "https://backend.shiphere.in/api/smartship/hubregister";
+      const fshipUrl = "http://localhost:3001/api/smartship/hubregister";
       const fshipCreateForwardOrderUrl =
-        "https://backend.shiphere.in/api/smartship/onesteporderregister";
+        "http://localhost:3001/api/smartship/onesteporderregister";
       const smartshipHupCheck =
-        "https://backend.shiphere.in/api/smartship/checkhubserviceability";
+        "http://localhost:3001/api/smartship/checkhubserviceability";
       const smartshipCarrierCheck =
-        "https://backend.shiphere.in/api/smartship/getrate";
+        "http://localhost:3001/api/smartship/getrate";
       const fshipCreateShipmentUrl =
-        "https://backend.shiphere.in/api/smartship/createManifest";
+        "http://localhost:3001/api/smartship/createManifest";
 
       switch (deliveryPartnerName) {
         case "Ecom Express":
-          url = "https://backend.shiphere.in/api/ecomExpress/createShipment";
+          url = "http://localhost:3001/api/ecomExpress/createShipment";
           log = "ecom hit";
           break;
         case "Shree Maruti":
-          url = "https://backend.shiphere.in/api/maruti/booking";
+          url = "http://localhost:3001/api/maruti/booking";
           log = "ok hit";
           break;
         case "Delhivery":
@@ -300,7 +300,7 @@ console.log(deliveryPartnerName)
       else {
         try {
           const serviceability = await axios.post(
-            'https://backend.shiphere.in/api/maruti/serviceability',
+            'http://localhost:3001/api/maruti/serviceability',
             {
               warehouseId: warehouseIds,
               orderId: orderIds,
@@ -341,7 +341,7 @@ console.log(deliveryPartnerName)
         
             try {
               const manifestResponse = await axios.post(
-                'https://backend.shiphere.in/api/maruti/manifest',
+                'http://localhost:3001/api/maruti/manifest',
                 {
                   awbNumber: awb,
                   cAwbNumber: cawb,

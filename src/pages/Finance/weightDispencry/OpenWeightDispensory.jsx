@@ -1,6 +1,6 @@
-import { Table, Button, Modal, Image } from "antd";
+import { Button, Image, Modal, Table } from "antd";
 import moment from "moment";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuthContext } from "../../../context/AuthContext";
 
 const OpenWeightDispensory = ({ dataSource }) => {
@@ -45,7 +45,7 @@ const OpenWeightDispensory = ({ dataSource }) => {
         await Promise.all(
           entriesToUpdate.map(async (entry) => {
             await fetch(
-              `https://backend.shiphere.in/api/weightdiscrepancy/updateStatus/${entry._id}`,
+              `http://localhost:3001/api/weightdiscrepancy/updateStatus/${entry._id}`,
               {
                 method: "PUT",
                 headers: {

@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { useOrderContext } from "../context/OrderContext";
+//import { useOrderContext } from "../context/OrderContext";
 
 const useCreateSingleOrder = () => {
   const [loading, setLoading] = useState(false);
@@ -47,8 +47,10 @@ const useCreateSingleOrder = () => {
     if (!success) return;
     setLoading(true);
     try {
+      console.log("hi");
+      
       const token = localStorage.getItem('token');
-      const res = await fetch("https://backend.shiphere.in/api/orders/createOrder", {
+      const res = await fetch("http://localhost:3001/api/orders/createOrder", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `${token}`, },
         body: JSON.stringify({
@@ -74,12 +76,12 @@ const useCreateSingleOrder = () => {
       });
 
       const data = await res.json();
-      //console.log(data);
+      console.log(data);
       if (data.error) {
         throw new Error(data.error);
       }
     } catch (error) {
-      alert(error.message);
+      alert("There is the error"+error.message);
     } finally {
       setLoading(false);
     }

@@ -1,11 +1,11 @@
-import { Link, useNavigate } from "react-router-dom";
-import { Checkbox, Button, Input } from "antd";
-import React, { useState, useRef } from "react";
-import useSignup from "../../hooks/useSignup";
-import { useOrderContext } from "../../context/OrderContext";
-import imgg from "../../utils/new.png";
-import { useWarehouseContext } from '../../context/WarehouseContext';
+import { Button, Checkbox, Input } from "antd";
+import React, { useRef, useState } from "react";
 import { MdCheckCircle } from "react-icons/md";
+import { Link, useNavigate } from "react-router-dom";
+import { useOrderContext } from "../../context/OrderContext";
+import { useWarehouseContext } from '../../context/WarehouseContext';
+import useSignup from "../../hooks/useSignup";
+import imgg from "../../utils/new.png";
 
 const Signup1 = () => {
   const navigate = useNavigate();
@@ -101,7 +101,7 @@ const Signup1 = () => {
     if (inputs.email) {
       try {
         const response = await fetch(
-          "https://backend.shiphere.in/api/auth/sendOtp",
+          "http://localhost:3001/api/auth/sendOtp",
           {
             method: "POST",
             headers: {

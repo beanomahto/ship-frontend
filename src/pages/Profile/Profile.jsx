@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import './profile.css';
-import { useAuthContext } from '../../context/AuthContext';
-import { Helmet } from 'react-helmet';
-import pincodeData from '../../utils/zones.json';
-import { Upload, Button, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
+import { Button, message, Upload } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
+import { useAuthContext } from '../../context/AuthContext';
+import pincodeData from '../../utils/zones.json';
+import './profile.css';
 
 const Profile = () => {
     const { authUser } = useAuthContext();
@@ -24,7 +24,7 @@ const Profile = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await fetch('https://backend.shiphere.in/api/users/me', {
+                const response = await fetch('http://localhost:3001/api/users/me', {
                     headers: {
                         Authorization: localStorage.getItem('token'),
                     },
@@ -90,7 +90,7 @@ const Profile = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('https://backend.shiphere.in/api/users/update', {
+            const response = await fetch('http://localhost:3001/api/users/update', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

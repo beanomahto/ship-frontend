@@ -1,14 +1,13 @@
 import React, { useState } from "react";
-import "./login1.css";
-import { Link, useNavigate } from "react-router-dom";
-import useLogin from "../../hooks/useLogin";
-import { useOrderContext } from "../../context/OrderContext";
-import ForgotPasswordModal from "./ForgotPasswordModal";
-import { useWarehouseContext } from "../../context/WarehouseContext";
-import imgg from "../../utils/new.png";
-import { MdCheckCircle } from "react-icons/md";
-import ShippingSteps from "./loginAnimation/ShippingSteps";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { MdCheckCircle } from "react-icons/md";
+import { Link, useNavigate } from "react-router-dom";
+import { useOrderContext } from "../../context/OrderContext";
+import { useWarehouseContext } from "../../context/WarehouseContext";
+import useLogin from "../../hooks/useLogin";
+import ForgotPasswordModal from "./ForgotPasswordModal";
+import "./login1.css";
+import ShippingSteps from "./loginAnimation/ShippingSteps";
 
 const Login1 = () => {
   const navigate = useNavigate();
@@ -40,6 +39,7 @@ const Login1 = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    alert("This login page")
     let newErrors = { email: "", password: "", policy: "" };
 
     if (!email.trim()) newErrors.email = "Email is a required field.";

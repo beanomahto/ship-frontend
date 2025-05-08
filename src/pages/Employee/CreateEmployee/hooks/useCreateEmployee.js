@@ -1,6 +1,6 @@
-import { useReducer, useState } from 'react';
-import axios from 'axios';
 import { message } from 'antd';
+import axios from 'axios';
+import { useReducer, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const initialState = {
@@ -46,7 +46,7 @@ export const useCreateEmployee = () => {
     setError(null);
 
     try {
-      const response = await axios.post('https://backend.shiphere.in/api/employee/createEmployee', state);
+      const response = await axios.post('http://localhost:3001/api/employee/createEmployee', state);
       setSuccess(true);
       dispatch({ type: 'RESET_FORM' });
       message.success('Employee created successfully!');

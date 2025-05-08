@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
 import { message } from 'antd';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const CreateEmployeeForm = () => {
     const {id} = useParams()
@@ -28,7 +28,7 @@ const CreateEmployeeForm = () => {
       const fetchEmployee = async () => {
         try {
           setLoading(true);
-          const response = await axios.get(`https://backend.shiphere.in/api/employee/getEmployeeById/${id}`);
+          const response = await axios.get(`http://localhost:3001/api/employee/getEmployeeById/${id}`);
           setState(response.data);
           setLoading(false);
         } catch (err) {
@@ -51,7 +51,7 @@ const CreateEmployeeForm = () => {
 
     try {
       setLoading(true);
-      await axios.put(`https://backend.shiphere.in/api/employee/updateEmployee/${id}`, state);
+      await axios.put(`http://localhost:3001/api/employee/updateEmployee/${id}`, state);
       message.success('Employee updated successfully!');
       navigate('/employee')
       setError(null);

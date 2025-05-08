@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Modal, Button, Upload, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
+import { Button, Modal, Upload, message } from 'antd';
+import React, { useState } from 'react';
 // import Sv from './orders.csv'
-import DownloadLink from 'react-download-link'
+import DownloadLink from 'react-download-link';
 
 const BulkDimensionUploadModal = ({ visible, onClose }) => {
     const [file, setFile] = useState(null);
@@ -21,7 +21,7 @@ const BulkDimensionUploadModal = ({ visible, onClose }) => {
         formData.append('file', file);
 
         try {
-            const response = await fetch('https://backend.shiphere.in/api/orders/updateBulkOrderDimensions', {
+            const response = await fetch('http://localhost:3001/api/orders/updateBulkOrderDimensions', {
                 method: 'POST',
                 body: formData, 
                     headers: {

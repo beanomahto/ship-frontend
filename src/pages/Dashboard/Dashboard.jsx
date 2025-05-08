@@ -1,31 +1,30 @@
+import {
+    ArcElement,
+    BarElement,
+    CategoryScale,
+    Chart as ChartJS,
+    Legend,
+    LinearScale,
+    Title,
+    Tooltip,
+} from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 import React, { useEffect, useState } from "react";
 import { Bar, Doughnut } from "react-chartjs-2";
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  ArcElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import ChartDataLabels from "chartjs-plugin-datalabels";
-import {
-  FaShoppingCart,
-  FaHourglassHalf,
-  FaTimesCircle,
-  FaCheckCircle,
+    FaCheckCircle,
+    FaHourglassHalf,
+    FaShoppingCart,
+    FaTimesCircle,
 } from "react-icons/fa";
+import { FcShipped } from "react-icons/fc";
 import { MdAutorenew } from "react-icons/md";
 import "./dashboard.css";
-import { FcShipped } from "react-icons/fc";
 
-import sourceData from "../../components/Chart/SourceData.json";
-import TopDestinationsGraph from "./TopDestinationsGraph";
-import ShipmentStatusGraph from "./ShipmentStatusGraph";
-import { useOrderContext } from "../../context/OrderContext";
 import { useDeliveryPartner } from "../../context/DeliveryPartners";
+import { useOrderContext } from "../../context/OrderContext";
+import ShipmentStatusGraph from "./ShipmentStatusGraph";
+import TopDestinationsGraph from "./TopDestinationsGraph";
 
 ChartJS.register(
   CategoryScale,
@@ -74,7 +73,7 @@ const Dashboard = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          "https://backend.shiphere.in/api/remittance/getremittance",
+          "http://localhost:3001/api/remittance/getremittance",
           {
             headers: {
               Authorization: `${token}`,

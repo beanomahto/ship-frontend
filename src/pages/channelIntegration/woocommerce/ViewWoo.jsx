@@ -1,9 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import useChannelIntegration from "../../../hooks/useChannelIntegration";
 import { message } from "antd";
-import shopifyInt from "../../../utils/shopifyInt.png.jpg";
-import woo from "../../../utils/woocomerce.png";
+import React, { useEffect, useState } from "react";
 
 const ViewWoo = () => {
   // const { slug } = useParams();
@@ -25,7 +21,7 @@ const ViewWoo = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          `https://backend.shiphere.in/api/integration/getApi/${slug}`,
+          `http://localhost:3001/api/integration/getApi/${slug}`,
           {
             headers: {
               Authorization: `${token}`,
@@ -74,7 +70,7 @@ const integrateWooCommerceChannel = async () => {
   try {
     const token = localStorage.getItem("token");
     const res = await fetch(
-      `https://backend.shiphere.in/api/integration/createApi`,
+      `http://localhost:3001/api/integration/createApi`,
       {
         method: "POST",
         headers: {
@@ -97,7 +93,7 @@ const integrateWooCommerceChannel = async () => {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        `https://backend.shiphere.in/api/integration/updateApi/${slug}`,
+        `http://localhost:3001/api/integration/updateApi/${slug}`,
         {
           method: "PUT",
           headers: {

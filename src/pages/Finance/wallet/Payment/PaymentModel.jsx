@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { Modal, Button, Input, List, Tooltip } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import "./PaymentModal.css"; // Import the CSS file
+import { Button, Input, List, Modal, Tooltip } from "antd";
 import axios from "axios";
+import React, { useState } from "react";
+import "./PaymentModal.css"; // Import the CSS file
 
 const PaymentModal = ({
   visible,
@@ -18,7 +18,7 @@ const PaymentModal = ({
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('https://backend.shiphere.in/api/users/search', {
+      const response = await axios.get('http://localhost:3001/api/users/search', {
         params: { query: value },
         headers: {
           Authorization: `${token}`
@@ -44,7 +44,7 @@ const PaymentModal = ({
     }
     try {
       const response = await axios.post(
-        'https://backend.shiphere.in/api/recharge/recharge',
+        'http://localhost:3001/api/recharge/recharge',
         {
           userId: hoveredUser._id,
           credit: parseFloat(paymentAmount),

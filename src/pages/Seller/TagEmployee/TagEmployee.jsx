@@ -23,7 +23,7 @@
 //     try {
 //       const token = localStorage.getItem("token");
 //       const response = await axios.get(
-//         "https://backend.shiphere.in/api/employee/getEmployees",
+//         "http://localhost:3001/api/employee/getEmployees",
 //         {
 //           headers: {
 //             Authorization: `${token}`,
@@ -129,9 +129,9 @@
 
 // export default TagEmployee;
 
-import { Button, Modal, Input, Table, message } from "antd";
-import React, { useState, useEffect } from "react";
+import { Button, Input, Modal, Table, message } from "antd";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { MdOutlineAssignmentReturned } from "react-icons/md";
 
 const { Search } = Input;
@@ -154,7 +154,7 @@ const TagEmployee = ({ visible, onClose, selectedSeller }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "https://backend.shiphere.in/api/employee/getEmployees",
+        "http://localhost:3001/api/employee/getEmployees",
         {
           headers: {
             Authorization: `${token}`,
@@ -186,7 +186,7 @@ const TagEmployee = ({ visible, onClose, selectedSeller }) => {
     if (selectedSeller) {
       try {
         const response = await axios.post(
-          "https://backend.shiphere.in/api/employee/assignSeller",
+          "http://localhost:3001/api/employee/assignSeller",
           {
             employeeId: employee._id,
             sellerData: selectedSeller,

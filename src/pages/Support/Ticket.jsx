@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { Modal, Input, Select, Button, message, Table, Space } from "antd";
-import { SearchOutlined, ThunderboltOutlined } from "@ant-design/icons";
+import { SearchOutlined } from "@ant-design/icons";
+import { Button, Input, message, Modal, Select, Space, Table } from "antd";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 // import './ticket.css';
-import CustomButton from "../../components/Button/Button";
+import moment from "moment";
 import { Helmet } from "react-helmet";
-import moment from "moment"; 
+import CustomButton from "../../components/Button/Button";
 
 const { Option } = Select;
 
@@ -21,7 +21,7 @@ const Ticket = () => {
   const fetchComplaints = async () => {
     try {
       const res = await fetch(
-        "https://backend.shiphere.in/api/complaint/complaints",
+        "http://localhost:3001/api/complaint/complaints",
         {
           headers: {
             Authorization: localStorage.getItem("token"),
@@ -65,7 +65,7 @@ const Ticket = () => {
 
     try {
       const response = await fetch(
-        `https://backend.shiphere.in/api/complaint/remedy/${currentComplaint._id}`,
+        `http://localhost:3001/api/complaint/remedy/${currentComplaint._id}`,
         {
           method: "PUT",
           headers: {

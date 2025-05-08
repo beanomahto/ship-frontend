@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
 import {
-  Form,
-  Input,
-  Button,
-  Table,
-  Select,
-  Space,
-  Row,
-  Col,
-  Popconfirm,
-  message,
+    Button,
+    Col,
+    Form,
+    Input,
+    Popconfirm,
+    Row,
+    Select,
+    Space,
+    Table,
+    message,
 } from "antd";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
 
@@ -36,7 +36,7 @@ const ProductWeightForm = () => {
     try {
       setFetching(true);
       const response = await axios.post(
-        "https://backend.shiphere.in/api/orders/getproductdimensions",
+        "http://localhost:3001/api/orders/getproductdimensions",
         {},
         {
           headers: {
@@ -58,7 +58,7 @@ const ProductWeightForm = () => {
   const handleDelete = async (productName) => {
     try {
       const response = await axios.post(
-        "https://backend.shiphere.in/api/orders/deleteproductdimensions",
+        "http://localhost:3001/api/orders/deleteproductdimensions",
         { productName },
         {
           headers: {
@@ -153,7 +153,7 @@ const ProductWeightForm = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "https://backend.shiphere.in/api/orders/addproductdimensions",
+        "http://localhost:3001/api/orders/addproductdimensions",
         payload,
         {
           headers: {

@@ -1,6 +1,6 @@
 // useShipNow.js
-import { useState, useCallback } from 'react';
 import { message } from 'antd';
+import { useCallback, useState } from 'react';
 import { useOrderContext } from '../../../context/OrderContext';
 
 const useShipNow = (fetchOrders, setOrders, closeModalShipNow) => {
@@ -72,7 +72,7 @@ const useShipNow = (fetchOrders, setOrders, closeModalShipNow) => {
         const forwardChargeWithGST = forwardCharge * (1 + gstRate);
         const codChargeWithGST = codCharge * (1 + gstRate);
   
-        await fetch(`https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`, {
+        await fetch(`http://localhost:3001/api/orders/updateOrderStatus/${orderId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ const useShipNow = (fetchOrders, setOrders, closeModalShipNow) => {
         for (const walletRequest of walletRequests) {
           //console.log(walletRequest);
   
-          await fetch(`https://backend.shiphere.in/api/transactions/decreaseAmount`, {
+          await fetch(`http://localhost:3001/api/transactions/decreaseAmount`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
 import { Tabs } from "antd";
-import DashboardTab from "./NDRTabs/DashboardTab.jsx";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useOrderContext } from "../../context/OrderContext.jsx";
 import ActionRequiredTab from "./NDRTabs/ActionRequiredTab.jsx";
 import ActionTakenTab from "./NDRTabs/ActionTakenTab.jsx";
+import AllOrderTab from "./NDRTabs/All0rderTab.jsx";
+import DashboardTab from "./NDRTabs/DashboardTab.jsx";
 import DeliveredTab from "./NDRTabs/DeliveredTab.jsx";
 import RTOTab from "./NDRTabs/RTOTab.jsx";
-import { useOrderContext } from "../../context/OrderContext.jsx";
-import axios from "axios";
-import AllOrderTab from "./NDRTabs/All0rderTab.jsx";
 import "./ndr.css";
 
 const { TabPane } = Tabs;
@@ -106,7 +106,7 @@ const NDR = () => {
       await fetchOrders();
       try {
         const res = await fetch(
-          "https://backend.shiphere.in/api/smartship/getcurrentstatus",
+          "http://localhost:3001/api/smartship/getcurrentstatus",
           {
             headers: {
               Authorization: localStorage.getItem("token"),
@@ -139,7 +139,7 @@ const NDR = () => {
                   };
     
                   const forwardWalletResponse = await axios.post(
-                    "https://backend.shiphere.in/api/transactions/decreaseAmount",
+                    "http://localhost:3001/api/transactions/decreaseAmount",
                     forwardWalletRequestBody,
                     {
                       headers: {
@@ -156,7 +156,7 @@ const NDR = () => {
                       };
     
                       await axios.put(
-                        `https://backend.shiphere.in/api/orders/updateOrderStatus/${order._id}`,
+                        `http://localhost:3001/api/orders/updateOrderStatus/${order._id}`,
                         updateBody,
                         {
                           headers: {
@@ -238,7 +238,7 @@ const NDR = () => {
           // console.log(updateBody);
 
           return axios.put(
-            `https://backend.shiphere.in/api/orders/updateOrderStatus/${order.orderId}`,
+            `http://localhost:3001/api/orders/updateOrderStatus/${order.orderId}`,
             updateBody,
             {
               headers: {

@@ -1,12 +1,12 @@
-import { useEffect } from "react";
 import axios from "axios";
+import { useEffect } from "react";
 
 const useFetchAndUpdateOrders = (fetchOrders) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await fetch(
-          "https://backend.shiphere.in/api/smartship/getcurrentstatus",
+          "http://localhost:3001/api/smartship/getcurrentstatus",
           {
             headers: {
               Authorization: localStorage.getItem("token"),
@@ -57,7 +57,7 @@ const useFetchAndUpdateOrders = (fetchOrders) => {
           };
 
           return axios.put(
-            `https://backend.shiphere.in/api/orders/updateOrderStatus/${order.orderId}`,
+            `http://localhost:3001/api/orders/updateOrderStatus/${order.orderId}`,
             updateBody,
             {
               headers: {

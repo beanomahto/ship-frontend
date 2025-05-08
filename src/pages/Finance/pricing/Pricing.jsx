@@ -1,9 +1,8 @@
+import { Button, Input, message, Table } from "antd";
 import React, { useEffect, useState } from "react";
-import { Button, Table, Input, message } from "antd";
-import { Link } from "react-router-dom";
-import UploadPricingModel from "./UploadPricingModel";
-import CustomButton from "../../../components/Button/Button";
 import { Helmet } from "react-helmet";
+import CustomButton from "../../../components/Button/Button";
+import UploadPricingModel from "./UploadPricingModel";
 import UploadStandardPricingModel from "./UploadStandardPricing";
 // import './ratecard.css'
 
@@ -17,7 +16,7 @@ const Pricing = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          "https://backend.shiphere.in/api/shipping/rateCard",
+          "http://localhost:3001/api/shipping/rateCard",
           {
             headers: {
               Authorization: `${token}`,
@@ -53,7 +52,7 @@ const Pricing = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        "https://backend.shiphere.in/api/shipping/download-custom-pricing",
+        "http://localhost:3001/api/shipping/download-custom-pricing",
         {
           method: "POST", // Use POST method
           headers: {

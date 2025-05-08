@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 // import './ForgotPasswordModal.css'; 
-import { Modal, Input, Button } from 'antd';
+import { Button, Input, Modal } from 'antd';
 
 const ForgotPasswordModal = ({ visible, onClose }) => {
   const [email, setEmail] = useState("");
@@ -9,7 +9,7 @@ const ForgotPasswordModal = ({ visible, onClose }) => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      await fetch('https://backend.shiphere.in/api/auth/forget-password', {
+      await fetch('http://localhost:3001/api/auth/forget-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })

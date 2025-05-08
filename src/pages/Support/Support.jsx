@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import './Support.css';
 import { Select, message } from 'antd';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import sprt from '../../utils/sprtvid.mp4';
+import './Support.css';
 
 const subjects = {
     'Pickup & Delivery': [],
@@ -61,7 +61,7 @@ const Support = () => {
         //console.log(data);
 
         try {
-            const response = await fetch('https://backend.shiphere.in/api/complaint/registercomplaint', {
+            const response = await fetch('http://localhost:3001/api/complaint/registercomplaint', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

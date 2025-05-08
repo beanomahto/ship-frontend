@@ -1,26 +1,25 @@
-import React, { useEffect, useState } from "react";
+import { DeleteOutlined, SearchOutlined } from "@ant-design/icons";
 import {
-  Table,
-  Input,
-  Button,
-  Space,
-  message,
-  Select,
-  Tag,
-  Skeleton,
-  DatePicker,
-  Modal,
+    Button,
+    DatePicker,
+    Input,
+    message,
+    Modal,
+    Select,
+    Skeleton,
+    Space,
+    Table,
+    Tag,
 } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
-import moment from "moment";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import moment from "moment";
+import React, { useState } from "react";
 import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
+import { useAuthContext } from "../../context/AuthContext";
+import logo from "../../utils/logo1.jpg";
 import Shopify from "../../utils/shopify.png";
 import Woo from "../../utils/woocomerce.png";
-import logo from "../../utils/logo1.jpg";
-import { useAuthContext } from "../../context/AuthContext";
-import { DeleteOutlined } from "@ant-design/icons";
 
 const { confirm } = Modal;
 
@@ -110,7 +109,7 @@ const AllOrderComponent = ({
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `https://backend.shiphere.in/api/orders/deleteOrder/${id}`,
+        `http://localhost:3001/api/orders/deleteOrder/${id}`,
         {
           headers: {
             Authorization: localStorage.getItem("token"),

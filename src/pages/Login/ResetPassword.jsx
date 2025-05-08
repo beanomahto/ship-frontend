@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 // import './login.css';
-import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import imgg from '../../utils/new.png'
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import imgg from '../../utils/new.png';
 const ResetPassword = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
@@ -16,7 +16,7 @@ const ResetPassword = () => {
         e.preventDefault();
         //console.log("clicked");
         try {
-            const response = await fetch('https://backend.shiphere.in/api/auth/reset-password', {
+            const response = await fetch('http://localhost:3001/api/auth/reset-password', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

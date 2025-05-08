@@ -1,14 +1,13 @@
+import { Button, Input, message, Spin, Table } from "antd";
 import React, { useState } from "react";
-import { Input, Button, Table, message, Spin } from "antd";
-import axios from "axios";
-import DLVRY from "../../utils/newlogo/delhivery.png";
 import AS from "../../utils/newlogo/amazonShippinglogo.jpg";
-import EE from "../../utils/newlogo/ecom-logo.jpg";
-import XPB from "../../utils/newlogo/Xpressbees.jpg";
-import Ekart from "../../utils/newlogo/ekartlogo.png";
-import Dtdc from "../../utils/newlogo/dtdc.png";
-import SF from "../../utils/newlogo/shadowfax.png";
 import BD from "../../utils/newlogo/bluedartlogo.png";
+import DLVRY from "../../utils/newlogo/delhivery.png";
+import Dtdc from "../../utils/newlogo/dtdc.png";
+import EE from "../../utils/newlogo/ecom-logo.jpg";
+import Ekart from "../../utils/newlogo/ekartlogo.png";
+import SF from "../../utils/newlogo/shadowfax.png";
+import XPB from "../../utils/newlogo/Xpressbees.jpg";
 
 const partnerLogos = {
   Delhivery: DLVRY,
@@ -47,13 +46,13 @@ const CheckPincode = () => {
       setError("");
       setLoading(true); // Start loading
       // const response = await axios.get(
-      //   `https://backend.shiphere.in/api/pincode/delivery-partners/${pincode}`,
+      //   `http://localhost:3001/api/pincode/delivery-partners/${pincode}`,
       //   {
       //     params: { pincode },
       //   }
       // );
       const response = await fetch(
-        `https://backend.shiphere.in/api/delivery-partners/${pincode}`,
+        `http://localhost:3001/api/delivery-partners/${pincode}`,
         {
           method: "GET",
           headers: {

@@ -1,28 +1,27 @@
-import React, { useEffect, useState } from "react";
 import {
-  Card,
-  Descriptions,
-  Row,
-  Col,
-  Typography,
-  Steps,
-  Progress,
-  message,
-  Carousel,
+    Card,
+    Carousel,
+    Col,
+    Descriptions,
+    Row,
+    Steps,
+    Typography,
+    message
 } from "antd";
+import React, { useEffect } from "react";
 
 import {
-  CheckCircleOutlined,
-  ClockCircleOutlined,
-  SyncOutlined,
-  CheckOutlined,
-  TruckOutlined,
-  HomeOutlined,
+    CheckCircleOutlined,
+    CheckOutlined,
+    ClockCircleOutlined,
+    HomeOutlined,
+    SyncOutlined,
+    TruckOutlined,
 } from "@ant-design/icons";
 import { MdLocalShipping, MdOutlineDownloadDone } from "react-icons/md";
 
-import { useOrderContext } from "../../context/OrderContext";
 import axios from "axios";
+import { useOrderContext } from "../../context/OrderContext";
 import statusVideo from "../../utils/DeliveryStatus2.mp4";
 
 const { Title } = Typography;
@@ -109,7 +108,7 @@ const SmartShipData = ({ trackingInfo, advertisement }) => {
       };
 
       const response = await axios.put(
-        `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
+        `http://localhost:3001/api/orders/updateOrderStatus/${orderId}`,
         updateBody,
         {
           headers: {

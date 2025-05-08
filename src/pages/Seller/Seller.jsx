@@ -1,23 +1,22 @@
-import React, { useState, useEffect } from "react";
+import { DeleteOutlined, SearchOutlined } from "@ant-design/icons";
 import {
-  Table,
-  Tag,
-  Button,
-  Input,
-  Space,
-  DatePicker,
-  Modal,
-  message,
+    Button,
+    DatePicker,
+    Input,
+    Modal,
+    Space,
+    Table,
+    Tag,
+    message,
 } from "antd";
-import { Link } from "react-router-dom";
-import { SearchOutlined, DeleteOutlined } from "@ant-design/icons";
-import { Helmet } from "react-helmet";
-import { AiOutlineInteraction } from "react-icons/ai";
-import TagEmployee from "./TagEmployee/TagEmployee";
-import { FaTags } from "react-icons/fa";
 import axios from "axios";
 import moment from "moment";
-import "./Seller.css"
+import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
+import { FaTags } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import "./Seller.css";
+import TagEmployee from "./TagEmployee/TagEmployee";
 
 const { confirm } = Modal;
 
@@ -45,7 +44,7 @@ const Seller = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch("https://backend.shiphere.in/api/users", {
+      const response = await fetch("http://localhost:3001/api/users", {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
@@ -153,7 +152,7 @@ const Seller = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `https://backend.shiphere.in/api/users/deleteUser/${id}`,
+        `http://localhost:3001/api/users/deleteUser/${id}`,
         {
           headers: {
             Authorization: localStorage.getItem("token"),

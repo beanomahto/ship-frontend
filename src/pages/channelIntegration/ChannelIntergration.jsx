@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Card, Button } from "antd";
+import { Button, Card } from "antd";
 import axios from "axios";
-import "./channelIntegration.css";
+import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
+import { useAuthContext } from "../../context/AuthContext";
 import shopify from "../../utils/shopify.png";
 import woo from "../../utils/woocomerce.png";
-import { Link } from "react-router-dom";
+import "./channelIntegration.css";
 import ChannelIntegrationModel from "./channelIntegrationMoodel/ChannelIntegrationModel";
-import { Helmet } from "react-helmet";
-import { useAuthContext } from "../../context/AuthContext";
 
 const ChannelIntegration = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -23,7 +23,7 @@ const ChannelIntegration = () => {
   const fetchChannels = async () => {
     try {
       const response = await axios.get(
-        "https://backend.shiphere.in/api/integration/getAllApi",
+        "http://localhost:3001/api/integration/getAllApi",
         {
           headers: {
             Authorization: localStorage.getItem("token"),
@@ -42,7 +42,7 @@ const ChannelIntegration = () => {
   const fetchAdminChannels = async () => {
     try {
       const response = await axios.get(
-        "https://backend.shiphere.in/api/integration/getAllApiAdmin",
+        "http://localhost:3001/api/integration/getAllApiAdmin",
         {
           headers: {
             Authorization: localStorage.getItem("token"),

@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { message } from 'antd';
+import { useState } from 'react';
 
 const useKYC = () => {
     const [loading, setLoading] = useState(false);
@@ -28,7 +28,7 @@ const useKYC = () => {
                 formDataToSubmit.append('image', formData.pancardUrl, 'pancard.jpg');
             }
 
-            const response = await fetch('https://backend.shiphere.in/api/kyc', {
+            const response = await fetch('http://localhost:3001/api/kyc', {
                 method: 'POST',
                 headers: {
                     Authorization: localStorage.getItem('token'),

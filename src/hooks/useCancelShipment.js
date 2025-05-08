@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import axios from 'axios';
 import { message } from 'antd';
+import axios from 'axios';
+import { useState } from 'react';
 
 const useCancelShipment = () => {
   const [loading, setLoading] = useState(false);
@@ -38,15 +38,15 @@ const useCancelShipment = () => {
 
         switch (deliveryPartnerName) {
           case 'Ecom Express':
-            url = 'https://backend.shiphere.in/api/ecomExpress/cancleShipment';
+            url = 'http://localhost:3001/api/ecomExpress/cancleShipment';
             log = 'Ecomm hit';
             break;
           case 'Maruti':
-            url = 'https://backend.shiphere.in/api/maruti/cancel';
+            url = 'http://localhost:3001/api/maruti/cancel';
             log = 'Maruti hit';
             break;
           // case 'Xpressbees':
-          //   url = 'https://backend.shiphere.in/api/xpressbees/cancel';
+          //   url = 'http://localhost:3001/api/xpressbees/cancel';
           //   log = 'Xpressbees hit';
           //   break;
           case 'Delhivery':
@@ -55,7 +55,7 @@ const useCancelShipment = () => {
           case 'Ekart':
           case 'DTDC':
           case 'Shadowfax':
-            url = 'https://backend.shiphere.in/api/smartship/cancelorder';
+            url = 'http://localhost:3001/api/smartship/cancelorder';
             log = 'Shiphere hit';
             break;
           default:

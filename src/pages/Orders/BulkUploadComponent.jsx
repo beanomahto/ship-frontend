@@ -1,15 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Table, Input, Button, Space, message, Tag, Skeleton, Modal } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import moment from 'moment';
+import { Button, Input, message, Modal, Skeleton, Space, Table } from 'antd';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import Shopify from '../../utils/shopify.png';
-import Woo from '../../utils/woocomerce.png'
-import logo from '../../utils/logo1.jpg' 
+import { Link } from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext';
-import { DeleteOutlined } from '@ant-design/icons';
 
 const { confirm } = Modal;
 
@@ -52,7 +47,7 @@ const BulkUploadComponent = ({ dataSource, fetchOrders, loading,tab }) => {
       // Iterate over each selected order
       for (const orderId of selectedRowKeys) {
         // Fetch the current order details first
-        const orderResponse = await axios.get(`https://backend.shiphere.in/api/orders/${orderId}`,{
+        const orderResponse = await axios.get(`http://localhost:3001/api/orders/${orderId}`,{
             headers: {
                 'Authorization': localStorage.getItem('token')
                 }
@@ -81,7 +76,7 @@ const BulkUploadComponent = ({ dataSource, fetchOrders, loading,tab }) => {
   
         // Send the update request with the complete order data
         const updateResponse = await axios.put(
-          `https://backend.shiphere.in/api/orders/updateOrder/${orderId}`,
+          `http://localhost:3001/api/orders/updateOrder/${orderId}`,
           updatedOrderData,{
             headers: {
                 'Authorization': localStorage.getItem('token'),

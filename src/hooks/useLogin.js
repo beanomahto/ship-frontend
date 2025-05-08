@@ -10,7 +10,7 @@
 //     if (!success) return;
 //     setLoading(true);
 //     try {
-//       const res = await fetch("https://backend.shiphere.in/api/auth/login", {
+//       const res = await fetch("http://localhost:3001/api/auth/login", {
 //         method: "POST",
 //         headers: { "Content-Type": "application/json" },
 //         body: JSON.stringify({ email, password }),
@@ -59,7 +59,7 @@
 
 //       const token = localStorage.getItem("token");
 //       const res = await fetch(
-//         "https://backend.shiphere.in/api/shipping/createlabelinfo",
+//         "http://localhost:3001/api/shipping/createlabelinfo",
 //         {
 //           method: "POST",
 //           headers: {
@@ -105,9 +105,10 @@ const useLogin = () => {
     const success = handleInputErrors(email, password, isHashed);
     if (!success) return;
 
+    // LOGIN API == http://localhost:3001/api/auth/login
     setLoading(true);
     try {
-      const res = await fetch("https://backend.shiphere.in/api/auth/login", {
+      const res = await fetch("http://localhost:3001/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, isHashed }),
@@ -169,7 +170,7 @@ const useLogin = () => {
       const token = localStorage.getItem("token");
 
       const res = await fetch(
-        "https://backend.shiphere.in/api/shipping/createlabelinfo",
+        "http://localhost:3001/api/shipping/createlabelinfo",
         {
           method: "POST",
           headers: {

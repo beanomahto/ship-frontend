@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Table, Button, notification } from "antd";
-import UploadDiscrepancyImagesModal from "./UploadDiscrepancyImagesModal";
-import { useAuthContext } from "../../../context/AuthContext";
+import { Button, notification, Table } from "antd";
 import moment from "moment";
+import React, { useEffect, useState } from "react";
+import { useAuthContext } from "../../../context/AuthContext";
+import UploadDiscrepancyImagesModal from "./UploadDiscrepancyImagesModal";
 
 const ActionRequired = ({
   dataSource,
@@ -65,7 +65,7 @@ const ActionRequired = ({
         await Promise.all(
           entriesToUpdate.map(async (entry) => {
             await fetch(
-              `https://backend.shiphere.in/api/weightdiscrepancy/updateStatus/${entry._id}`,
+              `http://localhost:3001/api/weightdiscrepancy/updateStatus/${entry._id}`,
               {
                 method: "PUT",
                 headers: {

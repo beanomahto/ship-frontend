@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Modal, Upload, Button, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
+import { Button, message, Modal, Upload } from 'antd';
+import React, { useState } from 'react';
 
 const UploadDiscrepancyImagesModal = ({ visible, onClose, discrepancyId, productName,fetchWeightDespensory }) => {
   const [fileList, setFileList] = useState([]);
@@ -25,7 +25,7 @@ const UploadDiscrepancyImagesModal = ({ visible, onClose, discrepancyId, product
     }
   
     try {
-      const uploadResponse = await fetch(`https://backend.shiphere.in/api/weightdiscrepancy/upload-images`, {
+      const uploadResponse = await fetch(`http://localhost:3001/api/weightdiscrepancy/upload-images`, {
         method: 'POST',
         body: formData,
         headers: {
@@ -41,7 +41,7 @@ const UploadDiscrepancyImagesModal = ({ visible, onClose, discrepancyId, product
   
       //console.log('Upload Result:', uploadResult);
   
-      const updateResponse = await fetch(`https://backend.shiphere.in/api/weightdiscrepancy/updateStatus/${discrepancyId}`, {
+      const updateResponse = await fetch(`http://localhost:3001/api/weightdiscrepancy/updateStatus/${discrepancyId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

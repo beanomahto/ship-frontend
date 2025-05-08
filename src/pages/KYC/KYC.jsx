@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from "react";
-import "./kyc.css";
-import {
-  Checkbox,
-  Select,
-  Upload,
-  Modal,
-  Button,
-  Input,
-  message,
-  Image,
-} from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import {
+    Button,
+    Checkbox,
+    Image,
+    Input,
+    message,
+    Select,
+    Upload
+} from "antd";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import useKYC from "./useKYC";
 import { useAuthContext } from "../../context/AuthContext";
+import "./kyc.css";
+import useKYC from "./useKYC";
 const { TextArea } = Input;
 const KYC = () => {
   const { authUser } = useAuthContext();
@@ -38,7 +37,7 @@ const KYC = () => {
   useEffect(() => {
     const fetchKycData = async () => {
       try {
-        const response = await fetch("https://backend.shiphere.in/api/kyc", {
+        const response = await fetch("http://localhost:3001/api/kyc", {
           headers: {
             Authorization: localStorage.getItem("token"),
           },

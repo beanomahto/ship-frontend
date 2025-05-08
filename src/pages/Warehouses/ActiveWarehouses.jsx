@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { Button, Table, Input, Tag, message, Modal } from "antd";
-import { Link, NavLink } from "react-router-dom";
-import { useWarehouseContext } from "../../context/WarehouseContext";
-import { Helmet } from "react-helmet";
-import { useAuthContext } from "../../context/AuthContext";
-import axios from "axios";
 import {
-  SearchOutlined,
-  DeleteOutlined,
-  EditOutlined,
+    DeleteOutlined,
+    EditOutlined,
+    SearchOutlined,
 } from "@ant-design/icons";
+import { Button, Input, message, Modal, Table, Tag } from "antd";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
+import { Link, NavLink } from "react-router-dom";
+import { useAuthContext } from "../../context/AuthContext";
+import { useWarehouseContext } from "../../context/WarehouseContext";
 import "./addWareHouse.css";
 
 const { confirm } = Modal;
@@ -23,7 +23,7 @@ const ActiveWarehouses = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `https://backend.shiphere.in/api/warehouses/deleteWarehouse/${id}`,
+        `http://localhost:3001/api/warehouses/deleteWarehouse/${id}`,
         {
           headers: {
             Authorization: localStorage.getItem("token"),

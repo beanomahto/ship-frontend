@@ -1,24 +1,24 @@
-import React, { useEffect, useRef } from "react";
 import {
-  Card,
-  Descriptions,
-  Row,
-  Col,
-  Typography,
-  Steps,
-  Progress,
-  message,
-  Carousel,
-} from "antd";
-import {
-  CheckCircleOutlined,
-  ClockCircleOutlined,
-  SyncOutlined,
-  CloseCircleOutlined,
-  CheckOutlined,
+    CheckCircleOutlined,
+    CheckOutlined,
+    ClockCircleOutlined,
+    CloseCircleOutlined,
+    SyncOutlined,
 } from "@ant-design/icons";
-import { useOrderContext } from "../../context/OrderContext";
+import {
+    Card,
+    Carousel,
+    Col,
+    Descriptions,
+    Progress,
+    Row,
+    Steps,
+    Typography,
+    message,
+} from "antd";
 import axios from "axios";
+import React, { useEffect, useRef } from "react";
+import { useOrderContext } from "../../context/OrderContext";
 import statusVideo from "../../utils/DeliveryStatus2.mp4";
 
 const { Title } = Typography;
@@ -135,7 +135,7 @@ const EcomData = ({ trackingInfo, advertisement }) => {
       };
 
       const response = await axios.put(
-        `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
+        `http://localhost:3001/api/orders/updateOrderStatus/${orderId}`,
         updateBody,
         {
           headers: {

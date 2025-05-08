@@ -1,39 +1,36 @@
-import React, { useEffect, useState } from "react";
+import { DeleteOutlined, SearchOutlined, ThunderboltOutlined } from "@ant-design/icons";
 import {
-  Table,
-  Input,
-  Button,
-  Space,
-  Tag,
-  Skeleton,
-  DatePicker,
-  message,
-  Modal,
-  Progress,
+    Button,
+    DatePicker,
+    Input,
+    message,
+    Modal,
+    Progress,
+    Skeleton,
+    Space,
+    Table,
+    Tag,
 } from "antd";
-import { SearchOutlined, ThunderboltOutlined } from "@ant-design/icons";
+import Column from "antd/es/table/Column";
 import axios from "axios";
 import moment from "moment";
-import { Link } from "react-router-dom";
-import useShipNowCost from "../../hooks/useShipNowCost";
-import { useWarehouseContext } from "../../context/WarehouseContext";
-import BD from "../../utils/bluedart.png";
-import DLVRY from "../../utils/delhivery.png";
-import AS from "../../utils/amazon-shipping.png";
-import EE from "../../utils/ecom-express.png";
-import SM from "../../utils/shree-maruti.jpeg"
-import XPB from "../../utils/xpressbees.png";
-import Column from "antd/es/table/Column";
-import Shopify from "../../utils/shopify.png";
-import Woo from "../../utils/woocomerce.png";
-import Ekart from "../../utils/ekart.jpeg";
-import Dtdc from "../../utils/dtdc.png";
-import SF from "../../utils/shadowFax.png";
-import logo from "../../utils/logo1.jpg";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
 import { useAuthContext } from "../../context/AuthContext";
 import useCreateShipment from "../../hooks/useCreateShipment";
-import { DeleteOutlined } from "@ant-design/icons";
+import AS from "../../utils/amazon-shipping.png";
+import BD from "../../utils/bluedart.png";
+import DLVRY from "../../utils/delhivery.png";
+import Dtdc from "../../utils/dtdc.png";
+import EE from "../../utils/ecom-express.png";
+import Ekart from "../../utils/ekart.jpeg";
+import logo from "../../utils/logo1.jpg";
+import SF from "../../utils/shadowFax.png";
+import Shopify from "../../utils/shopify.png";
+import SM from "../../utils/shree-maruti.jpeg";
+import Woo from "../../utils/woocomerce.png";
+import XPB from "../../utils/xpressbees.png";
 const partnerImages = {
   "Blue Dart": BD,
   Delhivery: DLVRY,
@@ -165,7 +162,7 @@ const NewOrderComponent = ({
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `https://backend.shiphere.in/api/orders/deleteOrder/${id}`,
+        `http://localhost:3001/api/orders/deleteOrder/${id}`,
         {
           headers: {
             Authorization: localStorage.getItem("token"),
@@ -496,7 +493,7 @@ const NewOrderComponent = ({
   //       };
 
   //       const codWalletResponse = await axios.post(
-  //         "https://backend.shiphere.in/api/transactions/decreaseAmount",
+  //         "http://localhost:3001/api/transactions/decreaseAmount",
   //         codWalletRequestBody,
   //         {
   //           headers: {
@@ -519,7 +516,7 @@ const NewOrderComponent = ({
   //     };
 
   //     const forwardWalletResponse = await axios.post(
-  //       "https://backend.shiphere.in/api/transactions/decreaseAmount",
+  //       "http://localhost:3001/api/transactions/decreaseAmount",
   //       forwardWalletRequestBody,
   //       {
   //         headers: {
@@ -556,7 +553,7 @@ const NewOrderComponent = ({
   //       console.log("updated", updateBody);
 
   //       const orderResponse = await axios.put(
-  //         `https://backend.shiphere.in/api/orders/updateOrderStatus/${selectedOrderId}`,
+  //         `http://localhost:3001/api/orders/updateOrderStatus/${selectedOrderId}`,
   //         updateBody,
   //         {
   //           headers: {
@@ -579,7 +576,7 @@ const NewOrderComponent = ({
   //       // Rollback wallet deductions if shipping fails
   //       if (codCostWithGst > 0) {
   //         await axios.post(
-  //           "https://backend.shiphere.in/api/transactions/increaseAmount",
+  //           "http://localhost:3001/api/transactions/increaseAmount",
   //           {
   //             credit: codCostWithGst,
   //             userId: selectedOrder.seller._id,
@@ -595,7 +592,7 @@ const NewOrderComponent = ({
   //       }
 
   //       await axios.post(
-  //         "https://backend.shiphere.in/api/transactions/increaseAmount",
+  //         "http://localhost:3001/api/transactions/increaseAmount",
   //         {
   //           credit: forwardCostWithGst,
   //           userId: selectedOrder.seller._id,
@@ -669,7 +666,7 @@ const NewOrderComponent = ({
             };
 
             const codWalletResponse = await axios.post(
-              "https://backend.shiphere.in/api/transactions/decreaseAmount",
+              "http://localhost:3001/api/transactions/decreaseAmount",
               codWalletRequestBody,
               {
                 headers: {
@@ -693,7 +690,7 @@ const NewOrderComponent = ({
           };
 
           const forwardWalletResponse = await axios.post(
-            "https://backend.shiphere.in/api/transactions/decreaseAmount",
+            "http://localhost:3001/api/transactions/decreaseAmount",
             forwardWalletRequestBody,
             {
               headers: {
@@ -715,7 +712,7 @@ const NewOrderComponent = ({
           };
 
           const orderResponse = await axios.put(
-            `https://backend.shiphere.in/api/orders/updateOrderStatus/${selectedOrderId}`,
+            `http://localhost:3001/api/orders/updateOrderStatus/${selectedOrderId}`,
             updateBody,
             {
               headers: {

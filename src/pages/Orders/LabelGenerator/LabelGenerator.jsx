@@ -1,9 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { Button, Modal } from 'antd';
-import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import axios from 'axios';
+import { useEffect, useRef, useState } from 'react';
 import './LabelGenerator.css';
 
 const getBase64ImageFromUrl = async (imageUrl) => {
@@ -28,7 +26,7 @@ const LabelGenerator = ({ orderIds }) => {
       const token = localStorage.getItem('token');
       const labels = await Promise.all(
         orderIds.map(async (orderId) => {
-          const response = await axios.get(`https://backend.shiphere.in/api/shipping/getlabel/${orderId}`, {
+          const response = await axios.get(`http://localhost:3001/api/shipping/getlabel/${orderId}`, {
             headers: {
               Authorization: `${token}`,
             },

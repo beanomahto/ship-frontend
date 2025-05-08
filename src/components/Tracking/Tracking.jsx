@@ -1,31 +1,16 @@
-import React, { useEffect, useState } from "react";
 import {
-  Card,
-  Descriptions,
-  Spin,
-  message,
-  Row,
-  Col,
-  Divider,
-  Typography,
-  Steps,
-  Progress,
+    message,
+    Spin,
+    Steps,
+    Typography
 } from "antd";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import {
-  CheckCircleOutlined,
-  ClockCircleOutlined,
-  SyncOutlined,
-  CloseCircleOutlined,
-  CheckOutlined,
-} from "@ant-design/icons";
 import EcomData from "./EcomData";
-import MarutiData from "./MarutiData";
 import Footer from "./Footer";
-import FShipData from "./FShipData";
-import Xressbees from "./Xressbees";
+import MarutiData from "./MarutiData";
 import SmartShipData from "./SmartShipData";
 
 const { Title } = Typography;
@@ -57,7 +42,7 @@ const Tracking = () => {
 
         if (fShipPartner) {
           const response = await axios.post(
-            `https://backend.shiphere.in/api/smartship/tracksmartshiporder`,
+            `http://localhost:3001/api/smartship/tracksmartshiporder`,
             {
               awb,
             }
@@ -65,22 +50,22 @@ const Tracking = () => {
           setTrackingInfo(response.data);
           console.log("response", response.data);
         } else {
-          //  console.log(`https://backend.shiphere.in/api/Xpressbees/track/${awb}`);
-          // const response = await axios.get(`https://backend.shiphere.in/api/${shippingPartner.replace(/\s+/g, '')}/track/${awb}`);
+          //  console.log(`http://localhost:3001/api/Xpressbees/track/${awb}`);
+          // const response = await axios.get(`http://localhost:3001/api/${shippingPartner.replace(/\s+/g, '')}/track/${awb}`);
           // if (splitPartners.toLowerCase() === "xpressbees") {
           //   const response = await axios.get(
-          //     `https://backend.shiphere.in/api/xpressbees/track/${awb}`
+          //     `http://localhost:3001/api/xpressbees/track/${awb}`
           //   );
           //   console.log(response);
           const response = await axios.get(
-            `https://backend.shiphere.in/api/${shippingPartner.replace(
+            `http://localhost:3001/api/${shippingPartner.replace(
               /\s+/g,
               ""
             )}/track/${awb}`
           );
           if (shippingPartner.toLowerCase() === "ecom express") {
             const response = await axios.get(
-              `https://backend.shiphere.in/api/${shippingPartner.replace(
+              `http://localhost:3001/api/${shippingPartner.replace(
                 /\s+/g,
                 ""
               )}/track/${awb}`
@@ -131,7 +116,7 @@ const Tracking = () => {
     //   try {
     //     const token = localStorage.getItem("token");
     //     const response = await axios.get(
-    //       "https://backend.shiphere.in/api/customiseTrack/get-advertisement",
+    //       "http://localhost:3001/api/customiseTrack/get-advertisement",
     //       {
     //         headers: { Authorization: `${token}` },
     //       }
@@ -160,7 +145,7 @@ const Tracking = () => {
         console.log("Token:", token);
 
         const response = await axios.get(
-          "https://backend.shiphere.in/api/customiseTrack/get-advertisement",
+          "http://localhost:3001/api/customiseTrack/get-advertisement",
           {
             headers: { Authorization: `${token}` },
           }
@@ -319,7 +304,7 @@ export default Tracking;
 
 //         if (fShipPartner) {
 //           const response = await axios.post(
-//             `https://backend.shiphere.in/api/smartship/tracksmartshiporder`,
+//             `http://localhost:3001/api/smartship/tracksmartshiporder`,
 //             {
 //               awb,
 //             }
@@ -328,7 +313,7 @@ export default Tracking;
 //           console.log("okkkkkkkkkk", response.data);
 //         } else {
 //           const response = await axios.get(
-//             `https://backend.shiphere.in/api/${shippingPartner.replace(
+//             `http://localhost:3001/api/${shippingPartner.replace(
 //               /\s+/g,
 //               ""
 //             )}/track/${awb}`

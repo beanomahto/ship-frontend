@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Button, Select, Input, Modal, Upload, message, Image } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import { Button, Image, Input, Modal, Select, Upload, message } from "antd";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 const { TextArea } = Input;
 const VerifyKyc = () => {
@@ -27,7 +27,7 @@ const VerifyKyc = () => {
     const fetchKycData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch(`https://backend.shiphere.in/api/kyc/${id}`, {
+        const response = await fetch(`http://localhost:3001/api/kyc/${id}`, {
           headers: {
             Authorization: `${token}`,
           },
@@ -73,7 +73,7 @@ const VerifyKyc = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `https://backend.shiphere.in/api/users/updateVerify/${id}`,
+        `http://localhost:3001/api/users/updateVerify/${id}`,
         {
           method: "POST",
           headers: {

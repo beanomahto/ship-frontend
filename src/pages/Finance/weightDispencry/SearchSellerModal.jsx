@@ -1,6 +1,5 @@
+import { Button, Input, message, Modal, Table } from "antd";
 import React, { useState } from "react";
-import { Modal, Input, Table, Button, message } from "antd";
-import moment from "moment";
 
 const SearchSellerModal = ({ visible, onClose, weightDispensory }) => {
   const [searchValue, setSearchValue] = useState("");
@@ -27,7 +26,7 @@ const SearchSellerModal = ({ visible, onClose, weightDispensory }) => {
 
     try {
       const response = await fetch(
-        "https://backend.shiphere.in/api/report/weightdispute", // Replace with your actual API endpoint
+        "http://localhost:3001/api/report/weightdispute", // Replace with your actual API endpoint
         {
           method: "POST",
           headers: {

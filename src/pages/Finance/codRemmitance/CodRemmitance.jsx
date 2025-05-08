@@ -1,15 +1,14 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { Button, Table, Input, DatePicker } from "antd";
-import RemmitanceData from "./RemmitanceData";
-import "./codremmitance.css";
-import UploadCodRemittance from "./UploadCodRemittance";
-import SearchSellerModal from "./SearchSellerModal";
+import { Button, DatePicker, Input, Table } from "antd";
 import moment from "moment";
+import React, { useEffect, useMemo, useState } from "react";
+import { CSVLink } from "react-csv";
+import { Helmet } from "react-helmet";
 import CustomButton from "../../../components/Button/Button";
 import { useAuthContext } from "../../../context/AuthContext";
-import { Helmet } from "react-helmet";
+import "./codremmitance.css";
 import EarlyCodPopup from "./EarlyCodPopup";
-import { CSVLink } from "react-csv";
+import RemmitanceData from "./RemmitanceData";
+import UploadCodRemittance from "./UploadCodRemittance";
 
 const { Search } = Input;
 
@@ -26,7 +25,7 @@ const CodRemmitance = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          "https://backend.shiphere.in/api/remittance/getremittance",
+          "http://localhost:3001/api/remittance/getremittance",
           {
             headers: {
               Authorization: `${token}`,

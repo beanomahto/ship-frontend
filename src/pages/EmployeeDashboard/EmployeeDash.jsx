@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { Button, Radio, Space, Table, Tag } from "antd";
+import React, { useEffect, useState } from "react";
 import { IoSearch } from "react-icons/io5";
-import { Table, Tag, Button, Space, Radio } from "antd";
 // import useLogout from "../../hooks/useLogout";
-import { AiOutlineInteraction } from "react-icons/ai";
+import { FaTags } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useOrderContext } from "../../context/OrderContext";
 import useLogin from "../../hooks/useLogin";
 import "./employee.css";
-import { FaTags } from "react-icons/fa";
 
 function EmployeeDash() {
   const [users, setUsers] = useState([]);
@@ -22,7 +21,7 @@ function EmployeeDash() {
       try {
         const token = localStorage.getItem("employee-token");
         const response = await fetch(
-          "https://backend.shiphere.in/api/employee/getemployeeusers",
+          "http://localhost:3001/api/employee/getemployeeusers",
           {
             headers: {
               Authorization: `${token}`,
@@ -49,7 +48,7 @@ function EmployeeDash() {
     const { email } = record;
     try {
       const response = await fetch(
-        `https://backend.shiphere.in/api/auth/getPassword`,
+        `http://localhost:3001/api/auth/getPassword`,
         {
           method: "POST",
           headers: {

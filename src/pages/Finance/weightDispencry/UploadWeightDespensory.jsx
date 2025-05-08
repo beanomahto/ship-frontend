@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Modal, Button, Upload, message } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import * as XLSX from "xlsx";
+import { Button, Modal, Upload, message } from "antd";
 import axios from "axios";
+import React, { useState } from "react";
 import DownloadLink from "react-download-link";
+import * as XLSX from "xlsx";
 import { useAuthContext } from "../../../context/AuthContext";
 import { useOrderContext } from "../../../context/OrderContext";
 
@@ -65,7 +65,7 @@ const UploadWeightDespensory = ({
     for (const email of sellerEmails) {
       try {
         const response = await axios.get(
-          "https://backend.shiphere.in/api/users/search",
+          "http://localhost:3001/api/users/search",
           {
             params: { query: email },
             headers: {
@@ -100,7 +100,7 @@ const UploadWeightDespensory = ({
 
     try {
       const response = await fetch(
-        "https://backend.shiphere.in/api/weightdiscrepancy/uploadweightdiscrepancy",
+        "http://localhost:3001/api/weightdiscrepancy/uploadweightdiscrepancy",
         {
           method: "POST",
           body: formData,
@@ -154,7 +154,7 @@ const UploadWeightDespensory = ({
             console.log(walletRequestBody);
 
             const response = await fetch(
-              "https://backend.shiphere.in/api/transactions/increaseAmount",
+              "http://localhost:3001/api/transactions/increaseAmount",
               {
                 method: "POST",
                 headers: {
@@ -230,7 +230,7 @@ const UploadWeightDespensory = ({
 
         try {
           const response = await axios.post(
-            "https://backend.shiphere.in/api/transactions/decreaseAmount",
+            "http://localhost:3001/api/transactions/decreaseAmount",
             walletRequestBody,
             {
               headers: {

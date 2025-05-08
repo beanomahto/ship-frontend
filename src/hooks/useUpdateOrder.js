@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import axios from 'axios';
+import { useState } from 'react';
 
 const useUpdateOrder = () => {
     const [loading, setLoading] = useState(false);
@@ -10,7 +10,7 @@ const useUpdateOrder = () => {
         setLoading(true);
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.put(`https://backend.shiphere.in/api/orders/updateOrder/${updatedOrderData._id}`, updatedOrderData, {
+            const response = await axios.put(`http://localhost:3001/api/orders/updateOrder/${updatedOrderData._id}`, updatedOrderData, {
                 headers: {
                     Authorization: `${token}`,
                 },

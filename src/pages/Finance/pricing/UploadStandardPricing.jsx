@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Modal, Button, Upload, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import DownloadLink from 'react-download-link' 
+import { Button, Modal, Upload, message } from 'antd';
+import React, { useState } from 'react';
+import DownloadLink from 'react-download-link';
 
 const UploadStandardPricingModel = ({ visible, onClose }) => {
     const [file, setFile] = useState(null);
@@ -20,7 +20,7 @@ const UploadStandardPricingModel = ({ visible, onClose }) => {
         formData.append('file', file);
 
         try {
-            const response = await fetch('https://backend.shiphere.in/api/shipping/upload-standard-pricing', {
+            const response = await fetch('http://localhost:3001/api/shipping/upload-standard-pricing', {
                 method: 'POST',
                 body: formData,
                 headers: {

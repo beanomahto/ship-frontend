@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Modal, Button, Upload, message } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
+import { Button, Modal, Upload, message } from "antd";
+import React, { useState } from "react";
 import DownloadLink from "react-download-link";
 
 const UploadPricingModel = ({ visible, onClose }) => {
@@ -29,7 +29,7 @@ const UploadPricingModel = ({ visible, onClose }) => {
 
     try {
       const response = await fetch(
-        "https://backend.shiphere.in/api/shipping/upload-custom-pricing",
+        "http://localhost:3001/api/shipping/upload-custom-pricing",
         {
           method: "POST",
           body: formData,

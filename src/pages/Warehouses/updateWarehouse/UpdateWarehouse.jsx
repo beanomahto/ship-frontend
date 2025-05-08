@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import pincodeData from '../../../utils/zones.json';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
 import { message } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useWarehouseContext } from '../../../context/WarehouseContext';
+import pincodeData from '../../../utils/zones.json';
 
 const UpdateWarehouse = () => {
     const navigate = useNavigate();
@@ -28,7 +28,7 @@ const UpdateWarehouse = () => {
         const fetchWarehouseData = async () => {
             setLoading(true);
             try {
-                const response = await fetch(`https://backend.shiphere.in/api/warehouses/getSingleWarehouse/${id}`,{
+                const response = await fetch(`http://localhost:3001/api/warehouses/getSingleWarehouse/${id}`,{
                     headers:{
                         Authorization:localStorage.getItem('token')
                     }
@@ -84,7 +84,7 @@ const UpdateWarehouse = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await fetch(`https://backend.shiphere.in/api/warehouses/updateWarehouse/${id}`, {
+            const response = await fetch(`http://localhost:3001/api/warehouses/updateWarehouse/${id}`, {
                 method: 'PUT', 
                 headers: {
                     Authorization:localStorage.getItem('token'),

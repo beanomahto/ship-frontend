@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Modal, Button, Upload, message, notification } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
+import { Button, Modal, Upload, message, notification } from "antd";
+import React, { useState } from "react";
 import DownloadLink from "react-download-link";
 
 const BulkOrderUploadModal = ({ visible, onClose }) => {
@@ -21,7 +21,7 @@ const BulkOrderUploadModal = ({ visible, onClose }) => {
 
     try {
       const response = await fetch(
-        "https://backend.shiphere.in/api/orders/createBulkOrder",
+        "http://localhost:3001/api/orders/createBulkOrder",
         {
           method: "POST",
           body: formData,

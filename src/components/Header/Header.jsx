@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
 import { Button, Input, Modal, Popover, Select, Space } from "antd";
+import React, { useState } from "react";
+import { BsLightningChargeFill } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../context/AuthContext";
+import { useOrderContext } from "../../context/OrderContext";
 import useLogout from "../../hooks/useLogout";
 import "./header.css";
-import { useOrderContext } from "../../context/OrderContext";
-import { BsLightningChargeFill } from "react-icons/bs";
 
 const { Search } = Input;
 
@@ -87,7 +87,7 @@ const Header = ({ darktheme }) => {
     try {
       // Send a POST request to the backend
       const response = await fetch(
-        "https://backend.shiphere.in/api/phonepe/pay",
+        "http://localhost:3001/api/phonepe/pay",
         {
           method: "POST",
           headers: {
