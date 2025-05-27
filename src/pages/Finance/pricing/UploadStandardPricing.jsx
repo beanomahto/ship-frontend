@@ -20,7 +20,7 @@ const UploadStandardPricingModel = ({ visible, onClose }) => {
         formData.append('file', file);
 
         try {
-            const response = await fetch('http://localhost:3001/api/shipping/upload-standard-pricing', {
+            const response = await fetch('https://backend.shiphere.in/api/shipping/upload-standard-pricing', {
                 method: 'POST',
                 body: formData,
                 headers: {

@@ -38,15 +38,15 @@ const useCancelShipment = () => {
 
         switch (deliveryPartnerName) {
           case 'Ecom Express':
-            url = 'http://localhost:3001/api/ecomExpress/cancleShipment';
+            url = 'https://backend.shiphere.in/api/ecomExpress/cancleShipment';
             log = 'Ecomm hit';
             break;
           case 'Maruti':
-            url = 'http://localhost:3001/api/maruti/cancel';
+            url = 'https://backend.shiphere.in/api/maruti/cancel';
             log = 'Maruti hit';
             break;
           // case 'Xpressbees':
-          //   url = 'http://localhost:3001/api/xpressbees/cancel';
+          //   url = 'https://backend.shiphere.in/api/xpressbees/cancel';
           //   log = 'Xpressbees hit';
           //   break;
           case 'Delhivery':
@@ -55,7 +55,7 @@ const useCancelShipment = () => {
           case 'Ekart':
           case 'DTDC':
           case 'Shadowfax':
-            url = 'http://localhost:3001/api/smartship/cancelorder';
+            url = 'https://backend.shiphere.in/api/smartship/cancelorder';
             log = 'Shiphere hit';
             break;
           default:

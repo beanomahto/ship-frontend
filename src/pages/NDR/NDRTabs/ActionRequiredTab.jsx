@@ -75,7 +75,7 @@ const ActionRequiredTab = ({
 
       if (selectedOrderData[0].shippingPartner === "Ecom Express") {
         await axios.post(
-          "http://localhost:3001/api/ecomExpress/createNdr",
+          "https://backend.shiphere.in/api/ecomExpress/createNdr",
           ecomPayload,
           {
             headers: {
@@ -85,7 +85,7 @@ const ActionRequiredTab = ({
         );
       } else {
         await axios.post(
-          "http://localhost:3001/api/smartship/orderReattempt",
+          "https://backend.shiphere.in/api/smartship/orderReattempt",
           otherPayload,
           {
             headers: {
@@ -105,7 +105,7 @@ const ActionRequiredTab = ({
             }),
           };
           await axios.put(
-            `http://localhost:3001/api/orders/updateOrderStatus/${order._id}`,
+            `https://backend.shiphere.in/api/orders/updateOrderStatus/${order._id}`,
             updatedStatus,
             {
               headers: {
@@ -121,7 +121,7 @@ const ActionRequiredTab = ({
             }),
           };
           await axios.put(
-            `http://localhost:3001/api/orders/updateOrderStatus/${order._id}`,
+            `https://backend.shiphere.in/api/orders/updateOrderStatus/${order._id}`,
             updatedStatus,
             {
               headers: {

@@ -1,15 +1,15 @@
 import { DeleteOutlined, SearchOutlined, ThunderboltOutlined } from "@ant-design/icons";
 import {
-    Button,
-    DatePicker,
-    Input,
-    message,
-    Modal,
-    Progress,
-    Skeleton,
-    Space,
-    Table,
-    Tag,
+  Button,
+  DatePicker,
+  Input,
+  message,
+  Modal,
+  Progress,
+  Skeleton,
+  Space,
+  Table,
+  Tag,
 } from "antd";
 import Column from "antd/es/table/Column";
 import axios from "axios";
@@ -68,7 +68,7 @@ const NewOrderComponent = ({
   selectedWarehouseId,
   selectedOrderData,
 }) => {
-  console.log(deliveryCosts);
+  console.log("There is the delivery cost"+deliveryCosts);
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   rowSelection = {...rowSelection, columnWidth: 90}
@@ -162,7 +162,7 @@ const NewOrderComponent = ({
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `http://localhost:3001/api/orders/deleteOrder/${id}`,
+        `https://backend.shiphere.in/api/orders/deleteOrder/${id}`,
         {
           headers: {
             Authorization: localStorage.getItem("token"),
@@ -407,6 +407,7 @@ const NewOrderComponent = ({
                 }}
               >
                 <ThunderboltOutlined
+                ////////////////////////////// ye raha thunderbolt
                   style={{
                     cursor: "pointer",
                     fontSize: "1.5rem",
@@ -493,7 +494,7 @@ const NewOrderComponent = ({
   //       };
 
   //       const codWalletResponse = await axios.post(
-  //         "http://localhost:3001/api/transactions/decreaseAmount",
+  //         "https://backend.shiphere.in/api/transactions/decreaseAmount",
   //         codWalletRequestBody,
   //         {
   //           headers: {
@@ -516,7 +517,7 @@ const NewOrderComponent = ({
   //     };
 
   //     const forwardWalletResponse = await axios.post(
-  //       "http://localhost:3001/api/transactions/decreaseAmount",
+  //       "https://backend.shiphere.in/api/transactions/decreaseAmount",
   //       forwardWalletRequestBody,
   //       {
   //         headers: {
@@ -553,7 +554,7 @@ const NewOrderComponent = ({
   //       console.log("updated", updateBody);
 
   //       const orderResponse = await axios.put(
-  //         `http://localhost:3001/api/orders/updateOrderStatus/${selectedOrderId}`,
+  //         `https://backend.shiphere.in/api/orders/updateOrderStatus/${selectedOrderId}`,
   //         updateBody,
   //         {
   //           headers: {
@@ -576,7 +577,7 @@ const NewOrderComponent = ({
   //       // Rollback wallet deductions if shipping fails
   //       if (codCostWithGst > 0) {
   //         await axios.post(
-  //           "http://localhost:3001/api/transactions/increaseAmount",
+  //           "https://backend.shiphere.in/api/transactions/increaseAmount",
   //           {
   //             credit: codCostWithGst,
   //             userId: selectedOrder.seller._id,
@@ -592,7 +593,7 @@ const NewOrderComponent = ({
   //       }
 
   //       await axios.post(
-  //         "http://localhost:3001/api/transactions/increaseAmount",
+  //         "https://backend.shiphere.in/api/transactions/increaseAmount",
   //         {
   //           credit: forwardCostWithGst,
   //           userId: selectedOrder.seller._id,
@@ -617,7 +618,7 @@ const NewOrderComponent = ({
   // };
 
   //console.log(deliveryCosts);
-
+/////////////////////////////////////Handle Assign
   const handleAssign = async (partner) => {
     console.log("partner", partner);
     try {
@@ -649,7 +650,7 @@ const NewOrderComponent = ({
           partner.deliveryPartner
         );
 
-        console.log("awb in frontend", awb);
+        //console.log("awb in frontend", awb);
 
         if (awb) {
           console.log(
@@ -666,7 +667,7 @@ const NewOrderComponent = ({
             };
 
             const codWalletResponse = await axios.post(
-              "http://localhost:3001/api/transactions/decreaseAmount",
+              "https://backend.shiphere.in/api/transactions/decreaseAmount",
               codWalletRequestBody,
               {
                 headers: {
@@ -690,7 +691,7 @@ const NewOrderComponent = ({
           };
 
           const forwardWalletResponse = await axios.post(
-            "http://localhost:3001/api/transactions/decreaseAmount",
+            "https://backend.shiphere.in/api/transactions/decreaseAmount",
             forwardWalletRequestBody,
             {
               headers: {
@@ -712,7 +713,7 @@ const NewOrderComponent = ({
           };
 
           const orderResponse = await axios.put(
-            `http://localhost:3001/api/orders/updateOrderStatus/${selectedOrderId}`,
+            `https://backend.shiphere.in/api/orders/updateOrderStatus/${selectedOrderId}`,
             updateBody,
             {
               headers: {
@@ -803,6 +804,8 @@ const NewOrderComponent = ({
               scroll={{ x: 800 }}
               style={{ overflowX: "auto" }}
             >
+            
+              
               <Column
                 title="Partner"
                 dataIndex="deliveryPartner"

@@ -37,7 +37,7 @@ const KYC = () => {
   useEffect(() => {
     const fetchKycData = async () => {
       try {
-        const response = await fetch("http://localhost:3001/api/kyc", {
+        const response = await fetch("https://backend.shiphere.in/api/kyc", {
           headers: {
             Authorization: localStorage.getItem("token"),
           },

@@ -29,7 +29,7 @@ const UploadPricingModel = ({ visible, onClose }) => {
 
     try {
       const response = await fetch(
-        "http://localhost:3001/api/shipping/upload-custom-pricing",
+        "https://backend.shiphere.in/api/shipping/upload-custom-pricing",
         {
           method: "POST",
           body: formData,

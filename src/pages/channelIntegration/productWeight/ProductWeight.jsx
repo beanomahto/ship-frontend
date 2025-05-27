@@ -36,7 +36,7 @@ const ProductWeightForm = () => {
     try {
       setFetching(true);
       const response = await axios.post(
-        "http://localhost:3001/api/orders/getproductdimensions",
+        "https://backend.shiphere.in/api/orders/getproductdimensions",
         {},
         {
           headers: {
@@ -58,7 +58,7 @@ const ProductWeightForm = () => {
   const handleDelete = async (productName) => {
     try {
       const response = await axios.post(
-        "http://localhost:3001/api/orders/deleteproductdimensions",
+        "https://backend.shiphere.in/api/orders/deleteproductdimensions",
         { productName },
         {
           headers: {
@@ -153,7 +153,7 @@ const ProductWeightForm = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:3001/api/orders/addproductdimensions",
+        "https://backend.shiphere.in/api/orders/addproductdimensions",
         payload,
         {
           headers: {

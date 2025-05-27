@@ -23,7 +23,7 @@ const ChannelIntegration = () => {
   const fetchChannels = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3001/api/integration/getAllApi",
+        "https://backend.shiphere.in/api/integration/getAllApi",
         {
           headers: {
             Authorization: localStorage.getItem("token"),
@@ -42,7 +42,7 @@ const ChannelIntegration = () => {
   const fetchAdminChannels = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3001/api/integration/getAllApiAdmin",
+        "https://backend.shiphere.in/api/integration/getAllApiAdmin",
         {
           headers: {
             Authorization: localStorage.getItem("token"),

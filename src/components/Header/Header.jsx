@@ -87,7 +87,7 @@ const Header = ({ darktheme }) => {
     try {
       // Send a POST request to the backend
       const response = await fetch(
-        "http://localhost:3001/api/phonepe/pay",
+        "https://backend.shiphere.in/api/phonepe/pay",
         {
           method: "POST",
           headers: {

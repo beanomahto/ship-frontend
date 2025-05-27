@@ -11,10 +11,10 @@ const useCreateShipment = () => {
     setLoading(true);
     setError(null);
     console.log(orderId);
-console.log(deliveryPartnerName)
+    console.log(deliveryPartnerName)
     const warehouseIds = warehouseId?._id;
     const fShipWarehouseId = warehouseId?.smartshipHubId;
-    //console.log(warehouseId);
+    console.log("This is the warehouse", warehouseIds);
 
     let orderIds = [];
     let orderWeight = [];
@@ -33,26 +33,29 @@ console.log(deliveryPartnerName)
     try {
       let url = "";
       let log = "";
-      const fshipUrl = "http://localhost:3001/api/smartship/hubregister";
+      const fshipUrl = "https://backend.shiphere.in/api/smartship/hubregister";
       const fshipCreateForwardOrderUrl =
-        "http://localhost:3001/api/smartship/onesteporderregister";
+        "https://backend.shiphere.in/api/smartship/onesteporderregister";
       const smartshipHupCheck =
-        "http://localhost:3001/api/smartship/checkhubserviceability";
+        "https://backend.shiphere.in/api/smartship/checkhubserviceability";
       const smartshipCarrierCheck =
-        "http://localhost:3001/api/smartship/getrate";
+        "https://backend.shiphere.in/api/smartship/getrate";
       const fshipCreateShipmentUrl =
-        "http://localhost:3001/api/smartship/createManifest";
+        "https://backend.shiphere.in/api/smartship/createManifest";
 
       switch (deliveryPartnerName) {
         case "Ecom Express":
-          url = "http://localhost:3001/api/ecomExpress/createShipment";
+          url = "https://backend.shiphere.in/api/ecomExpress/createShipment";
           log = "ecom hit";
           break;
         case "Shree Maruti":
-          url = "http://localhost:3001/api/maruti/booking";
+          url = "https://backend.shiphere.in/api/maruti/booking";
           log = "ok hit";
           break;
         case "Delhivery":
+          url = "https://backend.shiphere.in/api/deliveryOne/create";
+          log = "delhivery hit";
+          break;
         case "Amazon Shipping":
         case "Xpressbees":
         case "Blue Dart":
@@ -64,6 +67,9 @@ console.log(deliveryPartnerName)
           throw new Error("Invalid delivery partner");
       }
 
+      console.log("--------for delhivery checkpoint 1");
+
+
       const token = localStorage.getItem("token");
       if (
         [
@@ -71,11 +77,14 @@ console.log(deliveryPartnerName)
           "Blue Dart",
           "DTDC",
           "Shadowfax",
-          "Delhivery",
+          // "Delhivery",
           "Amazon Shipping",
           "Xpressbees",
         ].includes(deliveryPartnerName)
       ) {
+
+        console.log("---------------for delhivery checkpoint 2");
+
         if (fShipWarehouseId === 0) {
           const warehouseResponse = await axios.post(
             fshipUrl,
@@ -88,6 +97,9 @@ console.log(deliveryPartnerName)
               },
             }
           );
+
+          console.log("--------------for delhivery checkpoint 3", warehouseResponse);
+
 
           if (warehouseResponse.status === 200) {
             let courierId;
@@ -106,6 +118,8 @@ console.log(deliveryPartnerName)
               courierId,
               shippingPartner: deliveryPartnerName,
             };
+
+            console.log("---------for delhivery checkpoint 4");
 
             const checkHubServiceability = await axios.post(
               smartshipHupCheck,
@@ -139,6 +153,8 @@ console.log(deliveryPartnerName)
               shippingPartner: deliveryPartnerName,
             };
 
+            console.log("-------------for delhivery checkpoint 5");
+
             const forwardOrderResponse = await axios.post(
               fshipCreateForwardOrderUrl,
               forwardShipBody,
@@ -148,6 +164,8 @@ console.log(deliveryPartnerName)
                 },
               }
             );
+
+            console.log("---------------for delhivery checkpoint 6");
 
             const createShipmentResponse = await axios.post(
               fshipCreateShipmentUrl,
@@ -163,7 +181,7 @@ console.log(deliveryPartnerName)
 
             message.success(
               "Order shipped successfully with shipment created on warehouse " +
-                warehouseId?.warehouseName
+              warehouseId?.warehouseName
             );
             console.log("FShip createShipment API hit");
             console.log(createShipmentResponse);
@@ -188,6 +206,8 @@ console.log(deliveryPartnerName)
           else if (deliveryPartnerName === "Xpressbees") courierId = 368;
           else if (deliveryPartnerName === "Amazon Shipping") courierId = 357;
 
+          console.log("for delhivery checkpoint 7");
+
           fetchWarehouse();
 
           const hubCheckBody = {
@@ -197,6 +217,8 @@ console.log(deliveryPartnerName)
             shippingPartner: deliveryPartnerName,
           };
           console.log(hubCheckBody);
+
+          console.log("------------for delhivery checkpoint 8");
 
           const checkHubServiceability = await axios.post(
             smartshipHupCheck,
@@ -238,6 +260,8 @@ console.log(deliveryPartnerName)
             }
           );
 
+          console.log("-----------for delhivery checkpoint 9");
+
           const fhipApiOrderId = forwardOrderResponse.data?.apiorderid;
           console.log("noop", forwardOrderResponse);
           const awb =
@@ -261,7 +285,7 @@ console.log(deliveryPartnerName)
 
           message.success(
             "Order shipped successfully with shipment created on warehouse " +
-              warehouseId?.warehouseName
+            warehouseId?.warehouseName
           );
           //console.log('FShip createShipment API hit');
           //console.log(createShipmentResponse);
@@ -274,6 +298,8 @@ console.log(deliveryPartnerName)
           // }
         }
       } else if (deliveryPartnerName === "Ecom Express") {
+        console.log("This is the URL " + url);
+
         const response = await axios.post(
           url,
           {
@@ -287,20 +313,100 @@ console.log(deliveryPartnerName)
           }
         );
 
+        let awb = null;   //updated
+        if (deliveryPartnerName === "Ecom Express") {
+          awb = response.data?.shipment?.shipments?.[0]?.success;
+        } else if (deliveryPartnerName === "Shree Maruti") {
+          awb = response.data?.data?.data?.awbNumber;
+        }
+
         message.success(
           "Order shipped successfully on warehouse " +
-            warehouseId?.warehouseName
+          warehouseId?.warehouseName
         );
-        const awb = response.data?.shipment.shipments[0].success || false;
-        console.log("createdd", response.data);
-        console.log("awb in backend", awb);
+        // const awb = response.data?.shipment.shipments[0].success || false;
+        // console.log("created", response.data);
+        // console.log("awb in backend", awb);
 
         return { ...response.data, awb };
+      }
+      //////////new code
+      else if (deliveryPartnerName === "Delhivery") {
+        //////code for delhivery
+        //console.log("Code for delhivery");
+        //console.log("This is the URL " + url);
+
+        //for checking pincode serviceability
+
+        //console.log("There is the pincode", orderId?.order?.pincode);
+
+        const pincode = orderId?.order?.pincode;
+
+        
+        //console.log("===========",token);
+        
+        try {
+          const checkPincode = await axios.get(`https://backend.shiphere.in/api/deliveryOne/checkPincode/?pincode=${pincode}`,
+            {
+              headers: {
+                Authorization: `${token}`,
+              },
+            }
+          );
+
+          //console.log("Checking pincode serviceability",checkPincode);
+        
+
+        } catch (error) {
+          //console.log(error);
+          
+        }
+
+        //for creating shipment
+        const response = await axios.post(
+          url,
+          {
+            warehouseId: warehouseIds,
+            orderId: orderIds,
+          },
+          {
+            headers: {
+              Authorization: `${token}`,
+            },
+          }
+        );
+
+        //console.log("Order creation response-----", response);
+
+        ///for fetching waybill
+
+        try {
+          
+          const waybill=await axios.get(`https://backend.shiphere.in/api/deliveryOne/fetchWaybill`,{
+            headers: {
+              Authorization: `${token}`,
+            },
+          });
+
+          //console.log("--This ia waybill response",waybill);
+          //console.log("awb in backend", waybill.data.data);
+
+          return {...waybill.data,awb:waybill.data.data}
+          
+        } catch (error) {
+          //console.log(error);
+          
+          
+        }
+
+
+
+
       }
       else {
         try {
           const serviceability = await axios.post(
-            'http://localhost:3001/api/maruti/serviceability',
+            'https://backend.shiphere.in/api/maruti/serviceability',
             {
               warehouseId: warehouseIds,
               orderId: orderIds,
@@ -311,12 +417,12 @@ console.log(deliveryPartnerName)
               },
             }
           );
-        
+
           if (serviceability.status !== 200) {
             message.error("Order is not serviceable.");
             return;
           }
-        
+
           try {
             const bookingResponse = await axios.post(
               url,
@@ -330,18 +436,18 @@ console.log(deliveryPartnerName)
                 },
               }
             );
-        
+
             if (bookingResponse.status !== 200) {
               message.error("Failed to book the order. Please try again.");
               return;
             }
-        
+
             let awb = bookingResponse?.data?.data?.data?.awbNumber;
             let cawb = bookingResponse?.data?.data?.data?.cAwbNumber;
-        
+
             try {
               const manifestResponse = await axios.post(
-                'http://localhost:3001/api/maruti/manifest',
+                'https://backend.shiphere.in/api/maruti/manifest',
                 {
                   awbNumber: awb,
                   cAwbNumber: cawb,
@@ -352,20 +458,20 @@ console.log(deliveryPartnerName)
                   },
                 }
               );
-        
+
               if (manifestResponse.status !== 200) {
                 message.error("Failed to create manifest. Please try again.");
                 return;
               }
-        
+
               message.success(
                 `Order shipped successfully on warehouse ${warehouseId?.warehouseName || "N/A"}`
               );
-        
-              return { 
-                ...serviceability.data, 
-                bookingResponse: bookingResponse.data, 
-                manifestResponse: manifestResponse.data 
+
+              return {
+                ...serviceability.data,
+                bookingResponse: bookingResponse.data,
+                manifestResponse: manifestResponse.data
               };
             } catch (error) {
               message.error("Failed to create manifest. Please try again.");
@@ -375,7 +481,7 @@ console.log(deliveryPartnerName)
           }
         } catch (error) {
           message.error("Order is not serviceable.");
-        }       
+        }
       }
     } catch (err) {
       console.log(err);

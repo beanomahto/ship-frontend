@@ -4,7 +4,7 @@ const useShipNowCost = () => {
   const [loading, setLoading] = useState(false);
 
   const shipNowCost = async (orderId, wareHouseId) => {
-    //console.log(wareHouseId);
+    console.log("There is the warehouseid",wareHouseId);
     
     const success = handleInputErrors(orderId, wareHouseId);
     if (!success) return { success: false };
@@ -12,7 +12,7 @@ const useShipNowCost = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch("http://localhost:3001/api/shipping/getSingleDeliveryCost", {
+      const res = await fetch("https://backend.shiphere.in/api/shipping/getSingleDeliveryCost", {
         method: "POST",
         body: JSON.stringify({ orderId, wareHouseId }),
         headers: {
@@ -20,14 +20,15 @@ const useShipNowCost = () => {
           Authorization: `${token}`
         },
       });
-      // //console.log(await res.json());
 
       if (!res.ok) {
         throw new Error("Failed to fetch delivery cost. Please try again.");
       }
-
+      
       const data = await res.json();
-      //console.log(data?.result);
+      console.log("Response data:", data);
+      console.log("There is the data", data);
+      
       setLoading(false);
       return { success: true, cost: data.result };
     } catch (error) {

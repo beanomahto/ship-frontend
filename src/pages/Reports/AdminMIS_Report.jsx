@@ -41,7 +41,7 @@ const AdminMIS_Report = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:3001/api/report/misreport",
+        "https://backend.shiphere.in/api/report/misreport",
         {
           method: "POST",
           headers: {
@@ -90,7 +90,7 @@ const AdminMIS_Report = () => {
     console.log("ndr", data);
     try {
       const response = await fetch(
-        "http://localhost:3001/api/report/generatendr",
+        "https://backend.shiphere.in/api/report/generatendr",
         {
           method: "POST",
           headers: {
@@ -145,7 +145,7 @@ const AdminMIS_Report = () => {
     console.log("out", data);
     try {
       const response = await fetch(
-        "http://localhost:3001/api/report/outfordelivery",
+        "https://backend.shiphere.in/api/report/outfordelivery",
         {
           method: "POST",
           headers: {
@@ -199,7 +199,7 @@ const AdminMIS_Report = () => {
     console.log("transit", data);
     try {
       const response = await fetch(
-        "http://localhost:3001/api/report/getintransit",
+        "https://backend.shiphere.in/api/report/getintransit",
         {
           method: "POST",
           headers: {
@@ -250,7 +250,7 @@ const AdminMIS_Report = () => {
     console.log("wallet", data);
     try {
       const response = await fetch(
-        "http://localhost:3001/api/report/gettranscations",
+        "https://backend.shiphere.in/api/report/gettranscations",
         {
           method: "POST",
           headers: {
@@ -291,7 +291,7 @@ const AdminMIS_Report = () => {
     try {
       setLoadingSeller(true);
       const response = await fetch(
-        "http://localhost:3001/api/report/userdetailsexcel",
+        "https://backend.shiphere.in/api/report/userdetailsexcel",
         {
           method: "POST",
           headers: {

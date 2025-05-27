@@ -126,7 +126,7 @@ const WalletHistory = () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          "http://localhost:3001/api/recharge/getUserRecharge",
+          "https://backend.shiphere.in/api/recharge/getUserRecharge",
           {
             headers: {
               Authorization: `${token}`,

@@ -89,7 +89,7 @@ const Orders = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        "http://localhost:3001/api/integration/syncButton",
+        "https://backend.shiphere.in/api/integration/syncButton",
         {
           headers: {
             Authorization: localStorage.getItem("token"),
@@ -225,7 +225,7 @@ const Orders = () => {
   //       const rtoChargeWithGST = rtoCharge * (1 + gstRate);
 
   //       await fetch(
-  //         `http://localhost:3001/api/orders/updateOrderStatus/${orderId}`,
+  //         `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
   //         {
   //           method: "PUT",
   //           headers: {
@@ -262,7 +262,7 @@ const Orders = () => {
   //         // //console.log(walletRequest);
 
   //         await fetch(
-  //           `http://localhost:3001/api/transactions/decreaseAmount`,
+  //           `https://backend.shiphere.in/api/transactions/decreaseAmount`,
   //           {
   //             method: "POST",
   //             headers: {
@@ -403,7 +403,7 @@ const Orders = () => {
 
         // Update order status only if AWB is generated
         await fetch(
-          `http://localhost:3001/api/orders/updateOrderStatus/${orderId}`,
+          `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
           {
             method: "PUT",
             headers: {
@@ -439,7 +439,7 @@ const Orders = () => {
         for (const walletRequest of walletRequests) {
           try {
             await fetch(
-              `http://localhost:3001/api/transactions/decreaseAmount`,
+              `https://backend.shiphere.in/api/transactions/decreaseAmount`,
               {
                 method: "POST",
                 headers: {
@@ -598,7 +598,7 @@ const Orders = () => {
     const fetchData = async () => {
       try {
         const res = await fetch(
-          "http://localhost:3001/api/smartship/getcurrentstatus",
+          "https://backend.shiphere.in/api/smartship/getcurrentstatus",
           {
             headers: {
               Authorization: localStorage.getItem("token"),
@@ -739,7 +739,7 @@ const Orders = () => {
           };
           // console.log(updateBody);
           return axios.put(
-            `http://localhost:3001/api/orders/updateOrderStatus/${order.orderId}`,
+            `https://backend.shiphere.in/api/orders/updateOrderStatus/${order.orderId}`,
             updateBody,
             {
               headers: {
@@ -788,7 +788,7 @@ const Orders = () => {
 
           // try {
           //   const cancelResponse = await axios.put(
-          //     `http://localhost:3001/api/orders/updateOrderStatus/${orderId}`,
+          //     `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
           //     { status: "Cancelled" },
           //     { headers: { Authorization: `${token}` } }
           //   );
@@ -796,7 +796,7 @@ const Orders = () => {
 
           try {
             const cancelResponse = await fetch(
-              `http://localhost:3001/api/orders/updateOrderStatus/${orderId}`,
+              `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
               {
                 method: "PUT",
                 headers: {
@@ -818,7 +818,7 @@ const Orders = () => {
               };
 
               const walletResponse = await axios.post(
-                `http://localhost:3001/api/transactions/increaseAmount`,
+                `https://backend.shiphere.in/api/transactions/increaseAmount`,
                 walletRequestBody,
                 { headers: { Authorization: `${token}` } }
               );
@@ -872,6 +872,8 @@ const Orders = () => {
           selectedOrderId,
           warehouse?.warehouses?.[0]?._id
         );
+        console.log("-------costResponse", costResponse);
+        
         if (costResponse.success) {
           setDeliveryCosts(costResponse.cost || []);
         } else {
@@ -1134,7 +1136,7 @@ const Orders = () => {
     const processBatch = async (batch, isLastBatch) => {
       const requests = batch.map((orderId) =>
         axios.get(
-          `http://localhost:3001/api/shipping/getlabel/${orderId}`,
+          `https://backend.shiphere.in/api/shipping/getlabel/${orderId}`,
           {
             headers: { Authorization: `${token}` },
           }
@@ -1232,7 +1234,7 @@ const Orders = () => {
     const pageHeight = 841.89;
 
     const promises = selectedRowKeys.map((orderId) =>
-      fetch(`http://localhost:3001/api/shipping/getinvoice/${orderId}`, {
+      fetch(`https://backend.shiphere.in/api/shipping/getinvoice/${orderId}`, {
         headers: {
           Authorization: `${localStorage.getItem("token")}`,
         },
@@ -1397,7 +1399,7 @@ const Orders = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `http://localhost:3001/api/orders/deleteOrder/${id}`,
+        `https://backend.shiphere.in/api/orders/deleteOrder/${id}`,
         {
           headers: {
             Authorization: localStorage.getItem("token"),
@@ -1465,7 +1467,7 @@ const Orders = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:3001/api/orders/movedelivered",
+        "https://backend.shiphere.in/api/orders/movedelivered",
         {
           method: "POST",
           headers: {

@@ -45,7 +45,7 @@ const OpenWeightDispensory = ({ dataSource }) => {
         await Promise.all(
           entriesToUpdate.map(async (entry) => {
             await fetch(
-              `http://localhost:3001/api/weightdiscrepancy/updateStatus/${entry._id}`,
+              `https://backend.shiphere.in/api/weightdiscrepancy/updateStatus/${entry._id}`,
               {
                 method: "PUT",
                 headers: {

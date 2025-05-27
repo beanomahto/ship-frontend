@@ -26,7 +26,7 @@ const SearchSellerModal = ({ visible, onClose, weightDispensory }) => {
 
     try {
       const response = await fetch(
-        "http://localhost:3001/api/report/weightdispute", // Replace with your actual API endpoint
+        "https://backend.shiphere.in/api/report/weightdispute", // Replace with your actual API endpoint
         {
           method: "POST",
           headers: {

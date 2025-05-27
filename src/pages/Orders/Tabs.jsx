@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { Button, Popover, Table, Tabs, Modal, Upload, message  } from 'antd';
 import { ThunderboltOutlined } from '@ant-design/icons';
+import { Button, Table, Tabs } from 'antd';
+import moment from 'moment';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useOrderContext } from '../../context/OrderContext';
 import BulkOrderUploadModal from './BulkOrder/BulkOrder';
-import moment from 'moment';
 import ShipNowModel from './ShipNow/ShipNowModel';
 
 const { TabPane } = Tabs;
@@ -219,7 +219,8 @@ const Orders = () => {
               </div>}
               <span style={{ marginLeft: 8 }}>{hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}</span>
             </div>
-            <Table className='table' rowSelection={rowSelection} scroll={{ y: 350 }} columns={tab.columns} dataSource={tab.dataSource} />
+            {/* here is that table */}
+            <Table className='table' rowSelection={rowSelection} scroll={{ y: 350 }} columns={tab.columns} dataSource={tab.dataSource} />   
           </TabPane>
         ))}
       </Tabs>

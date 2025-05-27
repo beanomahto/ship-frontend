@@ -46,13 +46,13 @@ const CheckPincode = () => {
       setError("");
       setLoading(true); // Start loading
       // const response = await axios.get(
-      //   `http://localhost:3001/api/pincode/delivery-partners/${pincode}`,
+      //   `https://backend.shiphere.in/api/pincode/delivery-partners/${pincode}`,
       //   {
       //     params: { pincode },
       //   }
       // );
       const response = await fetch(
-        `http://localhost:3001/api/delivery-partners/${pincode}`,
+        `https://backend.shiphere.in/api/delivery-partners/${pincode}`,
         {
           method: "GET",
           headers: {

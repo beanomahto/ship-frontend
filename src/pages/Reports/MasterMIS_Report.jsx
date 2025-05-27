@@ -32,7 +32,7 @@ const AdminMIS_Report = () => {
     const data = { startDate: misStartDate, endDate: misEndDate };
     try {
       const response = await fetch(
-        "http://localhost:3001/api/report/getmisreport",
+        "https://backend.shiphere.in/api/report/getmisreport",
         {
           method: "POST",
           headers: {
@@ -69,7 +69,7 @@ const AdminMIS_Report = () => {
     const data = { startDate: ndrStartDate, endDate: ndrEndDate };
     try {
       const response = await fetch(
-        "http://localhost:3001/api/report/getndrreport",
+        "https://backend.shiphere.in/api/report/getndrreport",
         {
           method: "POST",
           headers: {
@@ -109,7 +109,7 @@ const AdminMIS_Report = () => {
     };
     try {
       const response = await fetch(
-        "http://localhost:3001/api/report/outfordeliveryseller",
+        "https://backend.shiphere.in/api/report/outfordeliveryseller",
         {
           method: "POST",
           headers: {
@@ -148,7 +148,7 @@ const AdminMIS_Report = () => {
     const data = { startDate: inTransitStartDate, endDate: inTransitEndDate };
     try {
       const response = await fetch(
-        "http://localhost:3001/api/report/getintransitseller",
+        "https://backend.shiphere.in/api/report/getintransitseller",
         {
           method: "POST",
           headers: {
@@ -185,7 +185,7 @@ const AdminMIS_Report = () => {
     const data = { startDate: walletStartDate, endDate: walletEndDate };
     try {
       const response = await fetch(
-        "http://localhost:3001/api/report/gettranscationsseller",
+        "https://backend.shiphere.in/api/report/gettranscationsseller",
         {
           method: "POST",
           headers: {

@@ -42,7 +42,7 @@ const Tracking = () => {
 
         if (fShipPartner) {
           const response = await axios.post(
-            `http://localhost:3001/api/smartship/tracksmartshiporder`,
+            `https://backend.shiphere.in/api/smartship/tracksmartshiporder`,
             {
               awb,
             }
@@ -50,22 +50,22 @@ const Tracking = () => {
           setTrackingInfo(response.data);
           console.log("response", response.data);
         } else {
-          //  console.log(`http://localhost:3001/api/Xpressbees/track/${awb}`);
-          // const response = await axios.get(`http://localhost:3001/api/${shippingPartner.replace(/\s+/g, '')}/track/${awb}`);
+          //  console.log(`https://backend.shiphere.in/api/Xpressbees/track/${awb}`);
+          // const response = await axios.get(`https://backend.shiphere.in/api/${shippingPartner.replace(/\s+/g, '')}/track/${awb}`);
           // if (splitPartners.toLowerCase() === "xpressbees") {
           //   const response = await axios.get(
-          //     `http://localhost:3001/api/xpressbees/track/${awb}`
+          //     `https://backend.shiphere.in/api/xpressbees/track/${awb}`
           //   );
           //   console.log(response);
           const response = await axios.get(
-            `http://localhost:3001/api/${shippingPartner.replace(
+            `https://backend.shiphere.in/api/${shippingPartner.replace(
               /\s+/g,
               ""
             )}/track/${awb}`
           );
           if (shippingPartner.toLowerCase() === "ecom express") {
             const response = await axios.get(
-              `http://localhost:3001/api/${shippingPartner.replace(
+              `https://backend.shiphere.in/api/${shippingPartner.replace(
                 /\s+/g,
                 ""
               )}/track/${awb}`
@@ -116,7 +116,7 @@ const Tracking = () => {
     //   try {
     //     const token = localStorage.getItem("token");
     //     const response = await axios.get(
-    //       "http://localhost:3001/api/customiseTrack/get-advertisement",
+    //       "https://backend.shiphere.in/api/customiseTrack/get-advertisement",
     //       {
     //         headers: { Authorization: `${token}` },
     //       }
@@ -145,7 +145,7 @@ const Tracking = () => {
         console.log("Token:", token);
 
         const response = await axios.get(
-          "http://localhost:3001/api/customiseTrack/get-advertisement",
+          "https://backend.shiphere.in/api/customiseTrack/get-advertisement",
           {
             headers: { Authorization: `${token}` },
           }
@@ -304,7 +304,7 @@ export default Tracking;
 
 //         if (fShipPartner) {
 //           const response = await axios.post(
-//             `http://localhost:3001/api/smartship/tracksmartshiporder`,
+//             `https://backend.shiphere.in/api/smartship/tracksmartshiporder`,
 //             {
 //               awb,
 //             }
@@ -313,7 +313,7 @@ export default Tracking;
 //           console.log("okkkkkkkkkk", response.data);
 //         } else {
 //           const response = await axios.get(
-//             `http://localhost:3001/api/${shippingPartner.replace(
+//             `https://backend.shiphere.in/api/${shippingPartner.replace(
 //               /\s+/g,
 //               ""
 //             )}/track/${awb}`

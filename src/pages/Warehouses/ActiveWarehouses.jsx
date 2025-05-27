@@ -23,7 +23,7 @@ const ActiveWarehouses = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `http://localhost:3001/api/warehouses/deleteWarehouse/${id}`,
+        `https://backend.shiphere.in/api/warehouses/deleteWarehouse/${id}`,
         {
           headers: {
             Authorization: localStorage.getItem("token"),

@@ -50,7 +50,7 @@ const useCreateSingleOrder = () => {
       console.log("hi");
       
       const token = localStorage.getItem('token');
-      const res = await fetch("http://localhost:3001/api/orders/createOrder", {
+      const res = await fetch("https://backend.shiphere.in/api/orders/createOrder", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `${token}`, },
         body: JSON.stringify({

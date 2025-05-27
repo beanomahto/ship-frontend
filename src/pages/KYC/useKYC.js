@@ -28,7 +28,7 @@ const useKYC = () => {
                 formDataToSubmit.append('files', formData.pancardUrl, formData.pancardUrl.name);
             }
 
-            const response = await fetch('http://localhost:3001/api/kyc/create', {
+            const response = await fetch('https://backend.shiphere.in/api/kyc/create', {
                 method: 'POST',
                 headers: {
                     Authorization: localStorage.getItem('token'),

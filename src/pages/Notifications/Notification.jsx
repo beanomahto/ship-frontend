@@ -10,7 +10,7 @@ const Notification = () => {
     const fetchNotifications = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3001/api/notifcation/getallnotifications",
+          "https://backend.shiphere.in/api/notifcation/getallnotifications",
           {
             headers: {
               Authorization: localStorage.getItem("token"),

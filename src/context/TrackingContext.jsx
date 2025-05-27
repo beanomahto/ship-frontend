@@ -27,14 +27,14 @@ export const TrackingContextProvider = ({ children }) => {
         //console.log(fShipPartner);
         
        if (fShipPartner) {
-        const response = await axios.post(`http://localhost:3001/api/smartship/tracksmartshiporder`,{
+        const response = await axios.post(`https://backend.shiphere.in/api/smartship/tracksmartshiporder`,{
           awb
         });
         setTrackingInfo(response.data);
         //console.log(response.data);
         
        } else {
-        const response = await axios.get(`http://localhost:3001/api/${shippingPartner?.replace(/\s+/g, '')}/track/${awb}`);
+        const response = await axios.get(`https://backend.shiphere.in/api/${shippingPartner?.replace(/\s+/g, '')}/track/${awb}`);
 
         if (shippingPartner.toLowerCase() === 'ecom express') {
           const parser = new DOMParser();

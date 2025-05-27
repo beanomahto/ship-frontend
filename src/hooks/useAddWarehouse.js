@@ -31,7 +31,7 @@ const useAddWarehouse = () => {
 		setLoading(true);
 		try {
 			const token = localStorage.getItem('token');
-			const res = await fetch("http://localhost:3001/api/warehouses/createWarehouse", {
+			const res = await fetch("https://backend.shiphere.in/api/warehouses/createWarehouse", {
 				method: "POST",
 				headers: { "Content-Type": "application/json", Authorization: `${token}`, },
 				body: JSON.stringify({ warehouseName, contactPerson, contactEmail, contactNumber, pincode, city, state, address, landmark, country }),

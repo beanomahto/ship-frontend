@@ -16,7 +16,7 @@ export const PaymentUserContextProvider = ({ children }) => {
             try {
                 setLoading(true);
                 const token = localStorage.getItem('token');
-                const response = await fetch('http://localhost:3001/api/recharge/getAllRecharges', {
+                const response = await fetch('https://backend.shiphere.in/api/recharge/getAllRecharges', {
                     headers: {
                         Authorization: `${token}`,
                     },

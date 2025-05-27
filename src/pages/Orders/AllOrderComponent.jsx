@@ -109,7 +109,7 @@ const AllOrderComponent = ({
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `http://localhost:3001/api/orders/deleteOrder/${id}`,
+        `https://backend.shiphere.in/api/orders/deleteOrder/${id}`,
         {
           headers: {
             Authorization: localStorage.getItem("token"),

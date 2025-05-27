@@ -35,7 +35,7 @@ const ExtradeliveredOrder = () => {
     const fetchDeliveredOrders = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3001/api/orders/getdelivered", // Backend endpoint
+          "https://backend.shiphere.in/api/orders/getdelivered", // Backend endpoint
           {
             method: "POST", // Change to POST to match the backend route
             headers: {
@@ -141,7 +141,7 @@ const ExtradeliveredOrder = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `http://localhost:3001/api/orders/deleteOrder/${id}`,
+        `https://backend.shiphere.in/api/orders/deleteOrder/${id}`,
         {
           headers: {
             Authorization: localStorage.getItem("token"),

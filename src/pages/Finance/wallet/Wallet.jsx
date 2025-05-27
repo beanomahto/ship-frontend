@@ -178,7 +178,7 @@ const Wallet = () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          "http://localhost:3001/api/transactions/getTransactions",
+          "https://backend.shiphere.in/api/transactions/getTransactions",
           {
             headers: {
               Authorization: `${token}`,
@@ -204,7 +204,7 @@ const Wallet = () => {
           setDeleting(true);
           const token = localStorage.getItem("token");
           await axios.post(
-            "http://localhost:3001/api/transactions/deletetransaction",
+            "https://backend.shiphere.in/api/transactions/deletetransaction",
             { transactionIds: selectedRowKeys },
             {
               headers: {

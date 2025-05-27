@@ -28,7 +28,7 @@ const VerifyKyc = () => {
     const fetchKycData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch(`http://localhost:3001/api/kyc/${id}`, {
+        const response = await fetch(`https://backend.shiphere.in/api/kyc/${id}`, {
           headers: { Authorization: `${token}` },
         });
         if (!response.ok) throw new Error("Failed to fetch KYC data");
@@ -61,7 +61,7 @@ const VerifyKyc = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:3001/api/kyc/verify/${id}`,
+        `https://backend.shiphere.in/api/kyc/verify/${id}`,
         {
           method: "POST",
           headers: {
@@ -86,7 +86,7 @@ const VerifyKyc = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:3001/api/kyc/update/${id}`,
+        `https://backend.shiphere.in/api/kyc/update/${id}`,
         {
           method: "PUT",
           headers: {
@@ -122,7 +122,7 @@ const VerifyKyc = () => {
   const handleOk = async () => {
     console.log("Remark:", remark); 
     try {
-        const response = await fetch(`http://localhost:3001/api/kyc/remove/${id}` , {
+        const response = await fetch(`https://backend.shiphere.in/api/kyc/remove/${id}` , {
             method: 'POST',
             headers: {
                 Authorization: localStorage.getItem('token'),

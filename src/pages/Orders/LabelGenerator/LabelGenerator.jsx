@@ -26,7 +26,7 @@ const LabelGenerator = ({ orderIds }) => {
       const token = localStorage.getItem('token');
       const labels = await Promise.all(
         orderIds.map(async (orderId) => {
-          const response = await axios.get(`http://localhost:3001/api/shipping/getlabel/${orderId}`, {
+          const response = await axios.get(`https://backend.shiphere.in/api/shipping/getlabel/${orderId}`, {
             headers: {
               Authorization: `${token}`,
             },

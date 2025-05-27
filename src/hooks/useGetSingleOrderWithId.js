@@ -10,7 +10,7 @@ const useGetSingleOrderWithId = () => {
         setLoading(true);
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get(`http://localhost:3001/api/orders/${orderId}`, {
+            const response = await axios.get(`https://backend.shiphere.in/api/orders/${orderId}`, {
                 headers: {
                     Authorization: `${token}`
                 }

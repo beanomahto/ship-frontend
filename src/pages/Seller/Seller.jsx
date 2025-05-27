@@ -44,7 +44,7 @@ const Seller = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/users", {
+      const response = await fetch("https://backend.shiphere.in/api/users", {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
@@ -152,7 +152,7 @@ const Seller = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `http://localhost:3001/api/users/deleteUser/${id}`,
+        `https://backend.shiphere.in/api/users/deleteUser/${id}`,
         {
           headers: {
             Authorization: localStorage.getItem("token"),
