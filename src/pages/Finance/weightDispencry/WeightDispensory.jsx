@@ -41,7 +41,7 @@ const WeightDispensory = () => {
   const fetchWeightDespensory = async () => {
     try {
       const res = await fetch(
-        "https://backend.shiphere.in/api/weightdiscrepancy/getweightdiscrepancy",
+        "http://localhost:5000/api/weightdiscrepancy/getweightdiscrepancy",
         {
           headers: {
             Authorization: localStorage.getItem("token"),

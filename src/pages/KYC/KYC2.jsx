@@ -27,7 +27,7 @@ const VerifyKyc = () => {
     const fetchKycData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch(`https://backend.shiphere.in/api/kyc/${id}`, {
+        const response = await fetch(`http://localhost:5000/api/kyc/${id}`, {
           headers: {
             Authorization: `${token}`,
           },
@@ -73,7 +73,7 @@ const VerifyKyc = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `https://backend.shiphere.in/api/users/updateVerify/${id}`,
+        `http://localhost:5000/api/users/updateVerify/${id}`,
         {
           method: "POST",
           headers: {

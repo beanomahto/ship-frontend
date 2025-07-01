@@ -112,7 +112,7 @@ const OutForDelivery = ({
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `https://backend.shiphere.in/api/orders/deleteOrder/${id}`,
+        `http://localhost:5000/api/orders/deleteOrder/${id}`,
         {
           headers: {
             Authorization: localStorage.getItem("token"),

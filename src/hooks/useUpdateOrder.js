@@ -10,7 +10,7 @@ const useUpdateOrder = () => {
         setLoading(true);
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.put(`https://backend.shiphere.in/api/orders/updateOrder/${updatedOrderData._id}`, updatedOrderData, {
+            const response = await axios.put(`http://localhost:5000/api/orders/updateOrder/${updatedOrderData._id}`, updatedOrderData, {
                 headers: {
                     Authorization: `${token}`,
                 },

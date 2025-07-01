@@ -73,7 +73,7 @@ const Dashboard = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          "https://backend.shiphere.in/api/remittance/getremittance",
+          "http://localhost:5000/api/remittance/getremittance",
           {
             headers: {
               Authorization: `${token}`,

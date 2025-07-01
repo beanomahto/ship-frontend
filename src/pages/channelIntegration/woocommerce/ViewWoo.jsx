@@ -21,7 +21,7 @@ const ViewWoo = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          `https://backend.shiphere.in/api/integration/getApi/${slug}`,
+          `http://localhost:5000/api/integration/getApi/${slug}`,
           {
             headers: {
               Authorization: `${token}`,
@@ -70,7 +70,7 @@ const integrateWooCommerceChannel = async () => {
   try {
     const token = localStorage.getItem("token");
     const res = await fetch(
-      `https://backend.shiphere.in/api/integration/createApi`,
+      `http://localhost:5000/api/integration/createApi`,
       {
         method: "POST",
         headers: {
@@ -93,7 +93,7 @@ const integrateWooCommerceChannel = async () => {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        `https://backend.shiphere.in/api/integration/updateApi/${slug}`,
+        `http://localhost:5000/api/integration/updateApi/${slug}`,
         {
           method: "PUT",
           headers: {

@@ -75,7 +75,7 @@ export const AuthContextProvider = ({ children }) => {
   const fetchBalance = async () => {
     try {
       const response = await fetch(
-        "https://backend.shiphere.in/api/auth/get-balance",
+        "http://localhost:5000/api/auth/get-balance",
         {
           headers: {
             Authorization: localStorage.getItem("token"),

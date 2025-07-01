@@ -6,7 +6,7 @@ const useFetchAndUpdateOrders = (fetchOrders) => {
     const fetchData = async () => {
       try {
         const res = await fetch(
-          "https://backend.shiphere.in/api/smartship/getcurrentstatus",
+          "http://localhost:5000/api/smartship/getcurrentstatus",
           {
             headers: {
               Authorization: localStorage.getItem("token"),
@@ -57,7 +57,7 @@ const useFetchAndUpdateOrders = (fetchOrders) => {
           };
 
           return axios.put(
-            `https://backend.shiphere.in/api/orders/updateOrderStatus/${order.orderId}`,
+            `http://localhost:5000/api/orders/updateOrderStatus/${order.orderId}`,
             updateBody,
             {
               headers: {

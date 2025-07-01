@@ -86,17 +86,14 @@ const Header = ({ darktheme }) => {
 
     try {
       // Send a POST request to the backend
-      const response = await fetch(
-        "https://backend.shiphere.in/api/phonepe/pay",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `${token}`, // Include the token in the Authorization header
-          },
-          body: JSON.stringify({ amount: rechargeAmount }), // Send the amount as JSON
-        }
-      );
+      const response = await fetch("http://localhost:5000/api/phonepe/pay", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`, // Include the token in the Authorization header
+        },
+        body: JSON.stringify({ amount: rechargeAmount }), // Send the amount as JSON
+      });
 
       // console.log("Response: pay", response);
 

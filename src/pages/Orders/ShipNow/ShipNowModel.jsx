@@ -17,6 +17,7 @@ const ShipNowModel = ({
 }) => {
   const { deliveryPartners } = useDeliveryPartner();
   const { warehouse } = useWarehouseContext();
+  //console.log("warehouse", warehouse);
   const { shipNowCost } = useShipNowCost();
 
   const defaultWarehouse = warehouse?.warehouses?.[0];

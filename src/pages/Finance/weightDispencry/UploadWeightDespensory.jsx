@@ -65,7 +65,7 @@ const UploadWeightDespensory = ({
     for (const email of sellerEmails) {
       try {
         const response = await axios.get(
-          "https://backend.shiphere.in/api/users/search",
+          "http://localhost:5000/api/users/search",
           {
             params: { query: email },
             headers: {
@@ -100,7 +100,7 @@ const UploadWeightDespensory = ({
 
     try {
       const response = await fetch(
-        "https://backend.shiphere.in/api/weightdiscrepancy/uploadweightdiscrepancy",
+        "http://localhost:5000/api/weightdiscrepancy/uploadweightdiscrepancy",
         {
           method: "POST",
           body: formData,
@@ -154,7 +154,7 @@ const UploadWeightDespensory = ({
             console.log(walletRequestBody);
 
             const response = await fetch(
-              "https://backend.shiphere.in/api/transactions/increaseAmount",
+              "http://localhost:5000/api/transactions/increaseAmount",
               {
                 method: "POST",
                 headers: {
@@ -230,7 +230,7 @@ const UploadWeightDespensory = ({
 
         try {
           const response = await axios.post(
-            "https://backend.shiphere.in/api/transactions/decreaseAmount",
+            "http://localhost:5000/api/transactions/decreaseAmount",
             walletRequestBody,
             {
               headers: {

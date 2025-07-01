@@ -65,7 +65,7 @@ const ActionRequired = ({
         await Promise.all(
           entriesToUpdate.map(async (entry) => {
             await fetch(
-              `https://backend.shiphere.in/api/weightdiscrepancy/updateStatus/${entry._id}`,
+              `http://localhost:5000/api/weightdiscrepancy/updateStatus/${entry._id}`,
               {
                 method: "PUT",
                 headers: {

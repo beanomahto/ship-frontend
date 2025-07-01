@@ -154,7 +154,7 @@ const TagEmployee = ({ visible, onClose, selectedSeller }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "https://backend.shiphere.in/api/employee/getEmployees",
+        "http://localhost:5000/api/employee/getEmployees",
         {
           headers: {
             Authorization: `${token}`,
@@ -186,7 +186,7 @@ const TagEmployee = ({ visible, onClose, selectedSeller }) => {
     if (selectedSeller) {
       try {
         const response = await axios.post(
-          "https://backend.shiphere.in/api/employee/assignSeller",
+          "hhttp://localhost:5000/api/employee/assignSeller",
           {
             employeeId: employee._id,
             sellerData: selectedSeller,

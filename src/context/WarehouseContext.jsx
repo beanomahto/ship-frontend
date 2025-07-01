@@ -16,7 +16,7 @@ export const WarehouseContextProvider = ({ children }) => {
             try {
                 setLoading(true);
                 const token = localStorage.getItem('token');
-                const response = await fetch('https://backend.shiphere.in/api/warehouses/getAllWarehouse', {
+                const response = await fetch('http://localhost:5000/api/warehouses/getAllWarehouse', {
                     headers: {
                         Authorization: `${token}`,
                     },

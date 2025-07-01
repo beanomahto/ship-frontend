@@ -38,7 +38,7 @@ const EarlyCodPopup = ({ visible, onClose }) => {
     
     const token = localStorage.getItem('token');
     try {
-      const response = await axios.put('https://backend.shiphere.in/api/users/updateEarlyCod', {
+      const response = await axios.put('http://localhost:5000/api/users/updateEarlyCod', {
         earlyCod:earlyCod,
       }, {
         headers: {

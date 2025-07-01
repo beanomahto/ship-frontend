@@ -21,7 +21,7 @@ const BulkOrderUploadModal = ({ visible, onClose }) => {
 
     try {
       const response = await fetch(
-        "https://backend.shiphere.in/api/orders/createBulkOrder",
+        "http://localhost:5000/api/orders/createBulkOrder",
         {
           method: "POST",
           body: formData,

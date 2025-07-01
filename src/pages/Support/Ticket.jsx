@@ -21,7 +21,7 @@ const Ticket = () => {
   const fetchComplaints = async () => {
     try {
       const res = await fetch(
-        "https://backend.shiphere.in/api/complaint/complaints",
+        "http://localhost:5000/api/complaint/complaints",
         {
           headers: {
             Authorization: localStorage.getItem("token"),
@@ -65,7 +65,7 @@ const Ticket = () => {
 
     try {
       const response = await fetch(
-        `https://backend.shiphere.in/api/complaint/remedy/${currentComplaint._id}`,
+        `http://localhost:5000/api/complaint/remedy/${currentComplaint._id}`,
         {
           method: "PUT",
           headers: {

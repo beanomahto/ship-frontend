@@ -106,7 +106,7 @@ const NDR = () => {
       await fetchOrders();
       try {
         const res = await fetch(
-          "https://backend.shiphere.in/api/smartship/getcurrentstatus",
+          "http://localhost:5000/api/smartship/getcurrentstatus",
           {
             headers: {
               Authorization: localStorage.getItem("token"),
@@ -139,7 +139,7 @@ const NDR = () => {
                   };
     
                   const forwardWalletResponse = await axios.post(
-                    "https://backend.shiphere.in/api/transactions/decreaseAmount",
+                    "http://localhost:5000/api/transactions/decreaseAmount",
                     forwardWalletRequestBody,
                     {
                       headers: {
@@ -156,7 +156,7 @@ const NDR = () => {
                       };
     
                       await axios.put(
-                        `https://backend.shiphere.in/api/orders/updateOrderStatus/${order._id}`,
+                        `http://localhost:5000/api/orders/updateOrderStatus/${order._id}`,
                         updateBody,
                         {
                           headers: {
@@ -238,7 +238,7 @@ const NDR = () => {
           // console.log(updateBody);
 
           return axios.put(
-            `https://backend.shiphere.in/api/orders/updateOrderStatus/${order.orderId}`,
+            `http://localhost:5000/api/orders/updateOrderStatus/${order.orderId}`,
             updateBody,
             {
               headers: {

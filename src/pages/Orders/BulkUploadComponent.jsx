@@ -47,7 +47,7 @@ const BulkUploadComponent = ({ dataSource, fetchOrders, loading,tab }) => {
       // Iterate over each selected order
       for (const orderId of selectedRowKeys) {
         // Fetch the current order details first
-        const orderResponse = await axios.get(`https://backend.shiphere.in/api/orders/${orderId}`,{
+        const orderResponse = await axios.get(`http://localhost:5000/api/orders/${orderId}`,{
             headers: {
                 'Authorization': localStorage.getItem('token')
                 }
@@ -76,7 +76,7 @@ const BulkUploadComponent = ({ dataSource, fetchOrders, loading,tab }) => {
   
         // Send the update request with the complete order data
         const updateResponse = await axios.put(
-          `https://backend.shiphere.in/api/orders/updateOrder/${orderId}`,
+          `http://localhost:5000/api/orders/updateOrder/${orderId}`,
           updatedOrderData,{
             headers: {
                 'Authorization': localStorage.getItem('token'),

@@ -16,7 +16,7 @@ const Pricing = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          "https://backend.shiphere.in/api/shipping/rateCard",
+          "http://localhost:5000/api/shipping/rateCard",
           {
             headers: {
               Authorization: `${token}`,
@@ -52,7 +52,7 @@ const Pricing = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        "https://backend.shiphere.in/api/shipping/download-custom-pricing",
+        "http://localhost:5000/api/shipping/download-custom-pricing",
         {
           method: "POST", // Use POST method
           headers: {
