@@ -355,9 +355,9 @@ const useCreateShipment = () => {
             }
           );
 
-          //console.log("Checking pincode serviceability",checkPincode);
+          console.log("Checking pincode serviceability", checkPincode);
         } catch (error) {
-          //console.log(error);
+          // console.log(error);
         }
 
         //for creating shipment
