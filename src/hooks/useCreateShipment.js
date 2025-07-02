@@ -59,6 +59,10 @@ const useCreateShipment = () => {
           log = "delhivery hit";
           break;
         case "Amazon Shipping":
+          url = "http://localhost:5000/api/amazon/oneclickshipment";
+          // url = "http://localhost:5000/api/amazon/purchaseshipment";
+          log = "amazon hit";
+          break;
         case "Xpressbees":
         case "Blue Dart":
         case "Ekart":
@@ -68,6 +72,7 @@ const useCreateShipment = () => {
         default:
           throw new Error("Invalid delivery partner");
       }
+      console.log(log);
 
       console.log("--------for delhivery checkpoint 1");
 
@@ -79,7 +84,7 @@ const useCreateShipment = () => {
           "DTDC",
           "Shadowfax",
           // "Delhivery",
-          "Amazon Shipping",
+          // "Amazon Shipping",
           "Xpressbees",
         ].includes(deliveryPartnerName)
       ) {
@@ -331,6 +336,38 @@ const useCreateShipment = () => {
         // console.log("awb in backend", awb);
 
         return { ...response.data, awb };
+      }
+      // amazon shipping
+      else if (deliveryPartnerName === "Amazon Shipping") {
+        console.log("Amazon URL " + url);
+        //for creating shipment
+
+        try {
+          const response = await axios.post(
+            url,
+            {
+              warehouseId: warehouseIds,
+              orderId: orderIds,
+            },
+            {
+              headers: {
+                Authorization: `${token}`,
+              },
+            }
+          );
+          //console.log("Order creation response-----", response);
+          const res = response.data;
+          console.log("this is the amazon shipping response ", res);
+
+          // const waybill = response?.data?.data?.packages?.[0]?.waybill;
+          const waybill = false;
+
+          console.log("waybill ---------------------", waybill);
+          //console.log("awb in backend", waybill.data.waybill);
+          return { awb: waybill };
+        } catch (error) {
+          console.log(error);
+        }
       }
       //////////new code
       else if (deliveryPartnerName === "Delhivery") {
