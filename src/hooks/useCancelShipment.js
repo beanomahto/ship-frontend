@@ -63,7 +63,7 @@ const useCancelShipment = () => {
           //   break;
           case "Delhivery":
             url = "http://localhost:5000/api/deliveryOne/cancelShipment";
-            log = "delhivery hit";
+            log = "Delhivery hit";
             break;
           case "Xpressbees":
           case "Blue Dart":
@@ -78,20 +78,16 @@ const useCancelShipment = () => {
         }
 
         if (
-          [
-            "Ekart",
-            "Blue Dart",
-            "DTDC",
-            "Shadowfax",
-            "Delhivery",
-            "Xpressbees",
-          ].includes(deliveryPartnerName)
+          ["Ekart", "Blue Dart", "DTDC", "Shadowfax", "Xpressbees"].includes(
+            deliveryPartnerName
+          )
         ) {
           const response = await axios.post(
             url,
             {
               // reason: 'Something Else',
-              waybill: orderAwb,
+              // waybill: orderAwb,
+              orderId: orderId,
             },
             {
               headers: {
@@ -146,6 +142,21 @@ const useCancelShipment = () => {
         //   //console.log(log);
         //   return response.data;
         // }
+        else if (deliveryPartnerName === "Delhivery") {
+          console.log("OrderAWB", orderAwb);
+          const response = await axios.post(
+            url,
+            {
+              waybill: orderAwb,
+            },
+            {
+              headers: {
+                Authorization: `${token}`,
+              },
+            }
+          );
+          return response.data;
+        }
       });
 
       const responses = await Promise.all(cancelRequests);
