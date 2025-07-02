@@ -122,191 +122,7 @@ const Orders = () => {
     );
     setSelectedOrderData(selectedData);
   };
-  // //console.log(selectedWarehouseId);
 
-  // const handleShipNow = async (
-  //   selectedRowKeys,
-  //   selectedWarehouse,
-  //   selectedDeliveryPartner
-  // ) => {
-  //   // //console.log(selectedRowKeys);
-  //   // //console.log(selectedWarehouse);
-  //   // //console.log(selectedDeliveryPartner);
-  //   setSelectedWarehouseId(selectedWarehouse);
-  //   const selectedRows = selectedOrderData?.map((ordId) => ordId?._id);
-  //   // //console.log(selectedRows);
-
-  //   if (selectedRows.length === 0) {
-  //     message.warning("Please select at least one order to ship.");
-  //     return;
-  //   }
-
-  //   message.loading({
-  //     content: "Processing shipment...",
-  //     key: "processing",
-  //     duration: 0,
-  //   });
-
-  //   try {
-  //     const updatedOrders = [];
-  //     const unmatchedOrders = [];
-
-  //     for (const orderId of selectedRowKeys) {
-  //       const order = orders?.orders.find((order) => order._id === orderId);
-  //       if (!order) continue;
-  //       // console.log("orderId", orderId);
-  //       // console.log("order", order);
-
-  //       let forwardCharge, codCharge, rtoCharge;
-
-  //       try {
-  //         const costData = await shipNowCost(orderId, selectedWarehouse?._id);
-  //         console.log("Cost Data for Order:", costData);
-
-  //         const matchedCost = costData?.cost?.find(
-  //           (cost) => cost.deliveryPartner === selectedDeliveryPartner.name
-  //         );
-
-  //         if (!matchedCost) {
-  //           unmatchedOrders.push(order.orderId); // Track unmatched orders
-  //           continue; // Skip to the next order
-  //         }
-  //         // forwardCharge = costData?.cost?.find(
-  //         //   (cost) => cost.deliveryPartner === selectedDeliveryPartner.name
-  //         // )?.forwardCost;
-
-  //         // codCharge = costData?.cost?.find(
-  //         //   (cost) => cost.deliveryPartner === selectedDeliveryPartner.name
-  //         // )?.codCost;
-
-  //         // rtoCharge = costData?.cost?.find(
-  //         //   (cost) => cost.deliveryPartner === selectedDeliveryPartner.name
-  //         // )?.rtoCost;
-  //         forwardCharge = matchedCost.forwardCost;
-  //         codCharge = matchedCost.codCost;
-  //         rtoCharge = matchedCost.rtoCost;
-
-  //         // console.log(rtoCharge +" "+ forwardCharge +" " + codCharge);
-  //       } catch (error) {
-  //         console.error("Error in shipOrder or shipNowCost:", error);
-  //         message.error(
-  //           "Failed to calculate shipping cost or ship order. Please try again."
-  //         );
-  //         continue;
-  //       }
-
-  //       try {
-  //         // //console.log('Calling shipOrder with:', { order, selectedWarehouse, selectedDeliveryPartner });
-  //         await shipOrder(
-  //           order,
-  //           selectedWarehouse,
-  //           selectedDeliveryPartner.name
-  //         );
-
-  //         // //console.log('Order shipped:', orderId);
-  //         message.success("AWB generated");
-  //       } catch (error) {
-  //         // //console.log('Error in shipping with this partner:', error);
-  //         message.error(
-  //           `Error shipping order ${order.orderId}. Please try again.`
-  //         );
-  //         continue;
-  //       }
-
-  //       if (forwardCharge === undefined || codCharge === undefined) {
-  //         message.error(
-  //           `No cost found for delivery partner for order ${orderId}.`
-  //         );
-  //       }
-
-  //       const gstRate = 1.8 / 100;
-  //       const forwardChargeWithGST = forwardCharge * 1.18;
-  //       const codChargeWithGST = codCharge * (1 + gstRate);
-  //       const rtoChargeWithGST = rtoCharge * (1 + gstRate);
-
-  //       await fetch(
-  //         `https://backend.shiphere.in/api/orders/updateOrderStatus/${orderId}`,
-  //         {
-  //           method: "PUT",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: localStorage.getItem("token"),
-  //           },
-  //           body: JSON.stringify({
-  //             status: "Shipped",
-  //             shippingCost: forwardChargeWithGST,
-  //             rtoCost: rtoChargeWithGST,
-  //           }),
-  //         }
-  //       );
-
-  //       const walletRequests = [
-  //         {
-  //           debit: forwardChargeWithGST,
-  //           userId: order.seller._id,
-  //           remark: `Forward charge for order ${order.orderId}`,
-  //           orderId: order._id,
-  //         },
-  //       ];
-
-  //       if (codCharge > 0) {
-  //         walletRequests.push({
-  //           debit: codChargeWithGST,
-  //           userId: order.seller._id,
-  //           remark: `COD charge for order ${order.orderId}`,
-  //           orderId: order._id,
-  //         });
-  //       }
-
-  //       for (const walletRequest of walletRequests) {
-  //         // //console.log(walletRequest);
-
-  //         await fetch(
-  //           `https://backend.shiphere.in/api/transactions/decreaseAmount`,
-  //           {
-  //             method: "POST",
-  //             headers: {
-  //               "Content-Type": "application/json",
-  //               Authorization: localStorage.getItem("token"),
-  //             },
-  //             body: JSON.stringify(walletRequest),
-  //           }
-  //         );
-  //       }
-
-  //       updatedOrders.push({ ...order, status: "Shipped" });
-  //     }
-  //     if (unmatchedOrders.length > 0) {
-  //       message.warning(
-  //         `Orders ${unmatchedOrders.join(
-  //           ", "
-  //         )} do not match the selected delivery partner and were not shipped.`
-  //       );
-  //     }
-  //     fetchOrders();
-  //     fetchBalance();
-  //     const newOrdersCopy = orders.orders.filter(
-  //       (order) => !selectedRows.includes(order._id)
-  //     );
-  //     setOrders({
-  //       orders: newOrdersCopy.concat(updatedOrders),
-  //     });
-
-  //     message.success({
-  //       content: "Orders shipped successfully!",
-  //       key: "processing",
-  //     });
-  //   } catch (error) {
-  //     console.error("Error processing shipment:", error);
-  //     message.error({
-  //       content: "Failed to process the shipment. Please try again.",
-  //       key: "processing",
-  //     });
-  //   } finally {
-  //     setSelectedRowKeys([]);
-  //     closeModalShipNow();
-  //   }
-  // };
   const handleShipNow = async (
     selectedRowKeys,
     selectedWarehouse,
@@ -526,13 +342,6 @@ const Orders = () => {
       key: order._id,
       order: order,
     })) || [];
-
-  // //console.log(orders);
-
-  // const dataSourceShipOrdersWithKeys = orders?.shipOrders?.map((order, index) => ({
-  //   ...order,
-  //   key: order._id,
-  // })) || [];
 
   const rowSelection = {
     selectedRowKeys,
@@ -772,7 +581,7 @@ const Orders = () => {
   }, []);
 
   const cancelShipment = async () => {
-    // console.log("at cancel shipment line 526");
+    console.log("at cancel shipment line 526");
     if (selectedRowKeys.length === 0) {
       message.error("No orders selected");
       return;
@@ -817,7 +626,7 @@ const Orders = () => {
               }
             );
 
-            if (cancelResponse.status === 201) {
+            if (cancelResponse.status === 200) {
               const walletRequestBody = {
                 userId: order.seller._id,
                 credit: order.shippingCost,
@@ -854,6 +663,9 @@ const Orders = () => {
             );
           }
         } else {
+          console.log("1:", order.awb);
+          console.log("2:", test[counter].data);
+          console.log("3", test[counter].data?.status == 200);
           console.log("error at line 575 cancel order");
         }
         counter++;

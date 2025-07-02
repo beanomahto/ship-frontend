@@ -6,6 +6,7 @@ import useShipNowCost from "../../../hooks/useShipNowCost";
 import useCreateShipment from "../../../hooks/useCreateShipment";
 
 const useShipNow = (fetchOrders, setOrders, closeModalShipNow) => {
+  console.log("hulala...........");
   const { shipNowCost } = useShipNowCost();
   const { shipOrder } = useCreateShipment();
   const [loading, setLoading] = useState(false);
@@ -192,23 +193,10 @@ const useShipNow = (fetchOrders, setOrders, closeModalShipNow) => {
           const totalCost = forwardChargeWithGST + codChargeWithGST;
 
           // Step 3: Fetch Wallet Balance
+          const { authUser, balance } = useAuthContext();
           let walletBalance = 0;
-          try {
-            const walletRes = await fetch(
-              `http://localhost:5000/api/wallet/${order.seller._id}`,
-              {
-                headers: {
-                  Authorization: localStorage.getItem("token"),
-                },
-              }
-            );
-            const walletData = await walletRes.json();
-            walletBalance = walletData.balance;
-          } catch (error) {
-            console.error("Failed to fetch wallet balance", error);
-            message.error("Could not verify wallet balance");
-            continue;
-          }
+          walletBalance = balance;
+          console.log("--------------walletbalance---------", walletBalance);
 
           // Step 4: Check Wallet Balance
           if (walletBalance < totalCost) {

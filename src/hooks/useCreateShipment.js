@@ -340,11 +340,10 @@ const useCreateShipment = () => {
 
         //for checking pincode serviceability
 
-        //console.log("There is the pincode", orderId?.order?.pincode);
+        const pincode = orderId?.pincode || orderId?.order?.pincode;
+        console.log("There is the pincode", pincode);
 
-        const pincode = orderId?.order?.pincode;
-
-        //console.log("===========",token);
+        //console.log("===========", token);
 
         try {
           const checkPincode = await axios.get(
@@ -362,39 +361,30 @@ const useCreateShipment = () => {
         }
 
         //for creating shipment
-        const response = await axios.post(
-          url,
-          {
-            warehouseId: warehouseIds,
-            orderId: orderIds,
-          },
-          {
-            headers: {
-              Authorization: `${token}`,
-            },
-          }
-        );
-
-        //console.log("Order creation response-----", response);
 
         ///for fetching waybill
 
         try {
-          const waybill = await axios.get(
-            `http://localhost:5000/api/deliveryOne/fetchWaybill`,
+          const response = await axios.post(
+            url,
+            {
+              warehouseId: warehouseIds,
+              orderId: orderIds,
+            },
             {
               headers: {
                 Authorization: `${token}`,
               },
             }
           );
+          //console.log("Order creation response-----", response);
+          const waybill = response?.data?.data?.packages?.[0]?.waybill;
 
-          //console.log("--This ia waybill response",waybill);
-          //console.log("awb in backend", waybill.data.data);
-
-          return { ...waybill.data, awb: waybill.data.data };
+          console.log("waybill ---------------------", waybill);
+          //console.log("awb in backend", waybill.data.waybill);
+          return { awb: waybill };
         } catch (error) {
-          //console.log(error);
+          console.log(error);
         }
       } else {
         try {
