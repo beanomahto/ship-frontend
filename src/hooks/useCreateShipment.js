@@ -340,11 +340,11 @@ const useCreateShipment = () => {
 
         //for checking pincode serviceability
 
-        //console.log("There is the pincode", orderId?.order?.pincode);
+        console.log("There is the pincode", orderId?.pincode);
 
-        const pincode = orderId?.order?.pincode;
+        const pincode = orderId?.pincode;
 
-        //console.log("===========",token);
+        console.log("===========",token);
 
         try {
           const checkPincode = await axios.get(
@@ -356,9 +356,10 @@ const useCreateShipment = () => {
             }
           );
 
-          //console.log("Checking pincode serviceability",checkPincode);
+          console.log("Checking pincode serviceability",checkPincode);
         } catch (error) {
-          //console.log(error);
+          // console.log(error);
+          
         }
 
         //for creating shipment
