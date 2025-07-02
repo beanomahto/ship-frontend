@@ -238,6 +238,7 @@ const Orders = () => {
               status: "Shipped",
               shippingCost: forwardChargeWithGST,
               rtoCost: rtoChargeWithGST,
+              codCost: codChargeWithGST,
             }),
           }
         );
@@ -599,7 +600,7 @@ const Orders = () => {
         if (
           order.awb == "false" ||
           test[counter].data?.order_cancellation_details?.successful ||
-          test[counter].data?.status == 200
+          test[counter].data?.status == true
         ) {
           console.log("at line 540 and counter is " + counter);
 
@@ -612,6 +613,48 @@ const Orders = () => {
           console.log("current orderId", orderId);
 
           try {
+            // console.log("cancelResponse", cancelResponse);
+
+            console.log("hello");
+            const walletRequestBodies = [
+              {
+                userId: order.seller._id,
+                credit: order.shippingCost,
+                remark: `Credit charges for order ${order.orderId}`,
+                orderId: order._id,
+              },
+            ];
+            let codCharge = 0;
+            codCharge = order.codCost;
+            if (codCharge > 0) {
+              walletRequestBodies.push({
+                credit: codCharge,
+                userId: order.seller._id,
+                remark: `COD charge for order ${order.orderId}`,
+                orderId: order._id,
+              });
+            }
+            for (const walletRequestBody of walletRequestBodies) {
+              const walletResponse = await axios.post(
+                `http://localhost:5000/api/transactions/increaseAmount`,
+                walletRequestBody,
+                { headers: { Authorization: `${token}` } }
+              );
+
+              if (walletResponse.status === 200) {
+                console.log("wallet updated successfully");
+                // Wallet updated successfully
+              } else {
+                message.error(
+                  `Failed to update wallet for order ${order.orderId}`
+                );
+              }
+            }
+
+            setTimeout(() => {
+              setIsDisabled(false);
+            }, 2000);
+
             const cancelResponse = await fetch(
               `http://localhost:5000/api/orders/updateOrderStatus/${orderId}`,
               {
@@ -625,34 +668,6 @@ const Orders = () => {
                 }),
               }
             );
-
-            if (cancelResponse.status === 200) {
-              const walletRequestBody = {
-                userId: order.seller._id,
-                credit: order.shippingCost,
-                remark: `Credit charges for order ${order.orderId}`,
-                orderId: order._id,
-              };
-
-              const walletResponse = await axios.post(
-                `http://localhost:5000/api/transactions/increaseAmount`,
-                walletRequestBody,
-                { headers: { Authorization: `${token}` } }
-              );
-
-              if (walletResponse.status === 200) {
-                // Wallet updated successfully
-              } else {
-                message.error(
-                  `Failed to update wallet for order ${order.orderId}`
-                );
-              }
-            } else {
-              message.error(`Failed to cancel order ${order.orderId}`);
-            }
-            setTimeout(() => {
-              setIsDisabled(false);
-            }, 2000);
           } catch (error) {
             console.error(
               `Error while processing order ${order.orderId}:`,
@@ -665,7 +680,7 @@ const Orders = () => {
         } else {
           console.log("1:", order.awb);
           console.log("2:", test[counter].data);
-          console.log("3", test[counter].data?.status == 200);
+          console.log("3", test[counter].data?.status == true);
           console.log("error at line 575 cancel order");
         }
         counter++;

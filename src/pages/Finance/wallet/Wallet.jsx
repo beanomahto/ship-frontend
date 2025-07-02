@@ -185,6 +185,8 @@ const Wallet = () => {
             },
           }
         );
+        console.log("Transactions fetched:", response.data);
+
         setTransactions(response.data);
         setLoading(false);
       } catch (error) {
