@@ -52,7 +52,7 @@ const useCreateShipment = () => {
           break;
         case "Shree Maruti":
           url = "http://localhost:5000/api/maruti/booking";
-          log = "ok hit";
+          log = "Shree Maruti hit";
           break;
         case "Delhivery":
           url = "http://localhost:5000/api/deliveryOne/create";
@@ -423,7 +423,9 @@ const useCreateShipment = () => {
         } catch (error) {
           console.log(error);
         }
-      } else {
+      }
+      // shree maruti
+      else if (deliveryPartnerName === "Shree Maruti") {
         try {
           const serviceability = await axios.post(
             "http://localhost:5000/api/maruti/serviceability",
@@ -462,8 +464,10 @@ const useCreateShipment = () => {
               return;
             }
 
-            let awb = bookingResponse?.data?.data?.data?.awbNumber;
-            let cawb = bookingResponse?.data?.data?.data?.cAwbNumber;
+            console.log("Booking response:", bookingResponse.data);
+
+            let awb = bookingResponse?.data?.data?.awbNumber;
+            let cawb = bookingResponse?.data?.data?.cAwbNumber;
 
             try {
               const manifestResponse = await axios.post(
