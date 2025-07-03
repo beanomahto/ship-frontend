@@ -188,7 +188,7 @@ const Orders = () => {
 
           console.log("line373", selectedDeliveryPartner.name);
           console.log("Ship Order response", response);
-          
+
           awb = response?.awb;
 
           if (selectedDeliveryPartner.name === "Shree Maruti") {
@@ -599,6 +599,8 @@ const Orders = () => {
 
     try {
       const test = await cancelOrder(selectedOrderData);
+      console.log("selectedOrderData:", selectedOrderData);
+      console.log("test:", test);
       let counter = 0;
       for (const orderId of selectedRowKeys) {
         const order = selectedOrderData.find((order) => order._id === orderId);
@@ -606,7 +608,8 @@ const Orders = () => {
         if (
           order.awb == "false" ||
           test[counter].data?.order_cancellation_details?.successful ||
-          test[counter].data?.status == true
+          test[counter].data?.status == true ||
+          test[counter].data?.status == 200
         ) {
           console.log("at line 540 and counter is " + counter);
 
@@ -1333,11 +1336,11 @@ const Orders = () => {
         style={{
           display: "flex",
         }}
-        className='addorder'
+        className="addorder"
       >
         {currentTab === "tab1" && (
           <Button
-            type='primary'
+            type="primary"
             style={{
               alignSelf: "flex-start",
               borderRadius: "34px",
@@ -1351,7 +1354,7 @@ const Orders = () => {
             Sync
           </Button>
         )}
-        <div className='tab1_managingBtns'>
+        <div className="tab1_managingBtns">
           {authUser.role === "admin" && (
             <div
               style={{
@@ -1361,8 +1364,8 @@ const Orders = () => {
               }}
             >
               <input
-                type='email'
-                placeholder='Enter email'
+                type="email"
+                placeholder="Enter email"
                 style={{
                   padding: "8px 4px",
                   border: "1px solid #ccc",
@@ -1398,18 +1401,18 @@ const Orders = () => {
             </Button>
           )}
           {
-            <div className='download_extra_box'>
-              <div className='download_extra'>
+            <div className="download_extra_box">
+              <div className="download_extra">
                 {(authUser.role === "admin" ||
                   (authUser.role !== "admin" &&
                     (currentTab === "tab1" || currentTab === "tab2"))) && (
                   <Button
-                    type='primary'
-                    shape='round'
+                    type="primary"
+                    shape="round"
                     onClick={exportToExcel}
                     icon={<DownloadOutlined />}
-                    className='downloadBtn'
-                    size='middle'
+                    className="downloadBtn"
+                    size="middle"
                     style={{ marginRight: "10px" }}
                     disabled={loadingdownload}
                   >
@@ -1418,7 +1421,7 @@ const Orders = () => {
                 )}
 
                 {currentTab === "tab2" && (
-                  <div className='tab2_managingBtns'>
+                  <div className="tab2_managingBtns">
                     {authUser.role === "admin" && (
                       <div
                         style={{
@@ -1473,11 +1476,11 @@ const Orders = () => {
                   fontWeight: "500",
                 }}
               >
-                <Link to='singleorder'>Single Order</Link>
+                <Link to="singleorder">Single Order</Link>
               </Button>
               <Popover
                 trigger={"click"}
-                placement='leftTop'
+                placement="leftTop"
                 open={visible}
                 onVisibleChange={handleOpenChange}
                 title={
@@ -1526,9 +1529,9 @@ const Orders = () => {
               >
                 {rowSelection.selectedRowKeys.length > 0 && (
                   <Button
-                    type='danger'
+                    type="danger"
                     onClick={handleBulkDelete}
-                    className='delete_btn'
+                    className="delete_btn"
                     disabled={rowSelection.selectedRowKeys.length === 0}
                     style={{
                       marginBottom: "16px",
@@ -1542,7 +1545,7 @@ const Orders = () => {
                       boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                       transition: "all 0.3s ease", // Smooth transition on hover
                     }}
-                    icon={<span className='delete-btn-span-icon'>🗑️</span>}
+                    icon={<span className="delete-btn-span-icon">🗑️</span>}
                     onMouseEnter={(e) => {
                       e.target.style.transform = "scale(1.05)"; // Slightly enlarge on hover
                     }}
@@ -1568,9 +1571,9 @@ const Orders = () => {
         </div>
       </div>
       <Tabs
-        defaultActiveKey='tab1'
-        size='large'
-        className='tabs'
+        defaultActiveKey="tab1"
+        size="large"
+        className="tabs"
         onChange={handleTabChange}
       >
         {tabsData.map((tab) => (

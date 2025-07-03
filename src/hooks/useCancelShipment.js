@@ -22,10 +22,10 @@ const useCancelShipment = () => {
         "Delhivery",
         "Xpressbees",
         "Ecom Express",
-        "Maruti",
+        "Shree Maruti",
       ];
       //console.log(allowedPartners);
-
+      // console.log("1st check in line 28");
       const filteredOrders = selectedOrderData.filter((order) =>
         allowedPartners.includes(order?.shippingPartner)
       );
@@ -41,9 +41,9 @@ const useCancelShipment = () => {
         const deliveryPartnerName = order?.shippingPartner;
         const orderAwb = order?.awb;
         const orderId = order?._id;
-        //console.log("orderAwb:", orderAwb);
-        //console.log("orderId:", orderId);
-        //console.log(deliveryPartnerName);
+        // console.log("orderAwb:", orderAwb);
+        // console.log("orderId:", orderId);
+        // console.log(deliveryPartnerName);
 
         let url = "";
         let log = "";
@@ -53,7 +53,7 @@ const useCancelShipment = () => {
             url = "http://localhost:5000/api/ecomExpress/cancleShipment";
             log = "Ecomm hit";
             break;
-          case "Maruti":
+          case "Shree Maruti":
             url = "http://localhost:5000/api/maruti/cancel";
             log = "Maruti hit";
             break;
@@ -113,7 +113,8 @@ const useCancelShipment = () => {
 
           //console.log(log);
           return response.data;
-        } else if (deliveryPartnerName === "Maruti") {
+        } else if (deliveryPartnerName === "Shree Maruti") {
+          // console.log("in lint 117");
           const response = await axios.post(
             url,
             {
@@ -127,7 +128,7 @@ const useCancelShipment = () => {
             }
           );
 
-          //console.log(log);
+          // console.log("response", response);
           return response.data;
         }
         // else if (deliveryPartnerName === 'Xpressbees') {
