@@ -466,8 +466,8 @@ const useCreateShipment = () => {
 
             console.log("Booking response:", bookingResponse.data);
 
-            let awb = bookingResponse?.data?.data?.awbNumber;
-            let cawb = bookingResponse?.data?.data?.cAwbNumber;
+            let awb = bookingResponse?.data.data?.data?.awbNumber;
+            let cawb = bookingResponse?.data?.data?.data?.cAwbNumber;
 
             try {
               const manifestResponse = await axios.post(
