@@ -359,8 +359,7 @@ const useCreateShipment = () => {
           const res = response.data;
           console.log("this is the amazon shipping response ", res);
 
-          // const waybill = response?.data?.data?.packages?.[0]?.waybill;
-          const waybill = false;
+          const waybill = res?.data?.payload?.packageDocumentDetails?.[0]?.trackingId
 
           console.log("waybill ---------------------", waybill);
           //console.log("awb in backend", waybill.data.waybill);
