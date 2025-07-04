@@ -84,7 +84,7 @@ const useCreateShipment = () => {
           "DTDC",
           "Shadowfax",
           // "Delhivery",
-          // "Amazon Shipping",
+          //"Amazon Shipping",
           "Xpressbees",
         ].includes(deliveryPartnerName)
       ) {
@@ -362,10 +362,11 @@ const useCreateShipment = () => {
           const waybill =
             res?.data?.payload?.packageDocumentDetails?.[0]?.trackingId;
           //const waybill = false;
+          const shipId = res?.data?.payload?.shipmentId;
 
           console.log("waybill ---------------------", waybill);
-          //console.log("awb in backend", waybill.data.waybill);
-          return { awb: waybill };
+          console.log("shipid in backend------------", shipId);
+          return { awb: waybill, shipid: shipId };
         } catch (error) {
           console.log(error);
         }

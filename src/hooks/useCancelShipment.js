@@ -23,6 +23,7 @@ const useCancelShipment = () => {
         "Xpressbees",
         "Ecom Express",
         "Shree Maruti",
+        "Amazon Shipping",
       ];
       //console.log(allowedPartners);
       // console.log("1st check in line 28");
@@ -38,9 +39,11 @@ const useCancelShipment = () => {
       }
 
       const cancelRequests = filteredOrders.map(async (order) => {
+        console.log("order:", order);
         const deliveryPartnerName = order?.shippingPartner;
         const orderAwb = order?.awb;
         const orderId = order?._id;
+        const shipid = order?.shipid;
         // console.log("orderAwb:", orderAwb);
         // console.log("orderId:", orderId);
         // console.log(deliveryPartnerName);
@@ -65,11 +68,11 @@ const useCancelShipment = () => {
             url = "http://localhost:5000/api/deliveryOne/cancelShipment";
             log = "Delhivery hit";
             break;
-          case "Amazon Shipping":
-            url = "http://localhost:5000/api/deliveryOne/cancelShipment";
-            log = "Delhivery hit";
-            break;
           case "Xpressbees":
+          case "Amazon Shipping":
+            url = `http://localhost:5000/api/amazon/cancel/${shipid}`;
+            log = "Amazon hit";
+            break;
           case "Blue Dart":
           case "Ekart":
           case "DTDC":
@@ -160,6 +163,16 @@ const useCancelShipment = () => {
               },
             }
           );
+          return response.data;
+        }
+        //amazon
+        else if (deliveryPartnerName === "Amazon Shipping") {
+          console.log("shipID", shipid);
+          const response = await axios.put(url, {
+            headers: {
+              Authorization: `${token}`,
+            },
+          });
           return response.data;
         }
       });

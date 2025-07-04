@@ -177,7 +177,7 @@ const Orders = () => {
         }
 
         let awb = null;
-
+        let shipid = null;
         try {
           // Call `shipOrder` to ship the order and get AWB
           const response = await shipOrder(
@@ -193,9 +193,15 @@ const Orders = () => {
 
           if (selectedDeliveryPartner.name === "Shree Maruti") {
             awb = response.bookingResponse?.data?.data?.awbNumber;
+            shipid = response?.shipid;
+          }
+
+          if (selectedDeliveryPartner.name === "Amazon Shipping") {
+            shipid = response?.shipid;
           }
 
           console.log("Generated AWB:", awb);
+          console.log("generated shipid", shipid);
 
           if (!awb) {
             message.error(
@@ -245,6 +251,7 @@ const Orders = () => {
               shippingCost: forwardChargeWithGST,
               rtoCost: rtoChargeWithGST,
               codCost: codChargeWithGST,
+              shipid: shipid,
             }),
           }
         );
@@ -598,8 +605,9 @@ const Orders = () => {
     const token = localStorage.getItem("token");
 
     try {
-      const test = await cancelOrder(selectedOrderData);
       console.log("selectedOrderData:", selectedOrderData);
+      const test = await cancelOrder(selectedOrderData);
+
       console.log("test:", test);
       let counter = 0;
       for (const orderId of selectedRowKeys) {
@@ -607,9 +615,10 @@ const Orders = () => {
         console.log("order 546", order);
         if (
           order.awb == "false" ||
-          test[counter].data?.order_cancellation_details?.successful ||
-          test[counter].data?.status == true ||
-          test[counter].data?.status == 200
+          test[counter]?.data?.order_cancellation_details?.successful ||
+          test[counter]?.data?.status == true ||
+          test[counter]?.data?.status == 200 ||
+          test[counter]?.message == "Shipment canceled successfully"
         ) {
           console.log("at line 540 and counter is " + counter);
 
