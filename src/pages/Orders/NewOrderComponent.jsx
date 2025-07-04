@@ -651,7 +651,7 @@ const NewOrderComponent = ({
           partner.deliveryPartner
         );
 
-        //console.log("awb in frontend", awb);
+        console.log("awb in frontend", awb);
 
         if (awb) {
           console.log(
@@ -708,10 +708,17 @@ const NewOrderComponent = ({
 
           // Update order status
           const updateBody = {
+            awb: awb.awb,
+            shippingPartner: partner.deliveryPartner,
+            warehouse: sendWarehouse?._id,
             status: "Shipped",
-            shippingCost: totalDebit,
+            // shippingCost: totalDebit,
+            // rtoCost: rtoCostWithGst,
+            shippingCost: forwardCostWithGst,
             rtoCost: rtoCostWithGst,
+            codCost: rtoCostWithGst,
           };
+          console.log("update body:", updateBody);
 
           const orderResponse = await axios.put(
             `http://localhost:5000/api/orders/updateOrderStatus/${selectedOrderId}`,

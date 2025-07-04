@@ -65,6 +65,10 @@ const useCancelShipment = () => {
             url = "http://localhost:5000/api/deliveryOne/cancelShipment";
             log = "Delhivery hit";
             break;
+          case "Amazon Shipping":
+            url = "http://localhost:5000/api/deliveryOne/cancelShipment";
+            log = "Delhivery hit";
+            break;
           case "Xpressbees":
           case "Blue Dart":
           case "Ekart":
