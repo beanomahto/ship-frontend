@@ -7,6 +7,8 @@ import EcomData from "./EcomData";
 import Footer from "./Footer";
 import MarutiData from "./MarutiData";
 import SmartShipData from "./SmartShipData";
+import DelhiveryData from "./DelhiveryData";
+import AmazonData from "./AmazonData";
 
 const { Title } = Typography;
 const { Step } = Steps;
@@ -23,16 +25,17 @@ const Tracking = () => {
     const fetchTrackingInfo = async () => {
       try {
         const splitPartners = shippingPartner.replace(/\s+/g, "");
-        console.log("splitPartners", splitPartners);
+        const lowerPartner = splitPartners.toLowerCase();
 
         const fShipPartner = [
           "Ekart",
           "BlueDart",
           "DTDC",
           "Shadowfax",
-          "Delhivery",
           "Xpressbees",
-        ].includes(splitPartners);
+        ]
+          .map((p) => p.toLowerCase())
+          .includes(lowerPartner);
 
         if (fShipPartner) {
           const response = await axios.post(
@@ -40,8 +43,7 @@ const Tracking = () => {
             { awb }
           );
           setTrackingInfo(response.data);
-          updateSteps(response.data);
-        } else if (splitPartners.toLowerCase() === "amazonshipping") {
+        } else if (lowerPartner === "amazonshipping") {
           const response = await axios.get(
             "http://localhost:5000/api/amazon/track",
             {
@@ -53,11 +55,12 @@ const Tracking = () => {
           );
 
           const payload = response.data.payload;
-          setTrackingInfo(payload); // this is what contains the actual data
-          console.log("Amazon tracking data", payload);
+          setTrackingInfo(payload);
 
-          // Use eventHistory for steps
-          if (Array.isArray(payload.eventHistory)) {
+          if (
+            Array.isArray(payload.eventHistory) &&
+            payload.eventHistory.length > 0
+          ) {
             const stepList = payload.eventHistory.map((event) => ({
               status: payload.summary?.status || "In Transit",
               tracking_status: event.eventCode,
@@ -73,7 +76,14 @@ const Tracking = () => {
               },
             ]);
           }
-        } else if (shippingPartner.toLowerCase() === "ecom express") {
+        } else if (lowerPartner === "delhivery") {
+          const response = await axios.get(
+            `http://localhost:5000/api/deliveryOne/track/${awb}`
+          );
+          const data = response.data.data.data;
+          data.awb_number = awb;
+          setTrackingInfo(data);
+        } else if (lowerPartner === "ecomexpress") {
           const response = await axios.get(
             `http://localhost:5000/api/${splitPartners}/track/${awb}`
           );
@@ -90,7 +100,13 @@ const Tracking = () => {
             data[name] = value;
           });
           setTrackingInfo(data);
-          updateSteps(data);
+        } else if (lowerPartner === "shreemaruti") {
+          const response = await axios.get(
+            `http://localhost:5000/api/maruti/track/${awb}`
+          );
+          const data = response.data.data.data;
+          data.awb_number = awb;
+          setTrackingInfo(data);
         } else {
           const response = await axios.get(
             `http://localhost:5000/api/${splitPartners}/track/${awb}`
@@ -98,7 +114,6 @@ const Tracking = () => {
           const data = response.data.data.data;
           data.awb_number = awb;
           setTrackingInfo(data);
-          updateSteps(data);
         }
       } catch (error) {
         console.error("API error:", error);
@@ -106,17 +121,6 @@ const Tracking = () => {
       } finally {
         setLoading(false);
       }
-    };
-
-    const updateSteps = (newTrackingInfo) => {
-      setSteps((prevSteps) => [
-        ...prevSteps,
-        {
-          status: newTrackingInfo.status,
-          tracking_status: newTrackingInfo.tracking_status,
-          updated_on: newTrackingInfo.updated_on,
-        },
-      ]);
     };
 
     const fetchAdvertisement = async () => {
@@ -132,8 +136,6 @@ const Tracking = () => {
         if (response.data) {
           const { images, description, url } = response.data;
           setAdvertisement({ images, description, url });
-        } else {
-          console.log("No advertisement data found.");
         }
       } catch (error) {
         console.error("Error fetching advertisement:", error);
@@ -183,8 +185,18 @@ const Tracking = () => {
             steps={steps}
             advertisement={advertisement}
           />
-        ) : shippingPartner?.toLowerCase() === "maruti" ? (
+        ) : shippingPartner?.toLowerCase() === "delhivery" ? (
+          <DelhiveryData
+            trackingInfo={trackingInfo}
+            advertisement={advertisement}
+          />
+        ) : shippingPartner?.toLowerCase() === "shree maruti" ? (
           <MarutiData
+            trackingInfo={trackingInfo}
+            advertisement={advertisement}
+          />
+        ) : shippingPartner?.toLowerCase() === "amazon shipping" ? (
+          <AmazonData
             trackingInfo={trackingInfo}
             advertisement={advertisement}
           />
@@ -194,6 +206,7 @@ const Tracking = () => {
               trackingInfo={trackingInfo}
               advertisement={advertisement}
             />
+            {console.log("shippingPartner", shippingPartner)}
             {steps?.length > 0 && (
               <div style={{ marginTop: 32 }}>
                 <Steps direction="vertical" current={steps.length - 1}>

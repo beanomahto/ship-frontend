@@ -10,10 +10,18 @@ import {
   message,
   Carousel,
 } from "antd";
-import { 
-  CheckCircleOutlined, SyncOutlined, ClockCircleOutlined, CloseCircleOutlined, 
-  PauseCircleOutlined, FileDoneOutlined, CarOutlined, ExclamationCircleOutlined, 
-  ShoppingOutlined, ArrowRightOutlined, RedoOutlined 
+import {
+  CheckCircleOutlined,
+  SyncOutlined,
+  ClockCircleOutlined,
+  CloseCircleOutlined,
+  PauseCircleOutlined,
+  FileDoneOutlined,
+  CarOutlined,
+  ExclamationCircleOutlined,
+  ShoppingOutlined,
+  ArrowRightOutlined,
+  RedoOutlined,
 } from "@ant-design/icons";
 import { useOrderContext } from "../../context/OrderContext";
 import axios from "axios";
@@ -23,32 +31,40 @@ const { Title } = Typography;
 const { Step } = Steps;
 
 const MarutiData = ({ trackingInfo, advertisement }) => {
+  console.log("trackingInfo:", trackingInfo);
 
   const stateToProgress = {
-    "NEW": 5,  // Order received into Innofulfill
-    "IN_PROCESS": 10,  // Seller processes order
-    "ON_HOLD": 15,  // Seller marks order on hold
-    "CANCELED": 0,  // Seller cancels order
-    "READY_FOR_DISPATCH": 25,  // Seller generates a manifest
-    "OUT_FOR_PICKUP": 30,  // Delivery boy traveling to pickup location
-    "NOT_PICKED_UP": 20,  // Pickup failed
-    "PICKED_UP": 40,  // Successfully picked up
-    "IN_TRANSIT": 50,  // Moving between hubs
-    "OUT_FOR_DELIVERY": 75,  // Last mile delivery started
-    "DELIVERED": 100,  // Delivered to customer
-    "UNDELIVERED": 60,  // Delivery attempt failed
-    "RTO": 65,  // Marked for Return to Origin (RTO)
-    "RTO_IN_TRANSIT": 70,  // Returning to pickup hub
-    "RTO_OUT_FOR_DELIVERY": 80,  // Return delivery started
-    "RTO_DELIVERED": 85  // Returned to seller
+    NEW: 5, // Order received into Innofulfill
+    IN_PROCESS: 10, // Seller processes order
+    ON_HOLD: 15, // Seller marks order on hold
+    CANCELED: 0, // Seller cancels order
+    READY_FOR_DISPATCH: 25, // Seller generates a manifest
+    OUT_FOR_PICKUP: 30, // Delivery boy traveling to pickup location
+    NOT_PICKED_UP: 20, // Pickup failed
+    PICKED_UP: 40, // Successfully picked up
+    IN_TRANSIT: 50, // Moving between hubs
+    OUT_FOR_DELIVERY: 75, // Last mile delivery started
+    DELIVERED: 100, // Delivered to customer
+    UNDELIVERED: 60, // Delivery attempt failed
+    RTO: 65, // Marked for Return to Origin (RTO)
+    RTO_IN_TRANSIT: 70, // Returning to pickup hub
+    RTO_OUT_FOR_DELIVERY: 80, // Return delivery started
+    RTO_DELIVERED: 85, // Returned to seller
   };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const options = { year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' };
-    return date.toLocaleDateString('en-GB', options)
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    };
+    return date.toLocaleDateString("en-GB", options);
   };
   const parseOrderStateInfo = (orderStateInfo) => {
+    console.log("orderStateInfo:", orderStateInfo);
     return orderStateInfo.map((entry) => {
       const { state, createdAt } = entry;
       const date = formatDate(createdAt); // Use your formatDate function
@@ -66,7 +82,7 @@ const MarutiData = ({ trackingInfo, advertisement }) => {
   const latestOrderState = parsedOrderStates?.[parsedOrderStates.length - 1];
   const latestState = latestOrderState?.state || "Unknown State";
   const progressPercentage = latestOrderState?.progress || 0;
-  
+
   const getStepIcon = (status) => {
     switch (status) {
       case "NEW":
@@ -105,8 +121,6 @@ const MarutiData = ({ trackingInfo, advertisement }) => {
         return <CloseCircleOutlined style={{ color: "#ff4d4f" }} />; // Default case
     }
   };
-  
-
 
   return (
     <div
@@ -255,7 +269,10 @@ const MarutiData = ({ trackingInfo, advertisement }) => {
             }}
           >
             <Title level={4}>Tracking History</Title>
-            <Steps direction="vertical" current={trackingInfo.orderStateInfo.length - 1}>
+            <Steps
+              direction="vertical"
+              current={trackingInfo.orderStateInfo.length - 1}
+            >
               {trackingInfo.orderStateInfo.map((state, index) => (
                 <Step
                   key={state._id}
@@ -263,7 +280,8 @@ const MarutiData = ({ trackingInfo, advertisement }) => {
                   description={
                     <>
                       <p>
-                        <strong>Status:</strong> {state.state.replaceAll("_", " ")}
+                        <strong>Status:</strong>{" "}
+                        {state.state.replaceAll("_", " ")}
                       </p>
                     </>
                   }
