@@ -1,22 +1,22 @@
 import {
-    Card,
-    Carousel,
-    Col,
-    Descriptions,
-    Row,
-    Steps,
-    Typography,
-    message
+  Card,
+  Carousel,
+  Col,
+  Descriptions,
+  Row,
+  Steps,
+  Typography,
+  message,
 } from "antd";
 import React, { useEffect } from "react";
 
 import {
-    CheckCircleOutlined,
-    CheckOutlined,
-    ClockCircleOutlined,
-    HomeOutlined,
-    SyncOutlined,
-    TruckOutlined,
+  CheckCircleOutlined,
+  CheckOutlined,
+  ClockCircleOutlined,
+  HomeOutlined,
+  SyncOutlined,
+  TruckOutlined,
 } from "@ant-design/icons";
 import { MdLocalShipping, MdOutlineDownloadDone } from "react-icons/md";
 
@@ -353,36 +353,7 @@ const SmartShipData = ({ trackingInfo, advertisement }) => {
             >
               Shipping Progress
             </Title>
-            {/* <Steps
-              current={currentStepIndex}
-              progressDot={(dot, { index }) => (
-                <span
-                  style={{
-                    border: "1px solid #eeeee4",
-                    borderRadius: "50%",
-                    padding: "4px",
-                    marginRight: "5px",
-                  }}
-                >
-                  {progressSteps[index].icon}
-                </span> // Use the custom icon here
-              )}
-              style={{ marginBottom: "20px" }}
-            >
-              {progressSteps.map((step, index) => (
-                <Step
-                  key={index}
-                  title={step.title}
-                  description={
-                    index <= currentStepIndex
-                      ? "Completed"
-                      : index === currentStepIndex
-                      ? "In Progress"
-                      : "Pending"
-                  }
-                />
-              ))}
-            </Steps> */}
+
             <Steps
               current={currentStepIndex}
               progressDot={(dot, { index }) => (
@@ -435,21 +406,6 @@ const SmartShipData = ({ trackingInfo, advertisement }) => {
                 />
               ))}
             </Steps>
-
-            {/* <Progress
-               percent={parseFloat((((currentStepIndex + 1) / progressSteps.length) * 100).toFixed(2))}
-              status={
-                currentStepIndex === progressSteps.length - 1
-                  ? "success"
-                  : "active"
-              }
-              strokeColor={
-                currentStepIndex === progressSteps.length - 1
-                  ? "#52c41a"
-                  : "#1890ff"
-              }
-              showInfo
-            /> */}
           </Card>
 
           <Card
