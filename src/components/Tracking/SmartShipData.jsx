@@ -33,8 +33,8 @@ const SmartShipData = ({ trackingInfo, advertisement }) => {
 
   const trackingId = trackingInfo?.trackingId || "N/A";
   const orderId = trackingInfo?.orderId || "N/A"; // Only if available
-  const orderedOn = trackingInfo?.eventHistory?.[0]?.eventTime || null;
-  const expectedDelivery = trackingInfo?.promisedDeliveryDate || "N/A";
+  const orderedOn = trackingInfo?.orderedOn || null;
+  const expectedDelivery = trackingInfo?.expectedDelivery || "N/A";
 
   const scanData = trackingInfo?.data?.scans;
   const scanKey = scanData ? Object.keys(scanData)[0] : null;

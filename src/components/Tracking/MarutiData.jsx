@@ -24,6 +24,9 @@ const { Step } = Steps;
 
 const MarutiData = ({ trackingInfo, advertisement }) => {
 
+  const awb = trackingInfo?.awb || "N/A";
+  const orderId = trackingInfo?.orderId || "N/A"; // Only if available
+
   const stateToProgress = {
     "NEW": 5,  // Order received into Innofulfill
     "IN_PROCESS": 10,  // Seller processes order
@@ -143,10 +146,10 @@ const MarutiData = ({ trackingInfo, advertisement }) => {
               labelStyle={{ fontWeight: "bold" }}
             >
               <Descriptions.Item label="AWB Number">
-                {trackingInfo.awb_number}
+                {trackingInfo.awb}
               </Descriptions.Item>
               <Descriptions.Item label="Order ID">
-                {trackingInfo.originalOrderId}
+                {trackingInfo.orderId}
               </Descriptions.Item>
               <Descriptions.Item label="Payment Status">
                 {trackingInfo.paymentStatus}
