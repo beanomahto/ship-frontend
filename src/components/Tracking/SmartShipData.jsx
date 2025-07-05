@@ -30,6 +30,12 @@ const { Step } = Steps;
 const SmartShipData = ({ trackingInfo, advertisement }) => {
   console.log("oko");
   console.log("advertisement", advertisement);
+
+  const trackingId = trackingInfo?.trackingId || "N/A";
+  const orderId = trackingInfo?.orderId || "N/A"; // Only if available
+  const orderedOn = trackingInfo?.eventHistory?.[0]?.eventTime || null;
+  const expectedDelivery = trackingInfo?.promisedDeliveryDate || "N/A";
+
   const scanData = trackingInfo?.data?.scans;
   const scanKey = scanData ? Object.keys(scanData)[0] : null;
   const trackingHistory = scanKey ? scanData[scanKey] : [];
@@ -214,7 +220,7 @@ const SmartShipData = ({ trackingInfo, advertisement }) => {
         fontFamily: "Arial, sans-serif",
       }}
     >
-      <Row gutter={[24, 24]} justify="center">
+      <Row gutter={[24, 24]} justify='center'>
         {/* Left Section */}
         <Col xs={24} md={10}>
           <Card
@@ -235,26 +241,21 @@ const SmartShipData = ({ trackingInfo, advertisement }) => {
             >
               Tracking Information
             </Title>
-            <Descriptions bordered column={1} size="middle">
-              <Descriptions.Item label="AWB Number">
-                <span style={{ fontWeight: "bold" }}>
-                  {trackingHistory[0]?.tracking_number || "N/A"}
-                </span>
+            <Descriptions bordered column={1} size='middle'>
+              <Descriptions.Item label='AWB Number'>
+                <span style={{ fontWeight: "bold" }}>{trackingId}</span>
               </Descriptions.Item>
-              <Descriptions.Item label="Order ID">
-                <span style={{ fontWeight: "bold" }}>
-                  {trackingHistory[0]?.order_reference_id || "N/A"}
-                </span>
+              <Descriptions.Item label='Order ID'>
+                <span style={{ fontWeight: "bold" }}>{orderId}</span>
               </Descriptions.Item>
-              <Descriptions.Item label="Ordered On">
+              <Descriptions.Item label='Ordered On'>
                 <span style={{ color: "#555" }}>
-                  {new Date(trackingHistory[0]?.order_date).toLocaleString() ||
-                    "N/A"}
+                  {new Date(orderedOn).toLocaleString()}
                 </span>
               </Descriptions.Item>
-              <Descriptions.Item label="Expected Delivery">
+              <Descriptions.Item label='Expected Delivery'>
                 <span style={{ color: "#555" }}>
-                  {trackingHistory[0]?.expected_delivery_date || "N/A"}
+                  {new Date(expectedDelivery).toLocaleString()}
                 </span>
               </Descriptions.Item>
             </Descriptions>
@@ -276,8 +277,8 @@ const SmartShipData = ({ trackingInfo, advertisement }) => {
                       <div key={index}>
                         <a
                           href={advertisement.url} // Use the single URL
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          target='_blank'
+                          rel='noopener noreferrer'
                           style={{
                             display: "flex",
                             justifyContent: "center",
@@ -421,7 +422,7 @@ const SmartShipData = ({ trackingInfo, advertisement }) => {
             <Title level={4} style={{ color: "#333" }}>
               Tracking History
             </Title>
-            <Steps direction="vertical" size="small">
+            <Steps direction='vertical' size='small'>
               {trackingHistory.map((step, index) => (
                 <Step
                   key={index}

@@ -39,6 +39,8 @@ const Tracking = () => {
             `http://localhost:5000/api/smartship/tracksmartshiporder`,
             { awb }
           );
+          console.log("Delhivery response\n", response.data);
+
           setTrackingInfo(response.data);
           updateSteps(response.data);
         } else if (splitPartners.toLowerCase() === "amazonshipping") {
@@ -53,8 +55,16 @@ const Tracking = () => {
           );
 
           const payload = response.data.payload;
-          setTrackingInfo(payload); // this is what contains the actual data
-          console.log("Amazon tracking data", payload);
+          const info = {
+            ...payload,
+            trackingId: payload.trackingId,
+            orderedOn: payload.eventHistory?.[0]?.eventTime || null,
+            expectedDelivery: payload.promisedDeliveryDate || null,
+          };
+          setTrackingInfo(info);
+          console.log("Amazon tracking info", info);
+          // setTrackingInfo(payload); // this is what contains the actual data
+          // console.log("Amazon tracking data", payload);
 
           // Use eventHistory for steps
           if (Array.isArray(payload.eventHistory)) {
@@ -157,7 +167,7 @@ const Tracking = () => {
           backgroundColor: "#f0f2f5",
         }}
       >
-        <Spin tip="Loading Tracking Information..." size="large" />
+        <Spin tip='Loading Tracking Information...' size='large' />
       </div>
     );
   }
@@ -196,7 +206,7 @@ const Tracking = () => {
             />
             {steps?.length > 0 && (
               <div style={{ marginTop: 32 }}>
-                <Steps direction="vertical" current={steps.length - 1}>
+                <Steps direction='vertical' current={steps.length - 1}>
                   {steps.map((step, index) => (
                     <Step
                       key={index}
