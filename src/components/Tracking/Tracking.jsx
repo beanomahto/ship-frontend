@@ -42,6 +42,8 @@ const Tracking = () => {
             `http://localhost:5000/api/smartship/tracksmartshiporder`,
             { awb }
           );
+          console.log("Delhivery response\n", response.data);
+
           setTrackingInfo(response.data);
         } else if (lowerPartner === "amazonshipping") {
           const response = await axios.get(
@@ -55,7 +57,16 @@ const Tracking = () => {
           );
 
           const payload = response.data.payload;
-          setTrackingInfo(payload);
+          const info = {
+            ...payload,
+            trackingId: payload.trackingId,
+            orderedOn: payload.eventHistory?.[0]?.eventTime || null,
+            expectedDelivery: payload.promisedDeliveryDate || null,
+          };
+          setTrackingInfo(info);
+          console.log("Amazon tracking info", info);
+          // setTrackingInfo(payload); // this is what contains the actual data
+          // console.log("Amazon tracking data", payload);
 
           if (
             Array.isArray(payload.eventHistory) &&
