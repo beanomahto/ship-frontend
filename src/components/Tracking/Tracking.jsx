@@ -120,7 +120,7 @@ const Tracking = () => {
             `http://localhost:5000/api/maruti/track/${awb}`
           );
           const data = response.data.data.data;
-          data.awb_number = awb;
+          data.awb = awb;
           setTrackingInfo(data);
         } else {
           const response = await axios.get(
