@@ -92,14 +92,12 @@ const Tracking = () => {
           }
         } else if (lowerPartner === "delhivery") {
           const response = await axios.get(
-            `http://localhost:5000/api/deliveryOne/track/?waybill=${awb}`
+            `http://localhost:5000/api/deliveryOne/track/${awb}`
           );
 
-          console.log(
-            "Delhivery track response",
-            response.data?.data?.ShipmentData?.[0]?.Shipment
-          ); // actual data
-          const data = response.data?.data;
+          const data = response.data.trackingInfo;
+          data.awb_number = awb;
+          console.log(data);
           setTrackingInfo(data);
         } else if (lowerPartner === "ecomexpress") {
           const response = await axios.get(
@@ -123,7 +121,7 @@ const Tracking = () => {
             `http://localhost:5000/api/maruti/track/${awb}`
           );
           const data = response.data.data.data;
-          data.awb = awb;
+          data.awb_number = awb;
           setTrackingInfo(data);
         } else {
           const response = await axios.get(
@@ -204,6 +202,7 @@ const Tracking = () => {
             advertisement={advertisement}
           />
         ) : shippingPartner?.toLowerCase() === "delhivery" ? (
+          
           <DelhiveryData
             trackingInfo={trackingInfo}
             advertisement={advertisement}
