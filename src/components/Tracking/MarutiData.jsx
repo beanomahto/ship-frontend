@@ -131,7 +131,7 @@ const MarutiData = ({ trackingInfo, advertisement }) => {
         fontFamily: "Arial, sans-serif",
       }}
     >
-      <Row gutter={[24, 24]} justify='center'>
+      <Row gutter={[24, 24]} justify="center">
         <Col xs={24} sm={8}>
           <Card
             hoverable
@@ -156,29 +156,29 @@ const MarutiData = ({ trackingInfo, advertisement }) => {
               column={1}
               labelStyle={{ fontWeight: "bold" }}
             >
-              <Descriptions.Item label='AWB Number'>
+              <Descriptions.Item label="AWB Number">
                 {trackingInfo.awb}
               </Descriptions.Item>
-              <Descriptions.Item label='Order ID'>
+              <Descriptions.Item label="Order ID">
                 {trackingInfo.originalOrderId}
               </Descriptions.Item>
-              <Descriptions.Item label='Order Date'>
+              <Descriptions.Item label="Order Date">
                 {trackingInfo.orderCreatedAt
                   ? new Date(trackingInfo.orderCreatedAt).toLocaleString()
                   : "N/A"}
               </Descriptions.Item>
-              <Descriptions.Item label='Delivery Date'>
+              <Descriptions.Item label="Delivery Date">
                 {trackingInfo.deliveryDate
                   ? new Date(trackingInfo.deliveryDate).toLocaleString()
                   : "N/A"}
               </Descriptions.Item>
-              <Descriptions.Item label='Payment Type'>
+              <Descriptions.Item label="Payment Type">
                 {trackingInfo.paymentType || "N/A"}
               </Descriptions.Item>
-              <Descriptions.Item label='Payment Status'>
+              <Descriptions.Item label="Payment Status">
                 {trackingInfo.paymentStatus}
               </Descriptions.Item>
-              <Descriptions.Item label='Order Status'>
+              <Descriptions.Item label="Order Status">
                 {trackingInfo.orderStatus.replaceAll("_", " ")}
               </Descriptions.Item>
             </Descriptions>
@@ -199,8 +199,8 @@ const MarutiData = ({ trackingInfo, advertisement }) => {
                       <div key={index}>
                         <a
                           href={advertisement.url} // Use the single URL
-                          target='_blank'
-                          rel='noopener noreferrer'
+                          target="_blank"
+                          rel="noopener noreferrer"
                           style={{
                             display: "flex",
                             justifyContent: "center",
@@ -283,7 +283,7 @@ const MarutiData = ({ trackingInfo, advertisement }) => {
           >
             <Title level={4}>Tracking History</Title>
             <Steps
-              direction='vertical'
+              direction="vertical"
               current={trackingInfo.orderStateInfo.length - 1}
             >
               {trackingInfo.orderStateInfo.map((state, index) => (
