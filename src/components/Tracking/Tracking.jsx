@@ -23,6 +23,9 @@ const Tracking = () => {
 
   useEffect(() => {
     const fetchTrackingInfo = async () => {
+      const splitPartners = shippingPartner.replace(/\s+/g, "");
+      const lowerPartner = splitPartners.toLowerCase();
+      console.log(lowerPartner);
       try {
         const splitPartners = shippingPartner.replace(/\s+/g, "");
         const lowerPartner = splitPartners.toLowerCase();
@@ -91,8 +94,10 @@ const Tracking = () => {
           const response = await axios.get(
             `http://localhost:5000/api/deliveryOne/track/${awb}`
           );
-          const data = response.data.data.data;
+
+          const data = response.data.trackingInfo;
           data.awb_number = awb;
+          console.log(data);
           setTrackingInfo(data);
         } else if (lowerPartner === "ecomexpress") {
           const response = await axios.get(
@@ -197,6 +202,7 @@ const Tracking = () => {
             advertisement={advertisement}
           />
         ) : shippingPartner?.toLowerCase() === "delhivery" ? (
+          
           <DelhiveryData
             trackingInfo={trackingInfo}
             advertisement={advertisement}
