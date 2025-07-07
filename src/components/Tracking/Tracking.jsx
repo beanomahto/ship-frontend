@@ -89,10 +89,14 @@ const Tracking = () => {
           }
         } else if (lowerPartner === "delhivery") {
           const response = await axios.get(
-            `http://localhost:5000/api/deliveryOne/track/${awb}`
+            `http://localhost:5000/api/deliveryOne/track/?waybill=${awb}`
           );
-          const data = response.data.data.data;
-          data.awb_number = awb;
+
+          console.log(
+            "Delhivery track response",
+            response.data?.data?.ShipmentData?.[0]?.Shipment
+          ); // actual data
+          const data = response.data?.data;
           setTrackingInfo(data);
         } else if (lowerPartner === "ecomexpress") {
           const response = await axios.get(
@@ -170,7 +174,7 @@ const Tracking = () => {
           backgroundColor: "#f0f2f5",
         }}
       >
-        <Spin tip="Loading Tracking Information..." size="large" />
+        <Spin tip='Loading Tracking Information...' size='large' />
       </div>
     );
   }
@@ -220,7 +224,7 @@ const Tracking = () => {
             {console.log("shippingPartner", shippingPartner)}
             {steps?.length > 0 && (
               <div style={{ marginTop: 32 }}>
-                <Steps direction="vertical" current={steps.length - 1}>
+                <Steps direction='vertical' current={steps.length - 1}>
                   {steps.map((step, index) => (
                     <Step
                       key={index}
