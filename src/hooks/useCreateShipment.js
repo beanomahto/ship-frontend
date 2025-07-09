@@ -352,6 +352,7 @@ const useCreateShipment = () => {
             {
               headers: {
                 Authorization: `${token}`,
+                'x-shiphere-token': '28f73931ced05010359f13149a8f5861f30b822ac12fb1cfdfcfbe94239efcf7',
               },
             }
           );
@@ -368,7 +369,7 @@ const useCreateShipment = () => {
           console.log("shipid in backend------------", shipId);
           return { awb: waybill, shipid: shipId };
         } catch (error) {
-          console.log(error);
+          console.log('Error in amazon shipping', error);
         }
       }
       //////////new code
@@ -521,7 +522,7 @@ const useCreateShipment = () => {
       setLoading(false);
     }
   };
-  console.log("shiporderres", shipOrder);
+  // console.log("shiporderres", shipOrder);
   return {
     shipOrder,
     loading,
