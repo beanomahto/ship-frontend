@@ -114,7 +114,7 @@ const SmartShipData = ({ trackingInfo, advertisement }) => {
       };
 
       const response = await axios.put(
-        `http://localhost:5000/api/orders/updateOrderStatus/${orderId}`,
+        `${process.env.url}/api/orders/updateOrderStatus/${orderId}`,
         updateBody,
         {
           headers: {
@@ -220,7 +220,7 @@ const SmartShipData = ({ trackingInfo, advertisement }) => {
         fontFamily: "Arial, sans-serif",
       }}
     >
-      <Row gutter={[24, 24]} justify='center'>
+      <Row gutter={[24, 24]} justify="center">
         {/* Left Section */}
         <Col xs={24} md={10}>
           <Card
@@ -241,19 +241,19 @@ const SmartShipData = ({ trackingInfo, advertisement }) => {
             >
               Tracking Information
             </Title>
-            <Descriptions bordered column={1} size='middle'>
-              <Descriptions.Item label='AWB Number'>
+            <Descriptions bordered column={1} size="middle">
+              <Descriptions.Item label="AWB Number">
                 <span style={{ fontWeight: "bold" }}>{trackingId}</span>
               </Descriptions.Item>
-              <Descriptions.Item label='Order ID'>
+              <Descriptions.Item label="Order ID">
                 <span style={{ fontWeight: "bold" }}>{orderId}</span>
               </Descriptions.Item>
-              <Descriptions.Item label='Ordered On'>
+              <Descriptions.Item label="Ordered On">
                 <span style={{ color: "#555" }}>
                   {new Date(orderedOn).toLocaleString()}
                 </span>
               </Descriptions.Item>
-              <Descriptions.Item label='Expected Delivery'>
+              <Descriptions.Item label="Expected Delivery">
                 <span style={{ color: "#555" }}>
                   {new Date(expectedDelivery).toLocaleString()}
                 </span>
@@ -277,8 +277,8 @@ const SmartShipData = ({ trackingInfo, advertisement }) => {
                       <div key={index}>
                         <a
                           href={advertisement.url} // Use the single URL
-                          target='_blank'
-                          rel='noopener noreferrer'
+                          target="_blank"
+                          rel="noopener noreferrer"
                           style={{
                             display: "flex",
                             justifyContent: "center",
@@ -422,7 +422,7 @@ const SmartShipData = ({ trackingInfo, advertisement }) => {
             <Title level={4} style={{ color: "#333" }}>
               Tracking History
             </Title>
-            <Steps direction='vertical' size='small'>
+            <Steps direction="vertical" size="small">
               {trackingHistory.map((step, index) => (
                 <Step
                   key={index}

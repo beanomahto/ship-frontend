@@ -3,19 +3,46 @@ import { useState } from "react";
 const useRateCalculator = () => {
   const [loading, setLoading] = useState(false);
 
-  const rateCalculator = async ({ deliveryPartner, pickupPincode, deliveryPincode, weight, length, breadth, height, paymentMethod }) => {
-    const success = handleInputErrors({ deliveryPartner, pickupPincode, deliveryPincode, weight, length, breadth, height, paymentMethod });
+  const rateCalculator = async ({
+    deliveryPartner,
+    pickupPincode,
+    deliveryPincode,
+    weight,
+    length,
+    breadth,
+    height,
+    paymentMethod,
+  }) => {
+    const success = handleInputErrors({
+      deliveryPartner,
+      pickupPincode,
+      deliveryPincode,
+      weight,
+      length,
+      breadth,
+      height,
+      paymentMethod,
+    });
     if (!success) return { success: false };
 
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
-      const res = await fetch("http://localhost:5000/api/orders/rateCalculator", {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${process.env.url}/api/orders/rateCalculator`, {
         method: "POST",
-        body: JSON.stringify({ deliveryPartner, pickupPincode, deliveryPincode, weight, length, breadth, height, paymentMethod }),
+        body: JSON.stringify({
+          deliveryPartner,
+          pickupPincode,
+          deliveryPincode,
+          weight,
+          length,
+          breadth,
+          height,
+          paymentMethod,
+        }),
         headers: {
           "Content-Type": "application/json",
-          Authorization: `${token}`
+          Authorization: `${token}`,
         },
       });
 
@@ -40,8 +67,26 @@ const useRateCalculator = () => {
 
 export default useRateCalculator;
 
-function handleInputErrors({ deliveryPartner, pickupPincode, deliveryPincode, weight, length, breadth, height, paymentMethod }) {
-  if (!deliveryPartner || !pickupPincode || !deliveryPincode || !weight || !length || !breadth || !height || !paymentMethod) {
+function handleInputErrors({
+  deliveryPartner,
+  pickupPincode,
+  deliveryPincode,
+  weight,
+  length,
+  breadth,
+  height,
+  paymentMethod,
+}) {
+  if (
+    !deliveryPartner ||
+    !pickupPincode ||
+    !deliveryPincode ||
+    !weight ||
+    !length ||
+    !breadth ||
+    !height ||
+    !paymentMethod
+  ) {
     alert("Please fill in all fields");
     return false;
   }

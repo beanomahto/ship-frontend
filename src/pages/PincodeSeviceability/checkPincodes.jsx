@@ -52,7 +52,7 @@ const CheckPincode = () => {
       //   }
       // );
       const response = await fetch(
-        `http://localhost:5000/api/delivery-partners/${pincode}`,
+        `process.env.url/api/delivery-partners/${pincode}`,
         {
           method: "GET",
           headers: {

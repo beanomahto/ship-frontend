@@ -39,22 +39,19 @@ const Tracking = () => {
 
         if (fShipPartner) {
           const response = await axios.post(
-            `http://localhost:5000/api/smartship/tracksmartshiporder`,
+            `${process.env.url}/api/smartship/tracksmartshiporder`,
             { awb }
           );
           console.log("Delhivery response\n", response.data);
 
           setTrackingInfo(response.data);
         } else if (lowerPartner === "amazonshipping") {
-          const response = await axios.get(
-            "http://localhost:5000/api/amazon/track",
-            {
-              params: {
-                carrierID: "ATS",
-                trackingID: awb,
-              },
-            }
-          );
+          const response = await axios.get("process.env.url/api/amazon/track", {
+            params: {
+              carrierID: "ATS",
+              trackingID: awb,
+            },
+          });
 
           const payload = response.data.payload;
           const info = {
@@ -89,7 +86,7 @@ const Tracking = () => {
           }
         } else if (lowerPartner === "delhivery") {
           const response = await axios.get(
-            `http://localhost:5000/api/deliveryOne/track/?waybill=${awb}`
+            `${process.env.url}/api/deliveryOne/track/?waybill=${awb}`
           );
 
           console.log(
@@ -100,7 +97,7 @@ const Tracking = () => {
           setTrackingInfo(data);
         } else if (lowerPartner === "ecomexpress") {
           const response = await axios.get(
-            `http://localhost:5000/api/${splitPartners}/track/${awb}`
+            `${process.env.url}/api/${splitPartners}/track/${awb}`
           );
           const parser = new DOMParser();
           const xmlDoc = parser.parseFromString(
@@ -117,14 +114,14 @@ const Tracking = () => {
           setTrackingInfo(data);
         } else if (lowerPartner === "shreemaruti") {
           const response = await axios.get(
-            `http://localhost:5000/api/maruti/track/${awb}`
+            `${process.env.url}/api/maruti/track/${awb}`
           );
           const data = response.data.data.data;
           data.awb = awb;
           setTrackingInfo(data);
         } else {
           const response = await axios.get(
-            `http://localhost:5000/api/${splitPartners}/track/${awb}`
+            `${process.env.url}/api/${splitPartners}/track/${awb}`
           );
           const data = response.data.data.data;
           data.awb_number = awb;
@@ -142,7 +139,7 @@ const Tracking = () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          "http://localhost:5000/api/customiseTrack/get-advertisement",
+          `${process.env.url}/api/customiseTrack/get-advertisement`,
           {
             headers: { Authorization: `${token}` },
           }

@@ -1,14 +1,14 @@
 import {
-    Button,
-    Col,
-    Form,
-    Input,
-    Popconfirm,
-    Row,
-    Select,
-    Space,
-    Table,
-    message,
+  Button,
+  Col,
+  Form,
+  Input,
+  Popconfirm,
+  Row,
+  Select,
+  Space,
+  Table,
+  message,
 } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -36,7 +36,7 @@ const ProductWeightForm = () => {
     try {
       setFetching(true);
       const response = await axios.post(
-        "http://localhost:5000/api/orders/getproductdimensions",
+        `${process.env.url}/api/orders/getproductdimensions`,
         {},
         {
           headers: {
@@ -58,7 +58,7 @@ const ProductWeightForm = () => {
   const handleDelete = async (productName) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/orders/deleteproductdimensions",
+        `${process.env.url}/api/orders/deleteproductdimensions`,
         { productName },
         {
           headers: {
@@ -153,7 +153,7 @@ const ProductWeightForm = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:5000/api/orders/addproductdimensions",
+        `${process.env.url}/api/orders/addproductdimensions`,
         payload,
         {
           headers: {

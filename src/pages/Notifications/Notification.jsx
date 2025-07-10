@@ -10,7 +10,7 @@ const Notification = () => {
     const fetchNotifications = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/notifcation/getallnotifications",
+          "process.env.url/api/notifcation/getallnotifications",
           {
             headers: {
               Authorization: localStorage.getItem("token"),

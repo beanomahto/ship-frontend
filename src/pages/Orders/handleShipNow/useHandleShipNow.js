@@ -94,7 +94,7 @@ const useShipNow = (fetchOrders, setOrders, closeModalShipNow) => {
         //   const codChargeWithGST = codCharge * (1 + gstRate);
 
         //   await fetch(
-        //     `http://localhost:5000/api/orders/updateOrderStatus/${orderId}`,
+        //     `process.env.url/api/orders/updateOrderStatus/${orderId}`,
         //     {
         //       method: "PUT",
         //       headers: {
@@ -130,7 +130,7 @@ const useShipNow = (fetchOrders, setOrders, closeModalShipNow) => {
         //     //console.log(walletRequest);
 
         //     await fetch(
-        //       `http://localhost:5000/api/transactions/decreaseAmount`,
+        //       `process.env.url/api/transactions/decreaseAmount`,
         //       {
         //         method: "POST",
         //         headers: {
@@ -227,7 +227,7 @@ const useShipNow = (fetchOrders, setOrders, closeModalShipNow) => {
             try {
               // Update Order Status
               await fetch(
-                `http://localhost:5000/api/orders/updateOrderStatus/${orderId}`,
+                `process.env.url/api/orders/updateOrderStatus/${orderId}`,
                 {
                   method: "PUT",
                   headers: {
@@ -261,17 +261,14 @@ const useShipNow = (fetchOrders, setOrders, closeModalShipNow) => {
               }
 
               for (const walletRequest of walletRequests) {
-                await fetch(
-                  `http://localhost:5000/api/transactions/decreaseAmount`,
-                  {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                      Authorization: localStorage.getItem("token"),
-                    },
-                    body: JSON.stringify(walletRequest),
-                  }
-                );
+                await fetch(`process.env.url/api/transactions/decreaseAmount`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: localStorage.getItem("token"),
+                  },
+                  body: JSON.stringify(walletRequest),
+                });
               }
 
               updatedOrders.push({ ...order, status: "Shipped" });

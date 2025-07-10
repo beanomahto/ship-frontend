@@ -1,33 +1,36 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const useShippingRateCard = () => {
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const fetchRateCard = async () => {
-            try {
-                const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:5000/api/shipping/rateCard', {
-                    headers: {
-                        Authorization: `${token}`
-                    }
-                });
-                setData(response.data);
-                //console.log(response);
-            } catch (err) {
-                setError(err);
-            } finally {
-                setLoading(false);
-            }
-        };
+  useEffect(() => {
+    const fetchRateCard = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(
+          `${process.env.url}/api/shipping/rateCard`,
+          {
+            headers: {
+              Authorization: `${token}`,
+            },
+          }
+        );
+        setData(response.data);
+        //console.log(response);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-        fetchRateCard();
-    }, []);
+    fetchRateCard();
+  }, []);
 
-    return { data, loading, error };
+  return { data, loading, error };
 };
 
 export default useShippingRateCard;

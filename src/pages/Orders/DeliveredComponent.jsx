@@ -1,15 +1,15 @@
 import { DeleteOutlined, SearchOutlined } from "@ant-design/icons";
 import {
-    Button,
-    DatePicker,
-    Input,
-    Modal,
-    Select,
-    Skeleton,
-    Space,
-    Table,
-    Tag,
-    message,
+  Button,
+  DatePicker,
+  Input,
+  Modal,
+  Select,
+  Skeleton,
+  Space,
+  Table,
+  Tag,
+  message,
 } from "antd";
 import axios from "axios";
 import moment from "moment";
@@ -32,8 +32,7 @@ const DeliveredComponent = ({
   //console.log(tab);
   const [searchText, setSearchText] = React.useState("");
   const [searchedColumn, setSearchedColumn] = React.useState("");
-  rowSelection = {...rowSelection, columnWidth: 90}
-
+  rowSelection = { ...rowSelection, columnWidth: 90 };
 
   const { authUser } = useAuthContext();
 
@@ -113,14 +112,11 @@ const DeliveredComponent = ({
   //console.log(tabs);
   const handleDelete = async (id) => {
     try {
-      await axios.delete(
-        `http://localhost:5000/api/orders/deleteOrder/${id}`,
-        {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        }
-      );
+      await axios.delete(`process.env.url/api/orders/deleteOrder/${id}`, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      });
       message.success("Order deleted successfully");
       fetchOrders(); // Refresh orders after deletion
     } catch (error) {

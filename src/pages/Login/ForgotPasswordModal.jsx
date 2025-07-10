@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-// import './ForgotPasswordModal.css'; 
-import { Button, Input, Modal } from 'antd';
+import React, { useState } from "react";
+// import './ForgotPasswordModal.css';
+import { Button, Input, Modal } from "antd";
 
 const ForgotPasswordModal = ({ visible, onClose }) => {
   const [email, setEmail] = useState("");
@@ -9,16 +9,16 @@ const ForgotPasswordModal = ({ visible, onClose }) => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      await fetch('http://localhost:5000/api/auth/forget-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
+      await fetch("process.env.url/api/auth/forget-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
       });
       //console.log(email);
-      alert('Password reset email sent! Check email');
+      alert("Password reset email sent! Check email");
       onClose();
     } catch (error) {
-      alert('Failed to send password reset email.');
+      alert("Failed to send password reset email.");
     } finally {
       setLoading(false);
     }
@@ -33,7 +33,12 @@ const ForgotPasswordModal = ({ visible, onClose }) => {
         <Button key="back" onClick={onClose}>
           Cancel
         </Button>,
-        <Button key="submit" type="primary" loading={loading} onClick={handleSubmit}>
+        <Button
+          key="submit"
+          type="primary"
+          loading={loading}
+          onClick={handleSubmit}
+        >
           Submit
         </Button>,
       ]}

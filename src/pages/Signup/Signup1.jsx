@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import { MdCheckCircle } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { useOrderContext } from "../../context/OrderContext";
-import { useWarehouseContext } from '../../context/WarehouseContext';
+import { useWarehouseContext } from "../../context/WarehouseContext";
 import useSignup from "../../hooks/useSignup";
 import imgg from "../../utils/new.png";
 
@@ -35,7 +35,7 @@ const Signup1 = () => {
   const [phoneError, setPhoneError] = useState("");
   const [isOtpButtonDisabled, setIsOtpButtonDisabled] = useState(false);
   const [otpTimer, setOtpTimer] = useState(60);
-  const {fetchWarehouse} = useWarehouseContext();
+  const { fetchWarehouse } = useWarehouseContext();
   const otpRefs = useRef(new Array(6).fill(null));
 
   const validatePhoneNumber = (phoneNumber) => /^[0-9]{10}$/.test(phoneNumber);
@@ -90,7 +90,7 @@ const Signup1 = () => {
     try {
       await signup(inputs);
       fetchOrders();
-      fetchWarehouse()
+      fetchWarehouse();
       navigate("/");
     } catch (error) {
       console.error("Signup failed", error);
@@ -100,18 +100,15 @@ const Signup1 = () => {
   const handleSendOtp = async () => {
     if (inputs.email) {
       try {
-        const response = await fetch(
-          "http://localhost:5000/api/auth/sendOtp",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email: inputs.email,
-            }),
-          }
-        );
+        const response = await fetch("process.env.url/api/auth/sendOtp", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: inputs.email,
+          }),
+        });
 
         if (!response.ok) {
           throw new Error("Failed to send OTP");

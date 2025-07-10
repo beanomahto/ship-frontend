@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 //import { useOrderContext } from "../context/OrderContext";
 
@@ -6,7 +5,8 @@ const useCreateSingleOrder = () => {
   const [loading, setLoading] = useState(false);
   // useOrderContext()
 
-  const createSingleOrder = async ({ customerName,
+  const createSingleOrder = async ({
+    customerName,
     customerEmail,
     customerPhone,
     orderId,
@@ -23,7 +23,8 @@ const useCreateSingleOrder = () => {
     length,
     breadth,
     height,
-    paymentMethod }) => {
+    paymentMethod,
+  }) => {
     const success = handleInputErrors({
       customerName,
       customerEmail,
@@ -42,17 +43,20 @@ const useCreateSingleOrder = () => {
       length,
       breadth,
       height,
-      paymentMethod
+      paymentMethod,
     });
     if (!success) return;
     setLoading(true);
     try {
       console.log("hi");
-      
-      const token = localStorage.getItem('token');
-      const res = await fetch("http://localhost:5000/api/orders/createOrder", {
+
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${process.env.url}/api/orders/createOrder`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `${token}`, },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
         body: JSON.stringify({
           customerName,
           customerEmail,
@@ -71,7 +75,7 @@ const useCreateSingleOrder = () => {
           length,
           breadth,
           height,
-          paymentMethod
+          paymentMethod,
         }),
       });
 
@@ -81,7 +85,7 @@ const useCreateSingleOrder = () => {
         throw new Error(data.error);
       }
     } catch (error) {
-      alert("There is the error"+error.message);
+      alert("There is the error" + error.message);
     } finally {
       setLoading(false);
     }
@@ -91,11 +95,38 @@ const useCreateSingleOrder = () => {
 };
 export default useCreateSingleOrder;
 
-function handleInputErrors({ customerName, customerEmail,
-  customerPhone, orderId, productPrice, productName, address, quantity, sku, weight, length, breadth, height, paymentMethod }) {
-
-  if (!customerName || !customerEmail ||
-    !customerPhone || !orderId || !productPrice || !productName || !address || !quantity || !sku || !weight || !length || !breadth || !height || !paymentMethod) {
+function handleInputErrors({
+  customerName,
+  customerEmail,
+  customerPhone,
+  orderId,
+  productPrice,
+  productName,
+  address,
+  quantity,
+  sku,
+  weight,
+  length,
+  breadth,
+  height,
+  paymentMethod,
+}) {
+  if (
+    !customerName ||
+    !customerEmail ||
+    !customerPhone ||
+    !orderId ||
+    !productPrice ||
+    !productName ||
+    !address ||
+    !quantity ||
+    !sku ||
+    !weight ||
+    !length ||
+    !breadth ||
+    !height ||
+    !paymentMethod
+  ) {
     alert("Please fill in all fields");
     return false;
   }

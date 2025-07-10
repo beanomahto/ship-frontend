@@ -45,7 +45,7 @@ const OpenWeightDispensory = ({ dataSource }) => {
         await Promise.all(
           entriesToUpdate.map(async (entry) => {
             await fetch(
-              `http://localhost:5000/api/weightdiscrepancy/updateStatus/${entry._id}`,
+              `process.env.url/api/weightdiscrepancy/updateStatus/${entry._id}`,
               {
                 method: "PUT",
                 headers: {

@@ -26,7 +26,7 @@ const SearchSellerModal = ({ visible, onClose, weightDispensory }) => {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/report/weightdispute", // Replace with your actual API endpoint
+        "process.env.url/api/report/weightdispute", // Replace with your actual API endpoint
         {
           method: "POST",
           headers: {

@@ -1,17 +1,14 @@
+import { MenuFoldOutlined, SearchOutlined } from "@ant-design/icons";
 import {
-    MenuFoldOutlined,
-    SearchOutlined
-} from "@ant-design/icons";
-import {
-    Button,
-    DatePicker,
-    Input,
-    message,
-    Modal,
-    Popover,
-    Space,
-    Table,
-    Tag,
+  Button,
+  DatePicker,
+  Input,
+  message,
+  Modal,
+  Popover,
+  Space,
+  Table,
+  Tag,
 } from "antd";
 import axios from "axios";
 import moment from "moment";
@@ -75,7 +72,7 @@ const ActionRequiredTab = ({
 
       if (selectedOrderData[0].shippingPartner === "Ecom Express") {
         await axios.post(
-          "http://localhost:5000/api/ecomExpress/createNdr",
+          "process.env.url/api/ecomExpress/createNdr",
           ecomPayload,
           {
             headers: {
@@ -85,7 +82,7 @@ const ActionRequiredTab = ({
         );
       } else {
         await axios.post(
-          "http://localhost:5000/api/smartship/orderReattempt",
+          "process.env.url/api/smartship/orderReattempt",
           otherPayload,
           {
             headers: {
@@ -105,7 +102,7 @@ const ActionRequiredTab = ({
             }),
           };
           await axios.put(
-            `http://localhost:5000/api/orders/updateOrderStatus/${order._id}`,
+            `process.env.url/api/orders/updateOrderStatus/${order._id}`,
             updatedStatus,
             {
               headers: {
@@ -121,7 +118,7 @@ const ActionRequiredTab = ({
             }),
           };
           await axios.put(
-            `http://localhost:5000/api/orders/updateOrderStatus/${order._id}`,
+            `process.env.url/api/orders/updateOrderStatus/${order._id}`,
             updatedStatus,
             {
               headers: {
@@ -480,7 +477,7 @@ const ActionRequiredTab = ({
           <Button
             type="primary"
             style={{ marginTop: "-1.5rem", padding: "15px", fontSize: "17px" }}
-            icon={<MenuFoldOutlined style={{marginTop: "0.5rem"}}/>}
+            icon={<MenuFoldOutlined style={{ marginTop: "0.5rem" }} />}
           >
             &nbsp; &nbsp; Action
           </Button>

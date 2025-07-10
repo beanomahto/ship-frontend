@@ -40,17 +40,14 @@ const AdminMIS_Report = () => {
     };
 
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/report/misreport",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: localStorage.getItem("token"),
-          },
-          body: JSON.stringify(data),
-        }
-      );
+      const response = await fetch("process.env.url/api/report/misreport", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+        body: JSON.stringify(data),
+      });
 
       if (response.ok) {
         const blob = await response.blob();
@@ -89,17 +86,14 @@ const AdminMIS_Report = () => {
     };
     console.log("ndr", data);
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/report/generatendr",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: localStorage.getItem("token"),
-          },
-          body: JSON.stringify(data),
-        }
-      );
+      const response = await fetch("process.env.url/api/report/generatendr", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+        body: JSON.stringify(data),
+      });
 
       if (response.ok) {
         const blob = await response.blob();
@@ -145,7 +139,7 @@ const AdminMIS_Report = () => {
     console.log("out", data);
     try {
       const response = await fetch(
-        "http://localhost:5000/api/report/outfordelivery",
+        "process.env.url/api/report/outfordelivery",
         {
           method: "POST",
           headers: {
@@ -198,17 +192,14 @@ const AdminMIS_Report = () => {
     };
     console.log("transit", data);
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/report/getintransit",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: localStorage.getItem("token"),
-          },
-          body: JSON.stringify(data),
-        }
-      );
+      const response = await fetch("process.env.url/api/report/getintransit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+        body: JSON.stringify(data),
+      });
 
       if (response.ok) {
         const blob = await response.blob();
@@ -250,7 +241,7 @@ const AdminMIS_Report = () => {
     console.log("wallet", data);
     try {
       const response = await fetch(
-        "http://localhost:5000/api/report/gettranscations",
+        "process.env.url/api/report/gettranscations",
         {
           method: "POST",
           headers: {
@@ -291,7 +282,7 @@ const AdminMIS_Report = () => {
     try {
       setLoadingSeller(true);
       const response = await fetch(
-        "http://localhost:5000/api/report/userdetailsexcel",
+        "process.env.url/api/report/userdetailsexcel",
         {
           method: "POST",
           headers: {

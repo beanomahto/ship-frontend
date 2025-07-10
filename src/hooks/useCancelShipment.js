@@ -53,11 +53,11 @@ const useCancelShipment = () => {
 
         switch (deliveryPartnerName) {
           case "Ecom Express":
-            url = "http://localhost:5000/api/ecomExpress/cancleShipment";
+            url = `${process.env.url}/api/ecomExpress/cancleShipment`;
             log = "Ecomm hit";
             break;
           case "Shree Maruti":
-            url = "http://localhost:5000/api/maruti/cancel";
+            url = `${process.env.url}/api/maruti/cancel`;
             log = "Maruti hit";
             break;
           // case 'Xpressbees':
@@ -65,19 +65,19 @@ const useCancelShipment = () => {
           //   log = 'Xpressbees hit';
           //   break;
           case "Delhivery":
-            url = "http://localhost:5000/api/deliveryOne/cancelShipment";
+            url = `${process.env.url}/api/deliveryOne/cancelShipment`;
             log = "Delhivery hit";
             break;
           case "Xpressbees":
           case "Amazon Shipping":
-            url = `http://localhost:5000/api/amazon/cancel/${shipid}`;
+            url = `${process.env.url}/api/amazon/cancel/${shipid}`;
             log = "Amazon hit";
             break;
           case "Blue Dart":
           case "Ekart":
           case "DTDC":
           case "Shadowfax":
-            url = "http://localhost:5000/api/smartship/cancelorder";
+            url = `${process.env.url}/api/smartship/cancelorder`;
             log = "Shiphere hit";
             break;
           default:

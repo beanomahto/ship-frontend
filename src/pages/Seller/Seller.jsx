@@ -1,13 +1,13 @@
 import { DeleteOutlined, SearchOutlined } from "@ant-design/icons";
 import {
-    Button,
-    DatePicker,
-    Input,
-    Modal,
-    Space,
-    Table,
-    Tag,
-    message,
+  Button,
+  DatePicker,
+  Input,
+  Modal,
+  Space,
+  Table,
+  Tag,
+  message,
 } from "antd";
 import axios from "axios";
 import moment from "moment";
@@ -44,7 +44,7 @@ const Seller = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/users", {
+      const response = await fetch("process.env.url/api/users", {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
@@ -151,14 +151,11 @@ const Seller = () => {
   //console.log(users);
   const handleDelete = async (id) => {
     try {
-      await axios.delete(
-        `http://localhost:5000/api/users/deleteUser/${id}`,
-        {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        }
-      );
+      await axios.delete(`process.env.url/api/users/deleteUser/${id}`, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      });
       message.success("User deleted successfully");
       fetchUsers();
     } catch (error) {
@@ -363,16 +360,14 @@ const Seller = () => {
         onClose={closeModal}
         selectedSeller={selectedSeller} // Pass selected seller as prop
       />
-      <div
-        className="search-container"
-      >
+      <div className="search-container">
         <Input.Search
           placeholder="Search globally"
           value={searchQuery}
           onChange={(e) => handleGlobalSearch(e.target.value)}
           onSearch={(value) => handleGlobalSearch(value)}
           enterButton={<SearchOutlined />}
-          style={{ marginBottom: "1rem"}}
+          style={{ marginBottom: "1rem" }}
           className="search-input"
         />
       </div>

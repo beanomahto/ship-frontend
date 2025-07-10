@@ -1,15 +1,15 @@
 import { DeleteOutlined, SearchOutlined } from "@ant-design/icons";
 import {
-    Button,
-    DatePicker,
-    Input,
-    Modal,
-    Select,
-    Skeleton,
-    Space,
-    Table,
-    Tag,
-    message,
+  Button,
+  DatePicker,
+  Input,
+  Modal,
+  Select,
+  Skeleton,
+  Space,
+  Table,
+  Tag,
+  message,
 } from "antd";
 import axios from "axios";
 import moment from "moment";
@@ -32,8 +32,7 @@ const InTranitComponent = ({
   //console.log(tab);
   const [searchText, setSearchText] = React.useState("");
   const [searchedColumn, setSearchedColumn] = React.useState("");
-  rowSelection = {...rowSelection, columnWidth: 90}
-
+  rowSelection = { ...rowSelection, columnWidth: 90 };
 
   const { authUser } = useAuthContext();
 
@@ -113,14 +112,11 @@ const InTranitComponent = ({
   //console.log(tabs);
   const handleDelete = async (id) => {
     try {
-      await axios.delete(
-        `http://localhost:5000/api/orders/deleteOrder/${id}`,
-        {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        }
-      );
+      await axios.delete(`process.env.url/api/orders/deleteOrder/${id}`, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      });
       message.success("Order deleted successfully");
       fetchOrders(); // Refresh orders after deletion
     } catch (error) {
@@ -473,7 +469,7 @@ const InTranitComponent = ({
         />
       ) : (
         <Table
-            rowSelection={rowSelection}
+          rowSelection={rowSelection}
           columns={columns}
           dataSource={shippedOrders}
           className="centered-table"
@@ -481,8 +477,8 @@ const InTranitComponent = ({
           scroll={{ x: 1050, y: 390 }}
           pagination={{
             showSizeChanger: true,
-            pageSizeOptions: ['10', '20', '50', '100', '500', '1000'],
-            defaultPageSize: 10, 
+            pageSizeOptions: ["10", "20", "50", "100", "500", "1000"],
+            defaultPageSize: 10,
           }}
           style={{ width: "100%", height: "505px", marginTop: "-10px" }}
         />

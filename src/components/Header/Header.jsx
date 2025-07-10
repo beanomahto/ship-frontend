@@ -86,7 +86,7 @@ const Header = ({ darktheme }) => {
 
     try {
       // Send a POST request to the backend
-      const response = await fetch("http://localhost:5000/api/phonepe/pay", {
+      const response = await fetch(`${process.env.url}/api/phonepe/pay`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

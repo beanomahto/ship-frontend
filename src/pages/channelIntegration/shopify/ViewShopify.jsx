@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 const ViewShopify = () => {
-//   const { slug } = useParams(); 
-const slug = "shopify"
+  //   const { slug } = useParams();
+  const slug = "shopify";
   const [data, setData] = useState(null);
   const [storeInputs, setStoreInputs] = useState({
     storeName: "",
@@ -12,42 +12,41 @@ const slug = "shopify"
     token: "",
   });
 
-
   useEffect(() => {
-        const getChannelInfo = async () => {
-          try {
-            const token = localStorage.getItem("token");
-            const res = await fetch(
-              `http://localhost:5000/api/integration/getApi/${slug}`,
-              {
-                headers: {
-                  Authorization: `${token}`,
-                },
-              }
-            );
-            const result = await res.json();
-      //console.log(result);
-      
-            if (result.storeName) {
-              setData(result);
-              setStoreInputs({
-                storeName: result.storeName || "",
-                salesChannel: result.salesChannel || "",
-                apiKey: result.apiKey || "",
-                apiSecret: result.apiSecret || "",
-                token: result.token || "",
-              });
-            } else {
-              console.error("Invalid response or API key not found");
-            }
-          } catch (error) {
-            console.error("Error fetching channel info:", error);
+    const getChannelInfo = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await fetch(
+          `${process.env.url}/api/integration/getApi/${slug}`,
+          {
+            headers: {
+              Authorization: `${token}`,
+            },
           }
-        };
-      
-        getChannelInfo();
-      }, [slug]);
-    //console.log(data);
+        );
+        const result = await res.json();
+        //console.log(result);
+
+        if (result.storeName) {
+          setData(result);
+          setStoreInputs({
+            storeName: result.storeName || "",
+            salesChannel: result.salesChannel || "",
+            apiKey: result.apiKey || "",
+            apiSecret: result.apiSecret || "",
+            token: result.token || "",
+          });
+        } else {
+          console.error("Invalid response or API key not found");
+        }
+      } catch (error) {
+        console.error("Error fetching channel info:", error);
+      }
+    };
+
+    getChannelInfo();
+  }, [slug]);
+  //console.log(data);
   return (
     <div
       style={{

@@ -15,14 +15,11 @@ const Pricing = () => {
     const fetchPricing = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(
-          "http://localhost:5000/api/shipping/rateCard",
-          {
-            headers: {
-              Authorization: `${token}`,
-            },
-          }
-        );
+        const res = await fetch("process.env.url/api/shipping/rateCard", {
+          headers: {
+            Authorization: `${token}`,
+          },
+        });
         const data = await res.json();
         setPricing(data?.pricing);
       } catch (error) {
@@ -52,7 +49,7 @@ const Pricing = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        "http://localhost:5000/api/shipping/download-custom-pricing",
+        "process.env.url/api/shipping/download-custom-pricing",
         {
           method: "POST", // Use POST method
           headers: {

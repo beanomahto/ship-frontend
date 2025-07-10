@@ -20,14 +20,11 @@ const Ticket = () => {
 
   const fetchComplaints = async () => {
     try {
-      const res = await fetch(
-        "http://localhost:5000/api/complaint/complaints",
-        {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        }
-      );
+      const res = await fetch("process.env.url/api/complaint/complaints", {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      });
       const data = await res.json();
       setTicket(data.complaints || []);
     } catch (error) {
@@ -65,7 +62,7 @@ const Ticket = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/complaint/remedy/${currentComplaint._id}`,
+        `process.env.url/api/complaint/remedy/${currentComplaint._id}`,
         {
           method: "PUT",
           headers: {

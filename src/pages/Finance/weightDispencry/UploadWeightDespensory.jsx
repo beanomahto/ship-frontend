@@ -64,15 +64,12 @@ const UploadWeightDespensory = ({
 
     for (const email of sellerEmails) {
       try {
-        const response = await axios.get(
-          "http://localhost:5000/api/users/search",
-          {
-            params: { query: email },
-            headers: {
-              Authorization: `${token}`,
-            },
-          }
-        );
+        const response = await axios.get("process.env.url/api/users/search", {
+          params: { query: email },
+          headers: {
+            Authorization: `${token}`,
+          },
+        });
 
         if (response.data && response.data.length > 0) {
           sellerIdMap[email] = response.data[0]._id;
@@ -100,7 +97,7 @@ const UploadWeightDespensory = ({
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/weightdiscrepancy/uploadweightdiscrepancy",
+        "process.env.url/api/weightdiscrepancy/uploadweightdiscrepancy",
         {
           method: "POST",
           body: formData,
@@ -154,7 +151,7 @@ const UploadWeightDespensory = ({
             console.log(walletRequestBody);
 
             const response = await fetch(
-              "http://localhost:5000/api/transactions/increaseAmount",
+              "process.env.url/api/transactions/increaseAmount",
               {
                 method: "POST",
                 headers: {
@@ -230,7 +227,7 @@ const UploadWeightDespensory = ({
 
         try {
           const response = await axios.post(
-            "http://localhost:5000/api/transactions/decreaseAmount",
+            "process.env.url/api/transactions/decreaseAmount",
             walletRequestBody,
             {
               headers: {

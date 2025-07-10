@@ -28,7 +28,7 @@ const VerifyKyc = () => {
     const fetchKycData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch(`http://localhost:5000/api/kyc/${id}`, {
+        const response = await fetch(`process.env.url/api/kyc/${id}`, {
           headers: { Authorization: `${token}` },
         });
         if (!response.ok) throw new Error("Failed to fetch KYC data");
@@ -36,17 +36,16 @@ const VerifyKyc = () => {
         setKycData(data);
         setFormData({
           ...formData,
-          ...data, 
+          ...data,
         });
       } catch (error) {
         message.error("Failed to fetch KYC data");
-        console.error(error); 
+        console.error(error);
       }
     };
-  
+
     fetchKycData();
   }, [id]);
-  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -60,17 +59,14 @@ const VerifyKyc = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(
-        `http://localhost:5000/api/kyc/verify/${id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `${token}`,
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(`process.env.url/api/kyc/verify/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+        body: JSON.stringify(formData),
+      });
       if (response.ok) {
         message.success("KYC verified successfully");
       } else {
@@ -85,22 +81,19 @@ const VerifyKyc = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(
-        `http://localhost:5000/api/kyc/update/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `${token}`,
-          },
-          body: JSON.stringify(formData),
-        }
-      );
-      
+      const response = await fetch(`process.env.url/api/kyc/update/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
       if (response.ok) {
         console.log(formData);
         message.success("KYC updated successfully");
-        setIsEditable(false); 
+        setIsEditable(false);
       } else {
         console.log(formData);
         message.error("Failed to update KYC");
@@ -116,32 +109,32 @@ const VerifyKyc = () => {
   const [remark, setRemark] = useState("");
 
   const handleResetClick = () => {
-    setIsModalVisible(true); 
+    setIsModalVisible(true);
   };
 
   const handleOk = async () => {
-    console.log("Remark:", remark); 
+    console.log("Remark:", remark);
     try {
-        const response = await fetch(`http://localhost:5000/api/kyc/remove/${id}` , {
-            method: 'POST',
-            headers: {
-                Authorization: localStorage.getItem('token'),
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ remark})
-        });
+      const response = await fetch(`process.env.url/api/kyc/remove/${id}`, {
+        method: "POST",
+        headers: {
+          Authorization: localStorage.getItem("token"),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ remark }),
+      });
 
-        if (response.ok) {
-            message.success("Remark added successfully");
-        } 
+      if (response.ok) {
+        message.success("Remark added successfully");
+      }
     } catch (error) {
-        message.error("An error occurred while adding the remark");
-        console.error(error);
+      message.error("An error occurred while adding the remark");
+      console.error(error);
     } finally {
-        setIsModalVisible(false); 
+      setIsModalVisible(false);
     }
-};
-console.log(isEditable);
+  };
+  console.log(isEditable);
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -149,7 +142,10 @@ console.log(isEditable);
 
   return (
     <div className="formCon">
-      <form className="form" onSubmit={isEditable ? handleUpdateKyc : handleSubmit}>
+      <form
+        className="form"
+        onSubmit={isEditable ? handleUpdateKyc : handleSubmit}
+      >
         <p className="title">KYC</p>
         <div className="flex1">
           <div className="flex">
@@ -158,11 +154,10 @@ console.log(isEditable);
               <Select
                 className="input ipt"
                 value={formData.companyType}
-                 disabled={!isEditable}
+                disabled={!isEditable}
                 onChange={(value) =>
                   setFormData({ ...formData, companyType: value })
                 }
-              
               >
                 <Select.Option value="individual">Individual</Select.Option>
                 <Select.Option value="propertysip">
@@ -177,7 +172,6 @@ console.log(isEditable);
               <Select
                 className="input ipt"
                 value={formData.documentType}
-               
                 onChange={(value) =>
                   setFormData({ ...formData, documentType: value })
                 }
@@ -197,57 +191,60 @@ console.log(isEditable);
               <label>
                 <span>GST Document</span>
                 {!formData?.gstUrl ? (
-        <Upload
-            customRequest={({ file, onSuccess, onError }) => {
-                setTimeout(() => {
-                    try {
-                        if (file instanceof File || file instanceof Blob) {
+                  <Upload
+                    customRequest={({ file, onSuccess, onError }) => {
+                      setTimeout(() => {
+                        try {
+                          if (file instanceof File || file instanceof Blob) {
                             setFormData({ ...formData, gstUrl: file });
                             onSuccess(null, file);
-                        } else {
+                          } else {
                             throw new Error("Invalid file format");
+                          }
+                        } catch (error) {
+                          onError(error);
                         }
-                    } catch (error) {
-                        onError(error);
-                    }
-                }, 0);
-            }}
-            listType="picture-card"
-            accept=".png,.jpg,.jpeg,.pdf,.csv" 
-        >
-            <button
-                style={{ border: 0, background: "none" }}
-                type="button"
-            >
-                <PlusOutlined />
-                <div style={{ marginTop: 8 }}>Upload</div>
-            </button>
-        </Upload>
-    ) : (
-        <div>
-            {formData?.gstUrl instanceof File && formData?.gstUrl?.type?.startsWith("image/") ? (
-                // Image preview if it's an image
-                <Image
-                    src={URL.createObjectURL(formData.gstUrl)}
-                    alt="GST Certificate"
-                    style={{ width: "100%", maxWidth: "200px" }}
-                />
-            ) : (
-                // Download link if it's a non-image (e.g., PDF, CSV)
-                <a
-                    href={formData?.gstUrl instanceof File 
-                        ? URL.createObjectURL(formData.gstUrl)  // For file-based URL
-                        : formData?.gstUrl}  // In case the url is directly available
-                    download={formData.gstUrl?.name}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ color: "blue", textDecoration: "underline" }}
-                >
-                    View {formData.gstUrl?.name || "File"}
-                </a>
-            )}
-        </div>
-    )}
+                      }, 0);
+                    }}
+                    listType="picture-card"
+                    accept=".png,.jpg,.jpeg,.pdf,.csv"
+                  >
+                    <button
+                      style={{ border: 0, background: "none" }}
+                      type="button"
+                    >
+                      <PlusOutlined />
+                      <div style={{ marginTop: 8 }}>Upload</div>
+                    </button>
+                  </Upload>
+                ) : (
+                  <div>
+                    {formData?.gstUrl instanceof File &&
+                    formData?.gstUrl?.type?.startsWith("image/") ? (
+                      // Image preview if it's an image
+                      <Image
+                        src={URL.createObjectURL(formData.gstUrl)}
+                        alt="GST Certificate"
+                        style={{ width: "100%", maxWidth: "200px" }}
+                      />
+                    ) : (
+                      // Download link if it's a non-image (e.g., PDF, CSV)
+                      <a
+                        href={
+                          formData?.gstUrl instanceof File
+                            ? URL.createObjectURL(formData.gstUrl) // For file-based URL
+                            : formData?.gstUrl
+                        } // In case the url is directly available
+                        download={formData.gstUrl?.name}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: "blue", textDecoration: "underline" }}
+                      >
+                        View {formData.gstUrl?.name || "File"}
+                      </a>
+                    )}
+                  </div>
+                )}
               </label>
             </div>
           </div>
@@ -261,7 +258,7 @@ console.log(isEditable);
                 type="text"
                 name="name"
                 value={formData.name}
-                 disabled={!isEditable}
+                disabled={!isEditable}
                 onChange={handleChange}
               />
             </label>
@@ -272,7 +269,7 @@ console.log(isEditable);
                 type="text"
                 name="accountNumber"
                 value={formData.accountNumber}
-                 disabled={!isEditable}
+                disabled={!isEditable}
                 onChange={handleChange}
               />
             </label>
@@ -280,57 +277,60 @@ console.log(isEditable);
               <label>
                 <span>Passbook</span>
                 {!formData?.passbookUrl ? (
-        <Upload
-            customRequest={({ file, onSuccess, onError }) => {
-                setTimeout(() => {
-                    try {
-                        if (file instanceof File || file instanceof Blob) {
+                  <Upload
+                    customRequest={({ file, onSuccess, onError }) => {
+                      setTimeout(() => {
+                        try {
+                          if (file instanceof File || file instanceof Blob) {
                             setFormData({ ...formData, passbookUrl: file });
                             onSuccess(null, file);
-                        } else {
+                          } else {
                             throw new Error("Invalid file format");
+                          }
+                        } catch (error) {
+                          onError(error);
                         }
-                    } catch (error) {
-                        onError(error);
-                    }
-                }, 0);
-            }}
-            listType="picture-card"
-            accept=".png,.jpg,.jpeg,.pdf,.csv" 
-        >
-            <button
-                style={{ border: 0, background: "none" }}
-                type="button"
-            >
-                <PlusOutlined />
-                <div style={{ marginTop: 8 }}>Upload</div>
-            </button>
-        </Upload>
-    ) : (
-        <div>
-            {formData?.passbookUrl instanceof File && formData?.passbookUrl?.type?.startsWith("image/") ? (
-                // Image preview if it's an image
-                <Image
-                    src={URL.createObjectURL(formData.passbookUrl)}
-                    alt="GST Certificate"
-                    style={{ width: "100%", maxWidth: "200px" }}
-                />
-            ) : (
-                // Download link if it's a non-image (e.g., PDF, CSV)
-                <a
-                    href={formData?.passbookUrl instanceof File 
-                        ? URL.createObjectURL(formData.passbookUrl)  // For file-based URL
-                        : formData?.passbookUrl}  // In case the url is directly available
-                    download={formData.passbookUrl?.name}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ color: "blue", textDecoration: "underline" }}
-                >
-                  View {formData.passbookUrl?.name || "File"}
-                </a>
-            )}
-        </div>
-    )}
+                      }, 0);
+                    }}
+                    listType="picture-card"
+                    accept=".png,.jpg,.jpeg,.pdf,.csv"
+                  >
+                    <button
+                      style={{ border: 0, background: "none" }}
+                      type="button"
+                    >
+                      <PlusOutlined />
+                      <div style={{ marginTop: 8 }}>Upload</div>
+                    </button>
+                  </Upload>
+                ) : (
+                  <div>
+                    {formData?.passbookUrl instanceof File &&
+                    formData?.passbookUrl?.type?.startsWith("image/") ? (
+                      // Image preview if it's an image
+                      <Image
+                        src={URL.createObjectURL(formData.passbookUrl)}
+                        alt="GST Certificate"
+                        style={{ width: "100%", maxWidth: "200px" }}
+                      />
+                    ) : (
+                      // Download link if it's a non-image (e.g., PDF, CSV)
+                      <a
+                        href={
+                          formData?.passbookUrl instanceof File
+                            ? URL.createObjectURL(formData.passbookUrl) // For file-based URL
+                            : formData?.passbookUrl
+                        } // In case the url is directly available
+                        download={formData.passbookUrl?.name}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: "blue", textDecoration: "underline" }}
+                      >
+                        View {formData.passbookUrl?.name || "File"}
+                      </a>
+                    )}
+                  </div>
+                )}
               </label>
             </div>
           </div>
@@ -342,7 +342,7 @@ console.log(isEditable);
                 type="text"
                 name="ifscCode"
                 value={formData.ifscCode}
-                 disabled={!isEditable}
+                disabled={!isEditable}
                 onChange={handleChange}
               />
             </label>
@@ -353,7 +353,7 @@ console.log(isEditable);
                 type="text"
                 name="bankName"
                 value={formData.bankName}
-                 disabled={!isEditable}
+                disabled={!isEditable}
                 onChange={handleChange}
               />
             </label>
@@ -368,7 +368,7 @@ console.log(isEditable);
                 type="text"
                 name="gstin"
                 value={formData.gstin}
-                 disabled={!isEditable}
+                disabled={!isEditable}
                 onChange={handleChange}
               />
             </label>
@@ -379,7 +379,7 @@ console.log(isEditable);
                 type="text"
                 name="pancard"
                 value={formData.pancard}
-                 disabled={!isEditable}
+                disabled={!isEditable}
                 onChange={handleChange}
               />
             </label>
@@ -387,57 +387,60 @@ console.log(isEditable);
               <label>
                 <span>PAN Card</span>
                 {!formData?.pancardUrl ? (
-        <Upload
-            customRequest={({ file, onSuccess, onError }) => {
-                setTimeout(() => {
-                    try {
-                        if (file instanceof File || file instanceof Blob) {
+                  <Upload
+                    customRequest={({ file, onSuccess, onError }) => {
+                      setTimeout(() => {
+                        try {
+                          if (file instanceof File || file instanceof Blob) {
                             setFormData({ ...formData, pancardUrl: file });
                             onSuccess(null, file);
-                        } else {
+                          } else {
                             throw new Error("Invalid file format");
+                          }
+                        } catch (error) {
+                          onError(error);
                         }
-                    } catch (error) {
-                        onError(error);
-                    }
-                }, 0);
-            }}
-            listType="picture-card"
-            accept=".png,.jpg,.jpeg,.pdf,.csv" 
-        >
-            <button
-                style={{ border: 0, background: "none" }}
-                type="button"
-            >
-                <PlusOutlined />
-                <div style={{ marginTop: 8 }}>Upload</div>
-            </button>
-        </Upload>
-    ) : (
-        <div>
-            {formData?.pancardUrl instanceof File && formData?.pancardUrl?.type?.startsWith("image/") ? (
-                // Image preview if it's an image
-                <Image
-                    src={URL.createObjectURL(formData.pancardUrl)}
-                    alt="GST Certificate"
-                    style={{ width: "100%", maxWidth: "200px" }}
-                />
-            ) : (
-                // Download link if it's a non-image (e.g., PDF, CSV)
-                <a
-                    href={formData?.pancardUrl instanceof File 
-                        ? URL.createObjectURL(formData.pancardUrl)  // For file-based URL
-                        : formData?.pancardUrl}  // In case the url is directly available
-                    download={formData.pancardUrl?.name}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ color: "blue", textDecoration: "underline" }}
-                >
-                    View {formData.pancardUrl?.name || "File"}
-                </a>
-            )}
-        </div>
-    )}
+                      }, 0);
+                    }}
+                    listType="picture-card"
+                    accept=".png,.jpg,.jpeg,.pdf,.csv"
+                  >
+                    <button
+                      style={{ border: 0, background: "none" }}
+                      type="button"
+                    >
+                      <PlusOutlined />
+                      <div style={{ marginTop: 8 }}>Upload</div>
+                    </button>
+                  </Upload>
+                ) : (
+                  <div>
+                    {formData?.pancardUrl instanceof File &&
+                    formData?.pancardUrl?.type?.startsWith("image/") ? (
+                      // Image preview if it's an image
+                      <Image
+                        src={URL.createObjectURL(formData.pancardUrl)}
+                        alt="GST Certificate"
+                        style={{ width: "100%", maxWidth: "200px" }}
+                      />
+                    ) : (
+                      // Download link if it's a non-image (e.g., PDF, CSV)
+                      <a
+                        href={
+                          formData?.pancardUrl instanceof File
+                            ? URL.createObjectURL(formData.pancardUrl) // For file-based URL
+                            : formData?.pancardUrl
+                        } // In case the url is directly available
+                        download={formData.pancardUrl?.name}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: "blue", textDecoration: "underline" }}
+                      >
+                        View {formData.pancardUrl?.name || "File"}
+                      </a>
+                    )}
+                  </div>
+                )}
               </label>
             </div>
           </div>
@@ -449,7 +452,7 @@ console.log(isEditable);
                 type="text"
                 name="aadharNumber"
                 value={formData.aadharNumber}
-                 disabled={!isEditable}
+                disabled={!isEditable}
                 onChange={handleChange}
               />
             </label>
@@ -469,7 +472,7 @@ console.log(isEditable);
               fontSize: "18px",
             }}
           >
-              {isEditable ? "Save" : "Submit"}
+            {isEditable ? "Save" : "Submit"}
           </Button>
           <Button
             htmlType="button"
@@ -520,4 +523,4 @@ console.log(isEditable);
   );
 };
 
-export default VerifyKyc;
+export default VerifyKyc;

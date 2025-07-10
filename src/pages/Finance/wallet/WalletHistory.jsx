@@ -126,7 +126,7 @@ const WalletHistory = () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          "http://localhost:5000/api/recharge/getUserRecharge",
+          "process.env.url/api/recharge/getUserRecharge",
           {
             headers: {
               Authorization: `${token}`,

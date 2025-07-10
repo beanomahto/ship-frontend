@@ -21,7 +21,7 @@ const BulkOrderUploadModal = ({ visible, onClose }) => {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/orders/createBulkOrder",
+        "process.env.url/api/orders/createBulkOrder",
         {
           method: "POST",
           body: formData,
@@ -42,9 +42,10 @@ const BulkOrderUploadModal = ({ visible, onClose }) => {
           notification.warning({
             message: "Duplicate Orders Detected",
             description: (
-              <>{" "}
-                <b>{responseData.duplicateOrderIds.join(", ")}</b>. Please change
-                the order IDs and re-upload the file.
+              <>
+                {" "}
+                <b>{responseData.duplicateOrderIds.join(", ")}</b>. Please
+                change the order IDs and re-upload the file.
               </>
             ),
             duration: 0,

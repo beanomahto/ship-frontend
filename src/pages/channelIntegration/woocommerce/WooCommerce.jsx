@@ -4,9 +4,9 @@ import React, { useState } from "react";
 const WooCommerce = () => {
   // const { slug } = useParams();
   // //console.log(slug);
-  const slug = "wooCommerce"
+  const slug = "wooCommerce";
   //console.log(slug);
-  
+
   const [data, setData] = useState(null);
   const [storeInputs, setStoreInputs] = useState({
     storeName: "",
@@ -15,85 +15,47 @@ const WooCommerce = () => {
     apiSecret: "",
     token: "tokenioioi",
   });
-  
-//  useEffect(() => {
-//     const getChannelInfo = async () => {
-//       try {
-//         const token = localStorage.getItem("token");
-//         const res = await fetch(
-//           `https://backend.shiphere.in/api/integration/getApi/${slug}`,
-//           {
-//             headers: {
-//               Authorization: `${token}`,
-//             },
-//           }
-//         );
-//         const result = await res.json();
-//   //console.log(result);
-  
-//         if (result.storeName) {
-//           setData(result);
-//           setStoreInputs({
-//             storeName: result.storeName || "",
-//             salesChannel: result.salesChannel || "",
-//             apiKey: result.apiKey || "",
-//             apiSecret: result.apiSecret || "",
-//             token: result.token || "",
-//           });
-//         } else {
-//           console.error("Invalid response or API key not found");
-//         }
-//       } catch (error) {
-//         console.error("Error fetching channel info:", error);
-//       }
-//     };
-  
-//     getChannelInfo();
-//   }, [slug]);
-// //console.log(data);
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  
 
-  try {
-    if (data === null) {
-      await integrateWooCommerceChannel();
-      message.success("Channel created successfully");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      if (data === null) {
+        await integrateWooCommerceChannel();
+        message.success("Channel created successfully");
+      }
+    } catch (error) {
+      message.error("An error occurred while integrating the channel");
     }
-  } catch (error) {
-    message.error("An error occurred while integrating the channel");
-  }
-};
-//console.log(storeInputs);
+  };
+  //console.log(storeInputs);
 
-const integrateWooCommerceChannel = async () => {
-  try {
-    const token = localStorage.getItem("token");
-    const res = await fetch(
-      `http://localhost:5000/api/integration/createApi`,
-      {
+  const integrateWooCommerceChannel = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${process.env.url}/api/integration/createApi`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `${token}`,
         },
         body: JSON.stringify(storeInputs),
-      }
-    );
-  //console.log(storeInputs);
-  //console.log(await res.json());
-
-  } catch (error) {
-    console.error("Error integrating Shopify channel:", error);
-    throw error;
-  }
-};
+      });
+      //console.log(storeInputs);
+      //console.log(await res.json());
+    } catch (error) {
+      console.error("Error integrating Shopify channel:", error);
+      throw error;
+    }
+  };
 
   const updateChannelInfo = async () => {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        `http://localhost:5000/api/integration/updateApi/${slug}`,
+        `${process.env.url}/api/integration/updateApi/${slug}`,
         {
           method: "PUT",
           headers: {
@@ -118,9 +80,7 @@ const integrateWooCommerceChannel = async () => {
   };
 
   return (
-    <div
-   className="mainIntegrationHeader"
-    >
+    <div className="mainIntegrationHeader">
       <div className="steps">
         <h1>WooCommerce</h1>
         <ol>

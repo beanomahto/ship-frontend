@@ -32,7 +32,7 @@ const UpdateLabel = () => {
     const fetchLabelInfo = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/shipping/getLabelInfo",
+          "process.env.url/api/shipping/getLabelInfo",
           {
             headers: {
               Authorization: localStorage.getItem("token"),

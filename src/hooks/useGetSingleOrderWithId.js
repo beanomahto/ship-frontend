@@ -1,35 +1,38 @@
-import axios from 'axios';
-import { useState } from 'react';
+import axios from "axios";
+import { useState } from "react";
 
 const useGetSingleOrderWithId = () => {
-    const [loading, setLoading] = useState(false);
-    const [order, setOrder] = useState(null);
-    const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [order, setOrder] = useState(null);
+  const [error, setError] = useState(null);
 
-    const getSingleOrderWithId = async (orderId) => {
-        setLoading(true);
-        try {
-            const token = localStorage.getItem('token');
-            const response = await axios.get(`http://localhost:5000/api/orders/${orderId}`, {
-                headers: {
-                    Authorization: `${token}`
-                }
-            });
-            setOrder(response.data);
-            setLoading(false);
-            //console.log(response.data);
-        } catch (error) {
-            setError(error);
-            setLoading(false);
+  const getSingleOrderWithId = async (orderId) => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(
+        `${process.env.url}/api/orders/${orderId}`,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
         }
-    };
+      );
+      setOrder(response.data);
+      setLoading(false);
+      //console.log(response.data);
+    } catch (error) {
+      setError(error);
+      setLoading(false);
+    }
+  };
 
-    return {
-        loading,
-        order,
-        error,
-        getSingleOrderWithId,
-    };
+  return {
+    loading,
+    order,
+    error,
+    getSingleOrderWithId,
+  };
 };
 
 export default useGetSingleOrderWithId;

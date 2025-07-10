@@ -1,23 +1,23 @@
-import { message } from 'antd';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { message } from "antd";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const CreateEmployeeForm = () => {
-    const {id} = useParams()
-    const navigate = useNavigate();
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [state, setState] = useState({
-    name: '',
-    professionalEmail: '',
-    password: '',
-    contact: '',
-    address: '',
-    position: '',
-    fatherName: '',
-    emergencyContact: '',
-    permanentEmail: '',
-    dateOfJoining: '',
-    employeeCode: ''
+    name: "",
+    professionalEmail: "",
+    password: "",
+    contact: "",
+    address: "",
+    position: "",
+    fatherName: "",
+    emergencyContact: "",
+    permanentEmail: "",
+    dateOfJoining: "",
+    employeeCode: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -28,11 +28,13 @@ const CreateEmployeeForm = () => {
       const fetchEmployee = async () => {
         try {
           setLoading(true);
-          const response = await axios.get(`http://localhost:5000/api/employee/getEmployeeById/${id}`);
+          const response = await axios.get(
+            `process.env.url/api/employee/getEmployeeById/${id}`
+          );
           setState(response.data);
           setLoading(false);
         } catch (err) {
-          setError('Failed to fetch employee data.');
+          setError("Failed to fetch employee data.");
           setLoading(false);
         }
       };
@@ -51,19 +53,22 @@ const CreateEmployeeForm = () => {
 
     try {
       setLoading(true);
-      await axios.put(`http://localhost:5000/api/employee/updateEmployee/${id}`, state);
-      message.success('Employee updated successfully!');
-      navigate('/employee')
+      await axios.put(
+        `process.env.url/api/employee/updateEmployee/${id}`,
+        state
+      );
+      message.success("Employee updated successfully!");
+      navigate("/employee");
       setError(null);
     } catch (err) {
-      message.error('Failed to update employee.');
+      message.error("Failed to update employee.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className='formCon'>
+    <div className="formCon">
       <form className="form" onSubmit={handleSubmit}>
         <p className="title">Create Employee</p>
 
@@ -201,11 +206,11 @@ const CreateEmployeeForm = () => {
         </div>
 
         <button className="submit" type="submit" disabled={loading}>
-          {loading ? 'Submitting...' : 'Submit'}
+          {loading ? "Submitting..." : "Submit"}
         </button>
 
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        {success && <p style={{ color: 'green' }}>{success}</p>}
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        {success && <p style={{ color: "green" }}>{success}</p>}
       </form>
     </div>
   );

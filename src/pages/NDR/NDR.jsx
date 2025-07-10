@@ -41,13 +41,16 @@ const NDR = () => {
   const hasSelected = selectedRowKeys.length > 0;
 
   const actionRequired = dataSourceWithKeys?.filter(
-    (status) => status.ndrstatus === "Required" && status.status === "UnDelivered"
+    (status) =>
+      status.ndrstatus === "Required" && status.status === "UnDelivered"
   );
   const actionTaken = dataSourceWithKeys?.filter(
     (status) => status.ndrstatus === "Taken" && status.status !== "Delivered"
   );
   const rtoOrder = dataSourceWithKeys?.filter(
-    (status) => (status.ndrstatus === "RTO" || status.ndrstatus === 'RtoDone') && status.status !== "Delivered"
+    (status) =>
+      (status.ndrstatus === "RTO" || status.ndrstatus === "RtoDone") &&
+      status.status !== "Delivered"
   );
   const ndrDeliveredOrder = dataSourceWithKeys?.filter(
     (status) =>
@@ -106,30 +109,30 @@ const NDR = () => {
       await fetchOrders();
       try {
         const res = await fetch(
-          "http://localhost:5000/api/smartship/getcurrentstatus",
+          "process.env.url/api/smartship/getcurrentstatus",
           {
             headers: {
               Authorization: localStorage.getItem("token"),
             },
           }
         );
-    
+
         const jsonObj = await res.json();
         const data = jsonObj?.data?.shipmentDetails;
-    
+        console.log(data);
         if (orders?.orders?.length > 0) {
           const rtoDeduct = orders.orders.filter(
             (order) => order.ndrstatus === "RTO" && order.status !== "Delivered"
           );
-    
+
           const processedOrders = new Set();
-    
+
           if (rtoDeduct.length > 0) {
             await Promise.all(
               rtoDeduct.map(async (order) => {
-                if (processedOrders.has(order._id)) return; 
+                if (processedOrders.has(order._id)) return;
                 processedOrders.add(order._id);
-    
+
                 try {
                   const forwardWalletRequestBody = {
                     debit: order.rtoCost ?? order.shippingCost,
@@ -137,9 +140,9 @@ const NDR = () => {
                     remark: `RTO charge for order ${order.orderId}`,
                     orderId: order._id,
                   };
-    
+
                   const forwardWalletResponse = await axios.post(
-                    "http://localhost:5000/api/transactions/decreaseAmount",
+                    "process.env.url/api/transactions/decreaseAmount",
                     forwardWalletRequestBody,
                     {
                       headers: {
@@ -147,16 +150,16 @@ const NDR = () => {
                       },
                     }
                   );
-    
+
                   if (forwardWalletResponse.status === 200) {
                     try {
                       const updateBody = {
                         ndrstatus: "RtoDone",
                         reattemptcount: order.reattemptcount + 0,
                       };
-    
+
                       await axios.put(
-                        `http://localhost:5000/api/orders/updateOrderStatus/${order._id}`,
+                        `process.env.url/api/orders/updateOrderStatus/${order._id}`,
                         updateBody,
                         {
                           headers: {
@@ -175,18 +178,75 @@ const NDR = () => {
             );
           }
         }
-    
+
         const mapStatusCodeToOrderStatus = (status) => {
-          if (["27", "30", "10", "59", "121", "108", "126", "108", "109", "110", "122", "123", "124", "125", "126", "133", "120","207", "209", "215"].includes(status)) return "InTransit";
-          if (["4", "103", "101", "106", "107", "102", "104", "105", "119", "118"].includes(status)) return "Shipped";
+          if (
+            [
+              "27",
+              "30",
+              "10",
+              "59",
+              "121",
+              "108",
+              "126",
+              "108",
+              "109",
+              "110",
+              "122",
+              "123",
+              "124",
+              "125",
+              "126",
+              "133",
+              "120",
+              "207",
+              "209",
+              "215",
+            ].includes(status)
+          )
+            return "InTransit";
+          if (
+            [
+              "4",
+              "103",
+              "101",
+              "106",
+              "107",
+              "102",
+              "104",
+              "105",
+              "119",
+              "118",
+            ].includes(status)
+          )
+            return "Shipped";
           if (["11", "113"].includes(status)) return "Delivered";
           if (["26", "185", "340"].includes(status)) return "Cancelled";
           if (["189"].includes(status)) return "Lost";
-          if (["12", "13", "14", "15", "16", "17", "22", "23", "210", "112"].includes(status)) return "UnDelivered";
-          if (["214", "18", "19", "28", "198", "199", "201", "212"].includes(status)) return "RTO";
+          if (
+            [
+              "12",
+              "13",
+              "14",
+              "15",
+              "16",
+              "17",
+              "22",
+              "23",
+              "210",
+              "112",
+            ].includes(status)
+          )
+            return "UnDelivered";
+          if (
+            ["214", "18", "19", "28", "198", "199", "201", "212"].includes(
+              status
+            )
+          )
+            return "RTO";
           return null;
         };
-    
+
         const updatedOrders = data
           .map((order) => {
             const resolveStatusKey = (order) => {
@@ -194,17 +254,17 @@ const NDR = () => {
               if (!isNaN(order.status_code)) return order.status_code;
               return order.status || order.status_code;
             };
-    
+
             const statusKey = resolveStatusKey(order);
             const order_status = mapStatusCodeToOrderStatus(statusKey);
-    
+
             if (order_status) {
               return { ...order, order_status, reason: order.reason };
             }
             return null;
           })
           .filter((order) => order !== null);
-    
+
         if (updatedOrders?.length > 0) {
           await updateMultipleOrders(updatedOrders);
         } else {
@@ -214,7 +274,7 @@ const NDR = () => {
         console.error("Error fetching data:", error);
       }
     };
-    
+
     const updateMultipleOrders = async (orders) => {
       // console.log(orders);
 
@@ -223,7 +283,6 @@ const NDR = () => {
           // console.log(order);
 
           if (order.order_status === "RTO") {
-            
           }
 
           const updateBody = {
@@ -238,7 +297,7 @@ const NDR = () => {
           // console.log(updateBody);
 
           return axios.put(
-            `http://localhost:5000/api/orders/updateOrderStatus/${order.orderId}`,
+            `process.env.url/api/orders/updateOrderStatus/${order.orderId}`,
             updateBody,
             {
               headers: {
@@ -249,7 +308,6 @@ const NDR = () => {
         });
 
         await Promise.all(updatePromises);
-
       } catch (error) {
         console.error("Error updating orders:", error);
         // message.error('Batch update failed.');
@@ -265,28 +323,27 @@ const NDR = () => {
 
   return (
     <div className="ndrContainer">
-  <Tabs defaultActiveKey="tab1" size="large" className="custom-tabs">
-    {tabsData.map((tab) => (
-      <TabPane key={tab.key} tab={tab.tab} className="custom-tab-content">
-        {tab.Component ? (
-          <tab.Component
-            dataSource={tab.dataSource}
-            rowSelection={rowSelection}
-            selectedRowKeys={selectedRowKeys}
-            fetchOrders={fetchOrders}
-            selectedOrderData={selectedOrderData}
-          />
-        ) : (
-          <span>No component for this tab</span>
-        )}
-        <span className="selected-items">
-          {hasSelected ? `Selected ${selectedRowKeys.length} items` : ""}
-        </span>
-      </TabPane>
-    ))}
-  </Tabs>
-</div>
-
+      <Tabs defaultActiveKey="tab1" size="large" className="custom-tabs">
+        {tabsData.map((tab) => (
+          <TabPane key={tab.key} tab={tab.tab} className="custom-tab-content">
+            {tab.Component ? (
+              <tab.Component
+                dataSource={tab.dataSource}
+                rowSelection={rowSelection}
+                selectedRowKeys={selectedRowKeys}
+                fetchOrders={fetchOrders}
+                selectedOrderData={selectedOrderData}
+              />
+            ) : (
+              <span>No component for this tab</span>
+            )}
+            <span className="selected-items">
+              {hasSelected ? `Selected ${selectedRowKeys.length} items` : ""}
+            </span>
+          </TabPane>
+        ))}
+      </Tabs>
+    </div>
   );
 };
 

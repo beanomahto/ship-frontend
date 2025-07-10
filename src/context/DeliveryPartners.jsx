@@ -17,7 +17,7 @@ export const DeliveryPartnerProvider = ({ children }) => {
         setLoading(true);
         const token = localStorage.getItem("token");
         const response = await fetch(
-          "http://localhost:5000/api/shipping/getDeliveryPartners",
+          `${process.env.url}/api/shipping/getDeliveryPartners`,
           {
             headers: {
               Authorization: `${token}`,

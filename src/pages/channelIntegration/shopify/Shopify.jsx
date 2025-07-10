@@ -1,7 +1,7 @@
 import { message } from "antd";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import './shopify.css';
+import "./shopify.css";
 
 const Shopify = () => {
   const params = useParams();
@@ -16,81 +16,43 @@ const Shopify = () => {
     token: "",
   });
 
-//   useEffect(() => {
-//     const getChannelInfo = async () => {
-//       try {
-//         const token = localStorage.getItem("token");
-//         const res = await fetch(
-//           `https://backend.shiphere.in/api/integration/getApi/${slug}`,
-//           {
-//             headers: {
-//               Authorization: `${token}`,
-//             },
-//           }
-//         );
-//         const result = await res.json();
-//   //console.log(result);
-  
-//         if (result.storeName) {
-//           setData(result);
-//           setStoreInputs({
-//             storeName: result.storeName || "",
-//             salesChannel: result.salesChannel || "",
-//             apiKey: result.apiKey || "",
-//             apiSecret: result.apiSecret || "",
-//             token: result.token || "",
-//           });
-//         } else {
-//           console.error("Invalid response or API key not found");
-//         }
-//       } catch (error) {
-//         console.error("Error fetching channel info:", error);
-//       }
-//     };
-  
-//     getChannelInfo();
-//   }, [slug]);
-// //console.log(data);
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  try {
-    if (data === null) {
-      await integrateShopifyChannel();
-      setStoreInputs({
-        storeName: "",
-        salesChannel: slug,
-        apiKey: "",
-        apiSecret: "",
-        token: "",
-      });
-      message.success("Channel created successfully");
+    try {
+      if (data === null) {
+        await integrateShopifyChannel();
+        setStoreInputs({
+          storeName: "",
+          salesChannel: slug,
+          apiKey: "",
+          apiSecret: "",
+          token: "",
+        });
+        message.success("Channel created successfully");
+      }
+    } catch (error) {
+      message.error("An error occurred while integrating the channel");
     }
-  } catch (error) {
-    message.error("An error occurred while integrating the channel");
-  }
-};
+  };
 
   //console.log(storeInputs);
-  
+
   const integrateShopifyChannel = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(
-        `http://localhost:5000/api/integration/createApi`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `${token}`,
-          },
-          body: JSON.stringify(storeInputs),
-        }
-      );
-    //console.log(storeInputs);
-    //console.log(await res.json());
-  
+      const res = await fetch(`${process.env.url}/api/integration/createApi`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+        body: JSON.stringify(storeInputs),
+      });
+      //console.log(storeInputs);
+      //console.log(await res.json());
+
       // if (!res.ok) {
       //   throw new Error("Failed to create the channel");
       // }
@@ -104,7 +66,7 @@ const handleSubmit = async (e) => {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        `http://localhost:5000/api/integration/updateApi/${slug}`,
+        `${process.env.url}/api/integration/updateApi/${slug}`,
         {
           method: "PUT",
           headers: {
@@ -128,9 +90,7 @@ const handleSubmit = async (e) => {
     }
   };
   return (
-    <div
-     className="mainIntegrationHeader"
-    >
+    <div className="mainIntegrationHeader">
       <div className="steps">
         <h1>Shopify</h1>
         <ol>

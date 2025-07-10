@@ -1,7 +1,7 @@
 import {
-    DeleteOutlined,
-    EditOutlined,
-    SearchOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  SearchOutlined,
 } from "@ant-design/icons";
 import { Button, Input, message, Modal, Table, Tag } from "antd";
 import axios from "axios";
@@ -23,7 +23,7 @@ const ActiveWarehouses = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `http://localhost:5000/api/warehouses/deleteWarehouse/${id}`,
+        `process.env.url/api/warehouses/deleteWarehouse/${id}`,
         {
           headers: {
             Authorization: localStorage.getItem("token"),

@@ -4,25 +4,21 @@ import axios from "axios";
 import React, { useState } from "react";
 import "./PaymentModal.css"; // Import the CSS file
 
-const PaymentModal = ({
-  visible,
-  onClose,
- 
-}) => {
+const PaymentModal = ({ visible, onClose }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [hoveredUser, setHoveredUser] = useState(null);
-  const [paymentAmount, setPaymentAmount] = useState('');
-  const [paymentRemark, setPaymentRemark] = useState('');
+  const [paymentAmount, setPaymentAmount] = useState("");
+  const [paymentRemark, setPaymentRemark] = useState("");
   const handleSearch = async (value) => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/users/search', {
+      const token = localStorage.getItem("token");
+      const response = await axios.get("process.env.url/api/users/search", {
         params: { query: value },
         headers: {
-          Authorization: `${token}`
-        }
+          Authorization: `${token}`,
+        },
       });
       setSearchResults(response.data);
     } catch (error) {
@@ -44,32 +40,37 @@ const PaymentModal = ({
     }
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/recharge/recharge',
+        "process.env.url/api/recharge/recharge",
         {
           userId: hoveredUser._id,
           credit: parseFloat(paymentAmount),
-          remark: paymentRemark.trim()
+          remark: paymentRemark.trim(),
         },
         {
           headers: {
-            Authorization: localStorage.getItem('token')
-          }
+            Authorization: localStorage.getItem("token"),
+          },
         }
       );
-      
-      message.success("Payment Successful")
+
+      message.success("Payment Successful");
       //console.log("Payment successful:", response.data);
     } catch (error) {
-      message.error("Payment failed")
+      message.error("Payment failed");
       console.error("Error updating user:", error);
     }
   };
   return (
-    <Modal open={visible} onCancel={onClose} className="payment-modal" footer={null}>
+    <Modal
+      open={visible}
+      onCancel={onClose}
+      className="payment-modal"
+      footer={null}
+    >
       <div className="search-container">
         <Input.Search
           className="search-input"
-          style={{ padding: "0"}}
+          style={{ padding: "0" }}
           placeholder="Search by email, name, company name"
           allowClear
           enterButton={<SearchOutlined />}
@@ -94,7 +95,16 @@ const PaymentModal = ({
               title={`${user.firstName} ${user.lastName} - ${user.phoneNumber}, ${user.companyName}`}
               open={hoveredUser === user}
             >
-              <List.Item.Meta style={{ width: "100%", padding: "10px 5px", borderRadius: "8px", marginBottom: "10px" }} title={user.firstName} description={user.email} />
+              <List.Item.Meta
+                style={{
+                  width: "100%",
+                  padding: "10px 5px",
+                  borderRadius: "8px",
+                  marginBottom: "10px",
+                }}
+                title={user.firstName}
+                description={user.email}
+              />
             </Tooltip>
 
             <div className="payment-inputs">

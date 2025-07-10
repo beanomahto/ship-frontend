@@ -1,20 +1,20 @@
 import {
-    CheckCircleOutlined,
-    CheckOutlined,
-    ClockCircleOutlined,
-    CloseCircleOutlined,
-    SyncOutlined,
+  CheckCircleOutlined,
+  CheckOutlined,
+  ClockCircleOutlined,
+  CloseCircleOutlined,
+  SyncOutlined,
 } from "@ant-design/icons";
 import {
-    Card,
-    Carousel,
-    Col,
-    Descriptions,
-    Progress,
-    Row,
-    Steps,
-    Typography,
-    message,
+  Card,
+  Carousel,
+  Col,
+  Descriptions,
+  Progress,
+  Row,
+  Steps,
+  Typography,
+  message,
 } from "antd";
 import axios from "axios";
 import React, { useEffect, useRef } from "react";
@@ -135,7 +135,7 @@ const EcomData = ({ trackingInfo, advertisement }) => {
       };
 
       const response = await axios.put(
-        `http://localhost:5000/api/orders/updateOrderStatus/${orderId}`,
+        `${process.env.url}/api/orders/updateOrderStatus/${orderId}`,
         updateBody,
         {
           headers: {

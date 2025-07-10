@@ -1,17 +1,17 @@
-import { SearchOutlined } from '@ant-design/icons';
-import { Button, Input, message, Modal, Skeleton, Space, Table } from 'antd';
-import axios from 'axios';
-import React, { useState } from 'react';
-import { Helmet } from 'react-helmet';
-import { Link } from 'react-router-dom';
-import { useAuthContext } from '../../context/AuthContext';
+import { SearchOutlined } from "@ant-design/icons";
+import { Button, Input, message, Modal, Skeleton, Space, Table } from "antd";
+import axios from "axios";
+import React, { useState } from "react";
+import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
+import { useAuthContext } from "../../context/AuthContext";
 
 const { confirm } = Modal;
 
-const BulkUploadComponent = ({ dataSource, fetchOrders, loading,tab }) => {
+const BulkUploadComponent = ({ dataSource, fetchOrders, loading, tab }) => {
   //console.log(tab);
-  const [searchText, setSearchText] = useState('');
-  const [searchedColumn, setSearchedColumn] = useState('');
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const { authUser } = useAuthContext();
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -22,15 +22,15 @@ const BulkUploadComponent = ({ dataSource, fetchOrders, loading,tab }) => {
 
   const handleReset = (clearFilters) => {
     clearFilters();
-    setSearchText('');
+    setSearchText("");
   };
   const [packageDetails, setPackageDetails] = useState({
-    length: '',
-    breadth: '',
-    height: '',
-    weight: '',
+    length: "",
+    breadth: "",
+    height: "",
+    weight: "",
   });
-  
+
   const handlePackageDetailChange = (e) => {
     setPackageDetails({
       ...packageDetails,
@@ -39,75 +39,85 @@ const BulkUploadComponent = ({ dataSource, fetchOrders, loading,tab }) => {
   };
   const handleUpload = async () => {
     if (selectedRowKeys.length === 0) {
-      message.error('Please select orders to upload');
+      message.error("Please select orders to upload");
       return;
     }
-  
+
     try {
       // Iterate over each selected order
       for (const orderId of selectedRowKeys) {
         // Fetch the current order details first
-        const orderResponse = await axios.get(`http://localhost:5000/api/orders/${orderId}`,{
+        const orderResponse = await axios.get(
+          `process.env.url/api/orders/${orderId}`,
+          {
             headers: {
-                'Authorization': localStorage.getItem('token')
-                }
-        });
-        
+              Authorization: localStorage.getItem("token"),
+            },
+          }
+        );
+
         if (orderResponse.status !== 200) {
           message.error(`Failed to fetch order details for order ${orderId}`);
           continue;
         }
-  
+
         const orderData = orderResponse.data.order;
-  console.log(orderData);
-  
+        console.log(orderData);
+
         // Prepare the payload with updated package details, including the rest of the order data
         const updatedOrderData = {
-          ...orderData,  // Include all original order data
-            length: packageDetails.length,
-            breadth: packageDetails.breadth,
-            height: packageDetails.height,
-            weight: packageDetails.weight,
-    
+          ...orderData, // Include all original order data
+          length: packageDetails.length,
+          breadth: packageDetails.breadth,
+          height: packageDetails.height,
+          weight: packageDetails.weight,
         };
         // console.log(packageDetails);
-        
-  console.log(updatedOrderData);
-  
+
+        console.log(updatedOrderData);
+
         // Send the update request with the complete order data
         const updateResponse = await axios.put(
-          `http://localhost:5000/api/orders/updateOrder/${orderId}`,
-          updatedOrderData,{
+          `process.env.url/api/orders/updateOrder/${orderId}`,
+          updatedOrderData,
+          {
             headers: {
-                'Authorization': localStorage.getItem('token'),
-                },
+              Authorization: localStorage.getItem("token"),
+            },
           }
         );
-  
+
         if (updateResponse.status === 201) {
-          message.success(`Order ${orderData.productName} updated successfully`);
-        } 
+          message.success(
+            `Order ${orderData.productName} updated successfully`
+          );
+        }
       }
-  
+
       // Re-fetch the orders after update
       fetchOrders();
-  
     } catch (error) {
-      message.error('Error updating orders');
+      message.error("Error updating orders");
       console.error(error);
     }
   };
-  
-  
+
   const getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
       <div style={{ padding: 8 }}>
         <Input
           placeholder={`Search ${dataIndex}`}
           value={selectedKeys[0]}
-          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
           onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-          style={{ marginBottom: 8, display: 'block' }}
+          style={{ marginBottom: 8, display: "block" }}
         />
         <Space>
           <Button
@@ -119,54 +129,66 @@ const BulkUploadComponent = ({ dataSource, fetchOrders, loading,tab }) => {
           >
             Search
           </Button>
-          <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+          <Button
+            onClick={() => handleReset(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+          >
             Reset
           </Button>
         </Space>
       </div>
     ),
-    filterIcon: (filtered) => <SearchOutlined style={{ color: filtered ? '#1890ff' : 'black' }} />,
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : "black" }} />
+    ),
     onFilter: (value, record) => {
-      const keys = dataIndex.split('.');
+      const keys = dataIndex.split(".");
       let data = record;
-      keys.forEach(key => {
+      keys.forEach((key) => {
         data = data ? data[key] : null;
       });
-      return data ? data.toString().toLowerCase().includes(value.toLowerCase()) : '';
+      return data
+        ? data.toString().toLowerCase().includes(value.toLowerCase())
+        : "";
     },
     render: (text) =>
       searchedColumn === dataIndex ? (
-        <span style={{ backgroundColor: '#ffc069', padding: 0 }}>{text}</span>
+        <span style={{ backgroundColor: "#ffc069", padding: 0 }}>{text}</span>
       ) : (
         text
       ),
   });
-  const tabs =  tab.tab.split(' ')[0];
+  const tabs = tab.tab.split(" ")[0];
   //console.log(tabs);
 
   const columns = [
     {
-      title: 'Order Id',
-      dataIndex: 'orderId',
-      ...getColumnSearchProps('orderId'),
+      title: "Order Id",
+      dataIndex: "orderId",
+      ...getColumnSearchProps("orderId"),
       render: (text, order) => (
-        <Link style={{ color: 'black', fontWeight: '400', fontFamily: 'Poppins', textAlign: 'center' }} to={`/orders/${tabs}/updateorder/${order?._id}/${order?.orderId}`}>
+        <Link
+          style={{
+            color: "black",
+            fontWeight: "400",
+            fontFamily: "Poppins",
+            textAlign: "center",
+          }}
+          to={`/orders/${tabs}/updateorder/${order?._id}/${order?.orderId}`}
+        >
           {order.orderId}
         </Link>
       ),
     },
     {
-      title: 'Shipping Status',
-      dataIndex: 'awb',
-      ...getColumnSearchProps('productName'),
-      render:(value, record) => (
-        <>
-        {record.productName}
-        </>
-      ),
+      title: "Shipping Status",
+      dataIndex: "awb",
+      ...getColumnSearchProps("productName"),
+      render: (value, record) => <>{record.productName}</>,
     },
     {
-      title: 'Package Details',
+      title: "Package Details",
       render: (text, order) => (
         <>
           <div>pkg Wt. {order.weight}gm</div>
@@ -177,28 +199,29 @@ const BulkUploadComponent = ({ dataSource, fetchOrders, loading,tab }) => {
       ),
     },
     {
-      title: 'Package Details',
+      title: "Package Details",
       render: (text, order) => (
         <>
-          <div>
-            {order.productName}
-          </div>
+          <div>{order.productName}</div>
         </>
       ),
     },
-    ...(authUser?.role === 'admin' ? [{
-      title: 'Seller Email',
-      dataIndex: 'seller.email',  
-      ...getColumnSearchProps('seller.email'),
-      render: (_, record) => (
-        <span style={{ textAlign: 'center' }}>
-          {record?.seller?.email}
-        </span>
-      ),
-      className: 'centered-row',
-    }] : []),
+    ...(authUser?.role === "admin"
+      ? [
+          {
+            title: "Seller Email",
+            dataIndex: "seller.email",
+            ...getColumnSearchProps("seller.email"),
+            render: (_, record) => (
+              <span style={{ textAlign: "center" }}>
+                {record?.seller?.email}
+              </span>
+            ),
+            className: "centered-row",
+          },
+        ]
+      : []),
   ];
-
 
   const rowSelection = {
     selectedRowKeys,
@@ -207,11 +230,11 @@ const BulkUploadComponent = ({ dataSource, fetchOrders, loading,tab }) => {
     },
   };
   //console.log(dataSource);
-  
-  const allOrders = dataSource?.filter(order => order?.status === 'Shipped');
+
+  const allOrders = dataSource?.filter((order) => order?.status === "Shipped");
   console.log(selectedRowKeys);
   //console.log(allOrders);
-  
+
   return (
     <>
       <Helmet>
@@ -265,7 +288,7 @@ const BulkUploadComponent = ({ dataSource, fetchOrders, loading,tab }) => {
           active
           title={false}
           paragraph={{ rows: 10 }}
-          style={{ height: '100%', width: '100%' }}
+          style={{ height: "100%", width: "100%" }}
         />
       ) : (
         <Table
@@ -278,7 +301,6 @@ const BulkUploadComponent = ({ dataSource, fetchOrders, loading,tab }) => {
       )}
     </>
   );
-  
 };
 
 export default BulkUploadComponent;

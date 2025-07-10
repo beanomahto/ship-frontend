@@ -240,7 +240,7 @@ function CustomizeTrack() {
     const fetchAdvertisement = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/customiseTrack/get-advertisement",
+          "process.env.url/api/customiseTrack/get-advertisement",
           { headers: { Authorization: `${token}` } }
         );
         const { images, description, url } = response.data;
@@ -290,7 +290,7 @@ function CustomizeTrack() {
     try {
       if (advertisement) {
         await axios.put(
-          `http://localhost:5000/api/customiseTrack/update-advertisement/${advertisement._id}`,
+          `process.env.url/api/customiseTrack/update-advertisement/${advertisement._id}`,
           formData,
           {
             headers: {
@@ -302,7 +302,7 @@ function CustomizeTrack() {
         alert("Advertisement updated!");
       } else {
         await axios.post(
-          "http://localhost:5000/api/customiseTrack/create-advertisement",
+          "process.env.url/api/customiseTrack/create-advertisement",
           formData,
           {
             headers: {

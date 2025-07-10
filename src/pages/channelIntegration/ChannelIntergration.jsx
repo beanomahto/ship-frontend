@@ -23,7 +23,7 @@ const ChannelIntegration = () => {
   const fetchChannels = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/integration/getAllApi",
+        `${process.env.url}/integration/getAllApi`,
         {
           headers: {
             Authorization: localStorage.getItem("token"),
@@ -42,7 +42,7 @@ const ChannelIntegration = () => {
   const fetchAdminChannels = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/integration/getAllApiAdmin",
+        `${process.env.url}/api/integration/getAllApiAdmin`,
         {
           headers: {
             Authorization: localStorage.getItem("token"),

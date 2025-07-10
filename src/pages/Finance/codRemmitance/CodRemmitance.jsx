@@ -25,7 +25,7 @@ const CodRemmitance = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          "http://localhost:5000/api/remittance/getremittance",
+          "process.env.url/api/remittance/getremittance",
           {
             headers: {
               Authorization: `${token}`,
@@ -244,10 +244,13 @@ const CodRemmitance = () => {
             value={searchText}
             style={{ width: 300 }}
           />
-          <div >
+          <div>
             <Button
               onClick={() => setSearchText("")}
-              style={{ borderRadius: "10px", border: "1px solid rgb(36, 136, 243)" }}
+              style={{
+                borderRadius: "10px",
+                border: "1px solid rgb(36, 136, 243)",
+              }}
             >
               X
             </Button>
@@ -258,13 +261,27 @@ const CodRemmitance = () => {
                 className="ant-btn ant-btn-primary"
                 style={{ backgroundColor: "transparent" }}
               >
-                <Button style={{ borderRadius: "10px", marginLeft: "16px", border: "1px solid rgb(55, 147, 246)" }}>Download CSV</Button>
+                <Button
+                  style={{
+                    borderRadius: "10px",
+                    marginLeft: "16px",
+                    border: "1px solid rgb(55, 147, 246)",
+                  }}
+                >
+                  Download CSV
+                </Button>
               </CSVLink>
             )}
           </div>
         </div>
         <div className="right-actions">
-          <Button style={{ borderRadius: "10px", border: "1px solid rgb(55, 147, 246)" }} onClick={showEarlyCodModal}>
+          <Button
+            style={{
+              borderRadius: "10px",
+              border: "1px solid rgb(55, 147, 246)",
+            }}
+            onClick={showEarlyCodModal}
+          >
             Early COD
           </Button>
           <CustomButton onClick={showModal}>Upload Remittance</CustomButton>

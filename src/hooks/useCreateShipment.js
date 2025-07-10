@@ -35,32 +35,31 @@ const useCreateShipment = () => {
     try {
       let url = "";
       let log = "";
-      const fshipUrl = "http://localhost:5000/api/smartship/hubregister";
+      const fshipUrl = `${process.env.url}/api/smartship/hubregister`;
       const fshipCreateForwardOrderUrl =
-        "http://localhost:5000/api/smartship/onesteporderregister";
+        `${process.env.url}/api/smartship/onesteporderregister`;
       const smartshipHupCheck =
-        "http://localhost:5000/api/smartship/checkhubserviceability";
-      const smartshipCarrierCheck =
-        "http://localhost:5000/api/smartship/getrate";
+        `${process.env.url}/api/smartship/checkhubserviceability`;
+      const smartshipCarrierCheck = `${process.env.url}/api/smartship/getrate`;
       const fshipCreateShipmentUrl =
-        "http://localhost:5000/api/smartship/createManifest";
+        `${process.env.url}/api/smartship/createManifest`;
 
       switch (deliveryPartnerName) {
         case "Ecom Express":
-          url = "http://localhost:5000/api/ecomExpress/createShipment";
+          url = `${process.env.url}/api/ecomExpress/createShipment`;
           log = "ecom hit";
           break;
         case "Shree Maruti":
-          url = "http://localhost:5000/api/maruti/booking";
+          url = `${process.env.url}/api/maruti/booking`;
           log = "Shree Maruti hit";
           break;
         case "Delhivery":
-          url = "http://localhost:5000/api/deliveryOne/create";
+          url = `${process.env.url}/api/deliveryOne/create`;
           log = "delhivery hit";
           break;
         case "Amazon Shipping":
-          url = "http://localhost:5000/api/amazon/oneclickshipment";
-          // url = "http://localhost:5000/api/amazon/purchaseshipment";
+          url = `${process.env.url}/api/amazon/oneclickshipment`;
+          // url = "process.env.url/api/amazon/purchaseshipment";
           log = "amazon hit";
           break;
         case "Xpressbees":
@@ -386,7 +385,7 @@ const useCreateShipment = () => {
 
         try {
           const checkPincode = await axios.get(
-            `http://localhost:5000/api/deliveryOne/checkPincode/?pincode=${pincode}`,
+            `${process.env.url}/api/deliveryOne/checkPincode/?pincode=${pincode}`,
             {
               headers: {
                 Authorization: `${token}`,
@@ -430,7 +429,7 @@ const useCreateShipment = () => {
       else if (deliveryPartnerName === "Shree Maruti") {
         try {
           const serviceability = await axios.post(
-            "http://localhost:5000/api/maruti/serviceability",
+            `${process.env.url}/api/maruti/serviceability`,
             {
               warehouseId: warehouseIds,
               orderId: orderIds,
@@ -473,7 +472,7 @@ const useCreateShipment = () => {
 
             try {
               const manifestResponse = await axios.post(
-                "http://localhost:5000/api/maruti/manifest",
+                `${process.env.url}/api/maruti/manifest`,
                 {
                   awbNumber: awb,
                   cAwbNumber: cawb,

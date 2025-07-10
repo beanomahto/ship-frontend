@@ -41,7 +41,7 @@ const WeightDispensory = () => {
   const fetchWeightDespensory = async () => {
     try {
       const res = await fetch(
-        "http://localhost:5000/api/weightdiscrepancy/getweightdiscrepancy",
+        "process.env.url/api/weightdiscrepancy/getweightdiscrepancy",
         {
           headers: {
             Authorization: localStorage.getItem("token"),

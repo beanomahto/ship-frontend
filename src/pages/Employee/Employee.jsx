@@ -1,4 +1,8 @@
-import { DeleteOutlined, EditOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
 import { Button, Input, message, Modal, Space, Table } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -15,14 +19,11 @@ const Employee = () => {
     //console.log(id);
 
     try {
-      await axios.delete(
-        `http://localhost:5000/api/employee/deleteEmployee/${id}`,
-        {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        }
-      );
+      await axios.delete(`process.env.url/api/employee/deleteEmployee/${id}`, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      });
       message.success("Employee deleted successfully");
       fetchUsers();
     } catch (error) {
@@ -33,7 +34,7 @@ const Employee = () => {
   const fetchUsers = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/employee/getEmployees",
+        "process.env.url/api/employee/getEmployees",
         {
           headers: {
             Authorization: localStorage.getItem("token"),

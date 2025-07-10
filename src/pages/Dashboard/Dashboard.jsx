@@ -1,21 +1,21 @@
 import {
-    ArcElement,
-    BarElement,
-    CategoryScale,
-    Chart as ChartJS,
-    Legend,
-    LinearScale,
-    Title,
-    Tooltip,
+  ArcElement,
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  Title,
+  Tooltip,
 } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import React, { useEffect, useState } from "react";
 import { Bar, Doughnut } from "react-chartjs-2";
 import {
-    FaCheckCircle,
-    FaHourglassHalf,
-    FaShoppingCart,
-    FaTimesCircle,
+  FaCheckCircle,
+  FaHourglassHalf,
+  FaShoppingCart,
+  FaTimesCircle,
 } from "react-icons/fa";
 import { FcShipped } from "react-icons/fc";
 import { MdAutorenew } from "react-icons/md";
@@ -73,7 +73,7 @@ const Dashboard = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          "http://localhost:5000/api/remittance/getremittance",
+          "process.env.url/api/remittance/getremittance",
           {
             headers: {
               Authorization: `${token}`,
@@ -285,13 +285,17 @@ const Dashboard = () => {
             marginBottom: "2rem",
             marginLeft: "auto",
             marginRight: "auto",
-            textAlign: "center"
+            textAlign: "center",
           }}
           // style={{ gridTemplateColumns: "repeat(2, 1fr)" }}
         >
           <div
             className="orderSummaryCard"
-            style={{ backgroundColor: "rgb(227, 225, 225)", height: "11rem", border: "1px solid black", }}
+            style={{
+              backgroundColor: "rgb(227, 225, 225)",
+              height: "11rem",
+              border: "1px solid black",
+            }}
           >
             <div className="orderSummary">
               <h3>{totalnewOrdersAmt?.length}</h3>
@@ -308,7 +312,11 @@ const Dashboard = () => {
 
           <div
             className="orderSummaryCard"
-            style={{ backgroundColor: "rgb(227, 225, 225)", height: "11rem", border: "1px solid black" }}
+            style={{
+              backgroundColor: "rgb(227, 225, 225)",
+              height: "11rem",
+              border: "1px solid black",
+            }}
           >
             <div className="orderSummary">
               <h3>{ShippedOrdersAmt?.length}</h3>
@@ -325,7 +333,11 @@ const Dashboard = () => {
 
           <div
             className="orderSummaryCard"
-            style={{ backgroundColor: "rgb(227, 225, 225)", height: "11rem", border: "1px solid black" }}
+            style={{
+              backgroundColor: "rgb(227, 225, 225)",
+              height: "11rem",
+              border: "1px solid black",
+            }}
           >
             <div className="orderSummary">
               <h3>{newOrdersAmt?.length}</h3>
@@ -342,7 +354,11 @@ const Dashboard = () => {
 
           <div
             className="orderSummaryCard"
-            style={{ backgroundColor: "rgb(227, 225, 225)", height: "11rem", border: "1px solid black" }}
+            style={{
+              backgroundColor: "rgb(227, 225, 225)",
+              height: "11rem",
+              border: "1px solid black",
+            }}
           >
             <div className="orderSummary">
               <h3>{inTransitOrdersAmt?.length}</h3>
@@ -359,7 +375,11 @@ const Dashboard = () => {
 
           <div
             className="orderSummaryCard"
-            style={{ backgroundColor: "rgb(227, 225, 225)", height: "11rem", border: "1px solid black" }}
+            style={{
+              backgroundColor: "rgb(227, 225, 225)",
+              height: "11rem",
+              border: "1px solid black",
+            }}
           >
             <div className="orderSummary">
               <h3>{cancelOrdersAmt?.length}</h3>
@@ -376,7 +396,11 @@ const Dashboard = () => {
 
           <div
             className="orderSummaryCard"
-            style={{ backgroundColor: "rgb(227, 225, 225)", height: "11rem", border: "1px solid black" }}
+            style={{
+              backgroundColor: "rgb(227, 225, 225)",
+              height: "11rem",
+              border: "1px solid black",
+            }}
           >
             <div className="orderSummary">
               <h3>{order?.length}</h3>
@@ -402,7 +426,7 @@ const Dashboard = () => {
             flexDirection: "column",
             alignItems: "center",
             border: "1px solid black",
-            borderRadius: "12px"
+            borderRadius: "12px",
           }}
         >
           {/* Dropdown for time range selection */}
