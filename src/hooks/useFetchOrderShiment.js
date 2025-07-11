@@ -6,7 +6,7 @@ const useFetchAndUpdateOrders = (fetchOrders) => {
     const fetchData = async () => {
       try {
         const res = await fetch(
-          `${process.env.url}/api/smartship/getcurrentstatus`,
+          `${process.env.REACT_APP_API_URL}/api/smartship/getcurrentstatus`,
           {
             headers: {
               Authorization: localStorage.getItem("token"),
@@ -57,7 +57,7 @@ const useFetchAndUpdateOrders = (fetchOrders) => {
           };
 
           return axios.put(
-            `${process.env.url}/api/orders/updateOrderStatus/${order.orderId}`,
+            `${process.env.REACT_APP_API_URL}/api/orders/updateOrderStatus/${order.orderId}`,
             updateBody,
             {
               headers: {

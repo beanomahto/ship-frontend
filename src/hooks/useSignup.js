@@ -27,7 +27,7 @@ const useSignup = () => {
 
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.url}/api/auth/signup`, {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -81,7 +81,7 @@ const useSignup = () => {
         userId,
       };
 
-      const res = await fetch(`${process.env.url}/api/shipping/createlabelinfo`, {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/shipping/createlabelinfo`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

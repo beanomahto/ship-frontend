@@ -11,7 +11,7 @@ const useGetSingleOrderWithId = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `${process.env.url}/api/orders/${orderId}`,
+        `${process.env.REACT_APP_API_URL}/api/orders/${orderId}`,
         {
           headers: {
             Authorization: `${token}`,

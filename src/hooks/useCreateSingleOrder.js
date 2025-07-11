@@ -51,7 +51,7 @@ const useCreateSingleOrder = () => {
       console.log("hi");
 
       const token = localStorage.getItem("token");
-      const res = await fetch(`${process.env.url}/api/orders/createOrder`, {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/orders/createOrder`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

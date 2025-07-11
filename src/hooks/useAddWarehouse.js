@@ -35,7 +35,7 @@ const useAddWarehouse = () => {
     try {
       // Step 1: Create warehouse in MongoDB
       const res = await fetch(
-        `${process.env.url}/api/warehouses/createWarehouse`,
+        `${process.env.REACT_APP_API_URL}/api/warehouses/createWarehouse`,
         {
           method: "POST",
           headers: {
@@ -64,7 +64,7 @@ const useAddWarehouse = () => {
 
       // Step 2: Call Delhivery API via backend
       const deliveryRes = await fetch(
-        `${process.env.url}/api/deliveryOne/create-delhivery-warehouse`,
+        `${process.env.REACT_APP_API_URL}/api/deliveryOne/create-delhivery-warehouse`,
         {
           method: "POST",
           headers: {

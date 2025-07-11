@@ -13,7 +13,7 @@ const useShipNowCost = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        `${process.env.url}/api/shipping/getSingleDeliveryCost`,
+        `${process.env.REACT_APP_API_URL}/api/shipping/getSingleDeliveryCost`,
         {
           method: "POST",
           body: JSON.stringify({ orderId, wareHouseId }),

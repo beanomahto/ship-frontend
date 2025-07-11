@@ -35,30 +35,30 @@ const useCreateShipment = () => {
     try {
       let url = "";
       let log = "";
-      const fshipUrl = `${process.env.url}/api/smartship/hubregister`;
+      const fshipUrl = `${process.env.REACT_APP_API_URL}/api/smartship/hubregister`;
       const fshipCreateForwardOrderUrl =
-        `${process.env.url}/api/smartship/onesteporderregister`;
+        `${process.env.REACT_APP_API_URL}/api/smartship/onesteporderregister`;
       const smartshipHupCheck =
-        `${process.env.url}/api/smartship/checkhubserviceability`;
+        `${process.env.REACT_APP_API_URL}/api/smartship/checkhubserviceability`;
       const smartshipCarrierCheck = `${process.env.url}/api/smartship/getrate`;
       const fshipCreateShipmentUrl =
-        `${process.env.url}/api/smartship/createManifest`;
+        `${process.env.REACT_APP_API_URL}/api/smartship/createManifest`;
 
       switch (deliveryPartnerName) {
         case "Ecom Express":
-          url = `${process.env.url}/api/ecomExpress/createShipment`;
+          url = `${process.env.REACT_APP_API_URL}/api/ecomExpress/createShipment`;
           log = "ecom hit";
           break;
         case "Shree Maruti":
-          url = `${process.env.url}/api/maruti/booking`;
+          url = `${process.env.REACT_APP_API_URL}/api/maruti/booking`;
           log = "Shree Maruti hit";
           break;
         case "Delhivery":
-          url = `${process.env.url}/api/deliveryOne/create`;
+          url = `${process.env.REACT_APP_API_URL}/api/deliveryOne/create`;
           log = "delhivery hit";
           break;
         case "Amazon Shipping":
-          url = `${process.env.url}/api/amazon/oneclickshipment`;
+          url = `${process.env.REACT_APP_API_URL}/api/amazon/oneclickshipment`;
           // url = "process.env.url/api/amazon/purchaseshipment";
           log = "amazon hit";
           break;
@@ -386,7 +386,7 @@ const useCreateShipment = () => {
 
         try {
           const checkPincode = await axios.get(
-            `${process.env.url}/api/deliveryOne/checkPincode/?pincode=${pincode}`,
+            `${process.env.REACT_APP_API_URL}/api/deliveryOne/checkPincode/?pincode=${pincode}`,
             {
               headers: {
                 Authorization: `${token}`,
@@ -430,7 +430,7 @@ const useCreateShipment = () => {
       else if (deliveryPartnerName === "Shree Maruti") {
         try {
           const serviceability = await axios.post(
-            `${process.env.url}/api/maruti/serviceability`,
+            `${process.env.REACT_APP_API_URL}/api/maruti/serviceability`,
             {
               warehouseId: warehouseIds,
               orderId: orderIds,

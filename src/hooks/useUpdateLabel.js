@@ -11,7 +11,7 @@ const useUpdateLabel = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        `${process.env.url}/api/shipping/updateLabelinfo`,
+        `${process.env.REACT_APP_API_URL}/api/shipping/updateLabelinfo`,
         updateLebel,
         {
           headers: {

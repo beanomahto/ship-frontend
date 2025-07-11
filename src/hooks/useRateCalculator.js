@@ -28,7 +28,7 @@ const useRateCalculator = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`${process.env.url}/api/orders/rateCalculator`, {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/orders/rateCalculator`, {
         method: "POST",
         body: JSON.stringify({
           deliveryPartner,

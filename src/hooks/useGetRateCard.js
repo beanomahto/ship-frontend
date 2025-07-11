@@ -11,7 +11,7 @@ const useShippingRateCard = () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          `${process.env.url}/api/shipping/rateCard`,
+          `${process.env.REACT_APP_API_URL}/api/shipping/rateCard`,
           {
             headers: {
               Authorization: `${token}`,
