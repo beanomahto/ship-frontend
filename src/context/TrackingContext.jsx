@@ -16,7 +16,7 @@ export const TrackingContextProvider = ({ children }) => {
   const fetchTrackingInfo = async () => {
     try {
       const response = await axios.get(
-        `${process.env.url}/api/deliveryOne/track/${awb}`
+        `${process.env.REACT_APP_API_URL}/api/deliveryOne/track/${awb}`
       );
       setTrackingInfo(response.data.trackingInfo);
     } catch (error) {

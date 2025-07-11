@@ -17,7 +17,7 @@ export const PaymentUserContextProvider = ({ children }) => {
         setLoading(true);
         const token = localStorage.getItem("token");
         const response = await fetch(
-          `${process.env.url}/api/recharge/getAllRecharges`,
+          `${process.env.REACT_APP_API_URL}/api/recharge/getAllRecharges`,
           {
             headers: {
               Authorization: `${token}`,

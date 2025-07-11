@@ -31,7 +31,7 @@ export const AuthContextProvider = ({ children }) => {
 
   const fetchBalance = async () => {
     try {
-      const response = await fetch(`${process.env.url}/api/auth/get-balance`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/get-balance`, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },

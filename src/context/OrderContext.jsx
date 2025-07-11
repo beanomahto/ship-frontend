@@ -14,7 +14,7 @@ export const OrderContextProvider = ({ children }) => {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const response = await fetch(`${process.env.url}/api/orders/getAllOrders`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/orders/getAllOrders`, {
         headers: {
           Authorization: `${token}`,
         },
