@@ -3,6 +3,7 @@ import { Button, Input, List, Modal, Tooltip } from "antd";
 import axios from "axios";
 import React, { useState } from "react";
 import "./PaymentModal.css"; // Import the CSS file
+import { message } from "antd";
 
 const PaymentModal = ({ visible, onClose }) => {
   const [searchResults, setSearchResults] = useState([]);
@@ -14,7 +15,7 @@ const PaymentModal = ({ visible, onClose }) => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("process.env.url/api/users/search", {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/users/search`, {
         params: { query: value },
         headers: {
           Authorization: `${token}`,
@@ -40,7 +41,7 @@ const PaymentModal = ({ visible, onClose }) => {
     }
     try {
       const response = await axios.post(
-        "process.env.url/api/recharge/recharge",
+        `${process.env.REACT_APP_API_URL}/api/recharge/recharge`,
         {
           userId: hoveredUser._id,
           credit: parseFloat(paymentAmount),

@@ -235,7 +235,7 @@ const Orders = () => {
           "selectedWarehouse?._id-----------",
           selectedWarehouse?._id
         );
-        await fetch(`process.env.url/api/orders/updateOrderStatus/${orderId}`, {
+        await fetch(`${process.env.REACT_APP_API_URL}/api/orders/updateOrderStatus/${orderId}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -273,7 +273,7 @@ const Orders = () => {
 
         for (const walletRequest of walletRequests) {
           try {
-            await fetch(`process.env.url/api/transactions/decreaseAmount`, {
+            await fetch(`${process.env.REACT_APP_API_URL}/api/transactions/decreaseAmount`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -423,7 +423,7 @@ const Orders = () => {
     const fetchData = async () => {
       try {
         const res = await fetch(
-          "process.env.url/api/smartship/getcurrentstatus",
+          `${process.env.REACT_APP_API_URL}/api/smartship/getcurrentstatus`,
           {
             headers: {
               Authorization: localStorage.getItem("token"),
@@ -560,7 +560,7 @@ const Orders = () => {
         }));
 
         await axios.put(
-          "process.env.url/api/orders/updateMultipleOrderStatus",
+          `${process.env.REACT_APP_API_URL}/api/orders/updateMultipleOrderStatus`,
           { updates: batchData },
           {
             headers: {
@@ -642,7 +642,7 @@ const Orders = () => {
             }
             for (const walletRequestBody of walletRequestBodies) {
               const walletResponse = await axios.post(
-                `process.env.url/api/transactions/increaseAmount`,
+                `${process.env.REACT_APP_API_URL}/api/transactions/increaseAmount`,
                 walletRequestBody,
                 { headers: { Authorization: `${token}` } }
               );
@@ -662,7 +662,7 @@ const Orders = () => {
             }, 2000);
 
             const cancelResponse = await fetch(
-              `process.env.url/api/orders/updateOrderStatus/${orderId}`,
+              `${process.env.REACT_APP_API_URL}/api/orders/updateOrderStatus/${orderId}`,
               {
                 method: "PUT",
                 headers: {
@@ -976,7 +976,7 @@ const Orders = () => {
 
     const processBatch = async (batch, isLastBatch) => {
       const requests = batch.map((orderId) =>
-        axios.get(`process.env.url/api/shipping/getlabel/${orderId}`, {
+        axios.get(`${process.env.REACT_APP_API_URL}/api/shipping/getlabel/${orderId}`, {
           headers: { Authorization: `${token}` },
         })
       );
@@ -1072,7 +1072,7 @@ const Orders = () => {
     const pageHeight = 841.89;
 
     const promises = selectedRowKeys.map((orderId) =>
-      fetch(`process.env.url/api/shipping/getinvoice/${orderId}`, {
+      fetch(`${process.env.REACT_APP_API_URL}/api/shipping/getinvoice/${orderId}`, {
         headers: {
           Authorization: `${localStorage.getItem("token")}`,
         },
@@ -1236,7 +1236,7 @@ const Orders = () => {
   };
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`process.env.url/api/orders/deleteOrder/${id}`, {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/api/orders/deleteOrder/${id}`, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
@@ -1301,7 +1301,7 @@ const Orders = () => {
     }
 
     try {
-      const response = await fetch("process.env.url/api/orders/movedelivered", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/orders/movedelivered`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

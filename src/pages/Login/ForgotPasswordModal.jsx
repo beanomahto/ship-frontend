@@ -9,7 +9,7 @@ const ForgotPasswordModal = ({ visible, onClose }) => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      await fetch("process.env.url/api/auth/forget-password", {
+      await fetch(`${process.env.REACT_APP_API_URL}/api/auth/forget-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),

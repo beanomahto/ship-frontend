@@ -20,7 +20,7 @@ const Ticket = () => {
 
   const fetchComplaints = async () => {
     try {
-      const res = await fetch("process.env.url/api/complaint/complaints", {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/complaint/complaints`, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
@@ -62,7 +62,7 @@ const Ticket = () => {
 
     try {
       const response = await fetch(
-        `process.env.url/api/complaint/remedy/${currentComplaint._id}`,
+        `${process.env.REACT_APP_API_URL}/api/complaint/remedy/${currentComplaint._id}`,
         {
           method: "PUT",
           headers: {

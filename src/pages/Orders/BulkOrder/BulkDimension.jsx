@@ -22,7 +22,7 @@ const BulkDimensionUploadModal = ({ visible, onClose }) => {
 
     try {
       const response = await fetch(
-        "process.env.url/api/orders/updateBulkOrderDimensions",
+        `${process.env.REACT_APP_API_URL}/api/orders/updateBulkOrderDimensions`,
         {
           method: "POST",
           body: formData,

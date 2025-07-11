@@ -15,7 +15,7 @@ const ResetPassword = () => {
     e.preventDefault();
     //console.log("clicked");
     try {
-      const response = await fetch("process.env.url/api/auth/reset-password", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/reset-password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

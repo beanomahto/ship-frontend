@@ -28,7 +28,7 @@ const VerifyKyc = () => {
     const fetchKycData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch(`process.env.url/api/kyc/${id}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/kyc/${id}`, {
           headers: { Authorization: `${token}` },
         });
         if (!response.ok) throw new Error("Failed to fetch KYC data");
@@ -59,7 +59,7 @@ const VerifyKyc = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`process.env.url/api/kyc/verify/${id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/kyc/verify/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -81,7 +81,7 @@ const VerifyKyc = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`process.env.url/api/kyc/update/${id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/kyc/update/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -115,7 +115,7 @@ const VerifyKyc = () => {
   const handleOk = async () => {
     console.log("Remark:", remark);
     try {
-      const response = await fetch(`process.env.url/api/kyc/remove/${id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/kyc/remove/${id}`, {
         method: "POST",
         headers: {
           Authorization: localStorage.getItem("token"),

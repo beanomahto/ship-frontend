@@ -15,7 +15,7 @@ const Pricing = () => {
     const fetchPricing = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("process.env.url/api/shipping/rateCard", {
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/shipping/rateCard`, {
           headers: {
             Authorization: `${token}`,
           },
@@ -49,7 +49,7 @@ const Pricing = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        "process.env.url/api/shipping/download-custom-pricing",
+        `${process.env.REACT_APP_API_URL}/api/shipping/download-custom-pricing`,
         {
           method: "POST", // Use POST method
           headers: {

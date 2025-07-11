@@ -27,7 +27,7 @@ const VerifyKyc = () => {
     const fetchKycData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch(`process.env.url/api/kyc/${id}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/kyc/${id}`, {
           headers: {
             Authorization: `${token}`,
           },
@@ -73,7 +73,7 @@ const VerifyKyc = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `process.env.url/api/users/updateVerify/${id}`,
+        `${process.env.REACT_APP_API_URL}/api/users/updateVerify/${id}`,
         {
           method: "POST",
           headers: {

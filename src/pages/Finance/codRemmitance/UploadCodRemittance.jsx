@@ -22,7 +22,7 @@ const UploadCodRemittance = ({ visible, onClose }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "process.env.url/api/remittance/uploadremittance",
+        `${process.env.REACT_APP_API_URL}/api/remittance/uploadremittance`,
         {
           method: "POST",
           body: formData,

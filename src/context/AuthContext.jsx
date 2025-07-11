@@ -12,6 +12,7 @@ export const AuthContextProvider = ({ children }) => {
     JSON.parse(localStorage.getItem("ship-user")) || null
   );
   const [balance, setBalance] = useState(null);
+  const [apiToken, setApiToken] = useState(null);
 
   const setExpiryTimer = () => {
     const expiryTime = Date.now() + 3 * 60 * 60 * 1000; // Current time + 3 hours
@@ -61,7 +62,7 @@ export const AuthContextProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ authUser, setAuthUser, balance, fetchBalance }}
+      value={{ authUser, setAuthUser, balance, fetchBalance, apiToken, setApiToken }}
     >
       {children}
     </AuthContext.Provider>

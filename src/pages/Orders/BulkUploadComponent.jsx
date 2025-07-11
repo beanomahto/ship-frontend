@@ -48,7 +48,7 @@ const BulkUploadComponent = ({ dataSource, fetchOrders, loading, tab }) => {
       for (const orderId of selectedRowKeys) {
         // Fetch the current order details first
         const orderResponse = await axios.get(
-          `process.env.url/api/orders/${orderId}`,
+          `${process.env.REACT_APP_API_URL}/api/orders/${orderId}`,
           {
             headers: {
               Authorization: localStorage.getItem("token"),
@@ -78,7 +78,7 @@ const BulkUploadComponent = ({ dataSource, fetchOrders, loading, tab }) => {
 
         // Send the update request with the complete order data
         const updateResponse = await axios.put(
-          `process.env.url/api/orders/updateOrder/${orderId}`,
+          `${process.env.REACT_APP_API_URL}/api/orders/updateOrder/${orderId}`,
           updatedOrderData,
           {
             headers: {

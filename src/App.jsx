@@ -65,6 +65,7 @@ import PrivacyPolicy from "./pages/Login/cancellationRefund/PrivacyPolicy";
 import AboutSection from "./pages/Login/cancellationRefund/AboutSection";
 import ExtradeliveredOrder from "./pages/Orders/ExtradeliveredOrder";
 import Blogs from "./pages/blogs/Blogs";
+import Token from "./pages/Token";
 const App = () => {
   const { authUser } = useAuthContext();
   const ProtectedRoute = ({ children }) => {
@@ -464,6 +465,7 @@ const App = () => {
           />
         </Route>
         <Route path="signup" element={<Signup1 />} />
+        <Route path="token" element={<Token />} />
         <Route path="employeedashboard" element={<EmployeeDash />} />
         <Route path="login" element={<Login1 />} />
         <Route path="resetpassword" element={<ResetPassword />} />

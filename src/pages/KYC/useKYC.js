@@ -36,7 +36,7 @@ const useKYC = () => {
         );
       }
 
-      const response = await fetch("process.env.url/api/kyc/create", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/kyc/create`, {
         method: "POST",
         headers: {
           Authorization: localStorage.getItem("token"),

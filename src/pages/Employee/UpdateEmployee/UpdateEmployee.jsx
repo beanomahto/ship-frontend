@@ -29,7 +29,7 @@ const CreateEmployeeForm = () => {
         try {
           setLoading(true);
           const response = await axios.get(
-            `process.env.url/api/employee/getEmployeeById/${id}`
+            `${process.env.REACT_APP_API_URL}/api/employee/getEmployeeById/${id}`
           );
           setState(response.data);
           setLoading(false);
@@ -54,7 +54,7 @@ const CreateEmployeeForm = () => {
     try {
       setLoading(true);
       await axios.put(
-        `process.env.url/api/employee/updateEmployee/${id}`,
+        `${process.env.REACT_APP_API_URL}/api/employee/updateEmployee/${id}`,
         state
       );
       message.success("Employee updated successfully!");

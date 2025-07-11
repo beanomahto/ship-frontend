@@ -6,6 +6,7 @@ import { useOrderContext } from "../../context/OrderContext";
 import { useWarehouseContext } from "../../context/WarehouseContext";
 import useSignup from "../../hooks/useSignup";
 import imgg from "../../utils/new.png";
+import { useAuthContext } from "../../context/AuthContext";
 
 const Signup1 = () => {
   const navigate = useNavigate();
@@ -37,6 +38,8 @@ const Signup1 = () => {
   const [otpTimer, setOtpTimer] = useState(60);
   const { fetchWarehouse } = useWarehouseContext();
   const otpRefs = useRef(new Array(6).fill(null));
+
+  const { setApiToken } = useAuthContext();
 
   const validatePhoneNumber = (phoneNumber) => /^[0-9]{10}$/.test(phoneNumber);
 
@@ -88,10 +91,9 @@ const Signup1 = () => {
     }
 
     try {
-      await signup(inputs);
-      fetchOrders();
-      fetchWarehouse();
-      navigate("/");
+      const token = await signup(inputs);
+      setApiToken(token);
+      navigate("/token");
     } catch (error) {
       console.error("Signup failed", error);
     }
@@ -100,7 +102,7 @@ const Signup1 = () => {
   const handleSendOtp = async () => {
     if (inputs.email) {
       try {
-        const response = await fetch("process.env.url/api/auth/sendOtp", {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/sendOtp`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -147,7 +149,7 @@ const Signup1 = () => {
           <form onSubmit={handleSubmit}>
             <div className="inputBx">
               <label htmlFor="firstName">First Name</label>
-              <div classname="inputContainer" style={{ display: "flex" }}>
+              <div className="inputContainer" style={{ display: "flex" }}>
                 <input
                   type="text"
                   id="firstName"
@@ -171,7 +173,7 @@ const Signup1 = () => {
             </div>
             <div className="inputBx">
               <label htmlFor="lastName">Last Name</label>
-              <div classname="inputContainer" style={{ display: "flex" }}>
+              <div className="inputContainer" style={{ display: "flex" }}>
                 <input
                   type="text"
                   id="lastName"
@@ -195,7 +197,7 @@ const Signup1 = () => {
             </div>
             <div className="inputBx">
               <label htmlFor="companyName">Company Name</label>
-              <div classname="inputContainer" style={{ display: "flex" }}>
+              <div className="inputContainer" style={{ display: "flex" }}>
                 <input
                   type="text"
                   id="companyName"
@@ -219,7 +221,7 @@ const Signup1 = () => {
             </div>
             <div className="inputBx">
               <label htmlFor="email">Email</label>
-              <div classname="inputContainer" style={{ display: "flex" }}>
+              <div className="inputContainer" style={{ display: "flex" }}>
                 <input
                   type="email"
                   id="email"
@@ -267,7 +269,7 @@ const Signup1 = () => {
 
             <div className="inputBx">
               <label htmlFor="phoneNumber">Phone No.</label>
-              <div classname="inputContainer" style={{ display: "flex" }}>
+              <div className="inputContainer" style={{ display: "flex" }}>
                 <input
                   type="text"
                   id="phoneNumber"
@@ -290,7 +292,7 @@ const Signup1 = () => {
             </div>
             <div className="inputBx">
               <label htmlFor="password">Password</label>
-              <div classname="inputContainer" style={{ display: "flex" }}>
+              <div className="inputContainer" style={{ display: "flex" }}>
                 <input
                   type="password"
                   id="password"

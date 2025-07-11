@@ -109,7 +109,7 @@ const NDR = () => {
       await fetchOrders();
       try {
         const res = await fetch(
-          "process.env.url/api/smartship/getcurrentstatus",
+          `${process.env.REACT_APP_API_URL}/api/smartship/getcurrentstatus`,
           {
             headers: {
               Authorization: localStorage.getItem("token"),
@@ -142,7 +142,7 @@ const NDR = () => {
                   };
 
                   const forwardWalletResponse = await axios.post(
-                    "process.env.url/api/transactions/decreaseAmount",
+                    `${process.env.REACT_APP_API_URL}/api/transactions/decreaseAmount`,
                     forwardWalletRequestBody,
                     {
                       headers: {
@@ -159,7 +159,7 @@ const NDR = () => {
                       };
 
                       await axios.put(
-                        `process.env.url/api/orders/updateOrderStatus/${order._id}`,
+                        `${process.env.REACT_APP_API_URL}/api/orders/updateOrderStatus/${order._id}`,
                         updateBody,
                         {
                           headers: {
@@ -297,7 +297,7 @@ const NDR = () => {
           // console.log(updateBody);
 
           return axios.put(
-            `process.env.url/api/orders/updateOrderStatus/${order.orderId}`,
+            `${process.env.REACT_APP_API_URL}/api/orders/updateOrderStatus/${order.orderId}`,
             updateBody,
             {
               headers: {

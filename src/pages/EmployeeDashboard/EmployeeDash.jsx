@@ -21,7 +21,7 @@ function EmployeeDash() {
       try {
         const token = localStorage.getItem("employee-token");
         const response = await fetch(
-          "process.env.url/api/employee/getemployeeusers",
+          `${process.env.REACT_APP_API_URL}/api/employee/getemployeeusers`,
           {
             headers: {
               Authorization: `${token}`,
@@ -47,7 +47,7 @@ function EmployeeDash() {
   const handleActionClick = async (record) => {
     const { email } = record;
     try {
-      const response = await fetch(`process.env.url/api/auth/getPassword`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/getPassword`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

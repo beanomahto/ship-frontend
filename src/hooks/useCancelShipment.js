@@ -168,9 +168,10 @@ const useCancelShipment = () => {
         //amazon
         else if (deliveryPartnerName === "Amazon Shipping") {
           console.log("shipID", shipid);
-          const response = await axios.put(url, {
+          const response = await axios.put(url,{}, {
             headers: {
               Authorization: `${token}`,
+              'x-shiphere-token': '28f73931ced05010359f13149a8f5861f30b822ac12fb1cfdfcfbe94239efcf7',
             },
           });
           return response.data;

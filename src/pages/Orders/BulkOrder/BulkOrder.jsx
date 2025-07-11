@@ -21,7 +21,7 @@ const BulkOrderUploadModal = ({ visible, onClose }) => {
 
     try {
       const response = await fetch(
-        "process.env.url/api/orders/createBulkOrder",
+        `${process.env.REACT_APP_API_URL}/api/orders/createBulkOrder`,
         {
           method: "POST",
           body: formData,

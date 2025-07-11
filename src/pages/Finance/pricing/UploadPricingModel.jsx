@@ -29,7 +29,7 @@ const UploadPricingModel = ({ visible, onClose }) => {
 
     try {
       const response = await fetch(
-        "hprocess.env.url/api/shipping/upload-custom-pricing",
+        `${process.env.REACT_APP_API_URL}/api/shipping/upload-custom-pricing`,
         {
           method: "POST",
           body: formData,

@@ -44,7 +44,7 @@ const Seller = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch("process.env.url/api/users", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users`, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
@@ -151,7 +151,7 @@ const Seller = () => {
   //console.log(users);
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`process.env.url/api/users/deleteUser/${id}`, {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/api/users/deleteUser/${id}`, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },

@@ -111,7 +111,7 @@ const OutForDelivery = ({
   //console.log(tabs);
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`process.env.url/api/orders/deleteOrder/${id}`, {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/api/orders/deleteOrder/${id}`, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },

@@ -165,7 +165,7 @@ const NewOrderComponent = ({
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`process.env.url/api/orders/deleteOrder/${id}`, {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/api/orders/deleteOrder/${id}`, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
@@ -507,7 +507,7 @@ const NewOrderComponent = ({
             };
 
             const codWalletResponse = await axios.post(
-              "process.env.url/api/transactions/decreaseAmount",
+              `${process.env.REACT_APP_API_URL}/api/transactions/decreaseAmount`,
               codWalletRequestBody,
               {
                 headers: {
@@ -531,7 +531,7 @@ const NewOrderComponent = ({
           };
 
           const forwardWalletResponse = await axios.post(
-            "process.env.url/api/transactions/decreaseAmount",
+            `${process.env.REACT_APP_API_URL}/api/transactions/decreaseAmount`,
             forwardWalletRequestBody,
             {
               headers: {
@@ -560,7 +560,7 @@ const NewOrderComponent = ({
           console.log("update body:", updateBody);
 
           const orderResponse = await axios.put(
-            `process.env.url/api/orders/updateOrderStatus/${selectedOrderId}`,
+            `${process.env.REACT_APP_API_URL}/api/orders/updateOrderStatus/${selectedOrderId}`,
             updateBody,
             {
               headers: {

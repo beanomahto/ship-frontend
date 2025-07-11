@@ -35,7 +35,7 @@ const ExtradeliveredOrder = () => {
     const fetchDeliveredOrders = async () => {
       try {
         const response = await fetch(
-          "process.env.url/api/orders/getdelivered", // Backend endpoint
+          `${process.env.REACT_APP_API_URL}/api/orders/getdelivered`, // Backend endpoint
           {
             method: "POST", // Change to POST to match the backend route
             headers: {
@@ -140,7 +140,7 @@ const ExtradeliveredOrder = () => {
   //   //console.log(tabs);
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`process.env.url/api/orders/deleteOrder/${id}`, {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/api/orders/deleteOrder/${id}`, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },

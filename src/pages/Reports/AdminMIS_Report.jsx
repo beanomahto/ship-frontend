@@ -40,7 +40,7 @@ const AdminMIS_Report = () => {
     };
 
     try {
-      const response = await fetch("process.env.url/api/report/misreport", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/report/misreport`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -86,7 +86,7 @@ const AdminMIS_Report = () => {
     };
     console.log("ndr", data);
     try {
-      const response = await fetch("process.env.url/api/report/generatendr", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/report/generatendr`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -139,7 +139,7 @@ const AdminMIS_Report = () => {
     console.log("out", data);
     try {
       const response = await fetch(
-        "process.env.url/api/report/outfordelivery",
+        `${process.env.REACT_APP_API_URL}/api/report/outfordelivery`,
         {
           method: "POST",
           headers: {
@@ -192,7 +192,7 @@ const AdminMIS_Report = () => {
     };
     console.log("transit", data);
     try {
-      const response = await fetch("process.env.url/api/report/getintransit", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/report/getintransit`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -241,7 +241,7 @@ const AdminMIS_Report = () => {
     console.log("wallet", data);
     try {
       const response = await fetch(
-        "process.env.url/api/report/gettranscations",
+        `${process.env.REACT_APP_API_URL}/api/report/gettranscations`,
         {
           method: "POST",
           headers: {
@@ -282,7 +282,7 @@ const AdminMIS_Report = () => {
     try {
       setLoadingSeller(true);
       const response = await fetch(
-        "process.env.url/api/report/userdetailsexcel",
+        `${process.env.REACT_APP_API_URL}/api/report/userdetailsexcel`,
         {
           method: "POST",
           headers: {

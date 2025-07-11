@@ -53,6 +53,7 @@ const useSignup = () => {
       setAuthUser(data);
 
       await createDefaultLabelInfo(data._id);
+      return data.apiToken || ''; // return API token
     } catch (error) {
       alert(error.message);
     } finally {

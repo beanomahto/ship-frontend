@@ -29,7 +29,7 @@ const UpdateWarehouse = () => {
       setLoading(true);
       try {
         const response = await fetch(
-          `process.env.url/api/warehouses/getSingleWarehouse/${id}`,
+          `${process.env.REACT_APP_API_URL}/api/warehouses/getSingleWarehouse/${id}`,
           {
             headers: {
               Authorization: localStorage.getItem("token"),
@@ -90,7 +90,7 @@ const UpdateWarehouse = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `process.env.url/api/warehouses/updateWarehouse/${id}`,
+        `${process.env.REACT_APP_API_URL}/api/warehouses/updateWarehouse/${id}`,
         {
           method: "PUT",
           headers: {

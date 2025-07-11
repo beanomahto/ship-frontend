@@ -72,7 +72,7 @@ const ActionRequiredTab = ({
 
       if (selectedOrderData[0].shippingPartner === "Ecom Express") {
         await axios.post(
-          "process.env.url/api/ecomExpress/createNdr",
+          `${process.env.REACT_APP_API_URL}/api/ecomExpress/createNdr`,
           ecomPayload,
           {
             headers: {
@@ -82,7 +82,7 @@ const ActionRequiredTab = ({
         );
       } else {
         await axios.post(
-          "process.env.url/api/smartship/orderReattempt",
+          `${process.env.REACT_APP_API_URL}/api/smartship/orderReattempt`,
           otherPayload,
           {
             headers: {
@@ -102,7 +102,7 @@ const ActionRequiredTab = ({
             }),
           };
           await axios.put(
-            `process.env.url/api/orders/updateOrderStatus/${order._id}`,
+            `${process.env.REACT_APP_API_URL}/api/orders/updateOrderStatus/${order._id}`,
             updatedStatus,
             {
               headers: {
@@ -118,7 +118,7 @@ const ActionRequiredTab = ({
             }),
           };
           await axios.put(
-            `process.env.url/api/orders/updateOrderStatus/${order._id}`,
+            `${process.env.REACT_APP_API_URL}/api/orders/updateOrderStatus/${order._id}`,
             updatedStatus,
             {
               headers: {

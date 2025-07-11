@@ -19,7 +19,7 @@ const Employee = () => {
     //console.log(id);
 
     try {
-      await axios.delete(`process.env.url/api/employee/deleteEmployee/${id}`, {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/api/employee/deleteEmployee/${id}`, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
@@ -34,7 +34,7 @@ const Employee = () => {
   const fetchUsers = async () => {
     try {
       const response = await fetch(
-        "process.env.url/api/employee/getEmployees",
+        `${process.env.REACT_APP_API_URL}/api/employee/getEmployees`,
         {
           headers: {
             Authorization: localStorage.getItem("token"),

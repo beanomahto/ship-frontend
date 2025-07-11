@@ -46,12 +46,19 @@ const Tracking = () => {
 
           setTrackingInfo(response.data);
         } else if (lowerPartner === "amazonshipping") {
-          const response = await axios.get("process.env.url/api/amazon/track", {
-            params: {
-              carrierID: "ATS",
-              trackingID: awb,
-            },
-          });
+          const response = await axios.get(
+            "http://localhost:5000/api/amazon/track",
+            {
+              params: {
+                carrierID: "ATS",
+                trackingID: awb,
+              },
+              headers: {
+                "x-shiphere-token":
+                  "28f73931ced05010359f13149a8f5861f30b822ac12fb1cfdfcfbe94239efcf7",
+              },
+            }
+          );
 
           const payload = response.data.payload;
           const info = {

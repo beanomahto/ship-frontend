@@ -31,7 +31,7 @@ const AdminMIS_Report = () => {
     setLoadingMis(true);
     const data = { startDate: misStartDate, endDate: misEndDate };
     try {
-      const response = await fetch("process.env.url/api/report/getmisreport", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/report/getmisreport`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,7 +65,7 @@ const AdminMIS_Report = () => {
     setLoadingNdr(true);
     const data = { startDate: ndrStartDate, endDate: ndrEndDate };
     try {
-      const response = await fetch("process.env.url/api/report/getndrreport", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/report/getndrreport`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -103,7 +103,7 @@ const AdminMIS_Report = () => {
     };
     try {
       const response = await fetch(
-        "process.env.url/api/report/outfordeliveryseller",
+        `${process.env.REACT_APP_API_URL}/api/report/outfordeliveryseller`,
         {
           method: "POST",
           headers: {
@@ -142,7 +142,7 @@ const AdminMIS_Report = () => {
     const data = { startDate: inTransitStartDate, endDate: inTransitEndDate };
     try {
       const response = await fetch(
-        "process.env.url/api/report/getintransitseller",
+        `${process.env.REACT_APP_API_URL}/api/report/getintransitseller`,
         {
           method: "POST",
           headers: {
@@ -179,7 +179,7 @@ const AdminMIS_Report = () => {
     const data = { startDate: walletStartDate, endDate: walletEndDate };
     try {
       const response = await fetch(
-        "process.env.url/api/report/gettranscationsseller",
+        `${process.env.REACT_APP_API_URL}/api/report/gettranscationsseller`,
         {
           method: "POST",
           headers: {

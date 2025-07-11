@@ -62,7 +62,7 @@ const Support = () => {
 
     try {
       const response = await fetch(
-        "process.env.url/api/complaint/registercomplaint",
+        `${process.env.REACT_APP_API_URL}/api/complaint/registercomplaint`,
         {
           method: "POST",
           headers: {

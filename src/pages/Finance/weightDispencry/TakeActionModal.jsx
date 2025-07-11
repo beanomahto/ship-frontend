@@ -23,7 +23,7 @@ const TakeActionModal = ({ visible, onClose, discrepancyId, productName }) => {
     }
     try {
       const response = await fetch(
-        "process.env.url/api/weightdiscrepancy/upload-images",
+        `${process.env.REACT_APP_API_URL}/api/weightdiscrepancy/upload-images`,
         {
           method: "POST",
           body: formData,
@@ -40,7 +40,7 @@ const TakeActionModal = ({ visible, onClose, discrepancyId, productName }) => {
       const result = await response.json();
       message.success(result.message);
       const updateResponse = await fetch(
-        `process.env.url/api/weightdiscrepancy/updateStatus/${discrepancyId}`,
+        `${process.env.REACT_APP_API_URL}/api/weightdiscrepancy/updateStatus/${discrepancyId}`,
         {
           method: "PUT",
           headers: {

@@ -227,7 +227,7 @@ const useShipNow = (fetchOrders, setOrders, closeModalShipNow) => {
             try {
               // Update Order Status
               await fetch(
-                `process.env.url/api/orders/updateOrderStatus/${orderId}`,
+                `${process.env.REACT_APP_API_URL}/api/orders/updateOrderStatus/${orderId}`,
                 {
                   method: "PUT",
                   headers: {
@@ -261,7 +261,7 @@ const useShipNow = (fetchOrders, setOrders, closeModalShipNow) => {
               }
 
               for (const walletRequest of walletRequests) {
-                await fetch(`process.env.url/api/transactions/decreaseAmount`, {
+                await fetch(`${process.env.REACT_APP_API_URL}/api/transactions/decreaseAmount`, {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
