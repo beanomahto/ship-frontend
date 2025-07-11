@@ -4,6 +4,7 @@ import { useAuthContext } from "../context/AuthContext";
 const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const { setAuthUser } = useAuthContext();
+  console.log(`${process.env.REACT_APP_API_URL}`);
   // const {fetchOrders}
   const login = async (email, password, isHashed) => {
     const success = handleInputErrors(email, password, isHashed);
