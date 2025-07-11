@@ -20,11 +20,14 @@ const Ticket = () => {
 
   const fetchComplaints = async () => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/complaint/complaints`, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/complaint/complaints`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
       const data = await res.json();
       setTicket(data.complaints || []);
     } catch (error) {
@@ -62,7 +65,9 @@ const Ticket = () => {
 
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/complaint/remedy/${currentComplaint._id}`,
+        `${import.meta.env.VITE_API_URL}/api/complaint/remedy/${
+          currentComplaint._id
+        }`,
         {
           method: "PUT",
           headers: {

@@ -178,7 +178,7 @@ const Wallet = () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/transactions/getTransactions`,
+          `${import.meta.env.VITE_API_URL}/api/transactions/getTransactions`,
           {
             headers: {
               Authorization: `${token}`,
@@ -206,7 +206,9 @@ const Wallet = () => {
           setDeleting(true);
           const token = localStorage.getItem("token");
           await axios.post(
-            `${process.env.REACT_APP_API_URL}/api/transactions/deletetransaction`,
+            `${
+              import.meta.env.VITE_API_URL
+            }/api/transactions/deletetransaction`,
             { transactionIds: selectedRowKeys },
             {
               headers: {

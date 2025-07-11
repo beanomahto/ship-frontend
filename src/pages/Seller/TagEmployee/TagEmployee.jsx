@@ -1,5 +1,3 @@
-
-
 import { Button, Input, Modal, Table, message } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -25,7 +23,7 @@ const TagEmployee = ({ visible, onClose, selectedSeller }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/employee/getEmployees`,
+        `${import.meta.env.VITE_API_URL}/api/employee/getEmployees`,
         {
           headers: {
             Authorization: `${token}`,
@@ -57,7 +55,7 @@ const TagEmployee = ({ visible, onClose, selectedSeller }) => {
     if (selectedSeller) {
       try {
         const response = await axios.post(
-          `${process.env.REACT_APP_API_URL}/api/employee/assignSeller`,
+          `${import.meta.env.VITE_API_URL}/api/employee/assignSeller`,
           {
             employeeId: employee._id,
             sellerData: selectedSeller,

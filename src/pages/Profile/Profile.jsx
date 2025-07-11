@@ -24,11 +24,14 @@ const Profile = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/me`, {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/users/me`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
+        );
         const data = await response.json();
 
         setInputs({
@@ -92,14 +95,17 @@ const Profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/update`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-        body: JSON.stringify(inputs),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/users/update`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+          body: JSON.stringify(inputs),
+        }
+      );
 
       if (response.ok) {
         message.success("Profile updated successfully!");

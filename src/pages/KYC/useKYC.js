@@ -36,13 +36,16 @@ const useKYC = () => {
         );
       }
 
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/kyc/create`, {
-        method: "POST",
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-        body: formDataToSubmit,
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/kyc/create`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+          body: formDataToSubmit,
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();

@@ -17,7 +17,7 @@ export const DeliveryPartnerProvider = ({ children }) => {
         setLoading(true);
         const token = localStorage.getItem("token");
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/api/shipping/getDeliveryPartners`,
+          `${import.meta.env.VITE_API_URL}/api/shipping/getDeliveryPartners`,
           {
             headers: {
               Authorization: `${token}`,

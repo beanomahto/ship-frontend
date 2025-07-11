@@ -53,11 +53,13 @@ const useCancelShipment = () => {
 
         switch (deliveryPartnerName) {
           case "Ecom Express":
-            url = `${process.env.REACT_APP_API_URL}/api/ecomExpress/cancleShipment`;
+            url = `${
+              import.meta.env.VITE_API_URL
+            }/api/ecomExpress/cancleShipment`;
             log = "Ecomm hit";
             break;
           case "Shree Maruti":
-            url = `${process.env.REACT_APP_API_URL}/api/maruti/cancel`;
+            url = `${import.meta.env.VITE_API_URL}/api/maruti/cancel`;
             log = "Maruti hit";
             break;
           // case 'Xpressbees':
@@ -65,19 +67,21 @@ const useCancelShipment = () => {
           //   log = 'Xpressbees hit';
           //   break;
           case "Delhivery":
-            url = `${process.env.REACT_APP_API_URL}/api/deliveryOne/cancelShipment`;
+            url = `${
+              import.meta.env.VITE_API_URL
+            }/api/deliveryOne/cancelShipment`;
             log = "Delhivery hit";
             break;
           case "Xpressbees":
           case "Amazon Shipping":
-            url = `${process.env.REACT_APP_API_URL}/api/amazon/cancel/${shipid}`;
+            url = `${import.meta.env.VITE_API_URL}/api/amazon/cancel/${shipid}`;
             log = "Amazon hit";
             break;
           case "Blue Dart":
           case "Ekart":
           case "DTDC":
           case "Shadowfax":
-            url = `${process.env.REACT_APP_API_URL}/api/smartship/cancelorder`;
+            url = `${import.meta.env.VITE_API_URL}/api/smartship/cancelorder`;
             log = "Shiphere hit";
             break;
           default:
@@ -168,12 +172,17 @@ const useCancelShipment = () => {
         //amazon
         else if (deliveryPartnerName === "Amazon Shipping") {
           console.log("shipID", shipid);
-          const response = await axios.put(url,{}, {
-            headers: {
-              Authorization: `${token}`,
-              'x-shiphere-token': '28f73931ced05010359f13149a8f5861f30b822ac12fb1cfdfcfbe94239efcf7',
-            },
-          });
+          const response = await axios.put(
+            url,
+            {},
+            {
+              headers: {
+                Authorization: `${token}`,
+                "x-shiphere-token":
+                  "28f73931ced05010359f13149a8f5861f30b822ac12fb1cfdfcfbe94239efcf7",
+              },
+            }
+          );
           return response.data;
         }
       });

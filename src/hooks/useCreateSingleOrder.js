@@ -51,33 +51,36 @@ const useCreateSingleOrder = () => {
       console.log("hi");
 
       const token = localStorage.getItem("token");
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/orders/createOrder`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${token}`,
-        },
-        body: JSON.stringify({
-          customerName,
-          customerEmail,
-          customerPhone,
-          orderId,
-          pincode,
-          city,
-          state,
-          productPrice,
-          productName,
-          address,
-          landMark,
-          quantity,
-          sku,
-          weight,
-          length,
-          breadth,
-          height,
-          paymentMethod,
-        }),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/orders/createOrder`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+          },
+          body: JSON.stringify({
+            customerName,
+            customerEmail,
+            customerPhone,
+            orderId,
+            pincode,
+            city,
+            state,
+            productPrice,
+            productName,
+            address,
+            landMark,
+            quantity,
+            sku,
+            weight,
+            length,
+            breadth,
+            height,
+            paymentMethod,
+          }),
+        }
+      );
 
       const data = await res.json();
       console.log(data);

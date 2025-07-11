@@ -44,31 +44,34 @@ const useCreateLebel = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/shipping/createlabelinfo`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          // labelType,
-          logoUrl,
-          theme,
-          hideLogo,
-          hideCompanyName,
-          hideCompanyGSTIN,
-          hidePaymentType,
-          hidePrepaidAmount,
-          hideCustomerPhone,
-          hideInvoiceNumber,
-          hideInvoiceDate,
-          showProductDetail,
-          hideProductName,
-          hideReturnWarehouse,
-          hideWeight,
-          hideDimension,
-        }),
-        headers: {
-          Authorization: `${token}`,
-        },
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/shipping/createlabelinfo`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            // labelType,
+            logoUrl,
+            theme,
+            hideLogo,
+            hideCompanyName,
+            hideCompanyGSTIN,
+            hidePaymentType,
+            hidePrepaidAmount,
+            hideCustomerPhone,
+            hideInvoiceNumber,
+            hideInvoiceDate,
+            showProductDetail,
+            hideProductName,
+            hideReturnWarehouse,
+            hideWeight,
+            hideDimension,
+          }),
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
 
       const data = await res.json();
       //console.log(data);
@@ -81,8 +84,6 @@ const useCreateLebel = () => {
       setLoading(false);
     }
   };
-
-  
 
   return { loading, createLebel };
 };

@@ -23,7 +23,7 @@ const ActiveWarehouses = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `${process.env.REACT_APP_API_URL}/api/warehouses/deleteWarehouse/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/warehouses/deleteWarehouse/${id}`,
         {
           headers: {
             Authorization: localStorage.getItem("token"),

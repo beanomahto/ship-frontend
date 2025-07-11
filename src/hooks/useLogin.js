@@ -4,7 +4,7 @@ import { useAuthContext } from "../context/AuthContext";
 const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const { setAuthUser } = useAuthContext();
-  console.log(`${process.env.REACT_APP_API_URL}`);
+  console.log(`${import.meta.env.VITE_API_URL}`);
   // const {fetchOrders}
   const login = async (email, password, isHashed) => {
     const success = handleInputErrors(email, password, isHashed);
@@ -14,7 +14,7 @@ const useLogin = () => {
     setLoading(true);
     try {
       const res = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/auth/login`,
+        `${import.meta.env.VITE_API_URL}/api/auth/login`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -78,7 +78,7 @@ const useLogin = () => {
       const token = localStorage.getItem("token");
 
       const res = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/shipping/createlabelinfo`,
+        `${import.meta.env.VITE_API_URL}/api/shipping/createlabelinfo`,
         {
           method: "POST",
           headers: {

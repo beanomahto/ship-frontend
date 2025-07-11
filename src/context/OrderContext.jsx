@@ -14,11 +14,14 @@ export const OrderContextProvider = ({ children }) => {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/orders/getAllOrders`, {
-        headers: {
-          Authorization: `${token}`,
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/orders/getAllOrders`,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch orders");
       }

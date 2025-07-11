@@ -15,12 +15,15 @@ const PaymentModal = ({ visible, onClose }) => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/users/search`, {
-        params: { query: value },
-        headers: {
-          Authorization: `${token}`,
-        },
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/users/search`,
+        {
+          params: { query: value },
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
       setSearchResults(response.data);
     } catch (error) {
       console.error("Error fetching search results:", error);
@@ -41,7 +44,7 @@ const PaymentModal = ({ visible, onClose }) => {
     }
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/recharge/recharge`,
+        `${import.meta.env.VITE_API_URL}/api/recharge/recharge`,
         {
           userId: hoveredUser._id,
           credit: parseFloat(paymentAmount),

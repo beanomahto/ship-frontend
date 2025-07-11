@@ -25,7 +25,7 @@ const CodRemmitance = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          `${process.env.REACT_APP_API_URL}/api/remittance/getremittance`,
+          `${import.meta.env.VITE_API_URL}/api/remittance/getremittance`,
           {
             headers: {
               Authorization: `${token}`,

@@ -23,20 +23,23 @@ const useChannelIntegration = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/integration/createApi`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          storeName,
-          salesChannel,
-          apiKey,
-          apiSecret,
-          token,
-        }),
-        headers: {
-          Authorization: `${token}`,
-        },
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/integration/createApi`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            storeName,
+            salesChannel,
+            apiKey,
+            apiSecret,
+            token,
+          }),
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
 
       const data = await res.json();
       setData(data);

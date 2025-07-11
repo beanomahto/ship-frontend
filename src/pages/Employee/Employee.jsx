@@ -19,11 +19,14 @@ const Employee = () => {
     //console.log(id);
 
     try {
-      await axios.delete(`${process.env.REACT_APP_API_URL}/api/employee/deleteEmployee/${id}`, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      });
+      await axios.delete(
+        `${import.meta.env.VITE_API_URL}/api/employee/deleteEmployee/${id}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
       message.success("Employee deleted successfully");
       fetchUsers();
     } catch (error) {
@@ -34,7 +37,7 @@ const Employee = () => {
   const fetchUsers = async () => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/employee/getEmployees`,
+        `${import.meta.env.VITE_API_URL}/api/employee/getEmployees`,
         {
           headers: {
             Authorization: localStorage.getItem("token"),

@@ -165,11 +165,14 @@ const NewOrderComponent = ({
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${process.env.REACT_APP_API_URL}/api/orders/deleteOrder/${id}`, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      });
+      await axios.delete(
+        `${import.meta.env.VITE_API_URL}/api/orders/deleteOrder/${id}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
       message.success("Order deleted successfully");
       fetchOrders(); // Refresh orders after deletion
     } catch (error) {
@@ -507,7 +510,7 @@ const NewOrderComponent = ({
             };
 
             const codWalletResponse = await axios.post(
-              `${process.env.REACT_APP_API_URL}/api/transactions/decreaseAmount`,
+              `${import.meta.env.VITE_API_URL}/api/transactions/decreaseAmount`,
               codWalletRequestBody,
               {
                 headers: {
@@ -531,7 +534,7 @@ const NewOrderComponent = ({
           };
 
           const forwardWalletResponse = await axios.post(
-            `${process.env.REACT_APP_API_URL}/api/transactions/decreaseAmount`,
+            `${import.meta.env.VITE_API_URL}/api/transactions/decreaseAmount`,
             forwardWalletRequestBody,
             {
               headers: {
@@ -560,7 +563,9 @@ const NewOrderComponent = ({
           console.log("update body:", updateBody);
 
           const orderResponse = await axios.put(
-            `${process.env.REACT_APP_API_URL}/api/orders/updateOrderStatus/${selectedOrderId}`,
+            `${
+              import.meta.env.VITE_API_URL
+            }/api/orders/updateOrderStatus/${selectedOrderId}`,
             updateBody,
             {
               headers: {

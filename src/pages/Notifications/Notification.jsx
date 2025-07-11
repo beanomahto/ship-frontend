@@ -10,7 +10,7 @@ const Notification = () => {
     const fetchNotifications = async () => {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/api/notifcation/getallnotifications`,
+          `${import.meta.env.VITE_API_URL}/api/notifcation/getallnotifications`,
           {
             headers: {
               Authorization: localStorage.getItem("token"),

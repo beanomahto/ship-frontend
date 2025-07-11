@@ -11,7 +11,9 @@ const useUpdateOrder = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        `${process.env.REACT_APP_API_URL}/api/orders/updateOrder/${updatedOrderData._id}`,
+        `${import.meta.env.VITE_API_URL}/api/orders/updateOrder/${
+          updatedOrderData._id
+        }`,
         updatedOrderData,
         {
           headers: {

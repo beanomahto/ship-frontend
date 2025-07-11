@@ -27,7 +27,7 @@ const LabelGenerator = ({ orderIds }) => {
       const labels = await Promise.all(
         orderIds.map(async (orderId) => {
           const response = await axios.get(
-            `${process.env.REACT_APP_API_URL}/api/shipping/getlabel/${orderId}`,
+            `${import.meta.env.VITE_API_URL}/api/shipping/getlabel/${orderId}`,
             {
               headers: {
                 Authorization: `${token}`,

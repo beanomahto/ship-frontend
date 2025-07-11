@@ -31,14 +31,17 @@ const AdminMIS_Report = () => {
     setLoadingMis(true);
     const data = { startDate: misStartDate, endDate: misEndDate };
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/report/getmisreport`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/report/getmisreport`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
       if (response.ok) {
         const blob = await response.blob();
@@ -65,14 +68,17 @@ const AdminMIS_Report = () => {
     setLoadingNdr(true);
     const data = { startDate: ndrStartDate, endDate: ndrEndDate };
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/report/getndrreport`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/report/getndrreport`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
       if (response.ok) {
         const blob = await response.blob();
@@ -103,7 +109,7 @@ const AdminMIS_Report = () => {
     };
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/report/outfordeliveryseller`,
+        `${import.meta.env.VITE_API_URL}/api/report/outfordeliveryseller`,
         {
           method: "POST",
           headers: {
@@ -142,7 +148,7 @@ const AdminMIS_Report = () => {
     const data = { startDate: inTransitStartDate, endDate: inTransitEndDate };
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/report/getintransitseller`,
+        `${import.meta.env.VITE_API_URL}/api/report/getintransitseller`,
         {
           method: "POST",
           headers: {
@@ -179,7 +185,7 @@ const AdminMIS_Report = () => {
     const data = { startDate: walletStartDate, endDate: walletEndDate };
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/report/gettranscationsseller`,
+        `${import.meta.env.VITE_API_URL}/api/report/gettranscationsseller`,
         {
           method: "POST",
           headers: {

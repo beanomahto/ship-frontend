@@ -28,23 +28,26 @@ const useRateCalculator = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/orders/rateCalculator`, {
-        method: "POST",
-        body: JSON.stringify({
-          deliveryPartner,
-          pickupPincode,
-          deliveryPincode,
-          weight,
-          length,
-          breadth,
-          height,
-          paymentMethod,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${token}`,
-        },
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/orders/rateCalculator`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            deliveryPartner,
+            pickupPincode,
+            deliveryPincode,
+            weight,
+            length,
+            breadth,
+            height,
+            paymentMethod,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+          },
+        }
+      );
 
       if (!res.ok) {
         throw new Error("Failed to fetch delivery cost. Please try again.");

@@ -64,12 +64,15 @@ const UploadWeightDespensory = ({
 
     for (const email of sellerEmails) {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/users/search`, {
-          params: { query: email },
-          headers: {
-            Authorization: `${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/users/search`,
+          {
+            params: { query: email },
+            headers: {
+              Authorization: `${token}`,
+            },
+          }
+        );
 
         if (response.data && response.data.length > 0) {
           sellerIdMap[email] = response.data[0]._id;
@@ -97,7 +100,9 @@ const UploadWeightDespensory = ({
 
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/weightdiscrepancy/uploadweightdiscrepancy`,
+        `${
+          import.meta.env.VITE_API_URL
+        }/api/weightdiscrepancy/uploadweightdiscrepancy`,
         {
           method: "POST",
           body: formData,
@@ -151,7 +156,7 @@ const UploadWeightDespensory = ({
             console.log(walletRequestBody);
 
             const response = await fetch(
-              `${process.env.REACT_APP_API_URL}/api/transactions/increaseAmount`,
+              `${import.meta.env.VITE_API_URL}/api/transactions/increaseAmount`,
               {
                 method: "POST",
                 headers: {
@@ -227,7 +232,7 @@ const UploadWeightDespensory = ({
 
         try {
           const response = await axios.post(
-            `${process.env.REACT_APP_API_URL}/api/transactions/decreaseAmount`,
+            `${import.meta.env.VITE_API_URL}/api/transactions/decreaseAmount`,
             walletRequestBody,
             {
               headers: {

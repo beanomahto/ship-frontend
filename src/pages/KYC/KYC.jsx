@@ -29,11 +29,14 @@ const KYC = () => {
   useEffect(() => {
     const fetchKycData = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/kyc`, {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/kyc`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
+        );
         const data = await response.json();
         setKycData(data);
         console.log(data);

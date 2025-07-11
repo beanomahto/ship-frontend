@@ -1,4 +1,3 @@
-
 import { createContext, useContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext();
@@ -31,11 +30,14 @@ export const AuthContextProvider = ({ children }) => {
 
   const fetchBalance = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/get-balance`, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/auth/get-balance`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch balance");
       }
@@ -62,7 +64,14 @@ export const AuthContextProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ authUser, setAuthUser, balance, fetchBalance, apiToken, setApiToken }}
+      value={{
+        authUser,
+        setAuthUser,
+        balance,
+        fetchBalance,
+        apiToken,
+        setApiToken,
+      }}
     >
       {children}
     </AuthContext.Provider>

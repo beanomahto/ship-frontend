@@ -47,7 +47,7 @@ export const useCreateEmployee = () => {
 
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/employee/createEmployee`,
+        `${import.meta.env.VITE_API_URL}/api/employee/createEmployee`,
         state
       );
       setSuccess(true);

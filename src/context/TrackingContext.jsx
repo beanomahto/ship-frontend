@@ -1,4 +1,3 @@
-
 import { createContext, useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { message, Spin } from "antd";
@@ -16,7 +15,7 @@ export const TrackingContextProvider = ({ children }) => {
   const fetchTrackingInfo = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/deliveryOne/track/${awb}`
+        `${import.meta.env.VITE_API_URL}/api/deliveryOne/track/${awb}`
       );
       setTrackingInfo(response.data.trackingInfo);
     } catch (error) {

@@ -27,11 +27,14 @@ const VerifyKyc = () => {
     const fetchKycData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/kyc/${id}`, {
-          headers: {
-            Authorization: `${token}`,
-          },
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/kyc/${id}`,
+          {
+            headers: {
+              Authorization: `${token}`,
+            },
+          }
+        );
         const data = await response.json();
         //console.log(data);
 
@@ -73,7 +76,7 @@ const VerifyKyc = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/users/updateVerify/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/users/updateVerify/${id}`,
         {
           method: "POST",
           headers: {

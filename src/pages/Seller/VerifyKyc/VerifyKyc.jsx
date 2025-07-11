@@ -28,9 +28,12 @@ const VerifyKyc = () => {
     const fetchKycData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/kyc/${id}`, {
-          headers: { Authorization: `${token}` },
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/kyc/${id}`,
+          {
+            headers: { Authorization: `${token}` },
+          }
+        );
         if (!response.ok) throw new Error("Failed to fetch KYC data");
         const data = await response.json();
         setKycData(data);
@@ -59,14 +62,17 @@ const VerifyKyc = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/kyc/verify/${id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${token}`,
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/kyc/verify/${id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+          },
+          body: JSON.stringify(formData),
+        }
+      );
       if (response.ok) {
         message.success("KYC verified successfully");
       } else {
@@ -81,14 +87,17 @@ const VerifyKyc = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/kyc/update/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${token}`,
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/kyc/update/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (response.ok) {
         console.log(formData);
@@ -115,14 +124,17 @@ const VerifyKyc = () => {
   const handleOk = async () => {
     console.log("Remark:", remark);
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/kyc/remove/${id}`, {
-        method: "POST",
-        headers: {
-          Authorization: localStorage.getItem("token"),
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ remark }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/kyc/remove/${id}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: localStorage.getItem("token"),
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ remark }),
+        }
+      );
 
       if (response.ok) {
         message.success("Remark added successfully");

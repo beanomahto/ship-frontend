@@ -32,7 +32,7 @@ const useKYC = () => {
         formDataToSubmit.append("image", formData.pancardUrl, "pancard.jpg");
       }
 
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/kyc`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/kyc`, {
         method: "POST",
         headers: {
           Authorization: localStorage.getItem("token"),

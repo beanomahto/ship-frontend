@@ -27,20 +27,23 @@ const useSignup = () => {
 
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/signup`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          email,
-          password,
-          companyName,
-          phoneNumber,
-          otp,
-        }),
-        credentials: "include",
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/auth/signup`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            firstName,
+            lastName,
+            email,
+            password,
+            companyName,
+            phoneNumber,
+            otp,
+          }),
+          credentials: "include",
+        }
+      );
 
       const data = await res.json();
       if (data.error) {
@@ -53,7 +56,7 @@ const useSignup = () => {
       setAuthUser(data);
 
       await createDefaultLabelInfo(data._id);
-      return data.apiToken || ''; // return API token
+      return data.apiToken || ""; // return API token
     } catch (error) {
       alert(error.message);
     } finally {
@@ -81,14 +84,17 @@ const useSignup = () => {
         userId,
       };
 
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/shipping/createlabelinfo`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(defaultLabelInfo),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/shipping/createlabelinfo`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify(defaultLabelInfo),
+        }
+      );
 
       const labelInfoData = await res.json();
       if (labelInfoData.error) {

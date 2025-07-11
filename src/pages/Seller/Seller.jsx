@@ -44,11 +44,14 @@ const Seller = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users`, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/users`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
 
       const data = await response.json();
       const companyUsers = data.filter((user) => user.role === "company");
@@ -151,11 +154,14 @@ const Seller = () => {
   //console.log(users);
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${process.env.REACT_APP_API_URL}/api/users/deleteUser/${id}`, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      });
+      await axios.delete(
+        `${import.meta.env.VITE_API_URL}/api/users/deleteUser/${id}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
       message.success("User deleted successfully");
       fetchUsers();
     } catch (error) {

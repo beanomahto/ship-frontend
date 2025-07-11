@@ -20,7 +20,7 @@ const InvoiceGenerator = () => {
       try {
         const token = localStorage.getItem("token");
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/api/shipping/getinvoice/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/shipping/getinvoice/${id}`,
           {
             headers: {
               Authorization: `${token}`,

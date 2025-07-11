@@ -52,7 +52,7 @@ const CheckPincode = () => {
       //   }
       // );
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/delivery-partners/${pincode}`,
+        `${import.meta.env.VITE_API_URL}/api/delivery-partners/${pincode}`,
         {
           method: "GET",
           headers: {

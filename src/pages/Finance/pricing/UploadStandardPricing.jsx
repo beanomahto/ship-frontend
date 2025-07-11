@@ -21,7 +21,7 @@ const UploadStandardPricingModel = ({ visible, onClose }) => {
 
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/shipping/upload-standard-pricing`,
+        `${import.meta.env.VITE_API_URL}/api/shipping/upload-standard-pricing`,
         {
           method: "POST",
           body: formData,

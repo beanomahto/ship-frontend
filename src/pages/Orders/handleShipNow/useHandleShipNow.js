@@ -227,7 +227,9 @@ const useShipNow = (fetchOrders, setOrders, closeModalShipNow) => {
             try {
               // Update Order Status
               await fetch(
-                `${process.env.REACT_APP_API_URL}/api/orders/updateOrderStatus/${orderId}`,
+                `${
+                  import.meta.env.VITE_API_URL
+                }/api/orders/updateOrderStatus/${orderId}`,
                 {
                   method: "PUT",
                   headers: {
@@ -261,14 +263,19 @@ const useShipNow = (fetchOrders, setOrders, closeModalShipNow) => {
               }
 
               for (const walletRequest of walletRequests) {
-                await fetch(`${process.env.REACT_APP_API_URL}/api/transactions/decreaseAmount`, {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                    Authorization: localStorage.getItem("token"),
-                  },
-                  body: JSON.stringify(walletRequest),
-                });
+                await fetch(
+                  `${
+                    import.meta.env.VITE_API_URL
+                  }/api/transactions/decreaseAmount`,
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: localStorage.getItem("token"),
+                    },
+                    body: JSON.stringify(walletRequest),
+                  }
+                );
               }
 
               updatedOrders.push({ ...order, status: "Shipped" });
