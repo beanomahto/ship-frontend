@@ -1,5 +1,3 @@
-
-
 import { useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
 
@@ -14,12 +12,15 @@ const useLogin = () => {
     // LOGIN API == https://backend.shiphere.in/api/auth/login
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.url}/api/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, isHashed }),
-        credentials: "include", // To include cookies for same-site requests
-      });
+      const res = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/auth/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password, isHashed }),
+          credentials: "include", // To include cookies for same-site requests
+        }
+      );
 
       if (!res.ok) {
         // Handle non-200 responses (e.g., 400 or 500 errors)
@@ -75,14 +76,17 @@ const useLogin = () => {
 
       const token = localStorage.getItem("token");
 
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/shipping/createlabelinfo`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Include token properly
-        },
-        body: JSON.stringify(defaultLabelInfo),
-      });
+      const res = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/shipping/createlabelinfo`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include token properly
+          },
+          body: JSON.stringify(defaultLabelInfo),
+        }
+      );
 
       const labelInfoData = await res.json();
       if (labelInfoData.error) {
